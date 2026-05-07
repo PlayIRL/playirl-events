@@ -4,9 +4,12 @@ import AccountMenu from "./account-menu";
 
 // Pill container + inner-button styles mirror the theme toggle in
 // `app/floating-toolbar.tsx`. On mobile we sit at bottom-6 left-4 to mirror
-// that toggle's bottom-6 right-4 placement; on sm and up we move to top-4
-// right-4 where the desktop layout has dedicated header space.
-const PILL = "fixed bottom-6 left-4 sm:bottom-auto sm:left-auto sm:top-4 sm:right-4 z-40 flex bg-white dark:bg-neutral-800 rounded-xl p-0.5 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/15 dark:shadow-black/50";
+// that toggle's bottom-6 right-4 placement; on sm and up we tuck the chip
+// just below the sticky filter bar (--sticky-bar-h, published by StickyBar)
+// so it doesn't collide with the bar when the user scrolls. The 1rem
+// inside the calc() is the gap between bar bottom and chip top.
+// Fallback (3rem) covers the first paint before the bar is measured.
+const PILL = "fixed bottom-6 left-4 sm:bottom-auto sm:left-auto sm:top-[calc(var(--sticky-bar-h,3rem)+1rem)] sm:right-4 z-40 flex bg-white dark:bg-neutral-800 rounded-xl p-0.5 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/15 dark:shadow-black/50";
 export default async function AccountChip() {
   const user = await getCurrentUser();
   const signedIn = !!user && !user.suspended;
