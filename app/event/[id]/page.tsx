@@ -298,7 +298,7 @@ export default async function EventPage({
         <div className="p-6 pb-4 space-y-4">
           <div>
             <div className="text-xs text-neutral-400 dark:text-neutral-500 mb-1">Format</div>
-            <span className={`inline-block px-2.5 py-1 rounded-md text-xs font-semibold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+            <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
               {FORMAT_EMOJI[ev.format] || FORMAT_EMOJI_DEFAULT} {ev.format || "MTG"}
             </span>
           </div>

@@ -182,7 +182,7 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                         <div className="flex flex-col gap-px">
                           <div className="text-[10px] text-neutral-400 dark:text-neutral-500 leading-none">{formatEventTime(ev.date, ev.time, ev.timezone)}</div>
                           <div>
-                            <span className={`px-1 py-0 rounded text-[10px] font-medium ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                            <span className={`px-1.5 py-0.5 rounded-sm text-[10px] font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
                               {ev.format}
                             </span>
                           </div>

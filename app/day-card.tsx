@@ -157,7 +157,7 @@ export default function DayCard({
                 </span>
                 <p className="text-base sm:text-lg font-extrabold tracking-tight text-neutral-900 dark:text-white line-clamp-2 sm:line-clamp-none sm:truncate">{ev.title}</p>
                 <div className="flex items-center gap-1.5 mt-0.5 min-w-0">
-                  <span className={`px-1.5 py-0 rounded text-[10px] font-medium shrink-0 ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                  <span className={`px-2 py-0.5 rounded-sm text-[10px] font-bold shrink-0 ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
                     {ev.format}
                   </span>
                   {ev.location && (

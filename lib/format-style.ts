@@ -30,28 +30,28 @@ export const FORMAT_EMOJI: Record<string, string> = {
 export const FORMAT_BADGE: Record<string, string> = {
   // Plum — legendary / mythic
   Commander:
-    "bg-[#C9AEEC] text-[#3F1F66] border border-[#8B65BB] dark:bg-[#6B3FA0]/40 dark:text-[#E1D2EE] dark:border-[#6B3FA0]/70",
+    "bg-[#C9AEEC] text-[#3F1F66] border-2 border-[#8B65BB] dark:bg-[#6B3FA0]/40 dark:text-[#E1D2EE] dark:border-[#6B3FA0]/70",
   // U — Island
   Modern:
-    "bg-[#6BC1ED] text-[#073961] border border-[#2D8AC2] dark:bg-[#0E68AB]/45 dark:text-[#AAE0FA] dark:border-[#0E68AB]/70",
+    "bg-[#6BC1ED] text-[#073961] border-2 border-[#2D8AC2] dark:bg-[#0E68AB]/45 dark:text-[#AAE0FA] dark:border-[#0E68AB]/70",
   // G — Forest
   Standard:
-    "bg-[#6FCC8C] text-[#0F4124] border border-[#2E9C5A] dark:bg-[#00733E]/45 dark:text-[#9BD3AE] dark:border-[#00733E]/70",
+    "bg-[#6FCC8C] text-[#0F4124] border-2 border-[#2E9C5A] dark:bg-[#00733E]/45 dark:text-[#9BD3AE] dark:border-[#00733E]/70",
   // R — Mountain
   Pioneer:
-    "bg-[#F58A6A] text-[#5E1414] border border-[#D45A38] dark:bg-[#D3202A]/35 dark:text-[#F9AA8F] dark:border-[#D3202A]/70",
+    "bg-[#F58A6A] text-[#5E1414] border-2 border-[#D45A38] dark:bg-[#D3202A]/35 dark:text-[#F9AA8F] dark:border-[#D3202A]/70",
   // B — Swamp / eternal
   Legacy:
-    "bg-[#A89E96] text-[#1F1A15] border border-[#5C5048] dark:bg-[#3A352F]/70 dark:text-[#D8D0C6] dark:border-[#8B8276]/70",
+    "bg-[#A89E96] text-[#1F1A15] border-2 border-[#5C5048] dark:bg-[#3A352F]/70 dark:text-[#D8D0C6] dark:border-[#8B8276]/70",
   // W — Plains / commons
   Pauper:
-    "bg-[#F8E26B] text-[#5C4A1A] border border-[#C9A627] dark:bg-[#F8E26B]/20 dark:text-[#FFEE88] dark:border-[#F8E26B]/40",
+    "bg-[#F8E26B] text-[#5C4A1A] border-2 border-[#C9A627] dark:bg-[#F8E26B]/20 dark:text-[#FFEE88] dark:border-[#F8E26B]/40",
   // Amber-gold — limited
   Draft:
-    "bg-[#F3A547] text-[#5E2F08] border border-[#C77A1F] dark:bg-[#E08F2B]/40 dark:text-[#F5C988] dark:border-[#E08F2B]/70",
+    "bg-[#F3A547] text-[#5E2F08] border-2 border-[#C77A1F] dark:bg-[#E08F2B]/40 dark:text-[#F5C988] dark:border-[#E08F2B]/70",
   // Bronze-gold — sealed mystery
   Sealed:
-    "bg-[#D6913A] text-[#3D260A] border border-[#9A571A] dark:bg-[#B86E1F]/45 dark:text-[#E8C28A] dark:border-[#B86E1F]/70",
+    "bg-[#D6913A] text-[#3D260A] border-2 border-[#9A571A] dark:bg-[#B86E1F]/45 dark:text-[#E8C28A] dark:border-[#B86E1F]/70",
 };
 
 // Saturated swatches for the format-selector dot in the radius dropdown.
@@ -69,7 +69,7 @@ export const FORMAT_DOT: Record<string, string> = {
 };
 
 export const FORMAT_BADGE_DEFAULT =
-  "bg-gray-100 text-gray-600 border border-gray-200 dark:bg-gray-500/20 dark:text-gray-300 dark:border-gray-500/30";
+  "bg-gray-100 text-gray-700 border-2 border-gray-400 dark:bg-gray-500/20 dark:text-gray-200 dark:border-gray-500/50";
 
 export const FORMAT_EMOJI_DEFAULT = "\uD83C\uDCCF";
 
