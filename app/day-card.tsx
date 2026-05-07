@@ -176,17 +176,20 @@ export default function DayCard({
                   )}
                 </div>
               </div>
-              <div className="flex items-center gap-1 shrink-0">
-                <span className={`text-xs font-[family-name:var(--font-ultra)] font-bold ${ev.cost === "Free" ? "text-emerald-600 dark:text-emerald-400" : "text-neutral-900 dark:text-white"}`}>
-                  {ev.cost === "Free" ? "Free" : ev.cost || "\u2014"}
-                </span>
+              <div className="flex items-center gap-2 shrink-0">
+                {isAdmin && <AdminEventActions eventId={ev.id} />}
                 <SaveEventButton
                   eventId={ev.id}
                   initiallySaved={savedEventIds?.has(ev.id) ?? false}
                   compact
                   signedIn={signedIn}
                 />
-                {isAdmin && <AdminEventActions eventId={ev.id} />}
+                {/* Price sits at the row's right edge so it visually
+                    aligns with the "X events" count in the day header
+                    above. Save-star reveals on hover to its left. */}
+                <span className={`text-xs font-[family-name:var(--font-ultra)] font-bold ${ev.cost === "Free" ? "text-emerald-600 dark:text-emerald-400" : "text-neutral-900 dark:text-white"}`}>
+                  {ev.cost === "Free" ? "Free" : ev.cost || "\u2014"}
+                </span>
               </div>
             </Link>
             );
