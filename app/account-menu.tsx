@@ -89,7 +89,7 @@ export default function AccountMenu({
           <div className="px-3 py-2 border-b border-neutral-100 dark:border-white/10">
             <div className="text-xs text-neutral-500 dark:text-neutral-400">Signed in as</div>
             <div className="text-sm font-medium text-neutral-900 dark:text-neutral-100 truncate">{displayName}</div>
-            <div className="text-[10px] uppercase tracking-wide mt-0.5 text-neutral-400 dark:text-neutral-500">{role}</div>
+            <div className="text-[10px] mt-0.5 text-neutral-400 dark:text-neutral-500">{role}</div>
           </div>
 
           <MenuGroup>

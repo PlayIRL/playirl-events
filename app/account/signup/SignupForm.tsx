@@ -58,7 +58,7 @@ export default function SignupForm() {
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-neutral-100 flex items-baseline justify-center gap-2 flex-wrap">
             Create an account on
-            <PlayIrlLogo className="inline-block h-5 w-auto" />
+            <PlayIrlLogo className="text-2xl" />
           </h1>
           <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
             Email + password. Or use the OAuth buttons on the sign-in page.

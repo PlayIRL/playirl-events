@@ -99,7 +99,7 @@ function ChipSelect({
       {status !== "closed" && (
         <div className={`${DROPDOWN_BASE} ${DROPDOWN_ALIGN[align]} ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}>
           <div className="px-4 py-2.5 border-b border-neutral-100 dark:border-white/8">
-            <p className="text-[10px] uppercase tracking-widest font-semibold text-neutral-400 dark:text-neutral-500">{heading}</p>
+            <p className="text-[10px] font-semibold text-neutral-400 dark:text-neutral-500">{heading}</p>
           </div>
           {options.map((opt) => {
             const selected = value === opt.value;
@@ -205,7 +205,7 @@ function SubscribeDropdown({
       {status !== "closed" && (
         <div className={`${DROPDOWN_BASE} right-0 ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}>
           <div className="px-4 py-2.5 border-b border-neutral-100 dark:border-white/8">
-            <p className="text-[10px] uppercase tracking-widest font-semibold text-neutral-400 dark:text-neutral-500">Subscribe</p>
+            <p className="text-[10px] font-semibold text-neutral-400 dark:text-neutral-500">Subscribe</p>
             <p className="mt-0.5 text-xs text-neutral-600 dark:text-neutral-300 font-medium">{filterSummary}</p>
           </div>
 
@@ -281,7 +281,7 @@ function DiscordIcon() {
 
 function SoonPill() {
   return (
-    <span className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-neutral-100 dark:bg-white/8 text-neutral-500 dark:text-neutral-400 font-semibold">
+    <span className="text-[9px] px-1.5 py-0.5 rounded bg-neutral-100 dark:bg-white/8 text-neutral-500 dark:text-neutral-400 font-semibold">
       Soon
     </span>
   );

@@ -81,7 +81,7 @@ export function useTimePicker() {
 export function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="space-y-2">
-      <h3 className="text-xs font-semibold uppercase tracking-wide text-neutral-500 dark:text-neutral-400">{title}</h3>
+      <h3 className="text-xs font-semibold text-neutral-500 dark:text-neutral-400">{title}</h3>
       <div className="space-y-3">{children}</div>
     </section>
   );

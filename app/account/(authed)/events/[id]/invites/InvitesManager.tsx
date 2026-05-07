@@ -82,7 +82,7 @@ export default function InvitesManager({
 
       {/* List */}
       <section>
-        <h2 className="text-xs uppercase tracking-widest text-neutral-400 dark:text-neutral-500 font-semibold mb-2">
+        <h2 className="text-xs text-neutral-400 dark:text-neutral-500 font-semibold mb-2">
           Active invites · {invites.length}
         </h2>
         {invites.length === 0 ? (

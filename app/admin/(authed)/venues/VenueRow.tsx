@@ -123,7 +123,7 @@ export default function VenueRow({
           // eslint-disable-next-line @next/next/no-img-element
           <img src={imageUrl} alt="" className="w-full h-full object-cover" />
         ) : (
-          <span className="text-[10px] uppercase tracking-wide text-neutral-400 dark:text-neutral-500">No default</span>
+          <span className="text-[10px] text-neutral-400 dark:text-neutral-500">No default</span>
         )}
       </div>
 
@@ -133,7 +133,7 @@ export default function VenueRow({
           <span className="text-[11px] text-neutral-400 dark:text-neutral-500">{usageCount} events</span>
           {imageUrl && imageSource && (
             <span
-              className={`text-[10px] uppercase tracking-wide px-1.5 py-0.5 rounded ${SOURCE_LABELS[imageSource].className}`}
+              className={`text-[10px] px-1.5 py-0.5 rounded ${SOURCE_LABELS[imageSource].className}`}
               title={
                 imageSource === "manual"
                   ? "Uploaded by an admin — auto-fetcher won't overwrite this."

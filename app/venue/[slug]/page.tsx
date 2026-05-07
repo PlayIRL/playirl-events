@@ -106,7 +106,7 @@ export default async function VenuePage({ params }: RouteParams) {
       </div>
 
       <header className="mb-8 anim-fade-in-up">
-        <p className="text-[10px] uppercase tracking-widest font-semibold text-neutral-400 dark:text-neutral-500 mb-2">
+        <p className="text-[10px] font-semibold text-neutral-400 dark:text-neutral-500 mb-2">
           Venue
         </p>
         <h1 className="text-2xl sm:text-3xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white mb-2">

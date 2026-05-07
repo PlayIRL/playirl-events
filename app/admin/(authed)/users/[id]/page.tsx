@@ -128,12 +128,12 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
             <ul className="space-y-2 text-sm">
               {sources.map((s) => (
                 <li key={s.id} className="flex items-center gap-2">
-                  <span className="text-[10px] bg-neutral-100 dark:bg-white/[0.06] text-neutral-700 dark:text-neutral-300 px-1.5 rounded uppercase">
+                  <span className="text-[10px] bg-neutral-100 dark:bg-white/[0.06] text-neutral-700 dark:text-neutral-300 px-1.5 rounded">
                     {s.kind}
                   </span>
                   <span className="text-neutral-900 dark:text-neutral-100 truncate flex-1">{s.label}</span>
                   {!s.enabled && (
-                    <span className="text-[10px] text-neutral-500 dark:text-neutral-400 uppercase">paused</span>
+                    <span className="text-[10px] text-neutral-500 dark:text-neutral-400">paused</span>
                   )}
                 </li>
               ))}
@@ -200,7 +200,7 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
 function Field({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <div className="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400 mb-0.5">{label}</div>
+      <div className="text-xs text-neutral-500 dark:text-neutral-400 mb-0.5">{label}</div>
       <div className="text-neutral-900 dark:text-neutral-100">{value}</div>
     </div>
   );

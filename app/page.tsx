@@ -159,7 +159,7 @@ export default async function HomePage({
       {/* Hero header */}
       <header className="mb-6 flex flex-col items-center text-center gap-1 w-full anim-fade-in-up">
         <h1 className="text-neutral-900 dark:text-white">
-          <PlayIrlLogo className="h-10 sm:h-11 md:h-13 lg:h-16 w-auto" />
+          <PlayIrlLogo className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl" />
           <span className="sr-only">PlayIRL.GG</span>
         </h1>
         <p className="text-sm leading-tight text-neutral-400 dark:text-neutral-500 mt-2">
@@ -258,7 +258,7 @@ export default async function HomePage({
       <footer className="mt-16 pt-8 border-t border-neutral-100 dark:border-white/5 text-sm text-neutral-400 dark:text-neutral-500">
         {/* Brand sits above; description and links share an aligned top edge below */}
         <p className="mb-3">
-          <PlayIrlLogo className="h-5 w-auto text-neutral-900 dark:text-white" />
+          <PlayIrlLogo className="text-base text-neutral-900 dark:text-white" />
           <span className="sr-only">PlayIRL.GG</span>
         </p>
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">

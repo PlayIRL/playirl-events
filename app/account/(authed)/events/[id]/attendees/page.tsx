@@ -65,7 +65,7 @@ function Section({
 }) {
   return (
     <section className={muted ? "opacity-60" : undefined}>
-      <h2 className="text-xs uppercase tracking-widest text-neutral-400 dark:text-neutral-500 font-semibold mb-2">
+      <h2 className="text-xs text-neutral-400 dark:text-neutral-500 font-semibold mb-2">
         {title}
       </h2>
       {rows.length === 0 ? (

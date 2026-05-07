@@ -2,20 +2,34 @@ type Props = {
   className?: string;
 };
 
-export function PlayIrlLogo({ className = "h-8 w-auto" }: Props) {
+// Wordmark composed of an SVG play triangle + Figtree black "IRL" text.
+// Previously a single all-SVG mark with custom IRL letterforms; switching
+// to live text lets the wordmark inherit the rest of the site's typography
+// (Figtree black, tight tracking) so the logo and the H1 chips read as
+// one family.
+//
+// Size the logo with a `text-*` utility on the wrapper (the logo IS text
+// now). The triangle and word both scale via em-relative units, so the
+// caller controls overall size with a single font-size class.
+export function PlayIrlLogo({ className = "text-base" }: Props) {
   return (
-    <svg
+    <span
       role="img"
       aria-label="PlayIRL.GG"
-      className={className}
-      viewBox="0 0 667 205"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      className={`inline-flex items-center gap-[0.18em] leading-none font-[family-name:var(--font-figtree)] font-black ${className}`}
+      style={{ letterSpacing: "-0.04em" }}
     >
-      <path d="M226.879 97.3699C231.153 99.3703 231.153 105.449 226.879 107.449L67.3345 182.114C63.6451 183.841 59.4119 181.148 59.4119 177.075L59.4119 27.7442C59.4119 23.6707 63.6451 20.978 67.3346 22.7046L226.879 97.3699Z" fill="currentColor" />
-      <path d="M543.242 0H575.136V204.819H543.242V0ZM568.406 176.73H666.134V204.819H568.406V176.73Z" fill="currentColor" />
-      <path d="M387.547 102.117H426.462V130.206H387.547V102.117ZM426.462 102.117C438.166 102.117 448.115 101.044 456.307 98.8984C464.695 96.7526 471.035 93.0464 475.326 87.7796C479.813 82.3178 482.056 74.7102 482.056 64.9569C482.056 55.2036 479.813 47.6936 475.326 42.4268C471.035 36.965 464.695 33.2587 456.307 31.3081C448.115 29.1623 438.166 28.0895 426.462 28.0895V0C444.603 0 460.306 2.04819 473.571 6.14458C487.03 10.241 497.369 16.9707 504.586 26.3339C511.999 35.697 515.705 48.5714 515.705 64.9569C515.705 80.9523 511.999 93.7291 504.586 103.287C497.369 112.846 487.03 119.77 473.571 124.062C460.306 128.158 444.603 130.206 426.462 130.206V102.117ZM387.547 0H426.462V28.0895H387.547V0ZM436.118 110.31H468.011L513.949 204.819H477.667L436.118 110.31ZM387.547 19.3115V204.819H355.653V19.3115H387.547Z" fill="currentColor" />
-      <path d="M290.647 0H322.541V204.819H290.647V0Z" fill="currentColor" />
-    </svg>
+      <svg
+        viewBox="0 0 100 100"
+        className="h-[0.85em] w-[0.85em] shrink-0"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        {/* Right-pointing play triangle. Soft-rounded corners match the
+            geometric tone of Figtree black. */}
+        <path d="M14 8 C12 7 10 8.5 10 10.5 L10 89.5 C10 91.5 12 93 14 92 L88 52.5 C90 51.5 90 48.5 88 47.5 Z" />
+      </svg>
+      <span>IRL</span>
+    </span>
   );
 }

@@ -73,7 +73,7 @@ export default function UserActions({
     <div className="space-y-3">
       <div className="flex flex-wrap gap-3 items-center text-sm">
         <label className="flex items-center gap-2">
-          <span className="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400">Change role:</span>
+          <span className="text-xs text-neutral-500 dark:text-neutral-400">Change role:</span>
           <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
@@ -121,7 +121,7 @@ export default function UserActions({
 
       {user.suspended && user.suspended_reason && (
         <div className="text-xs bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-md px-3 py-2">
-          <div className="uppercase tracking-wide text-red-700 dark:text-red-400 font-semibold text-[10px]">
+          <div className="text-red-700 dark:text-red-400 font-semibold text-[10px]">
             Suspend reason
           </div>
           <div className="text-red-900 dark:text-red-200 mt-0.5">{user.suspended_reason}</div>
@@ -131,7 +131,7 @@ export default function UserActions({
       {showSuspend && !user.suspended && (
         <div className="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-md p-3 space-y-2">
           <label className="block">
-            <span className="block text-xs uppercase tracking-wide text-red-700 dark:text-red-400 font-semibold mb-1">
+            <span className="block text-xs text-red-700 dark:text-red-400 font-semibold mb-1">
               Reason (required — shown in the audit log)
             </span>
             <textarea

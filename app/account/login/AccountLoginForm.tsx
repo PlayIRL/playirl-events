@@ -63,7 +63,7 @@ export default function AccountLoginForm({ providers }: { providers: Provider[] 
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-neutral-100 flex items-baseline justify-center gap-2 flex-wrap">
             Welcome to
-            <PlayIrlLogo className="inline-block h-5 w-auto" />
+            <PlayIrlLogo className="text-2xl" />
             <span className="sr-only">PlayIRL.GG</span>
           </h1>
           <p className="text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed">
@@ -95,7 +95,7 @@ export default function AccountLoginForm({ providers }: { providers: Provider[] 
           {hasOAuth && (
             <div className="flex items-center gap-3">
               <div className="flex-1 h-px bg-neutral-200 dark:bg-neutral-700" />
-              <span className="text-xs uppercase tracking-wide text-neutral-400 dark:text-neutral-500">or</span>
+              <span className="text-xs text-neutral-400 dark:text-neutral-500">or</span>
               <div className="flex-1 h-px bg-neutral-200 dark:bg-neutral-700" />
             </div>
           )}
@@ -137,7 +137,7 @@ export default function AccountLoginForm({ providers }: { providers: Provider[] 
           <>
             <div className="flex items-center gap-3">
               <div className="flex-1 h-px bg-neutral-200 dark:bg-neutral-700" />
-              <span className="text-xs uppercase tracking-wide text-neutral-400 dark:text-neutral-500">or</span>
+              <span className="text-xs text-neutral-400 dark:text-neutral-500">or</span>
               <div className="flex-1 h-px bg-neutral-200 dark:bg-neutral-700" />
             </div>
             <form action={oauthAction("resend")} method="POST" className="space-y-2">

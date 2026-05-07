@@ -159,7 +159,7 @@ export default function EventTable({
       {/* Table */}
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-neutral-50 dark:bg-neutral-800 text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+          <thead className="bg-neutral-50 dark:bg-neutral-800 text-xs text-neutral-500 dark:text-neutral-400">
             <tr>
               {bulkEndpoint && (
                 <th className="px-3 py-2 w-10">

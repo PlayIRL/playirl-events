@@ -61,7 +61,7 @@ export default function LoginForm({ providers }: { providers: Provider[] }) {
             {hasOAuth && (
               <div className="flex items-center gap-3">
                 <div className="flex-1 h-px bg-neutral-200 dark:bg-neutral-700" />
-                <span className="text-xs uppercase tracking-wide text-neutral-400 dark:text-neutral-500">or</span>
+                <span className="text-xs text-neutral-400 dark:text-neutral-500">or</span>
                 <div className="flex-1 h-px bg-neutral-200 dark:bg-neutral-700" />
               </div>
             )}

@@ -132,7 +132,7 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                     key={day.date}
                     className={`flex items-center justify-center gap-1.5 py-1.5 ${isToday ? "bg-neutral-50 dark:bg-white/[0.06]" : "bg-white dark:bg-neutral-900"}`}
                   >
-                    <span className={`text-[10px] uppercase tracking-wider font-medium ${isToday ? "text-neutral-900 dark:text-white" : "text-neutral-400 dark:text-neutral-500"}`}>
+                    <span className={`text-[10px] font-medium ${isToday ? "text-neutral-900 dark:text-white" : "text-neutral-400 dark:text-neutral-500"}`}>
                       {day.weekday}
                     </span>
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-[family-name:var(--font-ultra)] font-bold shrink-0 ${

@@ -18,11 +18,20 @@
   color-scheme: dark;
 }
 
+/* Both semantic font variables resolve to Figtree. Existing components
+ * use either var(--font-inter) (body) or var(--font-ultra) (display) via
+ * Tailwind arbitrary values; pointing both at Figtree keeps every
+ * callsite working without touching className strings. */
+:root {
+  --font-inter: var(--font-figtree);
+  --font-ultra: var(--font-figtree);
+}
+
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--fg);
-  --font-sans: var(--font-inter);
-  --font-display: var(--font-display);
+  --font-sans: var(--font-figtree);
+  --font-display: var(--font-figtree);
 }
 
 html {
@@ -33,13 +42,15 @@ html {
 body {
   background-color: var(--bg) !important;
   color: var(--fg);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-figtree), system-ui, sans-serif;
   overflow-x: clip;
+  letter-spacing: -0.01em;
 }
 
-/* Figtree (--font-ultra) display styling: heavy weight + tight tracking
- * across every callsite. Keeps the chip/price/heading typography unified
- * without touching individual class strings. */
+/* Display callsites (chips, prices, headings, calendar week labels)
+ * inherit Figtree from the body but bump to weight 900 with tighter
+ * tracking. Same selector as before so callsites still picking
+ * font-[family-name:var(--font-ultra)] keep working. */
 .font-\[family-name\:var\(--font-ultra\)\] {
   font-weight: 900;
   letter-spacing: -0.02em;

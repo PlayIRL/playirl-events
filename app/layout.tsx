@@ -1,22 +1,18 @@
 import type { Metadata } from "next";
-import { Inter, Figtree } from "next/font/google";
+import { Figtree } from "next/font/google";
 import { cookies } from "next/headers";
 import { SITE_URL } from "@/lib/config";
 import "./globals.css";
 import ThemeSync from "./theme-sync";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
-
-// Display font for chips, prices, headings, calendar dates. Figtree at
-// 900 (black) gives the site a sharper, more modern character than the
-// previous Stack Sans Notch. Tight tracking is applied in globals.css.
+// One font for the whole site. Both --font-inter and --font-ultra resolve
+// to Figtree (see globals.css), so existing callsites continue to work
+// without touching every className. We load the full weight range so the
+// type system can use 400 for body, 600 for labels, 900 for display.
 const figtree = Figtree({
-  variable: "--font-ultra",
+  variable: "--font-figtree",
   subsets: ["latin"],
-  weight: ["800", "900"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
 const BUILD_SHA = process.env.RAILWAY_GIT_COMMIT_SHA ?? process.env.VERCEL_GIT_COMMIT_SHA ?? "local";
@@ -73,7 +69,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${figtree.variable} h-full antialiased${isDark ? " dark" : ""}`}
+      className={`${figtree.variable} h-full antialiased${isDark ? " dark" : ""}`}
       style={{ colorScheme: isDark ? "dark" : "light" }}
       suppressHydrationWarning
     >

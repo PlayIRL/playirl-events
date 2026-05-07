@@ -86,7 +86,7 @@ export default function AdminUsersPage() {
           </p>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-neutral-50 dark:bg-neutral-800 text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+            <thead className="bg-neutral-50 dark:bg-neutral-800 text-xs text-neutral-500 dark:text-neutral-400">
               <tr>
                 <th className="text-left px-3 py-2">User</th>
                 <th className="text-left px-3 py-2">Role</th>
