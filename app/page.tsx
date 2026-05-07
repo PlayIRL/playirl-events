@@ -233,7 +233,7 @@ export default async function HomePage({
               more events" (bumps `days` by 7), with a date input below
               for jumping anywhere. Calendar view has its own prev/next
               in the calendar header. */}
-          <div className="flex flex-col items-center gap-3 mt-16">
+          <div className="flex flex-col items-center gap-8 mt-16">
             <LinkButton
               href={`?${new URLSearchParams({ ...Object.fromEntries(Object.entries(params).filter(([k, v]) => k !== "days" && v !== undefined) as [string, string][]), days: String(currentDays + 7) }).toString()}`}
             >
