@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT } from "@/lib/format-style";
-import { formatEventTime } from "@/lib/format-time";
+import { eventHasStarted, formatEventTime } from "@/lib/format-time";
 import { useStickySentinel } from "@/lib/use-sticky-sentinel";
 
 interface EventRow {
@@ -172,12 +172,14 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                   {dayEvents.length === 0 ? (
                     <div className="flex-1 flex items-center justify-center text-[10px] text-neutral-300 dark:text-neutral-700">—</div>
                   ) : (
-                    dayEvents.map((ev) => (
+                    dayEvents.map((ev) => {
+                      const past = eventHasStarted(ev.date, ev.time);
+                      return (
                       <Link
                         key={ev.id}
                         href={`/event/${encodeURIComponent(ev.id)}`}
                         title={`${ev.title}${ev.location ? ` · ${ev.location}` : ""}${ev.cost ? ` · ${ev.cost}` : ""} · ${formatEventTime(ev.date, ev.time, ev.timezone)}`}
-                        className={`group block rounded p-2 transition-all duration-150 hover:-translate-y-px hover:shadow-sm ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.06]" : "hover:bg-black/[0.04] dark:hover:bg-white/10"}`}
+                        className={`group block rounded p-2 transition-all duration-150 hover:-translate-y-px hover:shadow-sm ${past ? "opacity-50 saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.06]" : "hover:bg-black/[0.04] dark:hover:bg-white/10"}`}
                       >
                         <div className="flex flex-col gap-px">
                           <div className="text-[10px] text-neutral-400 dark:text-neutral-500 leading-none">{formatEventTime(ev.date, ev.time, ev.timezone)}</div>
@@ -194,7 +196,8 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                           <div className="text-[10px] text-neutral-400 dark:text-neutral-500 truncate mt-0.5">{ev.location}</div>
                         )}
                       </Link>
-                    ))
+                      );
+                    })
                   )}
                 </div>
               </div>

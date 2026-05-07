@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT } from "@/lib/format-style";
-import { formatEventTime } from "@/lib/format-time";
+import { eventHasStarted, formatEventTime } from "@/lib/format-time";
 import { useStickySentinel } from "@/lib/use-sticky-sentinel";
 import SaveEventButton from "./save-event-button";
 import AdminEventActions from "./admin-event-actions";
@@ -124,13 +124,19 @@ export default function DayCard({
       {/* Events body */}
       {events.length > 0 && (
         <div className={`overflow-hidden rounded-b-xl border-b border-x divide-y divide-neutral-100 dark:divide-white/8 ${borderColor} ${bodyBg}`}>
-          {events.map((ev, i) => (
+          {events.map((ev, i) => {
+            // Per-row "already started" check — an event whose start
+            // moment is in the past gets rendered as inactive (greyed
+            // out) instead of being hidden, so users see what they
+            // missed without it crowding the upcoming list.
+            const past = eventHasStarted(ev.date, ev.time);
+            return (
             <Link
               key={ev.id}
               href={`/event/${encodeURIComponent(ev.id)}`}
               data-row
               style={revealed ? { animationDelay: `${80 + i * 45}ms` } : { opacity: 0 }}
-              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-2.5 sm:gap-3 px-3 sm:px-4 py-3.5 sm:py-4 ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
+              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-2.5 sm:gap-3 px-3 sm:px-4 py-3.5 sm:py-4 ${past ? "opacity-50 saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
             >
               {/* Desktop: time as a fixed left column. Mobile: hidden here
                   and rendered above the title (see middle div below) so the
@@ -181,7 +187,8 @@ export default function DayCard({
                 {isAdmin && <AdminEventActions eventId={ev.id} />}
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

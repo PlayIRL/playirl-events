@@ -5,6 +5,24 @@
 
 const DEFAULT_TZ = "America/New_York";
 
+/**
+ * True when the event's start moment (UTC) has already passed. Used to
+ * render today's already-started events (and this-week's past events in
+ * the calendar view) as inactive rather than hiding them — gives users
+ * context about what they missed without cluttering the upcoming list.
+ *
+ * Events without a `time` value are treated as start-of-day in UTC: they
+ * only flip to "past" once the entire UTC day has passed. That matches
+ * storage convention (date-only events = "sometime that day") without
+ * pretending to know which hour they meant.
+ */
+export function eventHasStarted(date: string, time: string): boolean {
+  if (!date) return false;
+  const utc = new Date(`${date}T${time || "00:00"}:00Z`);
+  if (isNaN(utc.getTime())) return false;
+  return utc.getTime() < Date.now();
+}
+
 export function formatEventTime(
   date: string,
   time: string,
