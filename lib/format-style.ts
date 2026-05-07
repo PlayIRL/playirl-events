@@ -27,37 +27,34 @@ export const FORMAT_EMOJI: Record<string, string> = {
 // Commander uses plum (the "mythic / legendary stamp" color in MTG
 // culture) rather than gold so it sits visually clear of Pauper's cream.
 // Gold/multicolor stays for Draft (limited) and Sealed (sealed-pack).
-// Pastel-bright fills with near-black text for legibility. The earlier
-// "more saturated" palette had mid-tone fills that competed with the
-// dark text at 10px sizes. Lift each fill toward white (keep the hue),
-// drop the text to almost true black, keep the saturated mid-tone
-// border as a visual anchor — that gives a chip that reads as colored
-// at glance distance and stays scannable on the row.
+// Pastel-bright fills with near-black text. Borderless — the colored
+// fill carries the chip's identity on its own; a 2px border at this
+// size was reading as decorative weight rather than information.
 export const FORMAT_BADGE: Record<string, string> = {
   // Plum — legendary / mythic
   Commander:
-    "bg-[#EBDBF6] text-[#2A1145] border-2 border-[#8B65BB] dark:bg-[#6B3FA0]/35 dark:text-[#F1E4F9] dark:border-[#A682CE]",
+    "bg-[#EBDBF6] text-[#2A1145] dark:bg-[#6B3FA0]/35 dark:text-[#F1E4F9]",
   // U — Island
   Modern:
-    "bg-[#C5E6F6] text-[#0A2D4D] border-2 border-[#2D8AC2] dark:bg-[#0E68AB]/35 dark:text-[#D6ECF7] dark:border-[#5BA8DA]",
+    "bg-[#C5E6F6] text-[#0A2D4D] dark:bg-[#0E68AB]/35 dark:text-[#D6ECF7]",
   // G — Forest
   Standard:
-    "bg-[#C8EBD2] text-[#0A2E1A] border-2 border-[#2E9C5A] dark:bg-[#00733E]/35 dark:text-[#D6F0DD] dark:border-[#5DBE85]",
+    "bg-[#C8EBD2] text-[#0A2E1A] dark:bg-[#00733E]/35 dark:text-[#D6F0DD]",
   // R — Mountain
   Pioneer:
-    "bg-[#FCC9B8] text-[#3D0E0E] border-2 border-[#D45A38] dark:bg-[#D3202A]/30 dark:text-[#FAD8C9] dark:border-[#E08068]",
+    "bg-[#FCC9B8] text-[#3D0E0E] dark:bg-[#D3202A]/30 dark:text-[#FAD8C9]",
   // B — Swamp / eternal
   Legacy:
-    "bg-[#D8D2CC] text-[#15110D] border-2 border-[#5C5048] dark:bg-[#3A352F]/65 dark:text-[#E8E2DC] dark:border-[#8B7E72]",
+    "bg-[#D8D2CC] text-[#15110D] dark:bg-[#3A352F]/65 dark:text-[#E8E2DC]",
   // W — Plains / commons
   Pauper:
-    "bg-[#FBF09F] text-[#3D2E08] border-2 border-[#C9A627] dark:bg-[#F8E26B]/25 dark:text-[#FBF4C5] dark:border-[#D9B636]",
+    "bg-[#FBF09F] text-[#3D2E08] dark:bg-[#F8E26B]/25 dark:text-[#FBF4C5]",
   // Amber-gold — limited
   Draft:
-    "bg-[#F8CC8B] text-[#3D1F08] border-2 border-[#C77A1F] dark:bg-[#E08F2B]/35 dark:text-[#F9DCB0] dark:border-[#E0A547]",
+    "bg-[#F8CC8B] text-[#3D1F08] dark:bg-[#E08F2B]/35 dark:text-[#F9DCB0]",
   // Bronze-gold — sealed mystery
   Sealed:
-    "bg-[#E8BC85] text-[#291A07] border-2 border-[#9A571A] dark:bg-[#B86E1F]/40 dark:text-[#EBCFA5] dark:border-[#C9853C]",
+    "bg-[#E8BC85] text-[#291A07] dark:bg-[#B86E1F]/40 dark:text-[#EBCFA5]",
 };
 
 // Saturated swatches for the format-selector dot in the radius dropdown.
@@ -75,7 +72,7 @@ export const FORMAT_DOT: Record<string, string> = {
 };
 
 export const FORMAT_BADGE_DEFAULT =
-  "bg-gray-100 text-gray-700 border-2 border-gray-400 dark:bg-gray-500/20 dark:text-gray-200 dark:border-gray-500/50";
+  "bg-gray-100 text-gray-700 dark:bg-gray-500/20 dark:text-gray-200";
 
 export const FORMAT_EMOJI_DEFAULT = "\uD83C\uDCCF";
 
