@@ -244,11 +244,11 @@ export default async function HomePage({
         </>
       )}
 
-      <footer className="mt-16 pt-6 text-sm text-neutral-500 dark:text-neutral-400">
-        <p className="text-xs leading-relaxed mb-4 max-w-md">
+      <footer className="mt-16 pt-6 text-sm text-neutral-500 dark:text-neutral-400 text-center">
+        <p className="text-xs leading-relaxed mb-4 max-w-md mx-auto">
           An open-source, community-run alternative to the official Wizards of the Coast event locator. Not affiliated with WotC.
         </p>
-        <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs">
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs">
           <a href="/about" className="hover:text-neutral-900 dark:hover:text-white">About</a>
           <a href="/bot" className="hover:text-neutral-900 dark:hover:text-white">Discord bot</a>
           <a href="https://github.com/i1986o/mtg-cal" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-white">GitHub</a>
