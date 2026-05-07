@@ -189,7 +189,7 @@ export default function LocationPicker({ currentLabel, isCustom, defaultLabel }:
       {open && (
         <div className={POPOVER}>
           <div className="px-3 py-2.5 border-b border-neutral-100 dark:border-white/8">
-            <p className="text-[10px] font-semibold text-neutral-400 dark:text-neutral-500">
+            <p className="text-[10px] font-semibold text-neutral-500 dark:text-neutral-400">
               Choose location
             </p>
           </div>
@@ -209,7 +209,7 @@ export default function LocationPicker({ currentLabel, isCustom, defaultLabel }:
 
             <div className="flex items-center gap-2">
               <div className="flex-1 h-px bg-neutral-200 dark:bg-neutral-700" />
-              <span className="text-[10px] text-neutral-400 dark:text-neutral-500">
+              <span className="text-[10px] text-neutral-500 dark:text-neutral-400">
                 or search
               </span>
               <div className="flex-1 h-px bg-neutral-200 dark:bg-neutral-700" />

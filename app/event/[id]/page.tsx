@@ -31,7 +31,7 @@ function DetailRow({ label, value, href }: { label: string; value: string; href?
   if (!value) return null;
   return (
     <div className="py-3 border-b border-neutral-100 dark:border-white/8 last:border-0">
-      <dt className="text-xs text-neutral-400 dark:text-neutral-500 mb-0.5">{label}</dt>
+      <dt className="text-xs text-neutral-500 dark:text-neutral-400 mb-0.5">{label}</dt>
       <dd className="text-sm font-medium text-neutral-900 dark:text-neutral-200 break-words">
         {href ? (
           <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-amber-700 dark:text-amber-400 hover:underline break-all">
@@ -297,13 +297,13 @@ export default async function EventPage({
         {/* Header */}
         <div className="p-6 pb-4 space-y-4">
           <div>
-            <div className="text-xs text-neutral-400 dark:text-neutral-500 mb-1">Format</div>
+            <div className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Format</div>
             <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
               {FORMAT_EMOJI[ev.format] || FORMAT_EMOJI_DEFAULT} {ev.format || "MTG"}
             </span>
           </div>
           <div>
-            <div className="text-xs text-neutral-400 dark:text-neutral-500 mb-1">Event</div>
+            <div className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Event</div>
             <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white break-words">{ev.title}</h1>
           </div>
         </div>
@@ -318,7 +318,7 @@ export default async function EventPage({
                   back to the plain DetailRow when there's no location. */}
               {ev.location ? (
                 <div className="py-3 border-b border-neutral-100 dark:border-white/8 last:border-0">
-                  <dt className="text-xs text-neutral-400 dark:text-neutral-500 mb-0.5">Host</dt>
+                  <dt className="text-xs text-neutral-500 dark:text-neutral-400 mb-0.5">Host</dt>
                   <dd className="text-sm font-medium text-neutral-900 dark:text-neutral-200 break-words flex items-center gap-2 flex-wrap">
                     <Link
                       href={`/venue/${encodeURIComponent(venueSlug(ev.location))}`}
@@ -346,7 +346,7 @@ export default async function EventPage({
               <DetailRow label="Cost" value={ev.cost || "Not listed"} />
               {ev.address && (
                 <div className="py-3 border-b border-neutral-100 dark:border-white/8 last:border-0">
-                  <dt className="text-xs text-neutral-400 dark:text-neutral-500 mb-0.5">Address</dt>
+                  <dt className="text-xs text-neutral-500 dark:text-neutral-400 mb-0.5">Address</dt>
                   <dd className="text-sm font-medium text-neutral-900 dark:text-neutral-200 break-words">
                     <a
                       href={`https://www.google.com/maps/search/${encodeURIComponent(ev.location + " " + ev.address)}`}
@@ -378,7 +378,7 @@ export default async function EventPage({
         {ev.notes && (
           <Reveal>
             <div className="mx-6 mb-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg p-4">
-              <p className="text-xs text-neutral-400 dark:text-neutral-500 mb-1">Description</p>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Description</p>
               <p className="text-sm text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap break-words">{ev.notes}</p>
             </div>
           </Reveal>

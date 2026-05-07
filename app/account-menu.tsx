@@ -89,7 +89,7 @@ export default function AccountMenu({
           <div className="px-3 py-2 border-b border-neutral-100 dark:border-white/10">
             <div className="text-xs text-neutral-500 dark:text-neutral-400">Signed in as</div>
             <div className="text-sm font-medium text-neutral-900 dark:text-neutral-100 truncate">{displayName}</div>
-            <div className="text-[10px] mt-0.5 text-neutral-400 dark:text-neutral-500">{role}</div>
+            <div className="text-[10px] mt-0.5 text-neutral-500 dark:text-neutral-400">{role}</div>
           </div>
 
           <MenuGroup>
@@ -130,7 +130,7 @@ function MenuIcon({ open }: { open: boolean }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={`w-3.5 h-3.5 text-neutral-400 dark:text-neutral-500 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+      className={`w-3.5 h-3.5 text-neutral-500 dark:text-neutral-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"

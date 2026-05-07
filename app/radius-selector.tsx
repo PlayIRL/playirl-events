@@ -99,7 +99,7 @@ function ChipSelect({
       {status !== "closed" && (
         <div className={`${DROPDOWN_BASE} ${DROPDOWN_ALIGN[align]} ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}>
           <div className="px-4 py-2.5 border-b border-neutral-100 dark:border-white/8">
-            <p className="text-[10px] font-semibold text-neutral-400 dark:text-neutral-500">{heading}</p>
+            <p className="text-[10px] font-semibold text-neutral-500 dark:text-neutral-400">{heading}</p>
           </div>
           {options.map((opt) => {
             const selected = value === opt.value;
@@ -205,7 +205,7 @@ function SubscribeDropdown({
       {status !== "closed" && (
         <div className={`${DROPDOWN_BASE} right-0 ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}>
           <div className="px-4 py-2.5 border-b border-neutral-100 dark:border-white/8">
-            <p className="text-[10px] font-semibold text-neutral-400 dark:text-neutral-500">Subscribe</p>
+            <p className="text-[10px] font-semibold text-neutral-500 dark:text-neutral-400">Subscribe</p>
             <p className="mt-0.5 text-xs text-neutral-600 dark:text-neutral-300 font-medium">{filterSummary}</p>
           </div>
 
@@ -353,7 +353,7 @@ export default function RadiusSelector({
           ChipSelect dropdowns and SubscribeDropdown render `<div>`s), and
           a `<p>` containing `<div>` is invalid HTML, which surfaces as a
           React-19 hydration warning + DOM-nesting error in the console. */}
-      <div className="text-neutral-400 dark:text-neutral-400 flex items-center justify-center flex-wrap gap-x-1.5 gap-y-1 text-base sm:text-lg leading-relaxed font-[family-name:var(--font-ultra)] font-bold">
+      <div className="text-neutral-500 dark:text-neutral-400 flex items-center justify-center flex-wrap gap-x-1.5 gap-y-1 text-base sm:text-lg leading-relaxed font-[family-name:var(--font-ultra)] font-bold">
         <ChipSelect
           label={currentFormat || "All MTG"}
           heading="Format"

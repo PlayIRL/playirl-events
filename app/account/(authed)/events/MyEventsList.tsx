@@ -103,7 +103,7 @@ function Section({
     <section>
       <div className="mb-2">
         <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-          {title} <span className="text-xs font-normal text-neutral-400 dark:text-neutral-500">· {count}</span>
+          {title} <span className="text-xs font-normal text-neutral-500 dark:text-neutral-400">· {count}</span>
         </h2>
         {hint && <p className="text-xs text-amber-700 dark:text-amber-400 mt-0.5">{hint}</p>}
       </div>

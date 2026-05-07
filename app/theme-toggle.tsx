@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 
-const BTN = "flex items-center justify-center w-10 h-10 bg-white dark:bg-neutral-900 text-neutral-400 dark:text-neutral-500 rounded-xl border border-neutral-100 dark:border-white/8 shadow-lg shadow-black/5 dark:shadow-black/20 transition-all duration-200 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:border-neutral-200 dark:hover:border-white/15 hover:text-neutral-600 dark:hover:text-neutral-300";
+const BTN = "flex items-center justify-center w-10 h-10 bg-white dark:bg-neutral-900 text-neutral-500 dark:text-neutral-400 rounded-xl border border-neutral-100 dark:border-white/8 shadow-lg shadow-black/5 dark:shadow-black/20 transition-all duration-200 cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:border-neutral-200 dark:hover:border-white/15 hover:text-neutral-600 dark:hover:text-neutral-300";
 
 function SunIcon() {
   return (

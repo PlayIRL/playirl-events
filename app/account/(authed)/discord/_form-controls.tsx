@@ -101,7 +101,7 @@ export function Field({
       <span className="block text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-1">{label}</span>
       {children}
       {hint && (
-        <span className="block text-[11px] text-neutral-400 dark:text-neutral-500 mt-1.5 leading-snug">
+        <span className="block text-[11px] text-neutral-500 dark:text-neutral-400 mt-1.5 leading-snug">
           {hint}
         </span>
       )}

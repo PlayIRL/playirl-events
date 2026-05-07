@@ -65,11 +65,11 @@ function Section({
 }) {
   return (
     <section className={muted ? "opacity-60" : undefined}>
-      <h2 className="text-xs text-neutral-400 dark:text-neutral-500 font-semibold mb-2">
+      <h2 className="text-xs text-neutral-500 dark:text-neutral-400 font-semibold mb-2">
         {title}
       </h2>
       {rows.length === 0 ? (
-        <p className="text-sm text-neutral-400 dark:text-neutral-500 italic">{emptyText ?? "—"}</p>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 italic">{emptyText ?? "—"}</p>
       ) : (
         <ul className="divide-y divide-neutral-100 dark:divide-white/8 border border-neutral-100 dark:border-white/8 rounded-lg overflow-hidden">
           {rows.map((r) => (
@@ -78,9 +78,9 @@ function Section({
                 <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100 truncate">
                   {r.name ?? r.email.split("@")[0]}
                 </p>
-                <p className="text-xs text-neutral-400 dark:text-neutral-500 truncate">{r.email}</p>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate">{r.email}</p>
               </div>
-              <time className="text-[11px] text-neutral-400 dark:text-neutral-500 tabular-nums shrink-0">
+              <time className="text-[11px] text-neutral-500 dark:text-neutral-400 tabular-nums shrink-0">
                 {r.created_at.replace(" ", " · ")}
               </time>
             </li>

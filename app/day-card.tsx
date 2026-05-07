@@ -118,7 +118,7 @@ export default function DayCard({
         <span className={`${isStuck ? "text-sm" : "text-base"} ${isToday ? "font-bold text-neutral-900 dark:text-white" : "font-medium text-neutral-700 dark:text-neutral-300"}`}>
           {headingLabel || weekday}
         </span>
-        <span className={`ml-auto text-neutral-400 dark:text-neutral-500 ${isStuck ? "text-xs" : "text-sm"}`}>
+        <span className={`ml-auto text-neutral-500 dark:text-neutral-400 ${isStuck ? "text-xs" : "text-sm"}`}>
           {events.length === 0 ? "No events" : `${events.length} event${events.length === 1 ? "" : "s"}`}
         </span>
       </div>
@@ -143,7 +143,7 @@ export default function DayCard({
               {/* Desktop: time as a fixed left column. Mobile: hidden here
                   and rendered above the title (see middle div below) so the
                   full row width goes to the title. */}
-              <span className="hidden sm:block text-sm text-neutral-400 dark:text-neutral-500 shrink-0 w-16 transition-colors duration-200 group-hover:text-neutral-500 dark:group-hover:text-neutral-400">
+              <span className="hidden sm:block text-sm text-neutral-500 dark:text-neutral-400 shrink-0 w-16 transition-colors duration-200 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">
                 {formatEventTime(ev.date, ev.time, ev.timezone)}
               </span>
               {/* Image is decorative on mobile (most events render the same
@@ -160,7 +160,7 @@ export default function DayCard({
                 loading="lazy"
               />
               <div className="flex-1 min-w-0">
-                <span className="block sm:hidden text-xs text-neutral-400 dark:text-neutral-500">
+                <span className="block sm:hidden text-xs text-neutral-500 dark:text-neutral-400">
                   {formatEventTime(ev.date, ev.time, ev.timezone)}
                 </span>
                 <p className="text-base sm:text-lg font-semibold tracking-tight text-neutral-900 dark:text-white line-clamp-2 sm:line-clamp-none sm:truncate">{ev.title}</p>
@@ -171,7 +171,7 @@ export default function DayCard({
                   {ev.location && (
                     <>
                       <span className="text-xs text-neutral-300 dark:text-neutral-600 shrink-0">·</span>
-                      <span className="text-xs text-neutral-400 dark:text-neutral-500 truncate">{ev.location}</span>
+                      <span className="text-xs text-neutral-500 dark:text-neutral-400 truncate">{ev.location}</span>
                     </>
                   )}
                 </div>

@@ -132,7 +132,7 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                     key={day.date}
                     className={`flex items-center justify-center gap-1.5 py-1.5 ${isToday ? "bg-white dark:bg-white/[0.18] outline-2 outline-neutral-900 dark:outline-white -outline-offset-2 relative z-[1]" : "bg-white dark:bg-neutral-900"}`}
                   >
-                    <span className={`text-[10px] ${isToday ? "font-bold text-neutral-900 dark:text-white" : "font-medium text-neutral-400 dark:text-neutral-500"}`}>
+                    <span className={`text-[10px] ${isToday ? "font-bold text-neutral-900 dark:text-white" : "font-medium text-neutral-500 dark:text-neutral-400"}`}>
                       {day.weekday}
                     </span>
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-[family-name:var(--font-ultra)] font-bold shrink-0 ${
@@ -184,7 +184,7 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                         className={`group block rounded p-2 transition-all duration-150 hover:-translate-y-px hover:shadow-sm ${past ? "opacity-50 saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.06]" : "hover:bg-black/[0.04] dark:hover:bg-white/10"}`}
                       >
                         <div className="flex flex-col gap-px">
-                          <div className="text-[10px] text-neutral-400 dark:text-neutral-500 leading-none">{formatEventTime(ev.date, ev.time, ev.timezone)}</div>
+                          <div className="text-[10px] text-neutral-500 dark:text-neutral-400 leading-none">{formatEventTime(ev.date, ev.time, ev.timezone)}</div>
                           <div>
                             <span className={`px-1.5 py-0.5 rounded-sm text-[10px] font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
                               {ev.format}
@@ -195,7 +195,7 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                           {ev.title}
                         </div>
                         {ev.location && (
-                          <div className="text-[10px] text-neutral-400 dark:text-neutral-500 truncate mt-0.5">{ev.location}</div>
+                          <div className="text-[10px] text-neutral-500 dark:text-neutral-400 truncate mt-0.5">{ev.location}</div>
                         )}
                       </Link>
                       );

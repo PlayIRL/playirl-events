@@ -126,7 +126,7 @@ export default function VenueAutocomplete({
                 <div className="flex items-baseline justify-between gap-2">
                   <span className="text-sm text-neutral-900 dark:text-neutral-100 truncate">{v.name}</span>
                   {v.usage_count > 1 && (
-                    <span className="text-[10px] text-neutral-400 dark:text-neutral-500 shrink-0">
+                    <span className="text-[10px] text-neutral-500 dark:text-neutral-400 shrink-0">
                       {v.usage_count} events
                     </span>
                   )}

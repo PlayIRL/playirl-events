@@ -82,11 +82,11 @@ export default function InvitesManager({
 
       {/* List */}
       <section>
-        <h2 className="text-xs text-neutral-400 dark:text-neutral-500 font-semibold mb-2">
+        <h2 className="text-xs text-neutral-500 dark:text-neutral-400 font-semibold mb-2">
           Active invites · {invites.length}
         </h2>
         {invites.length === 0 ? (
-          <p className="text-sm text-neutral-400 dark:text-neutral-500 italic">
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 italic">
             No invites yet. Generate one above to share a link with someone.
           </p>
         ) : (
@@ -95,12 +95,12 @@ export default function InvitesManager({
               <li key={inv.id} className="px-4 py-3 bg-white dark:bg-neutral-900 flex items-start gap-3">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100 truncate">
-                    {inv.label || <span className="text-neutral-400 dark:text-neutral-500 italic">No label</span>}
+                    {inv.label || <span className="text-neutral-500 dark:text-neutral-400 italic">No label</span>}
                   </p>
                   <p className="font-mono text-[11px] text-neutral-500 dark:text-neutral-400 truncate mt-0.5">
                     {urlFor(inv.token)}
                   </p>
-                  <p className="text-[11px] text-neutral-400 dark:text-neutral-500 mt-1">
+                  <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1">
                     Created {inv.created_at}
                     {inv.used_by_email
                       ? ` · First redeemed by ${inv.used_by_name ?? inv.used_by_email}`

@@ -2,7 +2,7 @@
 
 const SEG_BTN = "flex items-center justify-center w-7 h-7 rounded-md transition-all cursor-pointer";
 const SEG_ACTIVE = "bg-white dark:bg-white/15 shadow-sm text-neutral-900 dark:text-white";
-const SEG_INACTIVE = "text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300";
+const SEG_INACTIVE = "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300";
 
 function ListIcon() {
   return (

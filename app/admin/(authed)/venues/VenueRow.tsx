@@ -123,14 +123,14 @@ export default function VenueRow({
           // eslint-disable-next-line @next/next/no-img-element
           <img src={imageUrl} alt="" className="w-full h-full object-cover" />
         ) : (
-          <span className="text-[10px] text-neutral-400 dark:text-neutral-500">No default</span>
+          <span className="text-[10px] text-neutral-500 dark:text-neutral-400">No default</span>
         )}
       </div>
 
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline gap-2 flex-wrap">
           <span className="font-medium text-neutral-900 dark:text-neutral-100 truncate">{venueName}</span>
-          <span className="text-[11px] text-neutral-400 dark:text-neutral-500">{usageCount} events</span>
+          <span className="text-[11px] text-neutral-500 dark:text-neutral-400">{usageCount} events</span>
           {imageUrl && imageSource && (
             <span
               className={`text-[10px] px-1.5 py-0.5 rounded ${SOURCE_LABELS[imageSource].className}`}

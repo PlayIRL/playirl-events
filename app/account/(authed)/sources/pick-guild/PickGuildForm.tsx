@@ -161,7 +161,7 @@ export default function PickGuildForm({ guilds }: { guilds: BotGuild[] }) {
 
 function AddressHint({ status }: { status: "idle" | "checking" | "found" | "missing" }) {
   const base = "text-xs mt-1 min-h-[1rem]";
-  if (status === "checking") return <p className={`${base} text-neutral-400 dark:text-neutral-500`}>Finding it on the map…</p>;
+  if (status === "checking") return <p className={`${base} text-neutral-500 dark:text-neutral-400`}>Finding it on the map…</p>;
   if (status === "found") return <p className={`${base} text-emerald-700 dark:text-emerald-400`}>✓ Found. We'll use this for distance filtering.</p>;
   if (status === "missing") return <p className={`${base} text-amber-700 dark:text-amber-400`}>Couldn't place that on the map. That's OK — your events will still show up in the full list.</p>;
   return <p className={`${base} text-neutral-500 dark:text-neutral-400`}>Helps locals find your events when they filter by distance.</p>;

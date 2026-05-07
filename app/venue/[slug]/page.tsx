@@ -106,7 +106,7 @@ export default async function VenuePage({ params }: RouteParams) {
       </div>
 
       <header className="mb-8 anim-fade-in-up">
-        <p className="text-[10px] font-semibold text-neutral-400 dark:text-neutral-500 mb-2">
+        <p className="text-[10px] font-semibold text-neutral-500 dark:text-neutral-400 mb-2">
           Venue
         </p>
         <h1 className="text-2xl sm:text-3xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white mb-2">
@@ -157,7 +157,7 @@ export default async function VenuePage({ params }: RouteParams) {
           <p className="text-neutral-500 dark:text-neutral-400 text-sm">
             No upcoming events at this venue right now.
           </p>
-          <p className="text-neutral-400 dark:text-neutral-500 text-xs mt-1">
+          <p className="text-neutral-500 dark:text-neutral-400 text-xs mt-1">
             Check back soon — new events appear after each daily scrape.
           </p>
         </Reveal>
