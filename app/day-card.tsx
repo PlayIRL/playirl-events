@@ -115,10 +115,10 @@ export default function DayCard({
 
       {/* Sticky date header */}
       <div className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 ${isStuck ? "py-1" : "py-2 rounded-t-xl"} ${borderColor} ${headingBg}`}>
-        <span className={`${isStuck ? "text-xs" : "text-sm"} ${isToday ? "font-bold text-neutral-900 dark:text-white" : "font-medium text-neutral-700 dark:text-neutral-300"}`}>
+        <span className={`${isStuck ? "text-sm" : "text-base"} ${isToday ? "font-bold text-neutral-900 dark:text-white" : "font-medium text-neutral-700 dark:text-neutral-300"}`}>
           {headingLabel || weekday}
         </span>
-        <span className={`ml-auto text-neutral-400 dark:text-neutral-500 ${isStuck ? "text-[10px]" : "text-xs"}`}>
+        <span className={`ml-auto text-neutral-400 dark:text-neutral-500 ${isStuck ? "text-xs" : "text-sm"}`}>
           {events.length === 0 ? "No events" : `${events.length} event${events.length === 1 ? "" : "s"}`}
         </span>
       </div>
@@ -189,7 +189,7 @@ export default function DayCard({
                     above. Save-star reveals on hover to its left.
                     "Free" is the standout \u2014 bolder + colored. Paid
                     prices stay quiet (regular weight, default ink). */}
-                <span className={`text-xs font-[family-name:var(--font-ultra)] ${ev.cost === "Free" ? "font-bold text-emerald-600 dark:text-emerald-400" : "font-normal text-neutral-700 dark:text-neutral-300"}`}>
+                <span className={`text-sm font-[family-name:var(--font-ultra)] ${ev.cost === "Free" ? "font-bold text-emerald-600 dark:text-emerald-400" : "font-normal text-neutral-700 dark:text-neutral-300"}`}>
                   {ev.cost === "Free" ? "Free" : ev.cost || "\u2014"}
                 </span>
               </div>
