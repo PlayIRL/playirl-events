@@ -152,7 +152,7 @@ export default async function VenuePage({ params }: RouteParams) {
       </Reveal>
 
       {events.length === 0 ? (
-        <Reveal className="text-center py-12 border border-dashed border-neutral-200 dark:border-white/10 rounded-xl" delay={80}>
+        <Reveal className="text-center py-12 border border-dashed border-neutral-200 dark:border-white/10 rounded-md" delay={80}>
           <p className="text-3xl mb-2">{"🎴"}</p>
           <p className="text-neutral-500 dark:text-neutral-400 text-sm">
             No upcoming events at this venue right now.

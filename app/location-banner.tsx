@@ -63,7 +63,7 @@ export default function LocationBanner({ isDefault, defaultLabel }: Props) {
   if (!show) return null;
 
   return (
-    <div className="mb-4 mx-auto max-w-2xl rounded-xl border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-4 py-3 anim-fade-in">
+    <div className="mb-4 mx-auto max-w-2xl rounded-md border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-4 py-3 anim-fade-in">
       <div className="flex items-start gap-3">
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -34,7 +34,7 @@ export default function LoginForm({ providers }: { providers: Provider[] }) {
         </svg>
         Back to PlayIRL.GG
       </Link>
-      <div className="bg-white dark:bg-neutral-900 p-8 rounded-xl shadow-md dark:shadow-black/40 w-full max-w-sm border border-transparent dark:border-neutral-700 space-y-6">
+      <div className="bg-white dark:bg-neutral-900 p-8 rounded-md shadow-md dark:shadow-black/40 w-full max-w-sm border border-transparent dark:border-neutral-700 space-y-6">
         <h1 className="text-xl font-[family-name:var(--font-ultra)] font-bold text-center text-neutral-900 dark:text-neutral-100">
           Admin sign in
         </h1>

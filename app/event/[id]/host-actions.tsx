@@ -43,7 +43,7 @@ export default function HostActions({
   }
 
   return (
-    <div className="mb-6 flex flex-wrap items-center gap-2 rounded-xl border border-dashed border-neutral-200 dark:border-white/15 bg-neutral-50/60 dark:bg-white/5 px-3 py-2 anim-fade-in">
+    <div className="mb-6 flex flex-wrap items-center gap-2 rounded-md border border-dashed border-neutral-200 dark:border-white/15 bg-neutral-50/60 dark:bg-white/5 px-3 py-2 anim-fade-in">
       <span className="text-[10px] font-semibold text-neutral-500 dark:text-neutral-400 mr-1">
         Host
       </span>

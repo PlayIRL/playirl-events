@@ -49,7 +49,7 @@ export default function AccountMenu({
   }
 
   return (
-    <div ref={wrapperRef} className="fixed bottom-6 left-4 sm:bottom-auto sm:left-auto sm:top-[var(--chip-top,1rem)] sm:right-4 sm:transition-[top] sm:duration-300 z-40 flex bg-white dark:bg-neutral-800 rounded-xl p-0.5 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/15 dark:shadow-black/50">
+    <div ref={wrapperRef} className="fixed bottom-6 left-4 sm:bottom-auto sm:left-auto sm:top-[var(--chip-top,1rem)] sm:right-4 sm:transition-[top] sm:duration-300 z-40 flex bg-white dark:bg-neutral-800 rounded-md p-0.5 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/15 dark:shadow-black/50">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}

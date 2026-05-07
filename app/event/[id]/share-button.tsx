@@ -68,7 +68,7 @@ export default function ShareButton({ title, url }: { title: string; url: string
       {open && pos && typeof document !== "undefined" && createPortal(
         <div
           ref={menuRef}
-          className="fixed z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-xl shadow-xl overflow-hidden min-w-[160px] anim-scale-in"
+          className="fixed z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-hidden min-w-[160px] anim-scale-in"
           style={{ top: `${pos.top}px`, right: `${pos.right}px`, transformOrigin: "top right" }}
         >
           <button

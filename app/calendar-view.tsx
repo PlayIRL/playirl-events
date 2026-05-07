@@ -85,7 +85,7 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
       {/* Sticky: week nav + day headers together */}
       <div className="sticky top-[var(--sticky-bar-h,0px)] z-[5] -mx-4 px-4 bg-white dark:bg-neutral-900">
         {/* Unified frame: rounded top corners only when not pinned */}
-        <div className={`border border-b-0 border-neutral-200 dark:border-neutral-700 overflow-hidden transition-all duration-150 ${isStuck ? "" : "rounded-t-xl"}`}>
+        <div className={`border border-b-0 border-neutral-200 dark:border-neutral-700 overflow-hidden transition-all duration-150 ${isStuck ? "" : "rounded-t-md"}`}>
 
           {/* Week navigation — compact, bottom border acts as divider */}
           <div className="flex items-center justify-between py-1.5 px-2 border-b border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
@@ -155,7 +155,7 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
         className="overflow-x-auto -mx-4 px-4 anim-fade-in"
         style={{ "--delay": "100ms" } as React.CSSProperties}
       >
-        <div className="min-w-[560px] grid grid-cols-7 gap-px bg-neutral-200 dark:bg-neutral-800 border-b border-x border-neutral-200 dark:border-neutral-700 rounded-b-xl overflow-hidden">
+        <div className="min-w-[560px] grid grid-cols-7 gap-px bg-neutral-200 dark:bg-neutral-800 border-b border-x border-neutral-200 dark:border-neutral-700 rounded-b-md overflow-hidden">
           {weekDays.map((day) => {
             const isToday = day.date === todayStr;
             const isPast = day.date < todayStr;

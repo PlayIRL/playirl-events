@@ -18,7 +18,7 @@ const PROMPTED_KEY = "playirl-loc-prompted";
 const CHIP_TRIGGER =
   "inline-block underline decoration-dotted underline-offset-4 decoration-neutral-400 dark:decoration-neutral-500 text-neutral-900 dark:text-white font-[family-name:var(--font-ultra)] focus:outline-none cursor-pointer bg-transparent hover:decoration-solid hover:decoration-neutral-900 dark:hover:decoration-white hover:text-neutral-600 dark:hover:text-neutral-300 active:opacity-60 transition-all duration-150 px-1";
 const POPOVER =
-  "absolute top-full right-0 mt-2 z-50 w-72 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-xl shadow-xl overflow-hidden";
+  "absolute top-full right-0 mt-2 z-50 w-72 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-hidden";
 const PRIMARY_BTN =
   "w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-md bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-100 transition disabled:opacity-50 cursor-pointer";
 const INPUT =

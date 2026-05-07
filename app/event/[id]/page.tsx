@@ -246,7 +246,7 @@ export default async function EventPage({
       </div>
 
       {cancelled && (
-        <div className="mb-6 rounded-xl border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 px-4 py-3 anim-fade-in">
+        <div className="mb-6 rounded-md border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 px-4 py-3 anim-fade-in">
           <p className="text-sm font-medium text-red-800 dark:text-red-200">
             This event was cancelled by the host
             {ev.cancelled_at ? ` on ${ev.cancelled_at.slice(0, 10)}` : ""}.
@@ -259,7 +259,7 @@ export default async function EventPage({
       )}
 
       {ev.visibility !== "public" && !cancelled && (
-        <div className="mb-6 rounded-xl border border-neutral-200 dark:border-white/15 bg-neutral-50 dark:bg-white/5 px-4 py-2 text-xs text-neutral-600 dark:text-neutral-400 anim-fade-in">
+        <div className="mb-6 rounded-md border border-neutral-200 dark:border-white/15 bg-neutral-50 dark:bg-white/5 px-4 py-2 text-xs text-neutral-600 dark:text-neutral-400 anim-fade-in">
           {ev.visibility === "unlisted"
             ? "Unlisted event — anyone with this link can view, but it won't appear in the public calendar."
             : "Private event — only invited guests can view."}
@@ -274,7 +274,7 @@ export default async function EventPage({
         />
       )}
 
-      <div className="bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/8 rounded-xl anim-fade-in-up" style={{ "--delay": "60ms" } as React.CSSProperties}>
+      <div className="bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/8 rounded-md anim-fade-in-up" style={{ "--delay": "60ms" } as React.CSSProperties}>
         {/* Hero image — uploaded photo, scraped cover, venue default, or placeholder. */}
         {/* When the hero is a real photo or map (`object-cover`), no padding
             and no visible bg — the image fills edge-to-edge. When it's a
@@ -282,7 +282,7 @@ export default async function EventPage({
             both themes so logos with baked-in white backgrounds blend in;
             keeping a dark bg here in dark mode would frame them with a stark
             white-on-near-black halo. */}
-        <div className={`relative aspect-video overflow-hidden rounded-t-xl ${heroIsPhoto ? "" : "bg-neutral-50"}`}>
+        <div className={`relative aspect-video overflow-hidden rounded-t-md ${heroIsPhoto ? "" : "bg-neutral-50"}`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={hero.url}
@@ -386,7 +386,7 @@ export default async function EventPage({
 
         {/* Meta footer */}
         <Reveal>
-          <div className="bg-neutral-50 dark:bg-neutral-950 rounded-b-xl px-6 py-3 text-xs text-neutral-400 dark:text-neutral-600 flex justify-between">
+          <div className="bg-neutral-50 dark:bg-neutral-950 rounded-b-md px-6 py-3 text-xs text-neutral-400 dark:text-neutral-600 flex justify-between">
             <span>ID: {ev.id}</span>
             <span>Added {ev.added_date} · Updated {ev.updated_date}</span>
           </div>

@@ -35,7 +35,7 @@ export default async function DiscordAccountPage() {
 
 function EmptyState({ inviteUrl }: { inviteUrl: string | null }) {
   return (
-    <div className="bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-xl p-6 space-y-3">
+    <div className="bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-md p-6 space-y-3">
       <p className="text-base font-semibold text-neutral-900 dark:text-white">No subscriptions yet</p>
       <p className="text-sm text-neutral-600 dark:text-neutral-300">
         Click <strong>+ New subscription</strong> above to set one up. We&apos;ll show you which of your servers already have the bot, then you pick a channel and a schedule.

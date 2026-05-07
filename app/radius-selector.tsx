@@ -39,7 +39,7 @@ const TIME_OPTIONS = getTimeOptions();
 const CHIP_TRIGGER = "inline-block underline decoration-dotted underline-offset-4 decoration-neutral-400 dark:decoration-neutral-500 text-neutral-900 dark:text-white font-[family-name:var(--font-ultra)] focus:outline-none cursor-pointer bg-transparent hover:decoration-solid hover:decoration-neutral-900 dark:hover:decoration-white hover:text-neutral-600 dark:hover:text-neutral-300 active:opacity-60 transition-all duration-150 px-1";
 // Connector words ("events within", "miles of", "in") — Inter, body-text size, neutral weight, normal tracking. Matches the tagline rather than the slab madlib elements.
 const CONNECTOR = "font-[family-name:var(--font-inter)] font-normal text-base tracking-normal";
-const DROPDOWN_BASE = "absolute top-full mt-2 z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-xl shadow-xl overflow-hidden min-w-max";
+const DROPDOWN_BASE = "absolute top-full mt-2 z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-hidden min-w-max";
 const DROPDOWN_ALIGN = { start: "left-0", center: "left-1/2 -translate-x-1/2", end: "right-0" };
 const OPTION = "w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-left hover:bg-neutral-50 dark:hover:bg-white/5 transition-colors";
 

@@ -121,7 +121,7 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
   if (!sub.enabled) tagPills.push({ label: "disabled", tone: "warn" });
 
   return (
-    <div className={`bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-xl p-5 ${!sub.enabled ? "opacity-60" : ""}`}>
+    <div className={`bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-md p-5 ${!sub.enabled ? "opacity-60" : ""}`}>
       <div className="flex items-start justify-between gap-3">
         <div className="space-y-2 flex-1 min-w-0">
           <div className="flex flex-wrap gap-1.5">

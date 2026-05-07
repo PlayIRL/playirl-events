@@ -36,7 +36,7 @@ export default function ViewToggle({ currentView }: { currentView: string }) {
   }
 
   return (
-    <div className="flex flex-col gap-0.5 bg-neutral-100 dark:bg-white/5 rounded-xl p-0.5 border border-neutral-100 dark:border-white/8 shadow-sm">
+    <div className="flex flex-col gap-0.5 bg-neutral-100 dark:bg-white/5 rounded-md p-0.5 border border-neutral-100 dark:border-white/8 shadow-sm">
       <button onClick={() => setView("list")} title="List view" className={`${SEG_BTN} ${currentView === "list" ? SEG_ACTIVE : SEG_INACTIVE}`}>
         <ListIcon />
       </button>
