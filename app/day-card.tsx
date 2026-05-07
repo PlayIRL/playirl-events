@@ -94,7 +94,7 @@ export default function DayCard({
   // thick high-contrast frame so the day visibly pops out of the stack.
   const borderColor = isToday
     ? "border-2 border-neutral-900 dark:border-white"
-    : "border-2 border-neutral-300 dark:border-white/15";
+    : "border border-neutral-300 dark:border-white/15";
 
   const headingBg = isToday
     ? "bg-white dark:bg-white/[0.18]"
@@ -125,7 +125,7 @@ export default function DayCard({
 
       {/* Events body */}
       {events.length > 0 && (
-        <div className={`overflow-hidden rounded-b-xl divide-y divide-neutral-200 dark:divide-white/10 ${isToday ? "border-x-2 border-b-2 border-neutral-900 dark:border-white" : "border-x-2 border-b-2 border-neutral-300 dark:border-white/15"} ${bodyBg}`}>
+        <div className={`overflow-hidden rounded-b-xl divide-y divide-neutral-200 dark:divide-white/10 ${isToday ? "border-x-2 border-b-2 border-neutral-900 dark:border-white" : "border-x border-b border-neutral-300 dark:border-white/15"} ${bodyBg}`}>
           {events.map((ev, i) => {
             // Per-row "already started" check — an event whose start
             // moment is in the past gets rendered as inactive (greyed
