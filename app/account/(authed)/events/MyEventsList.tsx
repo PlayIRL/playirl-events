@@ -49,7 +49,7 @@ export default function MyEventsList() {
 
   if (events.length === 0) {
     return (
-      <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-8 text-center">
+      <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-8 text-center">
         <p className="text-4xl mb-3">📝</p>
         <p className="text-neutral-500 dark:text-neutral-400 text-sm">You haven't created any events yet.</p>
         <Link
@@ -108,7 +108,7 @@ function Section({
         {hint && <p className="text-xs text-amber-700 dark:text-amber-400 mt-0.5">{hint}</p>}
       </div>
       <ul
-        className={`bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg divide-y divide-neutral-100 dark:divide-neutral-800 ${
+        className={`bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md divide-y divide-neutral-100 dark:divide-neutral-800 ${
           dim ? "opacity-70" : ""
         }`}
       >
@@ -124,7 +124,7 @@ function Section({
                   {e.title || <em className="text-neutral-400">(untitled)</em>}
                 </span>
                 {e.format && (
-                  <span className="text-[10px] bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-1.5 rounded">
+                  <span className="text-[10px] bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-1.5 rounded-md">
                     {e.format}
                   </span>
                 )}
@@ -184,5 +184,5 @@ function StatusPill({ status }: { status: string }) {
     },
   };
   const style = map[status] ?? map.active;
-  return <span className={`text-[10px] px-1.5 py-0.5 rounded border ${style.cls}`}>{style.label}</span>;
+  return <span className={`text-[10px] px-1.5 py-0.5 rounded-md border ${style.cls}`}>{style.label}</span>;
 }

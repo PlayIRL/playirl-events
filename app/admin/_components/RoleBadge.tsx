@@ -7,7 +7,7 @@ const STYLES: Record<string, string> = {
 export default function RoleBadge({ role }: { role: string }) {
   const cls = STYLES[role] ?? STYLES.user;
   return (
-    <span className={`inline-flex items-center text-xs px-2 py-0.5 rounded border font-medium ${cls}`}>
+    <span className={`inline-flex items-center text-xs px-2 py-0.5 rounded-md border font-medium ${cls}`}>
       {role}
     </span>
   );

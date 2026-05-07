@@ -59,7 +59,7 @@ export default function FormatFilter({ formats, activeFormat }: { formats: strin
       <div className="hidden md:flex flex-wrap gap-2">
         <a
           href="/"
-          className={`px-3 py-1.5 rounded-lg text-sm font-medium transition border ${
+          className={`px-3 py-1.5 rounded-md text-sm font-medium transition border ${
             !activeFormat
               ? "bg-white/15 text-white border-white/30"
               : "border-white/10 text-neutral-400 hover:bg-white/5"
@@ -71,7 +71,7 @@ export default function FormatFilter({ formats, activeFormat }: { formats: strin
           <a
             key={f}
             href={`/?format=${encodeURIComponent(f)}`}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition border ${
+            className={`px-3 py-1.5 rounded-md text-sm font-medium transition border ${
               activeFormat === f
                 ? FORMAT_ACTIVE[f] || "bg-white/15 text-white border-white/30"
                 : FORMAT_INACTIVE[f] || "border-white/10 text-neutral-400 hover:bg-white/5"

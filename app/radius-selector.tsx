@@ -195,7 +195,7 @@ function SubscribeDropdown({
         ref={triggerRef}
         onClick={() => status === "open" ? close() : open()}
         title="Subscribe to calendar"
-        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-neutral-600 dark:text-neutral-400 text-xs hover:border-neutral-300 dark:hover:border-white/20 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800 active:opacity-70 transition-all duration-150 cursor-pointer focus:outline-none"
+        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-neutral-600 dark:text-neutral-400 text-xs hover:border-neutral-300 dark:hover:border-white/20 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800 active:opacity-70 transition-all duration-150 cursor-pointer focus:outline-none"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M8 3v3m8-3v3M4 9h16M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" />
@@ -281,7 +281,7 @@ function DiscordIcon() {
 
 function SoonPill() {
   return (
-    <span className="text-[9px] px-1.5 py-0.5 rounded bg-neutral-100 dark:bg-white/8 text-neutral-500 dark:text-neutral-400 font-semibold">
+    <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-neutral-100 dark:bg-white/8 text-neutral-500 dark:text-neutral-400 font-semibold">
       Soon
     </span>
   );
@@ -343,7 +343,7 @@ export default function RadiusSelector({
     <>
       {toast && (
         <div
-          className="fixed z-50 px-3 py-2 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/8 rounded-lg text-sm text-neutral-900 dark:text-white font-medium shadow-lg whitespace-nowrap pointer-events-none"
+          className="fixed z-50 px-3 py-2 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/8 rounded-md text-sm text-neutral-900 dark:text-white font-medium shadow-lg whitespace-nowrap pointer-events-none"
           style={{ top: `${toast.top}px`, left: `${toast.left}px`, transform: "translateX(-50%)" }}
         >
           {toast.text}

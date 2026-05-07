@@ -38,13 +38,13 @@ export default function SourcesList({ sources }: { sources: UserSource[] }) {
         {sources.map((s) => (
           <li
             key={s.id}
-            className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-4 flex flex-col md:flex-row gap-4 md:items-center"
+            className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-4 flex flex-col md:flex-row gap-4 md:items-center"
           >
             <div className="flex-1 min-w-0">
               <div className="flex items-baseline gap-2 flex-wrap">
                 <span className="font-medium text-neutral-900 dark:text-neutral-100">{s.label}</span>
                 {!s.enabled && (
-                  <span className="text-[10px] bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 px-1.5 rounded">
+                  <span className="text-[10px] bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 px-1.5 rounded-md">
                     paused
                   </span>
                 )}

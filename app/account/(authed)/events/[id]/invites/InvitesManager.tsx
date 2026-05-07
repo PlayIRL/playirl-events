@@ -58,7 +58,7 @@ export default function InvitesManager({
   return (
     <div className="space-y-6">
       {/* Generator */}
-      <section className="rounded-lg border border-neutral-200 dark:border-white/10 bg-white dark:bg-neutral-900 p-4 space-y-3">
+      <section className="rounded-md border border-neutral-200 dark:border-white/10 bg-white dark:bg-neutral-900 p-4 space-y-3">
         <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">Generate invite link</h2>
         <p className="text-xs text-neutral-500 dark:text-neutral-400">
           Each link grants read access to this event without needing to be on the
@@ -90,7 +90,7 @@ export default function InvitesManager({
             No invites yet. Generate one above to share a link with someone.
           </p>
         ) : (
-          <ul className="divide-y divide-neutral-100 dark:divide-white/8 border border-neutral-100 dark:border-white/8 rounded-lg overflow-hidden">
+          <ul className="divide-y divide-neutral-100 dark:divide-white/8 border border-neutral-100 dark:border-white/8 rounded-md overflow-hidden">
             {invites.map((inv) => (
               <li key={inv.id} className="px-4 py-3 bg-white dark:bg-neutral-900 flex items-start gap-3">
                 <div className="flex-1 min-w-0">

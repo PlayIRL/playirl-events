@@ -126,7 +126,7 @@ export default function EventTable({
   }
 
   return (
-    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden">
+    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md overflow-hidden">
       {/* Filter bar */}
       <div className="flex flex-wrap gap-2 items-center p-3 border-b border-neutral-200 dark:border-neutral-700">
         <input
@@ -184,9 +184,9 @@ export default function EventTable({
                 <td className="px-3 py-2 align-top">
                   <div className="font-medium text-neutral-900 dark:text-neutral-100">{ev.title || <em className="text-neutral-400">(untitled)</em>}</div>
                   <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5 flex gap-2 flex-wrap">
-                    {ev.format && <span className="bg-neutral-100 dark:bg-neutral-800 px-1.5 rounded">{ev.format}</span>}
+                    {ev.format && <span className="bg-neutral-100 dark:bg-neutral-800 px-1.5 rounded-md">{ev.format}</span>}
                     {ev.source_type && ev.source_type !== "scraper" && (
-                      <span className="bg-neutral-100 dark:bg-white/[0.06] text-neutral-700 dark:text-neutral-300 px-1.5 rounded">{ev.source_type}</span>
+                      <span className="bg-neutral-100 dark:bg-white/[0.06] text-neutral-700 dark:text-neutral-300 px-1.5 rounded-md">{ev.source_type}</span>
                     )}
                   </div>
                 </td>
@@ -203,7 +203,7 @@ export default function EventTable({
                       value={ev.status}
                       onChange={(e) => changeStatus(ev.id, e.target.value)}
                       disabled={busy}
-                      className="text-xs px-2 py-1 rounded border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
+                      className="text-xs px-2 py-1 rounded-md border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
                     >
                       <option value="active">active</option>
                       <option value="skip">skip</option>

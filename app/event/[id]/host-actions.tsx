@@ -49,20 +49,20 @@ export default function HostActions({
       </span>
       <Link
         href={`/account/events/${encodeURIComponent(eventId)}/edit`}
-        className="inline-flex items-center justify-center gap-1 h-7 px-2 rounded-lg bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 text-neutral-700 dark:text-neutral-300 text-xs font-medium hover:bg-neutral-50 dark:hover:bg-white/10 transition"
+        className="inline-flex items-center justify-center gap-1 h-7 px-2 rounded-md bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 text-neutral-700 dark:text-neutral-300 text-xs font-medium hover:bg-neutral-50 dark:hover:bg-white/10 transition"
       >
         Edit
       </Link>
       <Link
         href={`/account/events/${encodeURIComponent(eventId)}/attendees`}
-        className="inline-flex items-center justify-center gap-1 h-7 px-2 rounded-lg bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 text-neutral-700 dark:text-neutral-300 text-xs font-medium hover:bg-neutral-50 dark:hover:bg-white/10 transition"
+        className="inline-flex items-center justify-center gap-1 h-7 px-2 rounded-md bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 text-neutral-700 dark:text-neutral-300 text-xs font-medium hover:bg-neutral-50 dark:hover:bg-white/10 transition"
       >
         Attendees
       </Link>
       {visibility === "private" && (
         <Link
           href={`/account/events/${encodeURIComponent(eventId)}/invites`}
-          className="inline-flex items-center justify-center gap-1 h-7 px-2 rounded-lg bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 text-neutral-700 dark:text-neutral-300 text-xs font-medium hover:bg-neutral-50 dark:hover:bg-white/10 transition"
+          className="inline-flex items-center justify-center gap-1 h-7 px-2 rounded-md bg-white dark:bg-white/5 border border-neutral-200 dark:border-white/10 text-neutral-700 dark:text-neutral-300 text-xs font-medium hover:bg-neutral-50 dark:hover:bg-white/10 transition"
         >
           Invites
         </Link>
@@ -72,7 +72,7 @@ export default function HostActions({
           type="button"
           onClick={cancelEvent}
           disabled={busy}
-          className="ml-auto inline-flex items-center justify-center gap-1 h-7 px-2 rounded-lg bg-white dark:bg-white/5 border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 text-xs font-medium hover:bg-red-50 dark:hover:bg-red-500/10 disabled:opacity-50 transition cursor-pointer"
+          className="ml-auto inline-flex items-center justify-center gap-1 h-7 px-2 rounded-md bg-white dark:bg-white/5 border border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300 text-xs font-medium hover:bg-red-50 dark:hover:bg-red-500/10 disabled:opacity-50 transition cursor-pointer"
         >
           {busy ? "Cancelling…" : "Cancel event"}
         </button>

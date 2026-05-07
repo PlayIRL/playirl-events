@@ -80,7 +80,7 @@ export default function RsvpButton({
         <CountPill counts={counts} capacity={capacity} />
         <Link
           href={`/account/login?from=${encodeURIComponent(`/event/${eventId}`)}`}
-          className="inline-flex items-center justify-center gap-1 h-7 px-2 rounded-lg bg-neutral-100 dark:bg-white/5 border border-neutral-100 dark:border-white/8 shadow-sm text-neutral-700 dark:text-neutral-300 text-xs font-medium hover:bg-neutral-200 dark:hover:bg-white/10 hover:text-neutral-900 dark:hover:text-white transition cursor-pointer"
+          className="inline-flex items-center justify-center gap-1 h-7 px-2 rounded-md bg-neutral-100 dark:bg-white/5 border border-neutral-100 dark:border-white/8 shadow-sm text-neutral-700 dark:text-neutral-300 text-xs font-medium hover:bg-neutral-200 dark:hover:bg-white/10 hover:text-neutral-900 dark:hover:text-white transition cursor-pointer"
         >
           Sign in to RSVP
         </Link>
@@ -92,7 +92,7 @@ export default function RsvpButton({
     <div className="flex flex-col items-end gap-1">
       <div className="flex items-center gap-2">
         <CountPill counts={counts} capacity={capacity} />
-        <div className="inline-flex items-center rounded-lg overflow-hidden border border-neutral-200 dark:border-white/10 bg-white dark:bg-neutral-900">
+        <div className="inline-flex items-center rounded-md overflow-hidden border border-neutral-200 dark:border-white/10 bg-white dark:bg-neutral-900">
           {status === "waitlist" ? (
             // While on the waitlist, the primary CTA is "Going" but it's
             // disabled until a spot opens. We keep "Maybe" available so the

@@ -26,17 +26,17 @@ export default function PendingQueue({ events }: { events: PendingEventRow[] }) 
       {events.map((e) => (
         <li
           key={e.id}
-          className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-4 flex flex-col md:flex-row gap-4 md:items-center"
+          className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-4 flex flex-col md:flex-row gap-4 md:items-center"
         >
           <div className="flex-1 min-w-0">
             <div className="flex items-baseline gap-2 flex-wrap">
               <span className="font-mono text-xs text-neutral-500 dark:text-neutral-400">{e.date} {e.time}</span>
               <span className="font-medium text-neutral-900 dark:text-neutral-100 truncate">{e.title || <em className="text-neutral-400">(untitled)</em>}</span>
               {e.format && (
-                <span className="text-xs bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-1.5 rounded">{e.format}</span>
+                <span className="text-xs bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-1.5 rounded-md">{e.format}</span>
               )}
               {e.source_type && (
-                <span className="text-xs bg-neutral-100 dark:bg-white/[0.06] text-neutral-700 dark:text-neutral-300 px-1.5 rounded">{e.source_type}</span>
+                <span className="text-xs bg-neutral-100 dark:bg-white/[0.06] text-neutral-700 dark:text-neutral-300 px-1.5 rounded-md">{e.source_type}</span>
               )}
             </div>
             <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 flex gap-3 flex-wrap">

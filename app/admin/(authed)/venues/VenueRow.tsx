@@ -106,7 +106,7 @@ export default function VenueRow({
   }
 
   return (
-    <li className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-3 flex items-center gap-4">
+    <li className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-3 flex items-center gap-4">
       <input
         ref={inputRef}
         type="file"
@@ -133,7 +133,7 @@ export default function VenueRow({
           <span className="text-[11px] text-neutral-500 dark:text-neutral-400">{usageCount} events</span>
           {imageUrl && imageSource && (
             <span
-              className={`text-[10px] px-1.5 py-0.5 rounded ${SOURCE_LABELS[imageSource].className}`}
+              className={`text-[10px] px-1.5 py-0.5 rounded-md ${SOURCE_LABELS[imageSource].className}`}
               title={
                 imageSource === "manual"
                   ? "Uploaded by an admin — auto-fetcher won't overwrite this."

@@ -37,7 +37,7 @@ export default async function AccountSourcesPage() {
 
 function NotAvailableYet() {
   return (
-    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-6 text-center space-y-2">
+    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-6 text-center space-y-2">
       <p className="text-4xl">🔌</p>
       <p className="text-sm text-neutral-700 dark:text-neutral-200 font-medium">
         Community connections aren't open yet
@@ -58,7 +58,7 @@ function NotAvailableYet() {
 
 function GetStartedCard({ inviteUrl, compact = false }: { inviteUrl: string; compact?: boolean }) {
   return (
-    <div className={`bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg ${compact ? "p-4" : "p-6"} space-y-5`}>
+    <div className={`bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md ${compact ? "p-4" : "p-6"} space-y-5`}>
       {!compact && (
         <div>
           <h2 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">Connect in two steps</h2>

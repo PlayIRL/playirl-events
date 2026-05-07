@@ -117,7 +117,7 @@ export default function ScrapersPage() {
         Scrapers
       </h1>
 
-      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-5 mb-4">
+      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5 mb-4">
         <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Manual refresh</h2>
         <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
           Last run: <span className="font-mono">{last}</span>
@@ -139,7 +139,7 @@ export default function ScrapersPage() {
         )}
       </section>
 
-      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-5 mb-4">
+      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5 mb-4">
         <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Recent runs</h2>
         {history.length === 0 ? (
           <p className="text-xs text-neutral-500 dark:text-neutral-400">No scrape history yet — runScraper writes a row to scrape_history on each run.</p>
@@ -189,7 +189,7 @@ export default function ScrapersPage() {
         )}
       </section>
 
-      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-5">
+      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
         <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-1">Auto-refresh interval</h2>
         <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">How often the scheduled task runs (the CI cron also runs independently).</p>
         <div className="flex items-center gap-2">

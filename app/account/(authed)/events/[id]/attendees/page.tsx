@@ -71,7 +71,7 @@ function Section({
       {rows.length === 0 ? (
         <p className="text-sm text-neutral-500 dark:text-neutral-400 italic">{emptyText ?? "—"}</p>
       ) : (
-        <ul className="divide-y divide-neutral-100 dark:divide-white/8 border border-neutral-100 dark:border-white/8 rounded-lg overflow-hidden">
+        <ul className="divide-y divide-neutral-100 dark:divide-white/8 border border-neutral-100 dark:border-white/8 rounded-md overflow-hidden">
           {rows.map((r) => (
             <li key={r.user_id} className="px-4 py-2.5 flex items-baseline justify-between gap-3 bg-white dark:bg-neutral-900">
               <div className="min-w-0">

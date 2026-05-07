@@ -88,7 +88,7 @@ export default async function AdminDashboard() {
         />
       </section>
 
-      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-5">
+      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
         <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Active events by source</h2>
         {bySource.length === 0 ? (
           <p className="text-sm text-neutral-500 dark:text-neutral-400">No active events.</p>
@@ -97,7 +97,7 @@ export default async function AdminDashboard() {
             {bySource.map((r) => (
               <li key={r.source} className="flex items-center gap-3 text-sm">
                 <span className="font-mono text-xs text-neutral-500 dark:text-neutral-400 w-32 truncate">{r.source}</span>
-                <div className="flex-1 h-2 bg-neutral-100 dark:bg-neutral-800 rounded overflow-hidden">
+                <div className="flex-1 h-2 bg-neutral-100 dark:bg-neutral-800 rounded-md overflow-hidden">
                   <div
                     className="h-full bg-amber-500 dark:bg-amber-500"
                     style={{ width: `${Math.max(2, Math.round((r.count / Math.max(1, eventActive)) * 100))}%` }}

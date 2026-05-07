@@ -98,7 +98,7 @@ export async function geocodeAddress(query: string, signal?: AbortSignal): Promi
  *
  * Nominatim only — Google's reverse-geocoding is paid and we don't need
  * its precision for city/zip-level labels. Returns null on any failure;
- * the caller is expected to fall back to displaying the rounded coords.
+ * the caller is expected to fall back to displaying the rounded-md coords.
  */
 export async function reverseGeocode(
   lat: number,
@@ -145,7 +145,7 @@ export async function reverseGeocode(
 
 /**
  * Cached wrapper around `reverseGeocode` for hot-path callers like the
- * homepage SSR. Lat/lng pairs are rounded to ~1km precision (2 decimals,
+ * homepage SSR. Lat/lng pairs are rounded-md to ~1km precision (2 decimals,
  * roughly 1.1km in CONUS) before keying the cache, so adjacent URLs share
  * a single Nominatim hit. In-memory only — restarts cold-cache, but the
  * cache fills back up within seconds in production.

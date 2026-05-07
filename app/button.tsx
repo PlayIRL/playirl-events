@@ -4,9 +4,9 @@ import { forwardRef, type ButtonHTMLAttributes, type ComponentProps } from "reac
 const VARIANTS = {
   // Default — small light-gray chip. The canonical secondary-action style
   // used across public pages (Sign in, Subscribe, Share trigger, etc.).
-  chip: "inline-flex items-center justify-center gap-1 h-7 px-2 rounded-lg bg-neutral-100 dark:bg-white/5 border border-neutral-100 dark:border-white/8 text-neutral-700 dark:text-neutral-300 text-xs font-medium hover:bg-neutral-200 dark:hover:bg-white/10 hover:text-neutral-900 dark:hover:text-white transition cursor-pointer",
+  chip: "inline-flex items-center justify-center gap-1 h-7 px-2 rounded-md bg-neutral-100 dark:bg-white/5 border border-neutral-100 dark:border-white/8 text-neutral-700 dark:text-neutral-300 text-xs font-medium hover:bg-neutral-200 dark:hover:bg-white/10 hover:text-neutral-900 dark:hover:text-white transition cursor-pointer",
   // Solid filled CTA — form submits and main confirm actions.
-  primary: "inline-flex items-center justify-center gap-2 h-9 px-4 rounded-lg bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50 transition cursor-pointer",
+  primary: "inline-flex items-center justify-center gap-2 h-9 px-4 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50 transition cursor-pointer",
   // Borderless — cancel / dismiss / tertiary actions in forms.
   ghost: "inline-flex items-center justify-center gap-1.5 h-9 px-3 rounded-md text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-white/5 transition cursor-pointer",
   // Square icon-only — admin row actions, modal close, info hints.

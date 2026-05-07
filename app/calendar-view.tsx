@@ -84,14 +84,14 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
 
       {/* Sticky: week nav + day headers together */}
       <div className="sticky top-[var(--sticky-bar-h,0px)] z-[5] -mx-4 px-4 bg-white dark:bg-neutral-900">
-        {/* Unified frame: rounded top corners only when not pinned */}
+        {/* Unified frame: rounded-md top corners only when not pinned */}
         <div className={`border border-b-0 border-neutral-200 dark:border-neutral-700 overflow-hidden transition-all duration-150 ${isStuck ? "" : "rounded-t-md"}`}>
 
           {/* Week navigation — compact, bottom border acts as divider */}
           <div className="flex items-center justify-between py-1.5 px-2 border-b border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
             <button
               onClick={() => setWeekStart(addDays(weekStart, -7))}
-              className="p-1.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-white/5 text-neutral-500 dark:text-neutral-400 transition cursor-pointer"
+              className="p-1.5 rounded-md hover:bg-neutral-100 dark:hover:bg-white/5 text-neutral-500 dark:text-neutral-400 transition cursor-pointer"
               aria-label="Previous week"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -102,14 +102,14 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
               <span className="text-sm font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white tracking-wider">{weekLabel}</span>
               <button
                 onClick={() => setWeekStart(startOfWeek(today))}
-                className="text-[10px] px-1.5 py-0.5 rounded bg-neutral-100 dark:bg-white/5 text-neutral-500 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-white/10 transition cursor-pointer"
+                className="text-[10px] px-1.5 py-0.5 rounded-md bg-neutral-100 dark:bg-white/5 text-neutral-500 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-white/10 transition cursor-pointer"
               >
                 Today
               </button>
             </div>
             <button
               onClick={() => setWeekStart(addDays(weekStart, 7))}
-              className="p-1.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-white/5 text-neutral-500 dark:text-neutral-400 transition cursor-pointer"
+              className="p-1.5 rounded-md hover:bg-neutral-100 dark:hover:bg-white/5 text-neutral-500 dark:text-neutral-400 transition cursor-pointer"
               aria-label="Next week"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -181,7 +181,7 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                         key={ev.id}
                         href={`/event/${encodeURIComponent(ev.id)}`}
                         title={`${ev.title}${ev.location ? ` · ${ev.location}` : ""}${ev.cost ? ` · ${ev.cost}` : ""} · ${formatEventTime(ev.date, ev.time, ev.timezone)}`}
-                        className={`group block rounded p-2 transition-all duration-150 hover:-translate-y-px hover:shadow-sm ${past ? "opacity-50 saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.06]" : "hover:bg-black/[0.04] dark:hover:bg-white/10"}`}
+                        className={`group block rounded-md p-2 transition-all duration-150 hover:-translate-y-px hover:shadow-sm ${past ? "opacity-50 saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.06]" : "hover:bg-black/[0.04] dark:hover:bg-white/10"}`}
                       >
                         <div className="flex flex-col gap-px">
                           <div className="text-[10px] text-neutral-500 dark:text-neutral-400 leading-none">{formatEventTime(ev.date, ev.time, ev.timezone)}</div>

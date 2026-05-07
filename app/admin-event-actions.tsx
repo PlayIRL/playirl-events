@@ -38,7 +38,7 @@ export default function AdminEventActions({ eventId }: { eventId: string }) {
         disabled={busy !== null}
         title="Pin event (admin)"
         aria-label="Pin event"
-        className="w-6 h-6 rounded flex items-center justify-center text-neutral-400 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-500/10 disabled:opacity-50"
+        className="w-6 h-6 rounded-md flex items-center justify-center text-neutral-400 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-500/10 disabled:opacity-50"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 2v7" />
@@ -52,7 +52,7 @@ export default function AdminEventActions({ eventId }: { eventId: string }) {
         disabled={busy !== null}
         title="Hide event (skip, admin)"
         aria-label="Hide event"
-        className="w-6 h-6 rounded flex items-center justify-center text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 disabled:opacity-50"
+        className="w-6 h-6 rounded-md flex items-center justify-center text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 disabled:opacity-50"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
           <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20C6 20 2 12 2 12a19.77 19.77 0 0 1 5.06-5.94" />
@@ -66,7 +66,7 @@ export default function AdminEventActions({ eventId }: { eventId: string }) {
         disabled={busy !== null}
         title="Delete event (admin)"
         aria-label="Delete event"
-        className="w-6 h-6 rounded flex items-center justify-center text-neutral-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950 disabled:opacity-50"
+        className="w-6 h-6 rounded-md flex items-center justify-center text-neutral-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950 disabled:opacity-50"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
           <polyline points="3 6 5 6 21 6" />

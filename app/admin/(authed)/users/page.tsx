@@ -77,7 +77,7 @@ export default function AdminUsersPage() {
         </label>
       </div>
 
-      <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden">
+      <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md overflow-hidden">
         {loading ? (
           <p className="text-sm text-neutral-500 dark:text-neutral-400 p-6">Loading…</p>
         ) : users.length === 0 ? (
@@ -109,7 +109,7 @@ export default function AdminUsersPage() {
                       <select
                         value={u.role}
                         onChange={(e) => changeRole(u.id, e.target.value)}
-                        className="text-xs px-2 py-1 rounded border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
+                        className="text-xs px-2 py-1 rounded-md border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
                       >
                         <option value="user">user</option>
                         <option value="organizer">organizer</option>

@@ -21,7 +21,7 @@ export default function AboutPage() {
       </Link>
 
       <Reveal delay={40}>
-        <div className="bg-amber-50 dark:bg-amber-500/10 border border-amber-300 dark:border-amber-500/40 rounded-lg p-5 space-y-2 mb-8">
+        <div className="bg-amber-50 dark:bg-amber-500/10 border border-amber-300 dark:border-amber-500/40 rounded-md p-5 space-y-2 mb-8">
           <p className="text-base font-[family-name:var(--font-ultra)] font-bold text-amber-900 dark:text-amber-200">{"\uD83D\uDEA7"} Early Development</p>
           <p className="text-sm text-amber-800 dark:text-amber-200/80">
             This project is in active development. We&apos;re working on adding more cities, user-submitted events, store profiles, and more game support beyond MTG.
@@ -74,7 +74,7 @@ export default function AboutPage() {
         </Reveal>
 
         <Reveal>
-          <div className="bg-neutral-50 dark:bg-white/[0.04] border border-neutral-200 dark:border-white/10 rounded-lg p-5 space-y-3">
+          <div className="bg-neutral-50 dark:bg-white/[0.04] border border-neutral-200 dark:border-white/10 rounded-md p-5 space-y-3">
             <p className="text-base font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white">{"\uD83D\uDCC5"} Add your events</p>
             <p className="text-sm text-neutral-700 dark:text-neutral-300">
               Run a store or host a pod? Get your events listed on PlayIRL.GG. Reach out on Discord or email and we&apos;ll get you set up.
@@ -107,7 +107,7 @@ export default function AboutPage() {
               href="https://github.com/i1986o/mtg-cal"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 text-sm font-medium rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-800 hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-black/20 active:translate-y-0 transition-all duration-200 border border-neutral-100 dark:border-white/8"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 text-sm font-medium rounded-md hover:bg-neutral-200 dark:hover:bg-neutral-800 hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-black/20 active:translate-y-0 transition-all duration-200 border border-neutral-100 dark:border-white/8"
             >
               {"\u2B50"} GitHub
             </a>

@@ -76,7 +76,7 @@ export default function PickGuildForm({ guilds }: { guilds: BotGuild[] }) {
             ? "This is the Discord we'll exchange events with."
             : "Pick the Discord you want to link up."}
         </p>
-        <div className="space-y-1.5 max-h-64 overflow-y-auto bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-2">
+        <div className="space-y-1.5 max-h-64 overflow-y-auto bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-2">
           {guilds.map((g) => (
             <label
               key={g.id}

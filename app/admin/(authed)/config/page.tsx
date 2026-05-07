@@ -177,7 +177,7 @@ export default function ConfigPage() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-5">
+    <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
       <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">{title}</h2>
       <div className="space-y-3">{children}</div>
     </section>

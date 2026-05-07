@@ -21,7 +21,7 @@ export default async function AccountChip() {
           href="/account/login"
           title="Sign in"
           aria-label="Sign in"
-          className="inline-flex items-center gap-2 h-8 pl-2 pr-3 rounded-lg transition-colors cursor-pointer text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20"
+          className="inline-flex items-center gap-2 h-8 pl-2 pr-3 rounded-md transition-colors cursor-pointer text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20"
         >
           <UserIcon />
           <span className="text-sm font-medium">Sign in</span>

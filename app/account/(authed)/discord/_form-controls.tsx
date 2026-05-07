@@ -151,7 +151,7 @@ export function ModeButton({
     <button
       type="button"
       onClick={() => onClick(value)}
-      className={`text-left px-3 py-2.5 rounded-lg border text-sm transition ${
+      className={`text-left px-3 py-2.5 rounded-md border text-sm transition ${
         active
           ? "border-neutral-900 dark:border-white ring-1 ring-neutral-900 dark:ring-white"
           : "border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800"

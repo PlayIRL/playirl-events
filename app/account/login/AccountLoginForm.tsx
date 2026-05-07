@@ -108,7 +108,7 @@ export default function AccountLoginForm({ providers }: { providers: Provider[] 
               placeholder="you@example.com"
               autoComplete="email"
               required
-              className="w-full px-4 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20"
+              className="w-full px-4 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20"
             />
             <input
               type="password"
@@ -118,7 +118,7 @@ export default function AccountLoginForm({ providers }: { providers: Provider[] 
               placeholder="Password"
               autoComplete="current-password"
               required
-              className="w-full px-4 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20"
+              className="w-full px-4 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20"
             />
             {pwError && <p className="text-xs text-red-600 dark:text-red-400">{pwError}</p>}
             <Button type="submit" variant="primary" disabled={pwSubmitting} className="w-full">
@@ -148,7 +148,7 @@ export default function AccountLoginForm({ providers }: { providers: Provider[] 
                 name="email"
                 placeholder="Email me a sign-in link"
                 required
-                className="w-full px-4 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20"
+                className="w-full px-4 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20"
               />
               <Button type="submit" variant="ghost" disabled={!csrfToken} className="w-full">
                 Email me a magic link instead

@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 
-const BTN = "flex items-center justify-center w-8 h-8 rounded-lg transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20";
+const BTN = "flex items-center justify-center w-8 h-8 rounded-md transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20";
 const BTN_ACTIVE = "bg-white dark:bg-white/15 shadow-sm text-neutral-900 dark:text-white";
 const BTN_INACTIVE = "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300";
 
@@ -79,7 +79,7 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
     <>
       {/* View toggle — desktop only, vertically centered, sliding indicator */}
       <div className="hidden sm:flex fixed right-4 top-1/2 -translate-y-1/2 z-40">
-        <div className="relative flex flex-col bg-neutral-100/80 dark:bg-neutral-900 rounded-lg p-1 border border-neutral-200/60 dark:border-white/10 shadow-lg shadow-black/10 dark:shadow-black/40 backdrop-blur-sm">
+        <div className="relative flex flex-col bg-neutral-100/80 dark:bg-neutral-900 rounded-md p-1 border border-neutral-200/60 dark:border-white/10 shadow-lg shadow-black/10 dark:shadow-black/40 backdrop-blur-sm">
           {/* sliding pill */}
           <div
             className="absolute left-1 right-1 h-8 rounded-md bg-white dark:bg-white/12 shadow-sm transition-transform duration-200 ease-out"

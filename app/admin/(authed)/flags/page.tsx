@@ -49,7 +49,7 @@ export default function FlagsPage() {
           {flags.map((f) => (
             <li
               key={f.key}
-              className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-4 flex items-start gap-4"
+              className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-4 flex items-start gap-4"
             >
               <button
                 onClick={() => toggle(f)}

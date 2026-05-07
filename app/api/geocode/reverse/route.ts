@@ -47,7 +47,7 @@ export async function POST(req: Request) {
 
   const hit = await reverseGeocode(lat, lng);
   if (!hit) {
-    // Caller falls back to displaying the rounded coords.
+    // Caller falls back to displaying the rounded-md coords.
     return NextResponse.json({ error: "Could not resolve location" }, { status: 404 });
   }
   return NextResponse.json({ label: hit.label });

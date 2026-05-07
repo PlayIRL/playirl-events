@@ -128,7 +128,7 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
             {tagPills.map((p, i) => (
               <span
                 key={i}
-                className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
                   p.tone === "warn"
                     ? "bg-neutral-100 text-neutral-500 dark:bg-white/[0.06] dark:text-neutral-500"
                     : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
@@ -162,21 +162,21 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
           <button
             onClick={() => setEditing(v => !v)}
             disabled={busy}
-            className="text-xs px-2.5 py-1 rounded border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition"
+            className="text-xs px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition"
           >
             {editing ? "Cancel" : "Edit"}
           </button>
           <button
             onClick={toggleEnabled}
             disabled={busy}
-            className="text-xs px-2.5 py-1 rounded border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition"
+            className="text-xs px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition"
           >
             {sub.enabled ? "Disable" : "Enable"}
           </button>
           <button
             onClick={remove}
             disabled={busy}
-            className="text-xs px-2.5 py-1 rounded border border-red-200 dark:border-red-500/30 text-red-600 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-500/10 transition"
+            className="text-xs px-2.5 py-1 rounded-md border border-red-200 dark:border-red-500/30 text-red-600 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-500/10 transition"
           >
             Delete
           </button>
@@ -209,14 +209,14 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
             <button
               onClick={() => setEditing(false)}
               disabled={busy}
-              className="px-3 py-1.5 rounded border border-neutral-200 dark:border-neutral-700 text-sm hover:bg-neutral-50 dark:hover:bg-neutral-800 transition"
+              className="px-3 py-1.5 rounded-md border border-neutral-200 dark:border-neutral-700 text-sm hover:bg-neutral-50 dark:hover:bg-neutral-800 transition"
             >
               Cancel
             </button>
             <button
               onClick={save}
               disabled={busy}
-              className="px-3 py-1.5 rounded bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-neutral-900 text-sm font-medium transition disabled:opacity-50"
+              className="px-3 py-1.5 rounded-md bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-neutral-900 text-sm font-medium transition disabled:opacity-50"
             >
               {busy ? "Saving…" : "Save"}
             </button>

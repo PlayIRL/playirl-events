@@ -319,7 +319,7 @@ function NoGuildsCard({ inviteUrl }: { inviteUrl: string | null }) {
 
 function ReauthCard() {
   return (
-    <div className="rounded-lg border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900 p-4 space-y-3">
+    <div className="rounded-md border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900 p-4 space-y-3">
       <p className="text-sm font-semibold text-neutral-900 dark:text-white">
         Re-authorize Discord to continue
       </p>

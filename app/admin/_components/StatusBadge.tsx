@@ -8,7 +8,7 @@ const STYLES: Record<string, string> = {
 export default function StatusBadge({ status }: { status: string }) {
   const cls = STYLES[status] ?? "bg-neutral-50 border-neutral-200 text-neutral-700 dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-300";
   return (
-    <span className={`inline-flex items-center text-xs px-2 py-0.5 rounded border font-medium ${cls}`}>
+    <span className={`inline-flex items-center text-xs px-2 py-0.5 rounded-md border font-medium ${cls}`}>
       {status}
     </span>
   );

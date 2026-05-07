@@ -316,7 +316,7 @@ export default function EventForm({
               type="checkbox"
               checked={values.rsvp_enabled}
               onChange={(e) => setValues((v) => ({ ...v, rsvp_enabled: e.target.checked }))}
-              className="rounded border-neutral-300 dark:border-neutral-600"
+              className="rounded-md border-neutral-300 dark:border-neutral-600"
             />
             Enabled
           </label>

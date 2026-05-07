@@ -38,7 +38,7 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
         </Link>
       </div>
 
-      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-5">
+      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <Field label="Email" value={user.email} />
           <Field label="User ID" value={<span className="font-mono text-xs">{user.id}</span>} />
@@ -70,7 +70,7 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
       </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-5">
+        <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
           <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
             Submitted events ({submitted.length})
           </h2>
@@ -94,7 +94,7 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
           )}
         </section>
 
-        <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-5">
+        <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
           <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
             Discord-synced events ({synced.length})
           </h2>
@@ -118,7 +118,7 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
           )}
         </section>
 
-        <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-5">
+        <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
           <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
             Connected sources ({sources.length})
           </h2>
@@ -128,7 +128,7 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
             <ul className="space-y-2 text-sm">
               {sources.map((s) => (
                 <li key={s.id} className="flex items-center gap-2">
-                  <span className="text-[10px] bg-neutral-100 dark:bg-white/[0.06] text-neutral-700 dark:text-neutral-300 px-1.5 rounded">
+                  <span className="text-[10px] bg-neutral-100 dark:bg-white/[0.06] text-neutral-700 dark:text-neutral-300 px-1.5 rounded-md">
                     {s.kind}
                   </span>
                   <span className="text-neutral-900 dark:text-neutral-100 truncate flex-1">{s.label}</span>
@@ -141,7 +141,7 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
           )}
         </section>
 
-        <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-5">
+        <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
           <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
             Saved events ({saved.length})
           </h2>
@@ -168,7 +168,7 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
         </section>
       </div>
 
-      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-lg p-5">
+      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
         <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
           Admin audit log ({actions.length})
         </h2>
@@ -181,7 +181,7 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
                 <span className="font-mono text-[11px] text-neutral-400 shrink-0 w-32">
                   {new Date(a.created_at).toLocaleString()}
                 </span>
-                <span className="font-mono text-xs bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-1.5 rounded shrink-0">
+                <span className="font-mono text-xs bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-1.5 rounded-md shrink-0">
                   {a.action}
                 </span>
                 <span className="text-neutral-600 dark:text-neutral-400 flex-1">
