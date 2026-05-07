@@ -353,7 +353,7 @@ export default function RadiusSelector({
           ChipSelect dropdowns and SubscribeDropdown render `<div>`s), and
           a `<p>` containing `<div>` is invalid HTML, which surfaces as a
           React-19 hydration warning + DOM-nesting error in the console. */}
-      <div className="text-neutral-500 dark:text-neutral-400 flex items-center justify-center flex-wrap gap-x-1.5 gap-y-1 text-base sm:text-lg leading-relaxed font-[family-name:var(--font-ultra)] font-bold">
+      <div className="text-neutral-500 dark:text-neutral-400 flex items-center justify-center flex-wrap gap-x-1.5 gap-y-1 text-lg sm:text-xl leading-relaxed font-[family-name:var(--font-ultra)] font-bold">
         <ChipSelect
           label={currentFormat || "All MTG"}
           heading="Format"
