@@ -160,21 +160,19 @@ export default function DayCard({
                 loading="lazy"
               />
               <div className="flex-1 min-w-0">
-                <span className="block sm:hidden text-xs text-neutral-500 dark:text-neutral-400">
+                <span className="block sm:hidden text-xs text-neutral-500 dark:text-neutral-400 mb-1">
                   {formatEventTime(ev.date, ev.time, ev.timezone)}
                 </span>
+                {/* Format badge sits above the title — it's the
+                    fastest way to scan "what kind of event is this".
+                    Title takes the strong-visual second slot. */}
+                <span className={`inline-block px-2 py-0.5 rounded-sm text-[10px] font-bold mb-1 ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                  {ev.format}
+                </span>
                 <p className="text-base sm:text-lg font-semibold tracking-tight text-neutral-900 dark:text-white line-clamp-2 sm:line-clamp-none sm:truncate">{ev.title}</p>
-                <div className="flex items-center gap-1.5 mt-0.5 min-w-0">
-                  <span className={`px-2 py-0.5 rounded-sm text-[10px] font-bold shrink-0 ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
-                    {ev.format}
-                  </span>
-                  {ev.location && (
-                    <>
-                      <span className="text-xs text-neutral-300 dark:text-neutral-600 shrink-0">·</span>
-                      <span className="text-xs text-neutral-500 dark:text-neutral-400 truncate">{ev.location}</span>
-                    </>
-                  )}
-                </div>
+                {ev.location && (
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate mt-0.5">{ev.location}</p>
+                )}
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 {isAdmin && <AdminEventActions eventId={ev.id} />}
