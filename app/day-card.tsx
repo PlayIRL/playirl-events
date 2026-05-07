@@ -138,12 +138,12 @@ export default function DayCard({
               href={`/event/${encodeURIComponent(ev.id)}`}
               data-row
               style={revealed ? { animationDelay: `${80 + i * 45}ms` } : { opacity: 0 }}
-              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-2.5 sm:gap-3 px-3 sm:px-4 py-3.5 sm:py-4 ${past ? "opacity-50 saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
+              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-4 sm:py-5 ${past ? "opacity-50 saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
             >
               {/* Desktop: time as a fixed left column. Mobile: hidden here
                   and rendered above the title (see middle div below) so the
                   full row width goes to the title. */}
-              <span className="hidden sm:block text-xs text-neutral-400 dark:text-neutral-500 shrink-0 w-14 transition-colors duration-200 group-hover:text-neutral-500 dark:group-hover:text-neutral-400">
+              <span className="hidden sm:block text-sm text-neutral-400 dark:text-neutral-500 shrink-0 w-16 transition-colors duration-200 group-hover:text-neutral-500 dark:group-hover:text-neutral-400">
                 {formatEventTime(ev.date, ev.time, ev.timezone)}
               </span>
               {/* Image is decorative on mobile (most events render the same
@@ -154,7 +154,7 @@ export default function DayCard({
               <img
                 src={ev.imageUrl}
                 alt=""
-                className={`hidden sm:block w-10 h-10 rounded-md shrink-0 bg-neutral-100 ${
+                className={`hidden sm:block w-12 h-12 rounded-md shrink-0 bg-neutral-100 ${
                   ev.imageFit === "cover" ? "object-cover" : "object-contain p-0.5"
                 }`}
                 loading="lazy"
