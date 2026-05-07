@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Stack_Sans_Notch } from "next/font/google";
+import { Inter, Figtree } from "next/font/google";
 import { cookies } from "next/headers";
 import { SITE_URL } from "@/lib/config";
 import "./globals.css";
@@ -10,10 +10,13 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const stackSansNotch = Stack_Sans_Notch({
+// Display font for chips, prices, headings, calendar dates. Figtree at
+// 900 (black) gives the site a sharper, more modern character than the
+// previous Stack Sans Notch. Tight tracking is applied in globals.css.
+const figtree = Figtree({
   variable: "--font-ultra",
   subsets: ["latin"],
-  weight: ["300", "400"],
+  weight: ["800", "900"],
 });
 
 const BUILD_SHA = process.env.RAILWAY_GIT_COMMIT_SHA ?? process.env.VERCEL_GIT_COMMIT_SHA ?? "local";
@@ -70,7 +73,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${stackSansNotch.variable} h-full antialiased${isDark ? " dark" : ""}`}
+      className={`${inter.variable} ${figtree.variable} h-full antialiased${isDark ? " dark" : ""}`}
       style={{ colorScheme: isDark ? "dark" : "light" }}
       suppressHydrationWarning
     >

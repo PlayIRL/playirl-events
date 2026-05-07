@@ -37,9 +37,12 @@ body {
   overflow-x: clip;
 }
 
-/* Apply consistent tracking to all Stack Sans Notch usage */
+/* Figtree (--font-ultra) display styling: heavy weight + tight tracking
+ * across every callsite. Keeps the chip/price/heading typography unified
+ * without touching individual class strings. */
 .font-\[family-name\:var\(--font-ultra\)\] {
-  letter-spacing: 0.1em;
+  font-weight: 900;
+  letter-spacing: -0.02em;
 }
 
 @keyframes fadeInUp {
