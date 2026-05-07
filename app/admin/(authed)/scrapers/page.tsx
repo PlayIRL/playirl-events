@@ -120,7 +120,7 @@ export default function ScrapersPage() {
       <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5 mb-4">
         <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Manual refresh</h2>
         <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
-          Last run: <span className="font-mono">{last}</span>
+          Last run: <span>{last}</span>
         </p>
         <button
           onClick={runScrape}
@@ -130,12 +130,12 @@ export default function ScrapersPage() {
           {running ? "Scraping…" : refreshing ? "Starting…" : "Refresh now"}
         </button>
         {running && (
-          <p className="text-xs text-amber-700 dark:text-amber-400 mt-3 font-mono">
+          <p className="text-xs text-amber-700 dark:text-amber-400 mt-3">
             ⏳ {running.runningSource} scrape running since {new Date(running.runningSince).toLocaleTimeString()} · cold runs take ~10–15 min
           </p>
         )}
         {result && (
-          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-3 font-mono">{result}</p>
+          <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-3">{result}</p>
         )}
       </section>
 
@@ -145,7 +145,7 @@ export default function ScrapersPage() {
           <p className="text-xs text-neutral-500 dark:text-neutral-400">No scrape history yet — runScraper writes a row to scrape_history on each run.</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-xs font-mono">
+            <table className="w-full text-xs">
               <thead>
                 <tr className="text-neutral-500 dark:text-neutral-400 text-left border-b border-neutral-200 dark:border-neutral-700">
                   <th className="py-1.5 pr-3 font-normal">When</th>

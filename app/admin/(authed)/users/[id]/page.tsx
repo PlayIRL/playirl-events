@@ -41,7 +41,7 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
       <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <Field label="Email" value={user.email} />
-          <Field label="User ID" value={<span className="font-mono text-xs">{user.id}</span>} />
+          <Field label="User ID" value={<span className="text-xs">{user.id}</span>} />
           <Field label="Role" value={<RoleBadge role={user.role} />} />
           <Field
             label="Status"
@@ -151,7 +151,7 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
             <ul className="space-y-2 text-sm">
               {saved.slice(0, 10).map((e) => (
                 <li key={e.id} className="flex items-center gap-2">
-                  <span className="font-mono text-xs text-neutral-400 shrink-0">{e.date}</span>
+                  <span className="text-xs text-neutral-400 shrink-0">{e.date}</span>
                   <Link
                     href={`/event/${encodeURIComponent(e.id)}`}
                     className="text-neutral-900 dark:text-neutral-100 hover:underline truncate"
@@ -178,10 +178,10 @@ export default async function UserDetailPage({ params }: { params: Promise<{ id:
           <ul className="divide-y divide-neutral-100 dark:divide-neutral-800">
             {actions.map((a) => (
               <li key={a.id} className="py-2 flex items-start gap-3 text-sm">
-                <span className="font-mono text-[11px] text-neutral-400 shrink-0 w-32">
+                <span className="text-[11px] text-neutral-400 shrink-0 w-32">
                   {new Date(a.created_at).toLocaleString()}
                 </span>
-                <span className="font-mono text-xs bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-1.5 rounded-md shrink-0">
+                <span className="text-xs bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-1.5 rounded-md shrink-0">
                   {a.action}
                 </span>
                 <span className="text-neutral-600 dark:text-neutral-400 flex-1">

@@ -96,7 +96,7 @@ export default async function AdminDashboard() {
           <ul className="space-y-1.5">
             {bySource.map((r) => (
               <li key={r.source} className="flex items-center gap-3 text-sm">
-                <span className="font-mono text-xs text-neutral-500 dark:text-neutral-400 w-32 truncate">{r.source}</span>
+                <span className="text-xs text-neutral-500 dark:text-neutral-400 w-32 truncate">{r.source}</span>
                 <div className="flex-1 h-2 bg-neutral-100 dark:bg-neutral-800 rounded-md overflow-hidden">
                   <div
                     className="h-full bg-amber-500 dark:bg-amber-500"

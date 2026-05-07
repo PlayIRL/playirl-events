@@ -97,7 +97,7 @@ export default function InvitesManager({
                   <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100 truncate">
                     {inv.label || <span className="text-neutral-500 dark:text-neutral-400 italic">No label</span>}
                   </p>
-                  <p className="font-mono text-[11px] text-neutral-500 dark:text-neutral-400 truncate mt-0.5">
+                  <p className="text-[11px] text-neutral-500 dark:text-neutral-400 truncate mt-0.5">
                     {urlFor(inv.token)}
                   </p>
                   <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1">

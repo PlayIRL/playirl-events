@@ -47,6 +47,14 @@ body {
   letter-spacing: -0.01em;
 }
 
+/* Default browser styling renders code/pre/kbd/samp/tt in monospace.
+ * Force them to inherit Figtree so the site is fully unified — the
+ * "this is code" affordance on those tags can be carried by bg/box
+ * styling at the callsite (see /bot page). */
+code, pre, kbd, samp, tt {
+  font-family: inherit;
+}
+
 /* Display callsites (chips, prices, headings, calendar week labels)
  * inherit Figtree from the body but bump to weight 900 with tighter
  * tracking. Same selector as before so callsites still picking

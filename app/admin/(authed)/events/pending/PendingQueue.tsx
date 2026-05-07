@@ -30,7 +30,7 @@ export default function PendingQueue({ events }: { events: PendingEventRow[] }) 
         >
           <div className="flex-1 min-w-0">
             <div className="flex items-baseline gap-2 flex-wrap">
-              <span className="font-mono text-xs text-neutral-500 dark:text-neutral-400">{e.date} {e.time}</span>
+              <span className="text-xs text-neutral-500 dark:text-neutral-400">{e.date} {e.time}</span>
               <span className="font-medium text-neutral-900 dark:text-neutral-100 truncate">{e.title || <em className="text-neutral-400">(untitled)</em>}</span>
               {e.format && (
                 <span className="text-xs bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-1.5 rounded-md">{e.format}</span>

@@ -116,7 +116,7 @@ function Section({
           <li key={e.id} className="flex items-center gap-3 px-4 py-3">
             <div className="flex-1 min-w-0">
               <div className="flex items-baseline gap-2 flex-wrap">
-                <span className="font-mono text-xs text-neutral-500 dark:text-neutral-400">
+                <span className="text-xs text-neutral-500 dark:text-neutral-400">
                   {e.date}
                   {e.time ? ` · ${e.time}` : ""}
                 </span>

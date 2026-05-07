@@ -138,7 +138,7 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
               </span>
             ))}
           </div>
-          <div className="text-xs text-neutral-500 dark:text-neutral-400 font-mono break-all">
+          <div className="text-xs text-neutral-500 dark:text-neutral-400 break-all">
             channel <code>#{sub.channel_id}</code>
             {" · "}guild <code>{sub.guild_id}</code>
           </div>

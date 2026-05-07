@@ -20,7 +20,7 @@ export default async function EditEventPage({ params }: { params: Promise<{ id: 
           ← Back to events
         </Link>
       </div>
-      <p className="text-xs text-neutral-500 dark:text-neutral-400 font-mono mb-4">
+      <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-4">
         {event.id} · {event.source}{event.source_type ? ` · ${event.source_type}` : ""}
       </p>
       <EventForm

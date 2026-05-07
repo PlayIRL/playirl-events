@@ -194,7 +194,7 @@ export default function EventTable({
                   <div>{ev.date} {ev.time}</div>
                   <div className="text-xs">{ev.location}</div>
                 </td>
-                <td className="px-3 py-2 align-top hidden lg:table-cell text-xs text-neutral-500 dark:text-neutral-400 font-mono">
+                <td className="px-3 py-2 align-top hidden lg:table-cell text-xs text-neutral-500 dark:text-neutral-400">
                   {ev.source}
                 </td>
                 <td className="px-3 py-2 align-top">

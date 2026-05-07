@@ -12,10 +12,10 @@ const inviteUrl = botInviteUrl();
 function CommandCard({ name, summary, example }: { name: string; summary: string; example?: string }) {
   return (
     <div className="rounded-md border border-neutral-100 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4">
-      <div className="font-mono text-sm font-semibold text-neutral-900 dark:text-neutral-100">{name}</div>
+      <div className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">{name}</div>
       <div className="text-sm text-neutral-700 dark:text-neutral-300 mt-1">{summary}</div>
       {example && (
-        <div className="mt-2 font-mono text-xs text-neutral-500 dark:text-neutral-400 break-all">
+        <div className="mt-2 text-xs text-neutral-500 dark:text-neutral-400 break-all">
           {example}
         </div>
       )}
@@ -64,7 +64,7 @@ export default function BotPage() {
             </a>
           ) : (
             <div className="rounded-md border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900 px-4 py-3 text-sm text-neutral-700 dark:text-neutral-300">
-              Invite link not configured. Set <code className="font-mono">DISCORD_BOT_CLIENT_ID</code> in your environment.
+              Invite link not configured. Set <code>DISCORD_BOT_CLIENT_ID</code> in your environment.
             </div>
           )}
           <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-2">
@@ -78,7 +78,7 @@ export default function BotPage() {
           <h2 className="text-xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white mb-3">How it works</h2>
           <ol className="list-decimal list-inside space-y-2 text-sm text-neutral-700 dark:text-neutral-300">
             <li>Click <strong>Add to your Discord server</strong> above and pick a server.</li>
-            <li>In the channel where you want events to post, run <code className="font-mono px-1 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800">/playirl subscribe</code>.</li>
+            <li>In the channel where you want events to post, run <code className="px-1 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800">/playirl subscribe</code>.</li>
             <li>Pick a <strong>mode</strong> — weekly digest, daily digest, or per-event reminder — and any filters (format, location, source).</li>
             <li>That&apos;s it. The bot posts on the schedule you set. Repeat to add more channels or formats.</li>
           </ol>
@@ -128,7 +128,7 @@ export default function BotPage() {
             </div>
             <div>
               <dt className="font-semibold text-neutral-900 dark:text-white">Per-event reminder</dt>
-              <dd>One post per event, fired before it starts. Pick <code className="font-mono">1h</code>, <code className="font-mono">2h</code>, <code className="font-mono">morning_of</code>, <code className="font-mono">day_before</code>, or any number of minutes.</dd>
+              <dd>One post per event, fired before it starts. Pick <code>1h</code>, <code>2h</code>, <code>morning_of</code>, <code>day_before</code>, or any number of minutes.</dd>
             </div>
           </dl>
         </section>

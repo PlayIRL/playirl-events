@@ -92,7 +92,7 @@ export default async function SavedEventsPage() {
               <ul className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md divide-y divide-neutral-100 dark:divide-neutral-800">
                 {past.map((ev) => (
                   <li key={ev.id} className="px-4 py-2.5 flex items-center gap-3 opacity-70">
-                    <span className="font-mono text-xs text-neutral-400 w-20 shrink-0">{ev.date}</span>
+                    <span className="text-xs text-neutral-400 w-20 shrink-0">{ev.date}</span>
                     <Link
                       href={`/event/${encodeURIComponent(ev.id)}`}
                       className="text-sm text-neutral-700 dark:text-neutral-300 hover:underline flex-1 truncate"

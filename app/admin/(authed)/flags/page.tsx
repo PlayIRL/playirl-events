@@ -67,7 +67,7 @@ export default function FlagsPage() {
                 />
               </button>
               <div className="flex-1 min-w-0">
-                <div className="font-mono text-sm text-neutral-900 dark:text-neutral-100">{f.key}</div>
+                <div className="text-sm text-neutral-900 dark:text-neutral-100">{f.key}</div>
                 <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">{f.description || <em>(no description)</em>}</div>
                 <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
                   Updated {new Date(f.updated_at + "Z").toLocaleString()}

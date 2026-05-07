@@ -65,7 +65,7 @@ export default function RetryAllButton() {
                 <ul className="mt-1 space-y-0.5">
                   {result.results.map((r) => (
                     <li key={r.name}>
-                      {r.source === "none" ? "✗" : "✓"} {r.name} → <span className="font-mono">{r.source}</span>
+                      {r.source === "none" ? "✗" : "✓"} {r.name} → <span>{r.source}</span>
                     </li>
                   ))}
                 </ul>
