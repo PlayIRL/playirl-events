@@ -229,27 +229,19 @@ export default async function HomePage({
             })}
           </div>
 
-          {/* Week navigation */}
-          <div className="flex items-center justify-between gap-3 mt-6 flex-wrap">
-            {currentOffset > 0 ? (
-              <LinkButton
-                href={`?${new URLSearchParams({ ...Object.fromEntries(Object.entries(params).filter(([k]) => k !== "offset")), ...(currentOffset - 7 > 0 ? { offset: String(currentOffset - 7) } : {}) }).toString()}`}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
-                Previous week
-              </LinkButton>
-            ) : <div />}
-
-            {/* Mid: jump-to-date + back-to-this-week (rendered between
-                Previous and Next week so the controls share one footer row) */}
-            <DateJumper currentOffset={currentOffset} />
-
+          {/* Footer navigation. In list view the user can keep extending
+              the visible window with "Load more events" (bumps `days` by
+              7) — the existing list grows downward. In calendar view we
+              still need page-style prev/next because the grid is fixed
+              to a 7-day window. */}
+          <div className="flex flex-col items-center gap-3 mt-6">
             <LinkButton
-              href={`?${new URLSearchParams({ ...Object.fromEntries(Object.entries(params).filter(([,v]) => v !== undefined) as [string,string][]), offset: String(currentOffset + 7) }).toString()}`}
+              href={`?${new URLSearchParams({ ...Object.fromEntries(Object.entries(params).filter(([k, v]) => k !== "days" && v !== undefined) as [string, string][]), days: String(currentDays + 7) }).toString()}`}
             >
-              Next week
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+              Load more events
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
             </LinkButton>
+            <DateJumper currentOffset={currentOffset} />
           </div>
         </>
       )}
