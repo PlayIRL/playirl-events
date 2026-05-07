@@ -9,40 +9,63 @@ export const FORMAT_EMOJI: Record<string, string> = {
   Sealed: "\uD83C\uDF81",
 };
 
-// MTG's traditional WUBRG mana palette drives format colors. Each format
-// is associated with the mana color whose flavor matches it: Modern → U
-// (control / Island), Standard → G (current / Forest), Pioneer → R
-// (aggressive / Mountain), Legacy → B (eternal / Swamp), Pauper → W
-// (commons / Plains). Multicolor formats (Commander, Draft, Sealed) get
-// gold-family hues since multicolor cards are gold-bordered in MTG.
+// Format colors map to the actual MTG mana-symbol swatches — the cream,
+// sky-blue, bone, salmon, and sage that show on the mana cost roundels
+// and card frames, not Tailwind's generic palette. Hex values below are
+// the canonical "lightest" mana symbol bg, paired with deeper tones for
+// text and borders pulled from the same color identity.
+//
+//   W (Plains)      #FFFBD5 cream         → Pauper (commons)
+//   U (Island)      #AAE0FA / #0E68AB     → Modern (control)
+//   B (Swamp)       #CBC2BF / #150B00     → Legacy (eternal)
+//   R (Mountain)    #F9AA8F / #D3202A     → Pioneer (aggressive)
+//   G (Forest)      #9BD3AE / #00733E     → Standard (current)
+//   Plum            #E1D2EE / #6B3FA0     → Commander (legendary/mythic)
+//   Amber-gold      #F5C988 / #E08F2B     → Draft (limited)
+//   Bronze          #E8C28A / #B86E1F     → Sealed (sealed-pack)
+//
+// Commander uses plum (the "mythic / legendary stamp" color in MTG
+// culture) rather than gold so it sits visually clear of Pauper's cream.
+// Gold/multicolor stays for Draft (limited) and Sealed (sealed-pack).
 export const FORMAT_BADGE: Record<string, string> = {
-  // Gold — multicolor / legendary
-  Commander: "bg-amber-100 text-amber-800 border border-amber-300 dark:bg-amber-500/20 dark:text-amber-200 dark:border-amber-500/40",
+  // Plum — legendary / mythic
+  Commander:
+    "bg-[#E1D2EE] text-[#3F1F66] border border-[#9B7BB8] dark:bg-[#6B3FA0]/30 dark:text-[#E1D2EE] dark:border-[#6B3FA0]/55",
   // U — Island
-  Modern: "bg-sky-100 text-sky-800 border border-sky-300 dark:bg-sky-500/20 dark:text-sky-200 dark:border-sky-500/40",
+  Modern:
+    "bg-[#AAE0FA] text-[#0A3D68] border border-[#5C8FBE] dark:bg-[#0E68AB]/30 dark:text-[#AAE0FA] dark:border-[#0E68AB]/55",
   // G — Forest
-  Standard: "bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-500/20 dark:text-emerald-200 dark:border-emerald-500/40",
+  Standard:
+    "bg-[#9BD3AE] text-[#0F4124] border border-[#5DA37C] dark:bg-[#00733E]/30 dark:text-[#9BD3AE] dark:border-[#00733E]/55",
   // R — Mountain
-  Pioneer: "bg-red-100 text-red-800 border border-red-300 dark:bg-red-500/20 dark:text-red-200 dark:border-red-500/40",
+  Pioneer:
+    "bg-[#F9AA8F] text-[#7A1E1E] border border-[#D87B5C] dark:bg-[#D3202A]/22 dark:text-[#F9AA8F] dark:border-[#D3202A]/55",
   // B — Swamp / eternal
-  Legacy: "bg-zinc-200 text-zinc-800 border border-zinc-400 dark:bg-zinc-500/25 dark:text-zinc-100 dark:border-zinc-500/40",
+  Legacy:
+    "bg-[#CBC2BF] text-[#2A2520] border border-[#8B8276] dark:bg-[#3A352F]/55 dark:text-[#D8D0C6] dark:border-[#8B8276]/55",
   // W — Plains / commons
-  Pauper: "bg-yellow-100 text-yellow-800 border border-yellow-300 dark:bg-yellow-500/20 dark:text-yellow-200 dark:border-yellow-500/40",
-  // Gold-orange — limited
-  Draft: "bg-orange-100 text-orange-800 border border-orange-300 dark:bg-orange-500/20 dark:text-orange-200 dark:border-orange-500/40",
-  // Gold-violet — sealed mystery
-  Sealed: "bg-violet-100 text-violet-800 border border-violet-300 dark:bg-violet-500/20 dark:text-violet-200 dark:border-violet-500/40",
+  Pauper:
+    "bg-[#FFFBD5] text-[#5C4A1A] border border-[#E0D085] dark:bg-[#FFFBD5]/14 dark:text-[#FFFBD5] dark:border-[#FFFBD5]/30",
+  // Amber-gold — limited
+  Draft:
+    "bg-[#F5C988] text-[#7A4810] border border-[#E08F2B] dark:bg-[#E08F2B]/25 dark:text-[#F5C988] dark:border-[#E08F2B]/55",
+  // Bronze-gold — sealed mystery
+  Sealed:
+    "bg-[#E8C28A] text-[#5C3A0E] border border-[#B86E1F] dark:bg-[#B86E1F]/30 dark:text-[#E8C28A] dark:border-[#B86E1F]/55",
 };
 
+// Saturated swatches for the format-selector dot in the radius dropdown.
+// Use the deeper ("ink") version of each mana color so the dot reads at
+// 8-10px against a light background.
 export const FORMAT_DOT: Record<string, string> = {
-  Commander: "bg-amber-500",
-  Modern: "bg-sky-500",
-  Standard: "bg-emerald-500",
-  Pioneer: "bg-red-500",
-  Legacy: "bg-zinc-600",
-  Pauper: "bg-yellow-500",
-  Draft: "bg-orange-500",
-  Sealed: "bg-violet-500",
+  Commander: "bg-[#6B3FA0]",
+  Modern: "bg-[#0E68AB]",
+  Standard: "bg-[#00733E]",
+  Pioneer: "bg-[#D3202A]",
+  Legacy: "bg-[#3A352F]",
+  Pauper: "bg-[#A89060]",
+  Draft: "bg-[#E08F2B]",
+  Sealed: "bg-[#B86E1F]",
 };
 
 export const FORMAT_BADGE_DEFAULT =
@@ -50,18 +73,18 @@ export const FORMAT_BADGE_DEFAULT =
 
 export const FORMAT_EMOJI_DEFAULT = "\uD83C\uDCCF";
 
-// Hex-int color values for Discord embed `color` field. Mirrors FORMAT_DOT
-// (Tailwind 500-shade values, except Legacy which uses zinc-600 for more
-// presence on Discord's neutral embed background).
+// Hex-int values for Discord embed `color` field. Mirrors FORMAT_DOT —
+// the deep ("ink") version of each mana color, so the embed accent matches
+// the dot color shown elsewhere.
 export const FORMAT_EMBED_COLOR: Record<string, number> = {
-  Commander: 0xf59e0b, // amber-500
-  Modern: 0x0ea5e9, // sky-500
-  Standard: 0x10b981, // emerald-500
-  Pioneer: 0xef4444, // red-500
-  Legacy: 0x52525b, // zinc-600
-  Pauper: 0xeab308, // yellow-500
-  Draft: 0xf97316, // orange-500
-  Sealed: 0x8b5cf6, // violet-500
+  Commander: 0x6b3fa0, // plum ink (mythic/legendary)
+  Modern: 0x0e68ab, // U ink (Island deep blue)
+  Standard: 0x00733e, // G ink (Forest deep green)
+  Pioneer: 0xd3202a, // R ink (Mountain deep red)
+  Legacy: 0x3a352f, // B ink (Swamp dark)
+  Pauper: 0xa89060, // W ink (deeper Plains cream)
+  Draft: 0xe08f2b, // amber-gold
+  Sealed: 0xb86e1f, // bronze-gold
 };
 
 export const FORMAT_EMBED_COLOR_DEFAULT = 0x6b7280;
