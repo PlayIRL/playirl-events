@@ -58,7 +58,7 @@ export default function SaveEventButton({ eventId, initiallySaved, compact = fal
         className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition ${
           saved
             ? "text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950"
-            : "text-neutral-400 hover:text-amber-500 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            : "text-neutral-400 hover:text-amber-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
         } ${busy ? "opacity-50" : ""} ${className}`}
       >
         <StarIcon filled={saved} />
