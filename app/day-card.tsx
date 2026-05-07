@@ -88,19 +88,24 @@ export default function DayCard({
     };
   }, [staggerBase, revealed]);
 
-  // "Today" gets a slight visual lift: bolder neutral border + a soft
-  // tinted heading background. Other days stay flat.
+  // "Today" emphasis: stronger neutral chrome + a vivid amber left-edge
+  // stripe. The stripe runs vertically down the heading and body so
+  // today's card reads as "the live one" at a glance, even when scrolled.
   const borderColor = isToday
-    ? "border-neutral-300 dark:border-white/20"
+    ? "border-neutral-400 dark:border-white/30"
     : "border-neutral-100 dark:border-white/8";
 
   const headingBg = isToday
-    ? "bg-neutral-50 dark:bg-white/[0.04]"
+    ? "bg-neutral-100 dark:bg-white/[0.08]"
     : "bg-white dark:bg-neutral-900";
 
   const bodyBg = isToday
-    ? "bg-neutral-50/50 dark:bg-white/[0.02]"
+    ? "bg-neutral-50 dark:bg-white/[0.04]"
     : "bg-white dark:bg-neutral-900";
+
+  const todayStripe = isToday
+    ? "border-l-4 border-l-amber-500 dark:border-l-amber-400"
+    : "";
 
   return (
     <div
@@ -112,8 +117,8 @@ export default function DayCard({
       <div ref={sentinelRef} className="h-0" />
 
       {/* Sticky date header */}
-      <div className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 border ${isStuck ? "py-1" : "py-2 rounded-t-xl"} ${borderColor} ${headingBg}`}>
-        <span className={`font-medium ${isStuck ? "text-xs" : "text-sm"} ${isToday ? "text-neutral-900 dark:text-white" : "text-neutral-700 dark:text-neutral-300"}`}>
+      <div className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 border ${isStuck ? "py-1" : "py-2 rounded-t-xl"} ${borderColor} ${headingBg} ${todayStripe}`}>
+        <span className={`${isStuck ? "text-xs" : "text-sm"} ${isToday ? "font-bold text-neutral-900 dark:text-white" : "font-medium text-neutral-700 dark:text-neutral-300"}`}>
           {headingLabel || weekday}
         </span>
         <span className={`ml-auto text-neutral-400 dark:text-neutral-500 ${isStuck ? "text-[10px]" : "text-xs"}`}>
@@ -123,7 +128,7 @@ export default function DayCard({
 
       {/* Events body */}
       {events.length > 0 && (
-        <div className={`overflow-hidden rounded-b-xl border-b border-x divide-y divide-neutral-100 dark:divide-white/8 ${borderColor} ${bodyBg}`}>
+        <div className={`overflow-hidden rounded-b-xl border-b border-x divide-y divide-neutral-100 dark:divide-white/8 ${borderColor} ${bodyBg} ${todayStripe}`}>
           {events.map((ev, i) => {
             // Per-row "already started" check — an event whose start
             // moment is in the past gets rendered as inactive (greyed
