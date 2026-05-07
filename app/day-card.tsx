@@ -154,8 +154,8 @@ export default function DayCard({
               <img
                 src={ev.imageUrl}
                 alt=""
-                className={`hidden sm:block w-12 h-12 rounded-md shrink-0 bg-neutral-100 ${
-                  ev.imageFit === "cover" ? "object-cover" : "object-contain p-0.5"
+                className={`hidden sm:block w-14 h-14 rounded-md shrink-0 bg-neutral-100 ${
+                  ev.imageFit === "cover" ? "object-cover" : "object-contain p-1"
                 }`}
                 loading="lazy"
               />
