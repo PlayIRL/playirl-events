@@ -130,7 +130,7 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                 return (
                   <div
                     key={day.date}
-                    className={`flex items-center justify-center gap-1.5 py-1.5 ${isToday ? "bg-neutral-100 dark:bg-white/[0.10] border-t-2 border-neutral-900 dark:border-white" : "bg-white dark:bg-neutral-900"}`}
+                    className={`flex items-center justify-center gap-1.5 py-1.5 ${isToday ? "bg-white dark:bg-white/[0.18] outline-2 outline-neutral-900 dark:outline-white -outline-offset-2 relative z-[1]" : "bg-white dark:bg-neutral-900"}`}
                   >
                     <span className={`text-[10px] ${isToday ? "font-bold text-neutral-900 dark:text-white" : "font-medium text-neutral-400 dark:text-neutral-500"}`}>
                       {day.weekday}
@@ -165,7 +165,9 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
               <div
                 key={day.date}
                 className={`flex flex-col min-h-[320px] ${
-                  isToday ? "bg-neutral-100/70 dark:bg-white/[0.06]" : "bg-white dark:bg-neutral-900"
+                  isToday
+                    ? "bg-white dark:bg-white/[0.12] outline-2 outline-neutral-900 dark:outline-white -outline-offset-2 relative z-[1]"
+                    : "bg-white dark:bg-neutral-900"
                 } ${isPast && !isToday ? "opacity-70" : ""}`}
               >
                 <div className="flex-1 flex flex-col gap-1 p-1.5">

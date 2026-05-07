@@ -88,27 +88,21 @@ export default function DayCard({
     };
   }, [staggerBase, revealed]);
 
-  // "Today" emphasis: stronger neutral chrome + a vivid amber left-edge
-  // stripe. The stripe runs vertically down the heading and body so
-  // today's card reads as "the live one" at a glance, even when scrolled.
+  // "Today" should look like the brightest, most live element on the
+  // page — not a tinted/dimmed version. Strategy: pure white bg in
+  // light mode, lifted off-the-dark bg in dark mode, all wrapped in a
+  // thick high-contrast frame so the day visibly pops out of the stack.
   const borderColor = isToday
-    ? "border-neutral-400 dark:border-white/30"
-    : "border-neutral-100 dark:border-white/8";
+    ? "border-2 border-neutral-900 dark:border-white"
+    : "border border-neutral-100 dark:border-white/8";
 
   const headingBg = isToday
-    ? "bg-neutral-100 dark:bg-white/[0.08]"
+    ? "bg-white dark:bg-white/[0.18]"
     : "bg-white dark:bg-neutral-900";
 
   const bodyBg = isToday
-    ? "bg-neutral-50 dark:bg-white/[0.04]"
+    ? "bg-white dark:bg-white/[0.12]"
     : "bg-white dark:bg-neutral-900";
-
-  // High-contrast left-edge stripe: pure ink in light mode, pure paper
-  // in dark mode. No accent color — today's emphasis comes from the
-  // contrast against neutral chrome, not a hue.
-  const todayStripe = isToday
-    ? "border-l-4 border-l-neutral-900 dark:border-l-white"
-    : "";
 
   return (
     <div
@@ -120,7 +114,7 @@ export default function DayCard({
       <div ref={sentinelRef} className="h-0" />
 
       {/* Sticky date header */}
-      <div className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 border ${isStuck ? "py-1" : "py-2 rounded-t-xl"} ${borderColor} ${headingBg} ${todayStripe}`}>
+      <div className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 ${isStuck ? "py-1" : "py-2 rounded-t-xl"} ${borderColor} ${headingBg}`}>
         <span className={`${isStuck ? "text-xs" : "text-sm"} ${isToday ? "font-bold text-neutral-900 dark:text-white" : "font-medium text-neutral-700 dark:text-neutral-300"}`}>
           {headingLabel || weekday}
         </span>
@@ -131,7 +125,7 @@ export default function DayCard({
 
       {/* Events body */}
       {events.length > 0 && (
-        <div className={`overflow-hidden rounded-b-xl border-b border-x divide-y divide-neutral-100 dark:divide-white/8 ${borderColor} ${bodyBg} ${todayStripe}`}>
+        <div className={`overflow-hidden rounded-b-xl divide-y divide-neutral-100 dark:divide-white/8 ${isToday ? "border-x-2 border-b-2 border-neutral-900 dark:border-white" : "border-x border-b border-neutral-100 dark:border-white/8"} ${bodyBg}`}>
           {events.map((ev, i) => {
             // Per-row "already started" check — an event whose start
             // moment is in the past gets rendered as inactive (greyed
