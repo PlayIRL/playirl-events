@@ -114,7 +114,7 @@ export default function DayCard({
       <div ref={sentinelRef} className="h-0" />
 
       {/* Sticky date header */}
-      <div className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 ${isStuck ? "py-1" : "py-2 rounded-t-xl"} ${borderColor} ${headingBg}`}>
+      <div className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 ${isStuck ? "py-2" : "py-4 rounded-t-xl"} ${borderColor} ${headingBg}`}>
         <span className={`${isStuck ? "text-sm" : "text-base"} ${isToday ? "font-bold text-neutral-900 dark:text-white" : "font-medium text-neutral-700 dark:text-neutral-300"}`}>
           {headingLabel || weekday}
         </span>
