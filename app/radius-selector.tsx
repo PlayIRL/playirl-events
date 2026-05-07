@@ -383,8 +383,8 @@ export default function RadiusSelector({
         />
 
         {/* Timeframe selector + the "in" connector hidden per user request.
-            Replaced by the DateJumper in the footer Prev/Next week row.
-            Re-enable by un-commenting the block below. */}
+            Footer "Load more events" button extends the visible window
+            forward when needed. Re-enable by un-commenting the block below. */}
         {/* <span className={CONNECTOR}>in</span>
         <ChipSelect
           label={TIME_OPTIONS.find((t) => t.value === String(currentDays))?.label || "This week"}
