@@ -130,13 +130,13 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                 return (
                   <div
                     key={day.date}
-                    className={`flex items-center justify-center gap-1.5 py-1.5 ${isToday ? "bg-neutral-100 dark:bg-white/[0.10] border-t-2 border-amber-500 dark:border-amber-400" : "bg-white dark:bg-neutral-900"}`}
+                    className={`flex items-center justify-center gap-1.5 py-1.5 ${isToday ? "bg-neutral-100 dark:bg-white/[0.10] border-t-2 border-neutral-900 dark:border-white" : "bg-white dark:bg-neutral-900"}`}
                   >
                     <span className={`text-[10px] ${isToday ? "font-bold text-neutral-900 dark:text-white" : "font-medium text-neutral-400 dark:text-neutral-500"}`}>
                       {day.weekday}
                     </span>
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-[family-name:var(--font-ultra)] font-bold shrink-0 ${
-                      isToday ? "bg-amber-500 text-white dark:bg-amber-400 dark:text-neutral-900" : "text-neutral-900 dark:text-neutral-200"
+                      isToday ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900" : "text-neutral-900 dark:text-neutral-200"
                     }`}>
                       {day.dayNum}
                     </span>

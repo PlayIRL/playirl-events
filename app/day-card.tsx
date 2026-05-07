@@ -103,8 +103,11 @@ export default function DayCard({
     ? "bg-neutral-50 dark:bg-white/[0.04]"
     : "bg-white dark:bg-neutral-900";
 
+  // High-contrast left-edge stripe: pure ink in light mode, pure paper
+  // in dark mode. No accent color — today's emphasis comes from the
+  // contrast against neutral chrome, not a hue.
   const todayStripe = isToday
-    ? "border-l-4 border-l-amber-500 dark:border-l-amber-400"
+    ? "border-l-4 border-l-neutral-900 dark:border-l-white"
     : "";
 
   return (
