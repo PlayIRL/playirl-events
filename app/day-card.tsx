@@ -114,7 +114,7 @@ export default function DayCard({
       <div ref={sentinelRef} className="h-0" />
 
       {/* Sticky date header */}
-      <div className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 ${isStuck ? "py-2" : "py-4 rounded-t-md"} ${borderColor} ${headingBg}`}>
+      <div className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 ${isStuck ? "py-2" : "py-4 rounded-t-lg"} ${borderColor} ${headingBg}`}>
         <span className={`${isStuck ? "text-sm" : "text-base"} ${isToday ? "font-bold text-neutral-900 dark:text-white" : "font-medium text-neutral-700 dark:text-neutral-300"}`}>
           {headingLabel || weekday}
         </span>
@@ -125,7 +125,7 @@ export default function DayCard({
 
       {/* Events body */}
       {events.length > 0 && (
-        <div className={`overflow-hidden rounded-b-md divide-y divide-neutral-200 dark:divide-white/10 ${isToday ? "border-x-2 border-b-2 border-neutral-900 dark:border-white" : "border-x border-b border-neutral-300 dark:border-white/15"} ${bodyBg}`}>
+        <div className={`overflow-hidden rounded-b-lg divide-y divide-neutral-200 dark:divide-white/10 ${isToday ? "border-x-2 border-b-2 border-neutral-900 dark:border-white" : "border-x border-b border-neutral-300 dark:border-white/15"} ${bodyBg}`}>
           {events.map((ev, i) => {
             // Per-row "already started" check — an event whose start
             // moment is in the past gets rendered as inactive (greyed
