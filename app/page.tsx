@@ -157,7 +157,7 @@ export default async function HomePage({
       <FloatingToolbar currentView={currentView} />
 
       {/* Hero header */}
-      <header className="mb-6 flex flex-col items-center text-center gap-1 w-full anim-fade-in-up">
+      <header className="mb-6 flex flex-col items-center text-center gap-1 w-full">
         <h1 className="text-neutral-900 dark:text-white">
           <PlayIrlLogo className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl" />
           <span className="sr-only">PlayIRL.GG</span>
@@ -201,9 +201,9 @@ export default async function HomePage({
       ) : (
         <>
           {Object.keys(grouped).length === 0 && (
-            <Reveal className="text-center py-16" delay={100}>
+            <div className="text-center py-16">
               <p className="text-neutral-400 text-lg">No events found</p>
-            </Reveal>
+            </div>
           )}
 
           <div className="space-y-2">
@@ -230,7 +230,7 @@ export default async function HomePage({
           </div>
 
           {/* Week navigation */}
-          <Reveal className="flex items-center justify-between gap-3 mt-6 flex-wrap">
+          <div className="flex items-center justify-between gap-3 mt-6 flex-wrap">
             {currentOffset > 0 ? (
               <LinkButton
                 href={`?${new URLSearchParams({ ...Object.fromEntries(Object.entries(params).filter(([k]) => k !== "offset")), ...(currentOffset - 7 > 0 ? { offset: String(currentOffset - 7) } : {}) }).toString()}`}
@@ -250,43 +250,23 @@ export default async function HomePage({
               Next week
               <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
             </LinkButton>
-          </Reveal>
+          </div>
         </>
       )}
 
-      <Reveal>
-      <footer className="mt-16 pt-8 border-t border-neutral-100 dark:border-white/5 text-sm text-neutral-400 dark:text-neutral-500">
-        {/* Brand sits above; description and links share an aligned top edge below */}
-        <p className="mb-3">
-          <PlayIrlLogo className="text-base text-neutral-900 dark:text-white" />
-          <span className="sr-only">PlayIRL.GG</span>
+      <footer className="mt-16 pt-6 text-sm text-neutral-400 dark:text-neutral-500">
+        <p className="text-xs leading-relaxed mb-4 max-w-md">
+          An open-source, community-run alternative to the official Wizards of the Coast event locator. Not affiliated with WotC.
         </p>
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
-          {/* Tagline */}
-          <div>
-            <p className="text-xs leading-relaxed max-w-xs">
-              An open-source, community-run alternative to the official Wizards of the Coast event locator — built by players, for players.
-            </p>
-            <div className="flex flex-wrap gap-2 mt-3">
-              <span className="text-[11px] text-neutral-400 dark:text-neutral-500">✨ Open source</span>
-              <span className="text-[11px] text-neutral-400 dark:text-neutral-500">· Community-run</span>
-              <span className="text-[11px] text-neutral-400 dark:text-neutral-500">· Not affiliated with WotC</span>
-            </div>
-          </div>
-
-          {/* Links */}
-          <div className="flex flex-col gap-2 text-xs shrink-0">
-            <a href="/about" className="hover:text-neutral-900 dark:hover:text-white transition">About PlayIRL.GG</a>
-            <a href="/bot" className="hover:text-neutral-900 dark:hover:text-white transition">Discord bot</a>
-            <a href="https://github.com/i1986o/mtg-cal" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-white transition">GitHub</a>
-            <a href="https://discord.gg/axDSujPTfj" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-white transition">Join the Discord</a>
-            <a href="/account/events/new" className="hover:text-neutral-900 dark:hover:text-white transition">Submit your events</a>
-            <a href="/account" className="hover:text-neutral-900 dark:hover:text-white transition">Sign in / My account</a>
-            <a href="/admin/login" className="hover:text-neutral-900 dark:hover:text-white transition text-neutral-400 dark:text-neutral-500">Admin login</a>
-          </div>
+        <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs">
+          <a href="/about" className="hover:text-neutral-900 dark:hover:text-white">About</a>
+          <a href="/bot" className="hover:text-neutral-900 dark:hover:text-white">Discord bot</a>
+          <a href="https://github.com/i1986o/mtg-cal" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-white">GitHub</a>
+          <a href="https://discord.gg/axDSujPTfj" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-white">Discord</a>
+          <a href="/account/events/new" className="hover:text-neutral-900 dark:hover:text-white">Submit events</a>
+          <a href="/account" className="hover:text-neutral-900 dark:hover:text-white">Sign in</a>
         </div>
       </footer>
-      </Reveal>
     </main>
   );
 }

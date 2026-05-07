@@ -89,15 +89,10 @@ export default function DayCard({
   }, [staggerBase, revealed]);
 
   // "Today" gets a slight visual lift: bolder neutral border + a soft
-  // tinted heading background. Matches the calendar view's neutral today
-  // highlight (no blue, no amber). Other days stay flat.
+  // tinted heading background. Other days stay flat.
   const borderColor = isToday
     ? "border-neutral-300 dark:border-white/20"
     : "border-neutral-100 dark:border-white/8";
-
-  const hoverBorderColor = isToday
-    ? "hover:border-neutral-400 dark:hover:border-white/30"
-    : "hover:border-neutral-200 dark:hover:border-white/15";
 
   const headingBg = isToday
     ? "bg-neutral-50 dark:bg-white/[0.04]"
@@ -116,29 +111,26 @@ export default function DayCard({
       {/* Sentinel: zero-height, sits at the top of the card to detect when header pins */}
       <div ref={sentinelRef} className="h-0" />
 
-      {/* Sticky date header. The day-number circle was removed — the
-          headingLabel ("Today · Sunday, Apr 26", or weekday + date for other
-          days) already conveys the date right next to it, so the circle was
-          pure visual repetition. */}
-      <div className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 border transition-all duration-150 ${isStuck ? "py-1" : "py-2 rounded-t-xl"} ${borderColor} ${headingBg}`}>
-        <span className={`transition-all duration-150 font-medium ${isStuck ? "text-xs" : "text-sm"} ${isToday ? "text-neutral-900 dark:text-white" : "text-neutral-700 dark:text-neutral-300"}`}>
+      {/* Sticky date header */}
+      <div className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 border ${isStuck ? "py-1" : "py-2 rounded-t-xl"} ${borderColor} ${headingBg}`}>
+        <span className={`font-medium ${isStuck ? "text-xs" : "text-sm"} ${isToday ? "text-neutral-900 dark:text-white" : "text-neutral-700 dark:text-neutral-300"}`}>
           {headingLabel || weekday}
         </span>
-        <span className={`ml-auto transition-all duration-150 text-neutral-400 dark:text-neutral-500 ${isStuck ? "text-[10px]" : "text-xs"}`}>
+        <span className={`ml-auto text-neutral-400 dark:text-neutral-500 ${isStuck ? "text-[10px]" : "text-xs"}`}>
           {events.length === 0 ? "No events" : `${events.length} event${events.length === 1 ? "" : "s"}`}
         </span>
       </div>
 
       {/* Events body */}
       {events.length > 0 && (
-        <div className={`overflow-hidden rounded-b-xl border-b border-x divide-y divide-neutral-100 dark:divide-white/8 transition-all duration-200 hover:shadow-md dark:hover:shadow-black/30 ${borderColor} ${hoverBorderColor} ${bodyBg}`}>
+        <div className={`overflow-hidden rounded-b-xl border-b border-x divide-y divide-neutral-100 dark:divide-white/8 ${borderColor} ${bodyBg}`}>
           {events.map((ev, i) => (
             <Link
               key={ev.id}
               href={`/event/${encodeURIComponent(ev.id)}`}
               data-row
               style={revealed ? { animationDelay: `${80 + i * 45}ms` } : { opacity: 0 }}
-              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-2.5 sm:gap-3 px-3 sm:px-4 py-2.5 transition-all duration-200 ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
+              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-2.5 sm:gap-3 px-3 sm:px-4 py-2.5 ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
             >
               {/* Desktop: time as a fixed left column. Mobile: hidden here
                   and rendered above the title (see middle div below) so the
@@ -159,7 +151,7 @@ export default function DayCard({
                 }`}
                 loading="lazy"
               />
-              <div className="flex-1 min-w-0 transition-transform duration-200 group-hover:translate-x-1">
+              <div className="flex-1 min-w-0">
                 <span className="block sm:hidden text-xs text-neutral-400 dark:text-neutral-500">
                   {formatEventTime(ev.date, ev.time, ev.timezone)}
                 </span>
@@ -177,7 +169,7 @@ export default function DayCard({
                 </div>
               </div>
               <div className="flex items-center gap-1 shrink-0">
-                <span className={`text-xs font-[family-name:var(--font-ultra)] font-bold transition-transform duration-200 group-hover:translate-x-0.5 ${ev.cost === "Free" ? "text-emerald-600 dark:text-emerald-400" : "text-neutral-900 dark:text-white"}`}>
+                <span className={`text-xs font-[family-name:var(--font-ultra)] font-bold ${ev.cost === "Free" ? "text-emerald-600 dark:text-emerald-400" : "text-neutral-900 dark:text-white"}`}>
                   {ev.cost === "Free" ? "Free" : ev.cost || "\u2014"}
                 </span>
                 <SaveEventButton
@@ -187,9 +179,6 @@ export default function DayCard({
                   signedIn={signedIn}
                 />
                 {isAdmin && <AdminEventActions eventId={ev.id} />}
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-300 dark:text-neutral-600 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
               </div>
             </Link>
           ))}
