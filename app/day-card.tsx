@@ -186,8 +186,10 @@ export default function DayCard({
                 />
                 {/* Price sits at the row's right edge so it visually
                     aligns with the "X events" count in the day header
-                    above. Save-star reveals on hover to its left. */}
-                <span className={`text-xs font-[family-name:var(--font-ultra)] font-bold ${ev.cost === "Free" ? "text-emerald-600 dark:text-emerald-400" : "text-neutral-900 dark:text-white"}`}>
+                    above. Save-star reveals on hover to its left.
+                    "Free" is the standout \u2014 bolder + colored. Paid
+                    prices stay quiet (regular weight, default ink). */}
+                <span className={`text-xs font-[family-name:var(--font-ultra)] ${ev.cost === "Free" ? "font-bold text-emerald-600 dark:text-emerald-400" : "font-normal text-neutral-700 dark:text-neutral-300"}`}>
                   {ev.cost === "Free" ? "Free" : ev.cost || "\u2014"}
                 </span>
               </div>
