@@ -27,31 +27,37 @@ export const FORMAT_EMOJI: Record<string, string> = {
 // Commander uses plum (the "mythic / legendary stamp" color in MTG
 // culture) rather than gold so it sits visually clear of Pauper's cream.
 // Gold/multicolor stays for Draft (limited) and Sealed (sealed-pack).
+// Pastel-bright fills with near-black text for legibility. The earlier
+// "more saturated" palette had mid-tone fills that competed with the
+// dark text at 10px sizes. Lift each fill toward white (keep the hue),
+// drop the text to almost true black, keep the saturated mid-tone
+// border as a visual anchor — that gives a chip that reads as colored
+// at glance distance and stays scannable on the row.
 export const FORMAT_BADGE: Record<string, string> = {
   // Plum — legendary / mythic
   Commander:
-    "bg-[#C9AEEC] text-[#3F1F66] border-2 border-[#8B65BB] dark:bg-[#6B3FA0]/40 dark:text-[#E1D2EE] dark:border-[#6B3FA0]/70",
+    "bg-[#EBDBF6] text-[#2A1145] border-2 border-[#8B65BB] dark:bg-[#6B3FA0]/35 dark:text-[#F1E4F9] dark:border-[#A682CE]",
   // U — Island
   Modern:
-    "bg-[#6BC1ED] text-[#073961] border-2 border-[#2D8AC2] dark:bg-[#0E68AB]/45 dark:text-[#AAE0FA] dark:border-[#0E68AB]/70",
+    "bg-[#C5E6F6] text-[#0A2D4D] border-2 border-[#2D8AC2] dark:bg-[#0E68AB]/35 dark:text-[#D6ECF7] dark:border-[#5BA8DA]",
   // G — Forest
   Standard:
-    "bg-[#6FCC8C] text-[#0F4124] border-2 border-[#2E9C5A] dark:bg-[#00733E]/45 dark:text-[#9BD3AE] dark:border-[#00733E]/70",
+    "bg-[#C8EBD2] text-[#0A2E1A] border-2 border-[#2E9C5A] dark:bg-[#00733E]/35 dark:text-[#D6F0DD] dark:border-[#5DBE85]",
   // R — Mountain
   Pioneer:
-    "bg-[#F58A6A] text-[#5E1414] border-2 border-[#D45A38] dark:bg-[#D3202A]/35 dark:text-[#F9AA8F] dark:border-[#D3202A]/70",
+    "bg-[#FCC9B8] text-[#3D0E0E] border-2 border-[#D45A38] dark:bg-[#D3202A]/30 dark:text-[#FAD8C9] dark:border-[#E08068]",
   // B — Swamp / eternal
   Legacy:
-    "bg-[#A89E96] text-[#1F1A15] border-2 border-[#5C5048] dark:bg-[#3A352F]/70 dark:text-[#D8D0C6] dark:border-[#8B8276]/70",
+    "bg-[#D8D2CC] text-[#15110D] border-2 border-[#5C5048] dark:bg-[#3A352F]/65 dark:text-[#E8E2DC] dark:border-[#8B7E72]",
   // W — Plains / commons
   Pauper:
-    "bg-[#F8E26B] text-[#5C4A1A] border-2 border-[#C9A627] dark:bg-[#F8E26B]/20 dark:text-[#FFEE88] dark:border-[#F8E26B]/40",
+    "bg-[#FBF09F] text-[#3D2E08] border-2 border-[#C9A627] dark:bg-[#F8E26B]/25 dark:text-[#FBF4C5] dark:border-[#D9B636]",
   // Amber-gold — limited
   Draft:
-    "bg-[#F3A547] text-[#5E2F08] border-2 border-[#C77A1F] dark:bg-[#E08F2B]/40 dark:text-[#F5C988] dark:border-[#E08F2B]/70",
+    "bg-[#F8CC8B] text-[#3D1F08] border-2 border-[#C77A1F] dark:bg-[#E08F2B]/35 dark:text-[#F9DCB0] dark:border-[#E0A547]",
   // Bronze-gold — sealed mystery
   Sealed:
-    "bg-[#D6913A] text-[#3D260A] border-2 border-[#9A571A] dark:bg-[#B86E1F]/45 dark:text-[#E8C28A] dark:border-[#B86E1F]/70",
+    "bg-[#E8BC85] text-[#291A07] border-2 border-[#9A571A] dark:bg-[#B86E1F]/40 dark:text-[#EBCFA5] dark:border-[#C9853C]",
 };
 
 // Saturated swatches for the format-selector dot in the radius dropdown.
