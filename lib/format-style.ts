@@ -9,26 +9,40 @@ export const FORMAT_EMOJI: Record<string, string> = {
   Sealed: "\uD83C\uDF81",
 };
 
+// MTG's traditional WUBRG mana palette drives format colors. Each format
+// is associated with the mana color whose flavor matches it: Modern → U
+// (control / Island), Standard → G (current / Forest), Pioneer → R
+// (aggressive / Mountain), Legacy → B (eternal / Swamp), Pauper → W
+// (commons / Plains). Multicolor formats (Commander, Draft, Sealed) get
+// gold-family hues since multicolor cards are gold-bordered in MTG.
 export const FORMAT_BADGE: Record<string, string> = {
-  Commander: "bg-purple-100 text-purple-700 border border-purple-200 dark:bg-purple-500/20 dark:text-purple-300 dark:border-purple-500/30",
-  Modern: "bg-blue-100 text-blue-700 border border-blue-200 dark:bg-blue-500/20 dark:text-blue-300 dark:border-blue-500/30",
-  Standard: "bg-green-100 text-green-700 border border-green-200 dark:bg-green-500/20 dark:text-green-300 dark:border-green-500/30",
-  Pioneer: "bg-orange-100 text-orange-700 border border-orange-200 dark:bg-orange-500/20 dark:text-orange-300 dark:border-orange-500/30",
-  Legacy: "bg-red-100 text-red-700 border border-red-200 dark:bg-red-500/20 dark:text-red-300 dark:border-red-500/30",
-  Pauper: "bg-yellow-100 text-yellow-700 border border-yellow-200 dark:bg-yellow-500/20 dark:text-yellow-300 dark:border-yellow-500/30",
-  Draft: "bg-cyan-100 text-cyan-700 border border-cyan-200 dark:bg-cyan-500/20 dark:text-cyan-300 dark:border-cyan-500/30",
-  Sealed: "bg-pink-100 text-pink-700 border border-pink-200 dark:bg-pink-500/20 dark:text-pink-300 dark:border-pink-500/30",
+  // Gold — multicolor / legendary
+  Commander: "bg-amber-100 text-amber-800 border border-amber-300 dark:bg-amber-500/20 dark:text-amber-200 dark:border-amber-500/40",
+  // U — Island
+  Modern: "bg-sky-100 text-sky-800 border border-sky-300 dark:bg-sky-500/20 dark:text-sky-200 dark:border-sky-500/40",
+  // G — Forest
+  Standard: "bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-500/20 dark:text-emerald-200 dark:border-emerald-500/40",
+  // R — Mountain
+  Pioneer: "bg-red-100 text-red-800 border border-red-300 dark:bg-red-500/20 dark:text-red-200 dark:border-red-500/40",
+  // B — Swamp / eternal
+  Legacy: "bg-zinc-200 text-zinc-800 border border-zinc-400 dark:bg-zinc-500/25 dark:text-zinc-100 dark:border-zinc-500/40",
+  // W — Plains / commons
+  Pauper: "bg-yellow-100 text-yellow-800 border border-yellow-300 dark:bg-yellow-500/20 dark:text-yellow-200 dark:border-yellow-500/40",
+  // Gold-orange — limited
+  Draft: "bg-orange-100 text-orange-800 border border-orange-300 dark:bg-orange-500/20 dark:text-orange-200 dark:border-orange-500/40",
+  // Gold-violet — sealed mystery
+  Sealed: "bg-violet-100 text-violet-800 border border-violet-300 dark:bg-violet-500/20 dark:text-violet-200 dark:border-violet-500/40",
 };
 
 export const FORMAT_DOT: Record<string, string> = {
-  Commander: "bg-purple-500",
-  Modern: "bg-blue-500",
-  Standard: "bg-green-500",
-  Pioneer: "bg-orange-500",
-  Legacy: "bg-red-500",
+  Commander: "bg-amber-500",
+  Modern: "bg-sky-500",
+  Standard: "bg-emerald-500",
+  Pioneer: "bg-red-500",
+  Legacy: "bg-zinc-600",
   Pauper: "bg-yellow-500",
-  Draft: "bg-cyan-500",
-  Sealed: "bg-pink-500",
+  Draft: "bg-orange-500",
+  Sealed: "bg-violet-500",
 };
 
 export const FORMAT_BADGE_DEFAULT =
@@ -37,17 +51,17 @@ export const FORMAT_BADGE_DEFAULT =
 export const FORMAT_EMOJI_DEFAULT = "\uD83C\uDCCF";
 
 // Hex-int color values for Discord embed `color` field. Mirrors FORMAT_DOT
-// (Tailwind 500-shade values) so the embed accent color matches the dot
-// color shown elsewhere in the product.
+// (Tailwind 500-shade values, except Legacy which uses zinc-600 for more
+// presence on Discord's neutral embed background).
 export const FORMAT_EMBED_COLOR: Record<string, number> = {
-  Commander: 0xa855f7,
-  Modern: 0x3b82f6,
-  Standard: 0x22c55e,
-  Pioneer: 0xf97316,
-  Legacy: 0xef4444,
-  Pauper: 0xeab308,
-  Draft: 0x06b6d4,
-  Sealed: 0xec4899,
+  Commander: 0xf59e0b, // amber-500
+  Modern: 0x0ea5e9, // sky-500
+  Standard: 0x10b981, // emerald-500
+  Pioneer: 0xef4444, // red-500
+  Legacy: 0x52525b, // zinc-600
+  Pauper: 0xeab308, // yellow-500
+  Draft: 0xf97316, // orange-500
+  Sealed: 0x8b5cf6, // violet-500
 };
 
 export const FORMAT_EMBED_COLOR_DEFAULT = 0x6b7280;
