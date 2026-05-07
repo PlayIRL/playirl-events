@@ -130,7 +130,7 @@ export default function DayCard({
               href={`/event/${encodeURIComponent(ev.id)}`}
               data-row
               style={revealed ? { animationDelay: `${80 + i * 45}ms` } : { opacity: 0 }}
-              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-2.5 sm:gap-3 px-3 sm:px-4 py-2.5 ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
+              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-2.5 sm:gap-3 px-3 sm:px-4 py-3.5 sm:py-4 ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
             >
               {/* Desktop: time as a fixed left column. Mobile: hidden here
                   and rendered above the title (see middle div below) so the
