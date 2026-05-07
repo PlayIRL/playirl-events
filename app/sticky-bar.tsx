@@ -28,6 +28,17 @@ export default function StickyBar({ children }: { children: React.ReactNode }) {
     return () => ro.disconnect();
   }, []);
 
+  // Publish the chip-top offset that account-chip / account-menu read for
+  // their `sm:top-[var(--chip-top)]` rule. Page at top → 1rem (the classic
+  // top-4 corner placement). Page scrolled past the bar's natural position
+  // → 1rem below the now-pinned bar so the chip and bar don't collide.
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      "--chip-top",
+      isStuck ? "calc(var(--sticky-bar-h, 3rem) + 1rem)" : "1rem",
+    );
+  }, [isStuck]);
+
   return (
     <>
       <div ref={sentinelRef} className="h-0 w-0" />
