@@ -16,7 +16,7 @@ import AboutInfoButton from "./about-info-button";
 import LocationBanner from "./location-banner";
 import DayCard from "./day-card";
 import Reveal from "./reveal";
-import { LinkButton } from "./button";
+import Link from "next/link";
 import AccountChip from "./account-chip";
 import { PlayIrlLogo } from "./playirl-logo";
 
@@ -230,16 +230,20 @@ export default async function HomePage({
           </div>
 
           {/* Footer navigation — list view extends forward with "Load
-              more events" (bumps `days` by 7), with a date input below
-              for jumping anywhere. Calendar view has its own prev/next
-              in the calendar header. */}
-          <div className="flex flex-col items-center gap-8 mt-16">
-            <LinkButton
+              more events" (bumps `days` by 7), styled as a continuation
+              of the day-card stack so it reads as "another day below".
+              DateJumper sits below for jumping anywhere. Calendar view
+              has its own prev/next in the calendar header. */}
+          <div className="flex flex-col gap-8 mt-8">
+            <Link
               href={`?${new URLSearchParams({ ...Object.fromEntries(Object.entries(params).filter(([k, v]) => k !== "days" && v !== undefined) as [string, string][]), days: String(currentDays + 7) }).toString()}`}
+              className="block w-full text-center py-4 rounded-lg border border-neutral-300 dark:border-white/15 bg-white dark:bg-neutral-900 text-base font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:border-neutral-400 dark:hover:border-white/25 hover:text-neutral-900 dark:hover:text-white transition-colors duration-150"
             >
               Load more events
-            </LinkButton>
-            <DateJumper currentOffset={currentOffset} />
+            </Link>
+            <div className="flex justify-center">
+              <DateJumper currentOffset={currentOffset} />
+            </div>
           </div>
         </>
       )}
