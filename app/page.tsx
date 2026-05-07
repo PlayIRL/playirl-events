@@ -206,7 +206,7 @@ export default async function HomePage({
             </div>
           )}
 
-          <div className="space-y-2">
+          <div className="space-y-8">
             {Object.entries(grouped).map(([date, dayEvents], i) => {
               const d = new Date(date + "T12:00:00");
               const todayStr = today.toISOString().split("T")[0];
