@@ -68,26 +68,16 @@ This authorizes `.github/workflows/backup.yml` to pull a daily snapshot from `/a
 
 ---
 
-## Step 3 — Deploy this branch
+## Step 3 — Deploy
 
-Either merge `claude/heuristic-tu-114cd6` to `main` (Railway auto-deploys on `main` push), or push the branch and trigger a manual Railway deploy.
-
-```bash
-# Option A: merge via GitHub
-gh pr create --title "Nationwide pipeline + fire-and-forget scrape + venue pages" --body "..." --base main
-
-# Option B: push directly
-git push origin HEAD:main
-```
-
-Wait ~2 minutes for the Railway deploy to finish. Then sanity-check:
+Already done on `main` — the nationwide pipeline, fire-and-forget scrape endpoint, and venue pages all shipped between PRs #69 and #99. New work lands on feature branches and merges to `main`; Railway auto-deploys on `main` push. Sanity-check after any deploy:
 
 ```bash
 curl -s https://playirl.gg/api/health | jq
-# Should return: {"ok":true,"eventCount":259,"lastScrape":"2026-04-..."}
+# Returns: {"ok":true,"eventCount":<thousands>,"lastScrape":"<recent>"}
 ```
 
-If `eventCount` is ~259, you're on the right binary and the volume's existing seed is intact.
+If `eventCount` looks unreasonably low (< 1000) or `lastScrape` is days old, something regressed — jump to "Failure modes & recovery" at the bottom.
 
 ---
 

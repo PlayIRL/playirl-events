@@ -88,15 +88,32 @@ export default function BotPage() {
       <Reveal delay={220}>
         <section className="mb-10">
           <h2 className="text-xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white mb-3">Commands</h2>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
+            Lookup commands (<code>/today</code>, <code>/week</code>, <code>/help</code>) work for anyone in the channel. Subscription commands require the <strong>Manage Server</strong> permission.
+          </p>
           <div className="space-y-3">
             <CommandCard
+              name="/playirl today"
+              summary="Show events happening today, optionally filtered by format and location."
+              example="/playirl today format:Commander near:Philadelphia radius_miles:25"
+            />
+            <CommandCard
+              name="/playirl week"
+              summary="Show events in the next 7 days. Same filters as /today."
+              example="/playirl week format:Modern radius_miles:50"
+            />
+            <CommandCard
               name="/playirl subscribe"
-              summary="Add a new event subscription to this channel."
+              summary="Add a new event subscription to this channel (Manage Server)."
               example="/playirl subscribe mode:weekly format:Commander near:Philadelphia radius_miles:25"
             />
             <CommandCard
               name="/playirl list"
               summary="List subscriptions in this server."
+            />
+            <CommandCard
+              name="/playirl edit <id>"
+              summary="Tweak a subscription's filters or schedule without deleting and recreating."
             />
             <CommandCard
               name="/playirl preview <id>"

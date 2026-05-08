@@ -54,37 +54,40 @@ There are two authenticated areas:
 
 ### Auth setup
 
-Authentication runs through [Auth.js v5](https://authjs.dev) on top of a custom `better-sqlite3` adapter (`lib/auth-adapter.ts`). The legacy password-only login at `/admin/login` still works as a **break-glass** path.
+Four sign-in paths, all interchangeable from the user's perspective (they share the same `users` / `sessions` tables and same session cookie):
+
+1. **Email + password** — primary path on `/account/login`. Lives in `lib/credentials-auth.ts` (bcryptjs, 12 rounds). Always available; no env vars required beyond `AUTH_SECRET`. Password policy: 8+ chars, at least one letter and one digit.
+2. **Google OAuth** — Auth.js v5 provider. Enable by setting `AUTH_GOOGLE_ID` / `AUTH_GOOGLE_SECRET`.
+3. **Discord OAuth** — Auth.js v5 provider. Enable by setting `AUTH_DISCORD_ID` / `AUTH_DISCORD_SECRET`.
+4. **Magic-link email** — Auth.js v5 + Resend. Enable by setting `AUTH_RESEND_KEY` and `AUTH_EMAIL_FROM`.
+
+Auth.js v5 sits on top of a custom `better-sqlite3` adapter (`lib/auth-adapter.ts`). The credentials path writes the same Auth.js-shaped session cookie so `auth()` reads either side transparently.
 
 Required env vars (see `.env.example`):
 
 ```env
-# Auth.js
+# Auth.js core (required for any sign-in path)
 AUTH_SECRET=                 # openssl rand -base64 32
 AUTH_URL=https://playirl.gg
 AUTH_TRUST_HOST=true
 ADMIN_EMAILS=you@example.com # comma-separated; auto-promoted to admin role on signin
 
-# Discord OAuth — https://discord.com/developers
+# Discord OAuth — https://discord.com/developers (optional)
 AUTH_DISCORD_ID=
 AUTH_DISCORD_SECRET=
 # Redirect URI: https://playirl.gg/api/auth/callback/discord
 
-# Google OAuth — https://console.cloud.google.com
+# Google OAuth — https://console.cloud.google.com (optional)
 AUTH_GOOGLE_ID=
 AUTH_GOOGLE_SECRET=
 # Redirect URI: https://playirl.gg/api/auth/callback/google
 
-# Resend magic-link email — https://resend.com
+# Resend magic-link email — https://resend.com (optional)
 AUTH_RESEND_KEY=
 AUTH_EMAIL_FROM="PlayIRL <noreply@playirl.gg>"   # sender domain must be verified in Resend
-
-# Legacy break-glass admin login (optional)
-SESSION_SECRET=                # HMAC key for the legacy `mtg-cal-session` cookie
-ADMIN_PASSWORD_HASH=           # bcryptjs hash; in dev, "admin" is accepted if unset
 ```
 
-Providers without configured env vars are silently skipped — you can ship with just one (e.g. Discord) and add others later.
+Providers without configured env vars are silently skipped — you can ship with just email+password and add OAuth later.
 
 ### Venue / event images
 
@@ -126,8 +129,8 @@ Both are idempotent. The scraper auto-runs the venue-image step on each scrape f
 
 **Street address is the source of truth.** Lat/lng is treated as derived metadata used for distance filtering and the (rare) APIs that don't accept text queries.
 
-- **Render-time** — every map embed, "Open in Maps" link, and ICS calendar `LOCATION:` field is built from `event.address` text (Google Maps / OpenStreetMap geocode it on display). The only render path that requires lat/lng is `lib/event-image.ts`'s Google Maps Static hero map, which is reached only when no event/venue photo exists.
-- **Ingest-time** — each `ScrapedEvent` carries a `coords_source` tag (`"source"` | `"guild_fallback"` | `"none"`). Scrapers whose APIs return per-event coords (WotC, TopDeck) tag them `"source"`; sources that fall back to a guild-wide hardcode (Discord) tag them `"guild_fallback"`. After dedupe and before upsert, `lib/scraper.ts` runs `reconcileEventCoords()` which re-geocodes every non-`"source"` event from its address using `lib/geocode.ts` (Google Geocoding API if `GOOGLE_PLACES_API_KEY` is set, OpenStreetMap Nominatim otherwise — free, no key).
+- **Render-time** — every map embed, "Open in Maps" link, and ICS calendar `LOCATION:` field is built from `event.address` text. **Map embeds are Google-only**: `lib/event-image.ts` and the inline iframes on event/venue detail pages render Google Maps when `NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY` is set, and render nothing (text-only header) when it isn't. There is no OSM/Mapbox/Leaflet fallback anywhere on the rendered surface.
+- **Ingest-time** — each `ScrapedEvent` carries a `coords_source` tag (`"source"` | `"guild_fallback"` | `"none"`). Scrapers whose APIs return per-event coords (WotC, TopDeck) tag them `"source"`; sources that fall back to a guild-wide hardcode (Discord) tag them `"guild_fallback"`. After dedupe and before upsert, `lib/scraper.ts` runs `reconcileEventCoords()` which re-geocodes every non-`"source"` event from its address using `lib/geocode.ts` (Google Geocoding API if `GOOGLE_PLACES_API_KEY` is set, OpenStreetMap Nominatim otherwise — server-side only, never reaches the rendered DOM).
 - **Backfill** — `cli/backfill-event-coords.ts` accepts `--source-prefix <X>` to re-derive coords for an existing source's rows, e.g. `npx tsx --env-file=.env cli/backfill-event-coords.ts --source-prefix discord` cleans up rows that inherited a stale `GUILD_COORDS` literal.
 
 Net effect: address-text and lat/lng always agree, regardless of which the renderer queries.
