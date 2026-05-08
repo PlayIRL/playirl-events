@@ -41,7 +41,7 @@ export default async function SavedEventsPage() {
       description={
         <>
           Events you've starred. Tap the star on any card in{" "}
-          <Link href="/account" className="text-amber-700 dark:text-amber-400 hover:underline">
+          <Link href="/account" className="text-neutral-900 dark:text-white hover:underline">
             your feed
           </Link>{" "}
           to add more.
@@ -52,7 +52,7 @@ export default async function SavedEventsPage() {
         <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-8 text-center">
           <p className="text-4xl mb-3">⭐️</p>
           <p className="text-neutral-500 dark:text-neutral-400 text-sm">You haven't saved any events yet.</p>
-          <Link href="/account" className="inline-block mt-3 text-sm text-amber-700 dark:text-amber-400 hover:underline">
+          <Link href="/account" className="inline-block mt-3 text-sm text-neutral-900 dark:text-white hover:underline">
             Browse your feed →
           </Link>
         </div>

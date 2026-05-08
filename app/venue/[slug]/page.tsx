@@ -185,7 +185,7 @@ export default async function VenuePage({ params }: RouteParams) {
               href={venue.store_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-amber-700 dark:text-amber-400 hover:underline"
+              className="text-neutral-900 dark:text-white hover:underline"
             >
               {new URL(venue.store_url).hostname.replace(/^www\./, "")} ↗
             </a>

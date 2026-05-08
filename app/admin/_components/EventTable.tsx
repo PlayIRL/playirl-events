@@ -217,7 +217,7 @@ export default function EventTable({
                 <td className="px-3 py-2 align-top text-right whitespace-nowrap">
                   <Link
                     href={editHref(ev.id)}
-                    className="text-xs text-amber-700 dark:text-amber-400 hover:underline mr-3"
+                    className="text-xs text-neutral-900 dark:text-white hover:underline mr-3"
                   >
                     Edit
                   </Link>

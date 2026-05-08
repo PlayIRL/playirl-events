@@ -41,7 +41,7 @@ export default function Sidebar({ pendingCount = 0 }: { pendingCount?: number })
                 className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
                   active
                     ? "bg-white/20 text-current"
-                    : "bg-amber-500 text-white"
+                    : "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
                 }`}
               >
                 {pendingCount}

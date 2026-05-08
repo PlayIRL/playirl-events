@@ -54,7 +54,7 @@ export default function MyEventsList() {
         <p className="text-neutral-500 dark:text-neutral-400 text-sm">You haven't created any events yet.</p>
         <Link
           href="/account/events/new"
-          className="inline-block mt-3 text-sm text-amber-700 dark:text-amber-400 hover:underline"
+          className="inline-block mt-3 text-sm text-neutral-900 dark:text-white hover:underline"
         >
           Submit your first one →
         </Link>

@@ -38,7 +38,7 @@ export default function AdminEventActions({ eventId }: { eventId: string }) {
         disabled={busy !== null}
         title="Pin event (admin)"
         aria-label="Pin event"
-        className="w-6 h-6 rounded-md flex items-center justify-center text-neutral-400 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-500/10 disabled:opacity-50"
+        className="w-6 h-6 rounded-md flex items-center justify-center text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-white/10 disabled:opacity-50"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 2v7" />

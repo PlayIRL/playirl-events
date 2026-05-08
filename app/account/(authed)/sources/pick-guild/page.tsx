@@ -29,7 +29,7 @@ export default async function PickGuildPage() {
           body={
             <>
               Did you click <span className="font-medium">Authorize</span> inside Discord? If it didn't stick, head{" "}
-              <Link href="/account/sources" className="text-amber-700 dark:text-amber-400 hover:underline">
+              <Link href="/account/sources" className="text-neutral-900 dark:text-white hover:underline">
                 back to step 1
               </Link>{" "}
               and try again. Sometimes it takes a few seconds for Discord to register the change.
@@ -43,7 +43,7 @@ export default async function PickGuildPage() {
           body={
             <>
               The only Discords available are already linked to other accounts. If one of those is yours,{" "}
-              <Link href="/account/sources" className="text-amber-700 dark:text-amber-400 hover:underline">
+              <Link href="/account/sources" className="text-neutral-900 dark:text-white hover:underline">
                 manage it on the sources page
               </Link>.
             </>
