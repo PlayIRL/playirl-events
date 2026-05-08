@@ -25,7 +25,7 @@ import { findVenueBySlug } from "@/lib/venues";
 import { getEventsForVenue } from "@/lib/events";
 import { getCurrentUser } from "@/lib/session";
 import { getSavedEventIds } from "@/lib/event-saves";
-import { resolveEventImage } from "@/lib/event-image";
+import { resolveEventImage, resolveVenueImage } from "@/lib/event-image";
 import { SITE_URL } from "@/lib/config";
 import DayCard from "@/app/day-card";
 import Reveal from "@/app/reveal";
@@ -98,6 +98,32 @@ export default async function VenuePage({ params }: RouteParams) {
     ? `https://maps.google.com/?q=${encodeURIComponent(venue.address)}`
     : null;
 
+  // Hero photo for this venue — same cascade as event pages: venue_defaults
+  // photo → static map → nothing. We skip the universal placeholder here so a
+  // venue with no real image just keeps the existing text-only header.
+  const hero = resolveVenueImage({
+    name: venue.name,
+    latitude: venue.latitude,
+    longitude: venue.longitude,
+  });
+  const heroIsPhoto = hero?.fit === "cover";
+  const heroIsMap = hero?.kind === "map";
+
+  // Inline map below the address — only when the hero isn't already a map,
+  // so we don't render two maps. Google Maps Embed only; if the key isn't
+  // configured we render no inline map at all.
+  const hasCoords = venue.latitude != null && venue.longitude != null;
+  const placeQuery = venue.address
+    ? `${venue.name}, ${venue.address}`
+    : venue.name || null;
+  const googleEmbedKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY;
+  let mapEmbedSrc: string | null = null;
+  if (googleEmbedKey && (placeQuery || hasCoords)) {
+    const q = placeQuery ?? `${venue.latitude},${venue.longitude}`;
+    mapEmbedSrc = `https://www.google.com/maps/embed/v1/place?key=${googleEmbedKey}&q=${encodeURIComponent(q)}&zoom=15`;
+  }
+  const showInlineMap = !heroIsMap && Boolean(mapEmbedSrc);
+
   return (
     <main className="w-full max-w-3xl mx-auto px-4 py-8">
       <div className="mb-6 anim-fade-in">
@@ -105,6 +131,23 @@ export default async function VenuePage({ params }: RouteParams) {
           &larr; Back to PlayIRL.GG
         </Link>
       </div>
+
+      {hero && (
+        <div
+          className={`relative aspect-video overflow-hidden rounded-md mb-6 anim-fade-in-up border border-neutral-100 dark:border-white/8 ${heroIsPhoto ? "" : "bg-neutral-50"}`}
+          style={{ "--delay": "30ms" } as React.CSSProperties}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={hero.url}
+            alt={venue.name}
+            className={`w-full h-full ${heroIsPhoto ? "object-cover" : "object-contain p-6"}`}
+          />
+          {heroIsPhoto && (
+            <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-[#0c1220] via-transparent to-transparent pointer-events-none" />
+          )}
+        </div>
+      )}
 
       <header className="mb-8 anim-fade-in-up">
         <div className="flex items-start justify-between gap-3 mb-2">
@@ -147,6 +190,15 @@ export default async function VenuePage({ params }: RouteParams) {
               {new URL(venue.store_url).hostname.replace(/^www\./, "")} ↗
             </a>
           </p>
+        )}
+        {showInlineMap && mapEmbedSrc && (
+          <iframe
+            src={mapEmbedSrc}
+            title={`Map of ${venue.name}`}
+            className="w-full aspect-[3/2] rounded-md border border-neutral-100 dark:border-white/8 mt-4"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
         )}
       </header>
 

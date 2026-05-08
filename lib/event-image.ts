@@ -144,3 +144,33 @@ export function hasRealEventImage(event: EventImageInput): boolean {
   }
   return false;
 }
+
+export interface VenueImageInput {
+  name: string;
+  latitude?: number | null;
+  longitude?: number | null;
+}
+
+/**
+ * Resolve a venue's hero image for the public /venue/{slug} page. Same
+ * cascade as `resolveEventImage` minus the per-event image and per-source
+ * icon — those don't apply when there's no concrete event in hand:
+ *
+ *   venue_defaults[venueKey(name)]   (real venue photo)
+ *     → googleMapsStaticUrl(lat, lng)  (render-time static map)
+ *     → null                           (caller decides whether to render anything)
+ *
+ * Returns null instead of a placeholder SVG so a venue page without any real
+ * photo or coords just stays text-only rather than displaying generic filler.
+ */
+export function resolveVenueImage(venue: VenueImageInput): EventImage | null {
+  const def = venueDefaultsByKey().get(venueKey(venue.name));
+  if (def) return { url: def.url, fit: fitFor(def.url, def.source), kind: "venue" };
+
+  if (venue.latitude != null && venue.longitude != null) {
+    const map = googleMapsStaticUrl(venue.latitude, venue.longitude);
+    if (map) return { url: map, fit: "cover", kind: "map" };
+  }
+
+  return null;
+}
