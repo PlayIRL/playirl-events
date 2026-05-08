@@ -21,7 +21,7 @@ export function PlayIrlLogo({ className = "text-base" }: Props) {
     >
       <svg
         viewBox="0 0 100 100"
-        className="h-[0.85em] w-[0.85em] shrink-0"
+        className="h-[0.57em] w-[0.57em] shrink-0"
         fill="currentColor"
         aria-hidden="true"
       >
