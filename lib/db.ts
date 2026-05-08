@@ -407,6 +407,9 @@ function initSchema(db: Database.Database) {
   try { db.exec("ALTER TABLE user_preferences ADD COLUMN location_lat REAL"); } catch {}
   try { db.exec("ALTER TABLE user_preferences ADD COLUMN location_lng REAL"); } catch {}
   try { db.exec("ALTER TABLE user_preferences ADD COLUMN location_label TEXT DEFAULT ''"); } catch {}
+  // Optional user-set display name for a Discord auto-post. NULL means
+  // "fall back to the auto-generated title" (e.g., "Weekly Commander digest").
+  try { db.exec("ALTER TABLE discord_subscriptions ADD COLUMN name TEXT"); } catch {}
 
   // Default settings
   const insert = db.prepare("INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)");

@@ -71,6 +71,7 @@ function FormModal({
   const [channelId, setChannelId] = useState<string>("");
 
   // -- form state --
+  const [name, setName] = useState("");
   const [mode, setMode] = useState<Mode>("weekly");
   const [format, setFormat] = useState("");
   const [near, setNear] = useState("");
@@ -160,6 +161,7 @@ function FormModal({
           guild_id: guildId,
           channel_id: channelId,
           mode,
+          name: name.trim() || null,
           format: format || null,
           near: near || null,
           radius_miles: radiusMiles === "" ? null : Number(radiusMiles),
@@ -258,6 +260,19 @@ function FormModal({
                   <ModeButton current={mode} value="daily" label="Daily" sub={HINTS.modeDaily} onClick={setMode} />
                   <ModeButton current={mode} value="reminder" label="Per-event" sub={HINTS.modeReminder} onClick={setMode} />
                 </div>
+              </Section>
+
+              <Section title="Name this auto-post">
+                <Field label="Title" hint="Optional — defaults to a generated label like &quot;Weekly Commander digest&quot; if blank.">
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="e.g. Friday night Commander digest"
+                    maxLength={80}
+                    className={INPUT_CLASS}
+                  />
+                </Field>
               </Section>
 
               <ScheduleAndFilterSections

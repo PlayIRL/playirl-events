@@ -58,6 +58,7 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
 
   // Mirror the create form's local state shape so we can reuse
   // ScheduleAndFilterSections directly.
+  const [name, setName] = useState(sub.name ?? "");
   const [hourUtc, setHourUtc] = useState(sub.hour_utc);
   const [dow, setDow] = useState(sub.dow ?? 1);
   const [daysAhead, setDaysAhead] = useState(sub.days_ahead);
@@ -80,6 +81,7 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          name: name.trim() || null,
           format: format || null,
           // Send `near` (not just near_label) so the API re-geocodes when
           // the user changes the location. Empty string = clear the geo
@@ -168,16 +170,15 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
     }
   }
 
-  // Auto-generated display title. Convention: `[Cadence] [Format] [digest|reminder]`.
-  // Format is woven in only when set, so an unfiltered weekly digest reads
-  // "Weekly digest" while a Commander-only one reads "Weekly Commander digest".
-  // Reminders prefix the lead time so two reminders in the same channel are
-  // distinguishable at a glance.
+  // Display title. Prefer the user-set name; otherwise fall back to a
+  // generated label (`[Cadence] [Format] [digest|reminder]`) so cards always
+  // have something prominent regardless of how the user filled out the form.
   const formatPart = sub.format ? ` ${sub.format}` : "";
-  const subscriptionTitle =
+  const generatedTitle =
     sub.mode === "weekly" ? `Weekly${formatPart} digest`
     : sub.mode === "daily" ? `Daily${formatPart} digest`
     : `${sub.lead_minutes}-min${formatPart} reminder`;
+  const subscriptionTitle = sub.name?.trim() || generatedTitle;
 
   const modeLabel =
     sub.mode === "weekly" ? "Weekly digest"
@@ -355,6 +356,21 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
           <div className="rounded-md bg-neutral-50 dark:bg-neutral-800/50 px-3 py-2 text-xs text-neutral-600 dark:text-neutral-300">
             Server, channel, and mode can&apos;t be changed — to switch any of those, delete this auto-post and create a new one.
           </div>
+
+          <label className="block">
+            <span className="block text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-1">Title</span>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder={generatedTitle}
+              maxLength={80}
+              className="w-full px-2.5 py-2 rounded-md border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400/40 focus:border-neutral-400 dark:focus:ring-white/20 dark:focus:border-white/30"
+            />
+            <span className="block text-[11px] text-neutral-500 dark:text-neutral-400 mt-1.5 leading-snug">
+              Leave blank to use the auto-generated title.
+            </span>
+          </label>
 
           <ScheduleAndFilterSections
             value={{

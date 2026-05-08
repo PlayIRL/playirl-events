@@ -25,6 +25,7 @@ interface CreateBody {
   guild_id: string;
   channel_id: string;
   mode: DiscordSubMode;
+  name?: string | null;
   format?: string | null;
   source?: string | null;
   near?: string | null;
@@ -130,6 +131,7 @@ export async function POST(req: Request) {
     guild_id: body.guild_id,
     channel_id: body.channel_id,
     mode: body.mode,
+    name: body.name ?? null,
     format,
     source,
     radius_miles: radiusMiles,
