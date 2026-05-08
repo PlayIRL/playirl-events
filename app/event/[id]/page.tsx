@@ -165,12 +165,13 @@ export default async function EventPage({
   // Show an inline map on the Address row whenever the hero isn't already
   // a map — otherwise we'd render the same view twice.
   //
-  // We prefer Google's official Maps Embed API when NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY
-  // is configured (free for the standard `place` mode, lock the key by HTTP
-  // referrer in the Google Cloud Console). Falls back to OpenStreetMap's
-  // public embed when the key isn't set — works without any setup, just less
-  // polished. Google's old `?output=embed` URL is blocked by X-Frame-Options
-  // on all origins now and can't be used.
+  // Google Maps Embed only. Requires NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY in the
+  // environment (free for the standard `place` mode; lock by HTTP referrer
+  // in the Google Cloud Console). When the key isn't set we render no inline
+  // map at all — non-Google providers (OSM/Mapbox/Leaflet) are intentionally
+  // not used anywhere in this codebase. Google's old `?output=embed` URL is
+  // blocked by X-Frame-Options on all origins now and can't be used as a
+  // keyless fallback either.
   //
   // Important: prefer the address text when present. Some scraped events
   // (notably Discord-scraped ones) carry a guild-wide fallback lat/lng that
@@ -187,10 +188,6 @@ export default async function EventPage({
   if (googleEmbedKey && (placeQuery || hasCoords)) {
     const q = placeQuery ?? `${ev.latitude},${ev.longitude}`;
     mapEmbedSrc = `https://www.google.com/maps/embed/v1/place?key=${googleEmbedKey}&q=${encodeURIComponent(q)}&zoom=15`;
-  } else if (hasCoords) {
-    // OSM needs coords (no text-query embed). bbox is a small box (~0.5 km in
-    // mid-latitudes); marker= drops the pin.
-    mapEmbedSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${(ev.longitude! - 0.005).toFixed(4)},${(ev.latitude! - 0.003).toFixed(4)},${(ev.longitude! + 0.005).toFixed(4)},${(ev.latitude! + 0.003).toFixed(4)}&layer=mapnik&marker=${ev.latitude},${ev.longitude}`;
   }
   const showInlineMap = !heroIsMap && Boolean(mapEmbedSrc);
 

@@ -2,10 +2,10 @@
 
 import dynamic from "next/dynamic";
 
-// react-leaflet pokes at `window` at module load, so MapView must never run in
-// the SSR pass. This thin wrapper lets the server-rendered page.tsx hand off
-// rendering to a client-only chunk without dragging the leaflet bundle into
-// the initial HTML payload.
+// @vis.gl/react-google-maps pokes at `window` at module load, so MapView must
+// never run in the SSR pass. This thin wrapper lets the server-rendered
+// page.tsx hand off rendering to a client-only chunk without dragging the
+// Google Maps bundle into the initial HTML payload.
 const MapView = dynamic(() => import("./map-view"), {
   ssr: false,
   loading: () => (
