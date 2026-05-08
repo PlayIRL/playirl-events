@@ -180,8 +180,8 @@ export default function MapView({
 }
 
 function CountBadge({ count }: { count: number }) {
-  // Match the leaflet div-marker styling — sized by event count so denser
-  // venues stand out, capped so a 100-event venue doesn't blow up the map.
+  // Custom div-marker styling — sized by event count so denser venues stand
+  // out, capped so a 100-event venue doesn't blow up the map.
   const size = Math.min(28 + Math.log2(count) * 6, 48);
   return (
     <div
