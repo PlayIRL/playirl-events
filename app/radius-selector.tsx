@@ -7,10 +7,16 @@ import LocationPicker from "./location-picker";
 // Build the canonical /calendar URL given the user's current filter state.
 // Empty/falsy filters are omitted so subscribers to the bare /calendar
 // keep getting the unfiltered global feed.
-function buildFeedPath({ format, radius, days }: { format?: string; radius: number; days: number }): string {
+function buildFeedPath({ format, radius, days, venue }: { format?: string; radius?: number; days?: number; venue?: string }): string {
   const sp = new URLSearchParams();
   if (format) sp.set("format", format);
-  if (radius) sp.set("radius", String(radius));
+  if (venue) {
+    // Venue mode skips radius — the calendar feed treats `?venue=` as an
+    // exact match and ignores radius/lat/lng when present.
+    sp.set("venue", venue);
+  } else if (radius) {
+    sp.set("radius", String(radius));
+  }
   if (days) sp.set("days", String(days));
   const qs = sp.toString();
   return qs ? `/calendar?${qs}` : `/calendar`;
@@ -165,15 +171,19 @@ function ChipSelect({
   );
 }
 
-function SubscribeDropdown({
+export function SubscribeDropdown({
   currentFormat,
   currentRadius,
   currentDays,
+  venueName,
   onToast,
 }: {
   currentFormat?: string;
   currentRadius: number;
   currentDays: number;
+  /** When set, the dropdown subscribes the user to ONE venue's events
+   *  (skips radius). Triggered from the venue page's Subscribe button. */
+  venueName?: string;
   onToast: (text: string, anchor: DOMRect) => void;
 }) {
   const [status, setStatus] = useState<"closed" | "open" | "closing">("closed");
@@ -202,10 +212,18 @@ function SubscribeDropdown({
   // Filter-aware feed URLs. Anchored to the user's current filter state so
   // a subscribed calendar shows exactly the slice they're looking at.
   const host = typeof window !== "undefined" ? window.location.host : "playirl.gg";
-  const path = buildFeedPath({ format: currentFormat, radius: currentRadius, days: currentDays });
+  const path = buildFeedPath({
+    format: currentFormat,
+    radius: venueName ? undefined : currentRadius,
+    days: currentDays,
+    venue: venueName,
+  });
   const webcalUrl = `webcal://${host}${path}`;
   const httpsUrl = `https://${host}${path}`;
-  const downloadName = `mtg-${currentFormat ?? "events"}-${currentRadius}mi-${currentDays}d.ics`;
+  const venueSlug = venueName ? venueName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") : null;
+  const downloadName = venueName
+    ? `mtg-${currentFormat ?? "events"}-${venueSlug}-${currentDays}d.ics`
+    : `mtg-${currentFormat ?? "events"}-${currentRadius}mi-${currentDays}d.ics`;
 
   // Filter summary — same labels the user picked in the chip bar above.
   const timeLabel = TIME_OPTIONS.find((t) => t.value === String(currentDays))?.label ?? `${currentDays}d`;
@@ -283,7 +301,7 @@ function SubscribeDropdown({
               scheduled-events API integration) — kept as a Soon pill. */}
           <div className="border-t border-neutral-100 dark:border-white/8 mt-1 pt-1">
             <Link
-              href="/account?tab=discord"
+              href={venueName ? `/account?tab=discord&venue=${encodeURIComponent(venueName)}` : "/account?tab=discord"}
               onClick={close}
               className={`${OPTION} text-neutral-700 dark:text-neutral-200`}
             >
@@ -322,6 +340,43 @@ function SoonPill() {
     <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-neutral-100 dark:bg-white/8 text-neutral-500 dark:text-neutral-400 font-semibold">
       Soon
     </span>
+  );
+}
+
+/**
+ * Standalone Subscribe button for pages that don't have the full filter
+ * chip bar (e.g., the venue page). Wraps SubscribeDropdown with sensible
+ * defaults and an inline toast so consumers don't have to wire one up.
+ */
+export function VenueSubscribeButton({ venueName, days = 30 }: { venueName: string; days?: number }) {
+  const [toast, setToast] = useState<{ top: number; left: number; text: string } | null>(null);
+  function showToast(text: string, anchor: DOMRect) {
+    const margin = 80;
+    const center = anchor.left + anchor.width / 2;
+    setToast({
+      top: anchor.bottom + 8,
+      left: Math.max(margin, Math.min(window.innerWidth - margin, center)),
+      text,
+    });
+    setTimeout(() => setToast(null), 2500);
+  }
+  return (
+    <>
+      <SubscribeDropdown
+        venueName={venueName}
+        currentRadius={0}
+        currentDays={days}
+        onToast={showToast}
+      />
+      {toast && (
+        <div
+          style={{ position: "fixed", top: toast.top, left: toast.left, transform: "translateX(-50%)" }}
+          className="z-50 px-3 py-1.5 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-xs font-medium shadow-lg pointer-events-none"
+        >
+          {toast.text}
+        </div>
+      )}
+    </>
   );
 }
 

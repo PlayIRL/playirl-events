@@ -27,14 +27,22 @@ export async function GET(_request: Request, ctx: { params: Promise<{ id: string
   const windowLabel = sub.mode === "weekly" ? "this week" : sub.mode === "daily" ? "today" : "upcoming";
   const to = new Date(now.getTime() + windowDays * 24 * 60 * 60 * 1000);
 
+  // Venue scope is stricter than radius — when set, drop the radius filter
+  // and require an exact venue-name match, matching the dispatcher.
+  const venueScope = sub.venue_name?.trim().toLowerCase();
+  const useGeo = !venueScope;
   const events = getActiveEvents({
     format: sub.format ?? undefined,
     from: now.toISOString().slice(0, 10),
     to: to.toISOString().slice(0, 10),
-    radiusMiles: sub.radius_miles ?? undefined,
-    centerLat: sub.center_lat ?? undefined,
-    centerLng: sub.center_lng ?? undefined,
-  }).filter(ev => !sub.source || ev.source === sub.source);
+    radiusMiles: useGeo ? (sub.radius_miles ?? undefined) : undefined,
+    centerLat: useGeo ? (sub.center_lat ?? undefined) : undefined,
+    centerLng: useGeo ? (sub.center_lng ?? undefined) : undefined,
+  }).filter(ev => {
+    if (sub.source && ev.source !== sub.source) return false;
+    if (venueScope && (ev.location ?? "").trim().toLowerCase() !== venueScope) return false;
+    return true;
+  });
 
   // Reminder mode previews the next matching event as if its trigger fired
   // now — gives the user a feel for the message shape without waiting for

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import {
   type Mode,
@@ -27,7 +27,16 @@ interface Channel {
 
 export default function AddSubscriptionForm({ inviteUrl }: { inviteUrl: string | null }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
+
+  // Auto-open the modal when a `?venue=` param lands here from the venue
+  // page's "Post to Discord" entry — so the user goes straight from "I want
+  // to post this venue" to a half-filled form. Only fires once.
+  const venuePrefill = searchParams.get("venue") ?? "";
+  useEffect(() => {
+    if (venuePrefill) setOpen(true);
+  }, [venuePrefill]);
 
   return (
     <div>
@@ -40,6 +49,7 @@ export default function AddSubscriptionForm({ inviteUrl }: { inviteUrl: string |
       {open && (
         <FormModal
           inviteUrl={inviteUrl}
+          venuePrefill={venuePrefill}
           onClose={() => setOpen(false)}
           onCreated={() => {
             setOpen(false);
@@ -53,10 +63,12 @@ export default function AddSubscriptionForm({ inviteUrl }: { inviteUrl: string |
 
 function FormModal({
   inviteUrl,
+  venuePrefill,
   onClose,
   onCreated,
 }: {
   inviteUrl: string | null;
+  venuePrefill?: string;
   onClose: () => void;
   onCreated: () => void;
 }) {
@@ -72,6 +84,7 @@ function FormModal({
 
   // -- form state --
   const [name, setName] = useState("");
+  const [venueName, setVenueName] = useState(venuePrefill ?? "");
   const [mode, setMode] = useState<Mode>("weekly");
   const [format, setFormat] = useState("");
   const [near, setNear] = useState("");
@@ -162,6 +175,7 @@ function FormModal({
           channel_id: channelId,
           mode,
           name: name.trim() || null,
+          venue_name: venueName.trim() || null,
           format: format || null,
           near: near || null,
           radius_miles: radiusMiles === "" ? null : Number(radiusMiles),
@@ -270,6 +284,16 @@ function FormModal({
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Friday night Commander digest"
                     maxLength={80}
+                    className={INPUT_CLASS}
+                  />
+                </Field>
+                <Field label="Venue scope" hint="Optional — when set, posts only events at this exact venue and ignores the radius filter below. Pre-filled when arriving from a venue page.">
+                  <input
+                    type="text"
+                    value={venueName}
+                    onChange={(e) => setVenueName(e.target.value)}
+                    placeholder="e.g. Top Deck Games - Cherry Hill"
+                    maxLength={120}
                     className={INPUT_CLASS}
                   />
                 </Field>

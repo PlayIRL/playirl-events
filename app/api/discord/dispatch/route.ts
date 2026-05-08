@@ -78,14 +78,23 @@ function eventsForSubscription(
   from: Date,
   to: Date,
 ) {
+  // Venue scope is stricter than location scope — when set, we skip the
+  // radius filter and require an exact (case/whitespace-insensitive)
+  // match on the event's `location` column, mirroring getEventsForVenue.
+  const venueScope = sub.venue_name?.trim().toLowerCase();
+  const useGeo = !venueScope;
   return getActiveEvents({
     format: sub.format ?? undefined,
     from: dateKey(from),
     to: dateKey(to),
-    radiusMiles: sub.radius_miles ?? undefined,
-    centerLat: sub.center_lat ?? undefined,
-    centerLng: sub.center_lng ?? undefined,
-  }).filter(ev => !sub.source || ev.source === sub.source);
+    radiusMiles: useGeo ? (sub.radius_miles ?? undefined) : undefined,
+    centerLat: useGeo ? (sub.center_lat ?? undefined) : undefined,
+    centerLng: useGeo ? (sub.center_lng ?? undefined) : undefined,
+  }).filter(ev => {
+    if (sub.source && ev.source !== sub.source) return false;
+    if (venueScope && (ev.location ?? "").trim().toLowerCase() !== venueScope) return false;
+    return true;
+  });
 }
 
 async function fireDigest(

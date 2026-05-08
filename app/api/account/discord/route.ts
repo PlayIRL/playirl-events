@@ -26,6 +26,8 @@ interface CreateBody {
   channel_id: string;
   mode: DiscordSubMode;
   name?: string | null;
+  /** Optional single-venue scope. Skips radius/location filters when set. */
+  venue_name?: string | null;
   format?: string | null;
   source?: string | null;
   near?: string | null;
@@ -132,6 +134,7 @@ export async function POST(req: Request) {
     channel_id: body.channel_id,
     mode: body.mode,
     name: body.name ?? null,
+    venue_name: body.venue_name ?? null,
     format,
     source,
     radius_miles: radiusMiles,

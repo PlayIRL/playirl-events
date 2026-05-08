@@ -29,6 +29,7 @@ import { resolveEventImage } from "@/lib/event-image";
 import { SITE_URL } from "@/lib/config";
 import DayCard from "@/app/day-card";
 import Reveal from "@/app/reveal";
+import { VenueSubscribeButton } from "@/app/radius-selector";
 
 export const dynamic = "force-dynamic";
 
@@ -106,12 +107,19 @@ export default async function VenuePage({ params }: RouteParams) {
       </div>
 
       <header className="mb-8 anim-fade-in-up">
-        <p className="text-[10px] font-semibold text-neutral-500 dark:text-neutral-400 mb-2">
-          Venue
-        </p>
-        <h1 className="text-2xl sm:text-3xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white mb-2">
-          {venue.name}
-        </h1>
+        <div className="flex items-start justify-between gap-3 mb-2">
+          <div className="min-w-0">
+            <p className="text-[10px] font-semibold text-neutral-500 dark:text-neutral-400 mb-2">
+              Venue
+            </p>
+            <h1 className="text-2xl sm:text-3xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white">
+              {venue.name}
+            </h1>
+          </div>
+          <div className="shrink-0">
+            <VenueSubscribeButton venueName={venue.name} />
+          </div>
+        </div>
         {venue.address && (
           <p className="text-sm text-neutral-600 dark:text-neutral-400">
             {mapsHref ? (

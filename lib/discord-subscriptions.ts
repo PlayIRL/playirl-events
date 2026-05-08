@@ -20,6 +20,9 @@ export interface DiscordSubscription {
   mode: DiscordSubMode;
   /** User-set display name. NULL falls back to an auto-generated title at render time. */
   name: string | null;
+  /** Optional single-venue scope. When set, the dispatcher filters events to
+   *  only those at this venue and ignores radius/center. */
+  venue_name: string | null;
   format: string | null;
   source: string | null;
   radius_miles: number | null;
@@ -44,6 +47,7 @@ export interface CreateSubscriptionInput {
   channel_id: string;
   mode: DiscordSubMode;
   name?: string | null;
+  venue_name?: string | null;
   format?: string | null;
   source?: string | null;
   radius_miles?: number | null;
@@ -63,17 +67,18 @@ export function createSubscription(input: CreateSubscriptionInput): DiscordSubsc
   const id = randomUUID();
   db.prepare(`
     INSERT INTO discord_subscriptions (
-      id, guild_id, channel_id, mode, name,
+      id, guild_id, channel_id, mode, name, venue_name,
       format, source, radius_miles, center_lat, center_lng, near_label,
       hour_utc, dow, lead_preset, lead_minutes, days_ahead,
       created_by
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
     id,
     input.guild_id,
     input.channel_id,
     input.mode,
     input.name?.trim() || null,
+    input.venue_name?.trim() || null,
     input.format ?? null,
     input.source ?? null,
     input.radius_miles ?? null,
@@ -161,13 +166,14 @@ export function updateSubscription(id: string, patch: Partial<CreateSubscription
   const merged = { ...existing, ...patch };
   getDb().prepare(`
     UPDATE discord_subscriptions SET
-      mode = ?, name = ?, format = ?, source = ?, radius_miles = ?, center_lat = ?, center_lng = ?,
+      mode = ?, name = ?, venue_name = ?, format = ?, source = ?, radius_miles = ?, center_lat = ?, center_lng = ?,
       near_label = ?, hour_utc = ?, dow = ?, lead_preset = ?, lead_minutes = ?, days_ahead = ?,
       updated_at = datetime('now')
     WHERE id = ?
   `).run(
     merged.mode,
     merged.name?.trim() || null,
+    merged.venue_name?.trim() || null,
     merged.format,
     merged.source,
     merged.radius_miles,

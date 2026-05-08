@@ -410,6 +410,10 @@ function initSchema(db: Database.Database) {
   // Optional user-set display name for a Discord auto-post. NULL means
   // "fall back to the auto-generated title" (e.g., "Weekly Commander digest").
   try { db.exec("ALTER TABLE discord_subscriptions ADD COLUMN name TEXT"); } catch {}
+  // Optional single-venue scope. When set, the dispatcher filters events to
+  // only those whose `location` matches this venue (case/whitespace insensitive)
+  // and ignores radius/center filters since the venue is exact.
+  try { db.exec("ALTER TABLE discord_subscriptions ADD COLUMN venue_name TEXT"); } catch {}
 
   // Default settings
   const insert = db.prepare("INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)");

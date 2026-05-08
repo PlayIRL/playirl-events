@@ -67,6 +67,7 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
   const [format, setFormat] = useState(sub.format ?? "");
   const [near, setNear] = useState(sub.near_label);
   const [radiusMiles, setRadiusMiles] = useState<number | "">(sub.radius_miles ?? "");
+  const [venueName, setVenueName] = useState(sub.venue_name ?? "");
 
   async function save() {
     setBusy(true);
@@ -82,6 +83,7 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name.trim() || null,
+          venue_name: venueName.trim() || null,
           format: format || null,
           // Send `near` (not just near_label) so the API re-geocodes when
           // the user changes the location. Empty string = clear the geo
@@ -241,7 +243,15 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
               <Field label="Window" value={windowLine} />
               <Field label="Format" value={formatLine} muted={!sub.format} />
               <Field label="Source" value={sourceLine} muted={!sub.source} />
-              <Field label="Location" value={locationLine} muted={!sub.near_label} />
+              {sub.venue_name ? (
+                <Field
+                  label="Venue scope"
+                  value={sub.venue_name}
+                  help="Posts only events at this exact venue (radius is ignored)."
+                />
+              ) : (
+                <Field label="Location" value={locationLine} muted={!sub.near_label} />
+              )}
               <Field
                 label="Channel"
                 value={<code className="text-xs">#{sub.channel_id}</code>}
@@ -404,6 +414,21 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
             />
             <span className="block text-[11px] text-neutral-500 dark:text-neutral-400 mt-1.5 leading-snug">
               Leave blank to use the auto-generated title.
+            </span>
+          </label>
+
+          <label className="block">
+            <span className="block text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-1">Venue scope</span>
+            <input
+              type="text"
+              value={venueName}
+              onChange={(e) => setVenueName(e.target.value)}
+              placeholder="e.g. Top Deck Games - Cherry Hill"
+              maxLength={120}
+              className="w-full px-2.5 py-2 rounded-md border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400/40 focus:border-neutral-400 dark:focus:ring-white/20 dark:focus:border-white/30"
+            />
+            <span className="block text-[11px] text-neutral-500 dark:text-neutral-400 mt-1.5 leading-snug">
+              Optional — when set, posts only events at this exact venue and ignores the radius filter below.
             </span>
           </label>
 

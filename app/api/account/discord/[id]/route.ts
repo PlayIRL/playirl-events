@@ -25,6 +25,8 @@ const VALID_MODES: DiscordSubMode[] = ["weekly", "daily", "reminder"];
 interface PatchBody {
   /** User-set display name. Empty string clears it back to the auto-generated title. */
   name?: string | null;
+  /** Single-venue scope. Empty string clears it. */
+  venue_name?: string | null;
   format?: string | null;
   source?: string | null;
   radius_miles?: number | null;
@@ -104,6 +106,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   // user-facing freeform inputs (`near`, `lead`) into stored columns.
   const dbPatch: Parameters<typeof updateSubscription>[1] = {};
   if (body.name !== undefined) dbPatch.name = body.name;
+  if (body.venue_name !== undefined) dbPatch.venue_name = body.venue_name;
   if (body.format !== undefined) dbPatch.format = body.format;
   if (body.source !== undefined) dbPatch.source = body.source;
   if (body.radius_miles !== undefined) dbPatch.radius_miles = body.radius_miles;
