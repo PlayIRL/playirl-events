@@ -49,12 +49,41 @@ export async function generateMetadata({ params }: RouteParams): Promise<Metadat
     ? `${events.length} upcoming MTG event${events.length === 1 ? "" : "s"} at ${venue.name}${venue.address ? `, ${venue.address}` : ""}.`
     : `MTG events at ${venue.name}${venue.address ? `, ${venue.address}` : ""}.`;
 
+  // Pin the venue's resolved hero photo as the share-preview image so chats
+  // get a recognizable storefront instead of the generic site-wide branded
+  // OG. Skip when there's no real venue image — without an explicit value
+  // here Next.js falls through to `app/opengraph-image.tsx` (the branded
+  // PlayIRL.gg card), which is the better default than nothing. Image URLs
+  // need to be absolute for OG; metadataBase in layout.tsx handles relative
+  // paths but we belt-and-suspenders it with SITE_URL for clarity.
+  const hero = resolveVenueImage({
+    name: venue.name,
+    latitude: venue.latitude,
+    longitude: venue.longitude,
+  });
+  const ogImage = hero
+    ? hero.url.startsWith("http")
+      ? hero.url
+      : `${SITE_URL}${hero.url}`
+    : null;
+
   return {
     title,
     description,
     alternates: { canonical: url },
-    openGraph: { title, description, url, type: "website" },
-    twitter: { card: "summary_large_image", title, description },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: "website",
+      ...(ogImage && { images: [{ url: ogImage, alt: venue.name }] }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(ogImage && { images: [ogImage] }),
+    },
   };
 }
 
