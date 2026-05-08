@@ -29,7 +29,7 @@ import {
 } from "@/lib/discord-subscriptions";
 import {
   postToChannel,
-  renderDigestMessages,
+  renderDigestSummary,
   renderReminderMessage,
 } from "@/lib/discord-post";
 
@@ -109,20 +109,15 @@ async function fireDigest(
   // actual content, and /playirl preview lets admins sanity-check filters.
   if (events.length === 0) return;
 
-  // Multi-message digests share a single bucket; we claim under the first
-  // event's id and post all chunks if claimed. A failure mid-chunk only loses
-  // the unsent tail — the claim row stays so we don't re-post the head.
-  const messages = renderDigestMessages(events, { windowLabel });
+  // Single summary message. Claim under the first event's id so the dedupe
+  // ledger key (subscription_id, event_id, kind, bucket) stays unique per
+  // bucket, matching the per-event PK shape the schema expects.
+  const payload = renderDigestSummary(events, { windowLabel });
   const headEvent = events[0];
   if (!claimPost(sub.id, headEvent.id, "digest", bucket)) return;
   try {
-    let firstMessageId: string | null = null;
-    for (let i = 0; i < messages.length; i++) {
-      const result = await postToChannel(sub.channel_id, messages[i]);
-      if (i === 0) firstMessageId = result.id;
-      if (i < messages.length - 1) await new Promise(r => setTimeout(r, POST_GAP_MS));
-    }
-    if (firstMessageId) recordPostMessageId(sub.id, headEvent.id, "digest", bucket, firstMessageId);
+    const result = await postToChannel(sub.channel_id, payload);
+    recordPostMessageId(sub.id, headEvent.id, "digest", bucket, result.id);
     summary.digests_posted++;
   } catch (err) {
     releasePost(sub.id, headEvent.id, "digest", bucket);
@@ -197,7 +192,7 @@ async function drainPendingPosts(now: Date, summary: DispatchSummary): Promise<v
     }
     const payload = row.kind === "reminder"
       ? renderReminderMessage(ev)
-      : renderDigestMessages([ev], { windowLabel: "this week" })[0];
+      : renderDigestSummary([ev], { windowLabel: "this week" });
     try {
       const msg = await postToChannel(sub.channel_id, payload);
       recordPostMessageId(row.subscription_id, row.event_id, row.kind, row.bucket, msg.id);

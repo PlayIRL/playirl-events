@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT } from "@/lib/format-style";
 import { eventHasStarted, formatEventTime } from "@/lib/format-time";
-import { useStickySentinel } from "@/lib/use-sticky-sentinel";
 import SaveEventButton from "./save-event-button";
 import AdminEventActions from "./admin-event-actions";
 
@@ -48,7 +47,6 @@ export default function DayCard({
   savedEventIds?: Set<string>;
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const { sentinelRef, isStuck } = useStickySentinel("-80px 0px 0px 0px");
   // Tracking reveal state in React (instead of mutating element.style
   // imperatively) is what keeps content visible across router.refresh().
   // The previous version cleared opacity via removeProperty in an effect;
@@ -88,21 +86,11 @@ export default function DayCard({
     };
   }, [staggerBase, revealed]);
 
-  // "Today" should look like the brightest, most live element on the
-  // page — not a tinted/dimmed version. Strategy: pure white bg in
-  // light mode, lifted off-the-dark bg in dark mode, all wrapped in a
-  // thick high-contrast frame so the day visibly pops out of the stack.
-  const borderColor = isToday
+  // "Today" pops via a thicker high-contrast frame; bg matches other day
+  // cards so the page bg flows behind a single bordered shape.
+  const frameBorder = isToday
     ? "border-2 border-neutral-900 dark:border-white"
     : "border border-neutral-300 dark:border-white/15";
-
-  const headingBg = isToday
-    ? "bg-white dark:bg-white/[0.18]"
-    : "bg-white dark:bg-neutral-900";
-
-  const bodyBg = isToday
-    ? "bg-white dark:bg-white/[0.12]"
-    : "bg-white dark:bg-neutral-900";
 
   return (
     <div
@@ -110,23 +98,21 @@ export default function DayCard({
       style={revealed ? undefined : { opacity: 0 }}
       className={`${revealed ? "anim-fade-in-up" : ""} ${isPast && !isToday ? "opacity-70" : ""}`}
     >
-      {/* Sentinel: zero-height, sits at the top of the card to detect when header pins */}
-      <div ref={sentinelRef} className="h-0" />
+      {/* Single bordered frame around heading + rows. overflow-clip clips
+          children to the rounded corners without creating a scroll
+          container, so the sticky heading still anchors to the viewport
+          (overflow-hidden would break that). */}
+      <div className={`overflow-clip rounded-lg divide-y divide-neutral-200 dark:divide-white/10 bg-white dark:bg-neutral-900 ${frameBorder}`}>
+        <div className="sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 py-4 bg-white dark:bg-neutral-900">
+          <span className={`text-base ${isToday ? "font-bold text-neutral-900 dark:text-white" : "font-medium text-neutral-700 dark:text-neutral-300"}`}>
+            {headingLabel || weekday}
+          </span>
+          <span className="ml-auto text-neutral-500 dark:text-neutral-400 text-sm">
+            {events.length === 0 ? "No events" : `${events.length} event${events.length === 1 ? "" : "s"}`}
+          </span>
+        </div>
 
-      {/* Sticky date header */}
-      <div className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 ${isStuck ? "py-2" : "py-4 rounded-t-lg"} ${borderColor} ${headingBg}`}>
-        <span className={`${isStuck ? "text-sm" : "text-base"} ${isToday ? "font-bold text-neutral-900 dark:text-white" : "font-medium text-neutral-700 dark:text-neutral-300"}`}>
-          {headingLabel || weekday}
-        </span>
-        <span className={`ml-auto text-neutral-500 dark:text-neutral-400 ${isStuck ? "text-xs" : "text-sm"}`}>
-          {events.length === 0 ? "No events" : `${events.length} event${events.length === 1 ? "" : "s"}`}
-        </span>
-      </div>
-
-      {/* Events body */}
-      {events.length > 0 && (
-        <div className={`overflow-hidden rounded-b-lg divide-y divide-neutral-200 dark:divide-white/10 ${isToday ? "border-x-2 border-b-2 border-neutral-900 dark:border-white" : "border-x border-b border-neutral-300 dark:border-white/15"} ${bodyBg}`}>
-          {events.map((ev, i) => {
+        {events.map((ev, i) => {
             // Per-row "already started" check — an event whose start
             // moment is in the past gets rendered as inactive (greyed
             // out) instead of being hidden, so users see what they
@@ -194,8 +180,7 @@ export default function DayCard({
             </Link>
             );
           })}
-        </div>
-      )}
+      </div>
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { DiscordSubscription } from "@/lib/discord-subscriptions";
+import DiscordPreview, { type PreviewMessage } from "./DiscordPreview";
 import {
   type Mode,
   DOW_LABELS,
@@ -28,6 +29,33 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
   const [error, setError] = useState<string | null>(null);
   const tzLabel = shortTimezoneLabel();
 
+  // Preview state — fetched lazily on first click. Not refreshed automatically;
+  // edits invalidate by closing the panel so the next open re-fetches.
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewLoading, setPreviewLoading] = useState(false);
+  const [previewError, setPreviewError] = useState<string | null>(null);
+  const [previewData, setPreviewData] = useState<{ message: PreviewMessage; eventCount: number; empty: boolean; sample?: boolean } | null>(null);
+
+  async function loadPreview() {
+    setPreviewLoading(true);
+    setPreviewError(null);
+    try {
+      const res = await fetch(`/api/account/discord/${sub.id}/preview`);
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
+      setPreviewData(body);
+    } catch (e) {
+      setPreviewError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setPreviewLoading(false);
+    }
+  }
+
+  function togglePreview() {
+    if (!previewOpen && !previewData) loadPreview();
+    setPreviewOpen(v => !v);
+  }
+
   // Mirror the create form's local state shape so we can reuse
   // ScheduleAndFilterSections directly.
   const [hourUtc, setHourUtc] = useState(sub.hour_utc);
@@ -42,6 +70,8 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
   async function save() {
     setBusy(true);
     setError(null);
+    // Edits change what the preview would render — invalidate cached payload.
+    setPreviewData(null);
     try {
       const leadArg = sub.mode === "reminder"
         ? (lead === "custom" ? String(customLeadMinutes) : lead)
@@ -66,8 +96,34 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
       if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
       setEditing(false);
       router.refresh();
+      // Re-fetch the preview against the new persisted state so the panel
+      // refills immediately instead of staying empty after invalidation.
+      if (previewOpen) await loadPreview();
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  // Inline status banner shown after a Send test attempt — distinct from
+  // `error` (which is for save/edit/delete failures) so successful sends
+  // don't get stuck in the same red-text channel.
+  const [testStatus, setTestStatus] = useState<{ kind: "ok" | "err"; message: string } | null>(null);
+
+  async function sendTest() {
+    setBusy(true);
+    setTestStatus(null);
+    try {
+      const res = await fetch(`/api/account/discord/${sub.id}/send-test`, { method: "POST" });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
+      setTestStatus({
+        kind: "ok",
+        message: `Sent · ${body.eventCount} matching event${body.eventCount === 1 ? "" : "s"} included.`,
+      });
+    } catch (e) {
+      setTestStatus({ kind: "err", message: e instanceof Error ? e.message : String(e) });
     } finally {
       setBusy(false);
     }
@@ -95,7 +151,7 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
   }
 
   async function remove() {
-    if (!confirm("Delete this subscription? This cannot be undone.")) return;
+    if (!confirm("Delete this auto-post? This cannot be undone.")) return;
     setBusy(true);
     setError(null);
     try {
@@ -112,74 +168,118 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
     }
   }
 
-  const tagPills: { label: string; tone?: "muted" | "warn" }[] = [
-    { label: sub.mode },
-  ];
-  if (sub.format) tagPills.push({ label: sub.format });
-  if (sub.source) tagPills.push({ label: sub.source });
-  if (sub.near_label) tagPills.push({ label: `near ${sub.near_label}${sub.radius_miles ? ` · ${sub.radius_miles}mi` : ""}` });
-  if (!sub.enabled) tagPills.push({ label: "disabled", tone: "warn" });
+  // Auto-generated display title. Convention: `[Cadence] [Format] [digest|reminder]`.
+  // Format is woven in only when set, so an unfiltered weekly digest reads
+  // "Weekly digest" while a Commander-only one reads "Weekly Commander digest".
+  // Reminders prefix the lead time so two reminders in the same channel are
+  // distinguishable at a glance.
+  const formatPart = sub.format ? ` ${sub.format}` : "";
+  const subscriptionTitle =
+    sub.mode === "weekly" ? `Weekly${formatPart} digest`
+    : sub.mode === "daily" ? `Daily${formatPart} digest`
+    : `${sub.lead_minutes}-min${formatPart} reminder`;
+
+  const modeLabel =
+    sub.mode === "weekly" ? "Weekly digest"
+    : sub.mode === "daily" ? "Daily digest"
+    : "Per-event reminder";
+  const modeHelp =
+    sub.mode === "weekly" ? "One summary message every week."
+    : sub.mode === "daily" ? "One summary message every day."
+    : "A heads-up message in the lead-time window before each matching event.";
+
+  const whenLine =
+    sub.mode === "weekly"
+      ? `Every ${DOW_LABELS[sub.dow ?? 1]} at ${utcHourToLocalLabel(sub.hour_utc)} (${tzLabel})`
+      : sub.mode === "daily"
+        ? `Every day at ${utcHourToLocalLabel(sub.hour_utc)} (${tzLabel})`
+        : `${sub.lead_minutes} minutes before each event${sub.lead_preset && sub.lead_preset !== "custom" ? ` (${sub.lead_preset.replace("_", " ")})` : ""}`;
+
+  const windowLine = sub.mode === "reminder"
+    ? `Watches the next ${sub.days_ahead} days for matching events.`
+    : `Includes events in the next ${sub.days_ahead} day${sub.days_ahead === 1 ? "" : "s"}.`;
+
+  const formatLine = sub.format ? sub.format : "Any format";
+  const sourceLine = sub.source ? sub.source : "All sources";
+  const locationLine = sub.near_label
+    ? `Within ${sub.radius_miles ?? "?"} mi of ${sub.near_label}`
+    : "Anywhere";
 
   return (
     <div className={`bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-md p-5 ${!sub.enabled ? "opacity-60" : ""}`}>
       <div className="flex items-start justify-between gap-3">
-        <div className="space-y-2 flex-1 min-w-0">
-          <div className="flex flex-wrap gap-1.5">
-            {tagPills.map((p, i) => (
-              <span
-                key={i}
-                className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium ${
-                  p.tone === "warn"
-                    ? "bg-neutral-100 text-neutral-500 dark:bg-white/[0.06] dark:text-neutral-500"
-                    : "bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
-                }`}
-              >
-                {p.label}
-              </span>
-            ))}
+        <div className="flex-1 min-w-0 space-y-3">
+          <div className="flex items-center gap-3 flex-wrap">
+            <h3 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
+              {editing ? `Edit · ${subscriptionTitle}` : subscriptionTitle}
+            </h3>
+            {!editing && (
+              <EnabledToggle enabled={!!sub.enabled} busy={busy} onToggle={toggleEnabled} />
+            )}
           </div>
-          <div className="text-xs text-neutral-500 dark:text-neutral-400 break-all">
-            channel <code>#{sub.channel_id}</code>
-            {" · "}guild <code>{sub.guild_id}</code>
-          </div>
-          {sub.mode === "weekly" && (
-            <div className="text-xs text-neutral-500 dark:text-neutral-400">
-              Fires {DOW_LABELS[sub.dow ?? 1]} at {utcHourToLocalLabel(sub.hour_utc)} ({tzLabel}) · {sub.days_ahead}d window
-            </div>
-          )}
-          {sub.mode === "daily" && (
-            <div className="text-xs text-neutral-500 dark:text-neutral-400">
-              Fires daily at {utcHourToLocalLabel(sub.hour_utc)} ({tzLabel}) · {sub.days_ahead}d window
-            </div>
-          )}
-          {sub.mode === "reminder" && (
-            <div className="text-xs text-neutral-500 dark:text-neutral-400">
-              Fires {sub.lead_minutes} minutes before each matching event ({sub.lead_preset ?? "custom"})
-            </div>
+
+          {!editing && (
+            <dl className="grid grid-cols-[max-content_1fr] gap-x-4 gap-y-2.5 text-sm">
+              <Field label="Mode" value={modeLabel} help={modeHelp} />
+              <Field label="When" value={whenLine} />
+              <Field label="Window" value={windowLine} />
+              <Field label="Format" value={formatLine} muted={!sub.format} />
+              <Field label="Source" value={sourceLine} muted={!sub.source} />
+              <Field label="Location" value={locationLine} muted={!sub.near_label} />
+              <Field
+                label="Channel"
+                value={<code className="text-xs">#{sub.channel_id}</code>}
+                help={<>in server <code className="text-xs">{sub.guild_id}</code></>}
+              />
+            </dl>
           )}
         </div>
         <div className="flex flex-col gap-1.5 shrink-0">
           <button
             onClick={() => setEditing(v => !v)}
             disabled={busy}
-            className="text-xs px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition"
+            className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition cursor-pointer"
           >
-            {editing ? "Cancel" : "Edit"}
+            {editing ? (
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Cancel
+              </>
+            ) : (
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Edit
+              </>
+            )}
           </button>
-          <button
-            onClick={toggleEnabled}
-            disabled={busy}
-            className="text-xs px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition"
-          >
-            {sub.enabled ? "Disable" : "Enable"}
-          </button>
-          <button
-            onClick={remove}
-            disabled={busy}
-            className="text-xs px-2.5 py-1 rounded-md border border-red-200 dark:border-red-500/30 text-red-600 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-500/10 transition"
-          >
-            Delete
-          </button>
+          {!editing && (
+            <>
+              <button
+                onClick={sendTest}
+                disabled={busy}
+                className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition cursor-pointer disabled:opacity-60"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+                Send test
+              </button>
+              <button
+                onClick={remove}
+                disabled={busy}
+                className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-md border border-red-200 dark:border-red-500/30 text-red-600 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-500/10 transition cursor-pointer"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3" />
+                </svg>
+                Delete
+              </button>
+            </>
+          )}
         </div>
       </div>
 
@@ -187,10 +287,73 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
         <p className="mt-3 text-xs text-red-600 dark:text-red-400">{error}</p>
       )}
 
+      {testStatus && (
+        <p
+          className={`mt-3 text-xs ${
+            testStatus.kind === "ok"
+              ? "text-neutral-700 dark:text-neutral-300"
+              : "text-red-600 dark:text-red-400"
+          }`}
+        >
+          {testStatus.message}
+        </p>
+      )}
+
+      {!editing && (
+        <div className="mt-4 pt-4 border-t border-neutral-100 dark:border-neutral-800">
+          <button
+            onClick={togglePreview}
+            disabled={busy}
+            aria-expanded={previewOpen}
+            aria-controls={`discord-preview-${sub.id}`}
+            className="w-full flex items-center gap-2 text-left text-xs font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition"
+          >
+            <span>Discord preview</span>
+            {previewOpen && previewData?.sample && (
+              <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
+                Sample event
+              </span>
+            )}
+            {previewOpen && previewData && !previewData.empty && (
+              <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-normal">
+                {previewData.eventCount} matching event{previewData.eventCount === 1 ? "" : "s"} right now
+              </span>
+            )}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`ml-auto w-3.5 h-3.5 text-neutral-500 dark:text-neutral-400 transition-transform duration-200 ${previewOpen ? "rotate-180" : ""}`}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {previewOpen && (
+            <div id={`discord-preview-${sub.id}`} className="mt-3 space-y-2">
+              {previewLoading && (
+                <p className="text-xs text-neutral-500 dark:text-neutral-400">Loading…</p>
+              )}
+              {previewError && (
+                <p className="text-xs text-red-600 dark:text-red-400">{previewError}</p>
+              )}
+              {previewData && (
+                <DiscordPreview
+                  message={previewData.message}
+                  channelName={`channel-${sub.channel_id.slice(-4)}`}
+                />
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
       {editing && (
         <div className="mt-4 pt-4 border-t border-neutral-100 dark:border-neutral-800 space-y-5">
           <div className="rounded-md bg-neutral-50 dark:bg-neutral-800/50 px-3 py-2 text-xs text-neutral-600 dark:text-neutral-300">
-            Server, channel, and mode can&apos;t be changed — to switch any of those, delete this subscription and create a new one.
+            Server, channel, and mode can&apos;t be changed — to switch any of those, delete this auto-post and create a new one.
           </div>
 
           <ScheduleAndFilterSections
@@ -224,5 +387,77 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
         </div>
       )}
     </div>
+  );
+}
+
+function EnabledToggle({
+  enabled,
+  busy,
+  onToggle,
+}: {
+  enabled: boolean;
+  busy: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={enabled}
+      disabled={busy}
+      onClick={onToggle}
+      className="inline-flex items-center gap-2 group cursor-pointer disabled:cursor-not-allowed disabled:opacity-60"
+    >
+      <span
+        className={`relative inline-flex h-5 w-9 shrink-0 rounded-full transition-colors ${
+          enabled
+            ? "bg-neutral-900 dark:bg-neutral-100"
+            : "bg-neutral-300 dark:bg-neutral-700"
+        }`}
+      >
+        <span
+          className={`absolute top-0.5 inline-block h-4 w-4 rounded-full shadow-sm transition-transform ${
+            enabled ? "translate-x-4 bg-white dark:bg-neutral-900" : "translate-x-0.5 bg-white"
+          }`}
+        />
+      </span>
+      <span
+        className={`text-xs font-medium ${
+          enabled
+            ? "text-neutral-900 dark:text-neutral-100"
+            : "text-neutral-500 dark:text-neutral-400"
+        }`}
+      >
+        {enabled ? "Enabled" : "Disabled — won't post"}
+      </span>
+    </button>
+  );
+}
+
+function Field({
+  label,
+  value,
+  help,
+  muted = false,
+}: {
+  label: string;
+  value: React.ReactNode;
+  help?: React.ReactNode;
+  muted?: boolean;
+}) {
+  return (
+    <>
+      <dt className="text-xs font-medium text-neutral-500 dark:text-neutral-400 pt-0.5">
+        {label}
+      </dt>
+      <dd className="min-w-0">
+        <div className={`text-sm ${muted ? "text-neutral-500 dark:text-neutral-400" : "text-neutral-900 dark:text-neutral-100"}`}>
+          {value}
+        </div>
+        {help && (
+          <div className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-1 leading-snug">{help}</div>
+        )}
+      </dd>
+    </>
   );
 }

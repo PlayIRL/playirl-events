@@ -6,6 +6,9 @@ import AccountChip from "../../../account-chip";
  * Matches the public homepage's centered, max-width layout and renders the
  * AccountChip/menu in the top-right corner. Gives each sub-page a small
  * "back to feed" breadcrumb so users don't need a sidebar to navigate.
+ *
+ * `hideChip` suppresses the corner avatar — used by the dashboard itself,
+ * where clicking the chip just refreshes the same page.
  */
 export default function SubpageShell({
   title,
@@ -13,16 +16,18 @@ export default function SubpageShell({
   actions,
   children,
   maxWidth = "max-w-3xl",
+  hideChip = false,
 }: {
   title: string;
   description?: React.ReactNode;
   actions?: React.ReactNode;
   children: React.ReactNode;
   maxWidth?: string;
+  hideChip?: boolean;
 }) {
   return (
     <main className={`w-full ${maxWidth} mx-auto px-4 py-8 space-y-6`}>
-      <AccountChip />
+      {!hideChip && <AccountChip />}
 
       <Link
         href="/"

@@ -33,9 +33,9 @@ export default function AddSubscriptionForm({ inviteUrl }: { inviteUrl: string |
     <div>
       <button
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium transition"
+        className="inline-flex items-center gap-2 h-9 px-4 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 transition cursor-pointer"
       >
-        + New subscription
+        + New auto-post
       </button>
       {open && (
         <FormModal
@@ -286,9 +286,9 @@ function FormModal({
             <button
               onClick={submit}
               disabled={!canSubmit}
-              className="px-4 py-2 rounded-md bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium transition disabled:opacity-50"
+              className="inline-flex items-center justify-center h-9 px-4 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50 transition cursor-pointer"
             >
-              {submitting ? "Creating…" : "Create subscription"}
+              {submitting ? "Creating…" : "Create auto-post"}
             </button>
           </div>
         )}

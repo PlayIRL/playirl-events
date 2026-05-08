@@ -8,8 +8,8 @@ import AddSubscriptionForm from "./AddSubscriptionForm";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Discord subscriptions — PlayIRL.GG",
-  description: "Manage your PlayIRL.GG Discord bot subscriptions across servers.",
+  title: "Discord auto-posts — PlayIRL.GG",
+  description: "Schedule recurring event posts to your Discord channels.",
 };
 
 export default async function DiscordAccountPage() {
@@ -19,8 +19,8 @@ export default async function DiscordAccountPage() {
 
   return (
     <SubpageShell
-      title="Discord subscriptions"
-      description="Set up event posts in your Discord server in a few clicks. Pick a server and channel, choose how often, and we'll do the rest."
+      title="Discord auto-posts"
+      description="Schedule recurring event posts to your Discord channels. Pick a channel, set a cadence, choose what to include — the bot does the rest."
       maxWidth="max-w-3xl"
       actions={<AddSubscriptionForm inviteUrl={inviteUrl} />}
     >
@@ -36,9 +36,9 @@ export default async function DiscordAccountPage() {
 function EmptyState({ inviteUrl }: { inviteUrl: string | null }) {
   return (
     <div className="bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 rounded-md p-6 space-y-3">
-      <p className="text-base font-semibold text-neutral-900 dark:text-white">No subscriptions yet</p>
+      <p className="text-base font-semibold text-neutral-900 dark:text-white">No auto-posts yet</p>
       <p className="text-sm text-neutral-600 dark:text-neutral-300">
-        Click <strong>+ New subscription</strong> above to set one up. We&apos;ll show you which of your servers already have the bot, then you pick a channel and a schedule.
+        Click <strong>+ New auto-post</strong> above to set one up. We&apos;ll show you which of your servers already have the bot, then you pick a channel and a schedule.
       </p>
       <div className="pt-1 flex flex-wrap gap-2">
         {inviteUrl && (

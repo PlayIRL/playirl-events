@@ -50,12 +50,6 @@ export default function Sidebar({ pendingCount = 0 }: { pendingCount?: number })
           </Link>
         );
       })}
-      <Link
-        href="/"
-        className="px-3 py-2 rounded-md text-sm text-neutral-500 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800 mt-4"
-      >
-        ← Back to site
-      </Link>
     </nav>
   );
 }

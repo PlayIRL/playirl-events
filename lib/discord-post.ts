@@ -97,33 +97,118 @@ export function renderEventEmbed(event: EventRow): DiscordEmbed {
   return embed;
 }
 
+// Embed description hard cap is 4096 chars; leave headroom for the overflow
+// footer line so we never truncate it mid-word.
+const DIGEST_DESC_BUDGET = 3950;
+
+function escapeMarkdown(text: string): string {
+  return text.replace(/([\\[\]()*_~`>])/g, "\\$1");
+}
+
+function formatDigestDateHeading(dateStr: string): string {
+  const d = new Date(`${dateStr}T12:00:00Z`);
+  const weekday = d.toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" });
+  const monthDay = d.toLocaleDateString("en-US", { month: "long", day: "numeric", timeZone: "UTC" });
+  // `## ` is Discord's h2 markdown — renders large + bold so the day jumps
+  // out as a section divider when scanning a multi-day digest.
+  return `## ${weekday}, ${monthDay}`;
+}
+
+// Two-line block per event:
+//   5:00 AM · **[Title](url)**
+//   Commander · Top Deck Games · Free
+// Time leads so the eye catches "when" first while scanning the day. Title
+// gets its own line (wrapping long titles doesn't orphan the metadata of the
+// next row), bold + linked for prominence.
+function formatDigestEventBlock(event: EventRow): string {
+  const ts = eventUnixTimestamp(event);
+  const time = ts != null ? `<t:${ts}:t>` : "Time TBD";
+  const titleLink = `[${escapeMarkdown(event.title)}](${SITE_URL}/event/${encodeURIComponent(event.id)})`;
+  const titleLine = `${time} · **${titleLink}**`;
+
+  const meta: string[] = [];
+  if (event.format) meta.push(event.format);
+  if (event.location) meta.push(event.location);
+  if (event.cost && event.cost.trim()) meta.push(event.cost);
+  const metaLine = meta.length > 0 ? meta.join(" · ") : "";
+
+  return metaLine ? `${titleLine}\n${metaLine}` : titleLine;
+}
+
 /**
- * Build digest message(s). Discord caps a single message at 10 embeds, so a
- * digest of >10 events becomes multiple sequential messages — caller posts
- * each in turn.
+ * Build a single digest summary message — one embed listing every matching
+ * event as a hyperlinked line, grouped by date. Replaces the old "one full
+ * embed per event" format which fanned out to multiple messages above 10
+ * events. Stays within Discord's 4096-char description cap by truncating
+ * with an overflow footer ("…and N more · view all →") when needed.
  */
-export function renderDigestMessages(events: EventRow[], opts: {
+export function renderDigestSummary(events: EventRow[], opts: {
   windowLabel: string; // "this week" / "today" / etc.
-}): DiscordMessagePayload[] {
+}): DiscordMessagePayload {
   if (events.length === 0) {
-    return [{
+    return {
       content: `No upcoming events ${opts.windowLabel}. Browse the full calendar → ${SITE_URL}/?utm_source=discord`,
       allowed_mentions: { parse: [] },
-    }];
+    };
   }
 
-  const chunks: EventRow[][] = [];
-  for (let i = 0; i < events.length; i += 10) {
-    chunks.push(events.slice(i, i + 10));
+  // Preserve chronological order (caller passes events sorted by date+time).
+  const byDate = new Map<string, EventRow[]>();
+  for (const ev of events) {
+    const list = byDate.get(ev.date);
+    if (list) list.push(ev);
+    else byDate.set(ev.date, [ev]);
   }
 
-  return chunks.map((chunk, idx) => ({
-    content: idx === 0
-      ? `📅 **${events.length} event${events.length === 1 ? "" : "s"} ${opts.windowLabel}** — view all on PlayIRL.GG → ${SITE_URL}/?utm_source=discord`
-      : undefined,
-    embeds: chunk.map(renderEventEmbed),
+  const blocks: string[] = [];
+  let used = 0;
+  let omitted = 0;
+  let firstGroup = true;
+
+  for (const [date, evs] of byDate) {
+    const heading = formatDigestDateHeading(date);
+    // Blank-line spacer between groups (not before the first).
+    const headingBlock = firstGroup ? heading : `\n${heading}`;
+    if (used + headingBlock.length + 1 > DIGEST_DESC_BUDGET) {
+      omitted += evs.length;
+      continue;
+    }
+    blocks.push(headingBlock);
+    used += headingBlock.length + 1;
+    firstGroup = false;
+
+    let firstInGroup = true;
+    for (const ev of evs) {
+      // Single blank line between events (Discord renders \n\n as a small
+      // paragraph gap), but no gap before the first event of a day so it
+      // sits tight under the heading.
+      const block = formatDigestEventBlock(ev);
+      const piece = firstInGroup ? block : `\n${block}`;
+      const cost = piece.length + 1;
+      if (used + cost > DIGEST_DESC_BUDGET) {
+        omitted++;
+        continue;
+      }
+      blocks.push(piece);
+      used += cost;
+      firstInGroup = false;
+    }
+  }
+
+  if (omitted > 0) {
+    blocks.push(`\n_…and ${omitted} more · [view all](${SITE_URL}/?utm_source=discord)_`);
+  }
+
+  return {
+    embeds: [{
+      title: `📅 ${events.length} event${events.length === 1 ? "" : "s"} ${opts.windowLabel}`,
+      url: `${SITE_URL}/?utm_source=discord`,
+      description: blocks.join("\n"),
+      color: FORMAT_EMBED_COLOR_DEFAULT,
+      footer: { text: "PlayIRL.GG" },
+    }],
     allowed_mentions: { parse: [] },
-  }));
+  };
 }
 
 export function renderReminderMessage(event: EventRow): DiscordMessagePayload {

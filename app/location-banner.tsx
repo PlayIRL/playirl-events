@@ -63,11 +63,11 @@ export default function LocationBanner({ isDefault, defaultLabel }: Props) {
   if (!show) return null;
 
   return (
-    <div className="mb-4 mx-auto max-w-2xl rounded-md border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-4 py-3 anim-fade-in">
+    <div className="mb-4 mx-auto max-w-2xl rounded-md border border-neutral-200 dark:border-white/15 bg-white dark:bg-neutral-900 px-4 py-3 anim-fade-in">
       <div className="flex items-start gap-3">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 shrink-0 mt-0.5 text-amber-700 dark:text-amber-400"
+          className="w-5 h-5 shrink-0 mt-0.5 text-neutral-500 dark:text-neutral-400"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -78,22 +78,22 @@ export default function LocationBanner({ isDefault, defaultLabel }: Props) {
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-amber-900 dark:text-amber-200">
+          <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
             Showing events in {defaultLabel}
           </p>
-          <p className="text-xs text-amber-800/80 dark:text-amber-300/80 mt-0.5">
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
             Not where you are? Pick your city to find events near you.
           </p>
           <div className="flex items-center gap-2 mt-2">
             <button
               onClick={openPicker}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-amber-600 dark:bg-amber-500 text-white text-xs font-medium hover:bg-amber-700 dark:hover:bg-amber-400 transition"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-xs font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 transition cursor-pointer"
             >
               Change location
             </button>
             <button
               onClick={dismiss}
-              className="px-2 py-1.5 text-xs text-amber-800 dark:text-amber-300 hover:text-amber-950 dark:hover:text-amber-100 transition"
+              className="px-2 py-1.5 text-xs text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition"
             >
               Dismiss
             </button>
@@ -102,7 +102,7 @@ export default function LocationBanner({ isDefault, defaultLabel }: Props) {
         <button
           onClick={dismiss}
           aria-label="Dismiss"
-          className="shrink-0 -mr-1 -mt-1 p-1 text-amber-700/70 dark:text-amber-400/70 hover:text-amber-900 dark:hover:text-amber-200 transition"
+          className="shrink-0 -mr-1 -mt-1 p-1 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />

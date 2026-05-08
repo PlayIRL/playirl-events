@@ -18,7 +18,7 @@ import {
   setSubscriptionEnabled,
   updateSubscription,
 } from "./discord-subscriptions";
-import { renderDigestMessages, renderReminderMessage } from "./discord-post";
+import { renderDigestSummary, renderReminderMessage } from "./discord-post";
 
 const DISCORD_API = "https://discord.com/api/v10";
 
@@ -298,9 +298,8 @@ function handlePreview(_interaction: DiscordInteraction, sub: InteractionOption)
         return { content: msg.content, embeds: msg.embeds ?? [] };
       }
       const windowLabel = subscription.mode === "weekly" ? "this week" : "today";
-      const msgs = renderDigestMessages(events, { windowLabel });
-      const first = msgs[0];
-      return { content: first.content, embeds: first.embeds ?? [] };
+      const msg = renderDigestSummary(events, { windowLabel });
+      return { content: msg.content, embeds: msg.embeds ?? [] };
     },
   };
 }
@@ -437,11 +436,10 @@ function handleLookup(
       if (near && radiusMiles) filterParts.push(`within ${radiusMiles}mi of ${near}`);
       const filterSuffix = filterParts.length > 0 ? ` matching ${filterParts.join(" · ")}` : "";
 
-      const messages = renderDigestMessages(events, { windowLabel: `${windowLabel}${filterSuffix}` });
-      const first = messages[0];
+      const msg = renderDigestSummary(events, { windowLabel: `${windowLabel}${filterSuffix}` });
       // Lookups are public by design — the whole point is to surface events
       // into the channel so other members see them. (No ephemeral flag.)
-      return { content: first.content, embeds: first.embeds ?? [] };
+      return { content: msg.content, embeds: msg.embeds ?? [] };
     },
   };
 }

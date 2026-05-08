@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Sidebar from "../_components/Sidebar";
 import RoleBadge from "../_components/RoleBadge";
 import LogoutButton from "../_components/LogoutButton";
@@ -14,6 +15,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex">
       <aside className="w-56 shrink-0 border-r border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 flex flex-col">
+        <Link
+          href="/"
+          className="px-4 py-3 text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition border-b border-neutral-200 dark:border-neutral-800"
+        >
+          ← Back to site
+        </Link>
         <div className="px-4 py-5 border-b border-neutral-200 dark:border-neutral-800">
           <div className="text-sm font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-neutral-100">
             PlayIRL Admin
