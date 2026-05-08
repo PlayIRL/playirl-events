@@ -19,13 +19,10 @@ const BUILD_SHA = process.env.RAILWAY_GIT_COMMIT_SHA ?? process.env.VERCEL_GIT_C
 
 const SITE_TITLE = "PlayIRL.GG";
 const SITE_DESCRIPTION = "Find Magic: The Gathering events near you";
-const DEFAULT_OG_IMAGE = {
-  url: "/logo.png",
-  width: 1479,
-  height: 826,
-  alt: SITE_TITLE,
-};
 
+// Note: openGraph.images / twitter.images are populated automatically by
+// `app/opengraph-image.tsx` (Next.js auto-discovery). Per-route metadata
+// can override (e.g. event detail pages set their own hero photo).
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: SITE_TITLE,
@@ -37,17 +34,14 @@ export const metadata: Metadata = {
     url: "/",
     type: "website",
     locale: "en_US",
-    images: [DEFAULT_OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    images: [DEFAULT_OG_IMAGE.url],
   },
   other: {
     "x-build-sha": BUILD_SHA,
-    "x-build-feature": "bulk-retry-venues",
   },
 };
 
