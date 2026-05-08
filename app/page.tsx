@@ -10,6 +10,7 @@ import { config } from "@/lib/config";
 import DateJumper from "./date-jumper";
 import RadiusSelector from "./radius-selector";
 import CalendarView from "./calendar-view";
+import MapView from "./map-view-loader";
 import StickyBar from "./sticky-bar";
 import FloatingToolbar from "./floating-toolbar";
 import AboutInfoButton from "./about-info-button";
@@ -123,6 +124,12 @@ export default async function HomePage({
     fromDate.setHours(0, 0, 0, 0);
     fromDate.setDate(fromDate.getDate() - fromDate.getDay());
     toDate = new Date(today.getTime() + 60 * 24 * 60 * 60 * 1000);
+  } else if (currentView === "map") {
+    // Map view honors the `days` window so users can zoom in (1 day) or out
+    // (a week+) without leaving the view.
+    fromDate = new Date(today);
+    fromDate.setHours(0, 0, 0, 0);
+    toDate = new Date(today.getTime() + currentDays * 24 * 60 * 60 * 1000);
   } else {
     fromDate = new Date(today.getTime() + currentOffset * 24 * 60 * 60 * 1000);
     toDate = new Date(today.getTime() + (currentOffset + currentDays) * 24 * 60 * 60 * 1000);
@@ -179,6 +186,7 @@ export default async function HomePage({
           currentRadius={currentRadius}
           currentDays={currentDays}
           currentFormat={currentFormat}
+          currentView={currentView}
           formats={formats}
           eventCount={events.length}
           currentLocationLabel={currentLocationLabel}
@@ -197,6 +205,22 @@ export default async function HomePage({
           }}
         >
           <CalendarView events={events} />
+        </div>
+      ) : currentView === "map" ? (
+        <div
+          style={{
+            marginLeft: "calc(-50vw + 50%)",
+            marginRight: "calc(-50vw + 50%)",
+            paddingLeft: "1rem",
+            paddingRight: "1rem",
+          }}
+        >
+          <MapView
+            events={events}
+            centerLat={currentLocationLat}
+            centerLng={currentLocationLng}
+            radiusMiles={currentRadius}
+          />
         </div>
       ) : (
         <>

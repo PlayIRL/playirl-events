@@ -29,6 +29,14 @@ function CalendarIcon() {
   );
 }
 
+function MapIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+    </svg>
+  );
+}
+
 function SunIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -80,10 +88,13 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
       {/* View toggle — desktop only, vertically centered, sliding indicator */}
       <div className="hidden sm:flex fixed right-4 top-1/2 -translate-y-1/2 z-40">
         <div className="relative flex flex-col bg-neutral-100/80 dark:bg-neutral-900 rounded-md p-1 border border-neutral-200/60 dark:border-white/10 shadow-lg shadow-black/10 dark:shadow-black/40 backdrop-blur-sm">
-          {/* sliding pill */}
+          {/* sliding pill — each step is 36px (h-8 button + 4px gap) */}
           <div
             className="absolute left-1 right-1 h-8 rounded-md bg-white dark:bg-white/12 shadow-sm transition-transform duration-200 ease-out"
-            style={{ top: "4px", transform: activeView === "calendar" ? "translateY(36px)" : "translateY(0px)" }}
+            style={{
+              top: "4px",
+              transform: `translateY(${activeView === "calendar" ? 36 : activeView === "map" ? 72 : 0}px)`,
+            }}
           />
           <button
             onClick={() => setView("list")}
@@ -98,6 +109,13 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
             className={`relative z-10 flex items-center justify-center w-8 h-8 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 mt-1 ${activeView === "calendar" ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-400"}`}
           >
             <CalendarIcon />
+          </button>
+          <button
+            onClick={() => setView("map")}
+            title="Map view"
+            className={`relative z-10 flex items-center justify-center w-8 h-8 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 mt-1 ${activeView === "map" ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-400"}`}
+          >
+            <MapIcon />
           </button>
         </div>
       </div>

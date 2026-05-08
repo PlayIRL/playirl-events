@@ -195,12 +195,12 @@ function SubscribeDropdown({
         ref={triggerRef}
         onClick={() => status === "open" ? close() : open()}
         title="Subscribe to calendar"
-        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 text-neutral-600 dark:text-neutral-400 text-xs hover:border-neutral-300 dark:hover:border-white/20 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-neutral-800 active:opacity-70 transition-all duration-150 cursor-pointer focus:outline-none"
+        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white text-xs font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800 transition cursor-pointer focus:outline-none"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M8 3v3m8-3v3M4 9h16M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" />
         </svg>
-        subscribe
+        Subscribe
       </button>
       {status !== "closed" && (
         <div className={`${DROPDOWN_BASE} right-0 ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}>
@@ -291,6 +291,7 @@ export default function RadiusSelector({
   currentRadius,
   currentDays,
   currentFormat,
+  currentView,
   formats,
   eventCount,
   currentLocationLabel,
@@ -300,6 +301,10 @@ export default function RadiusSelector({
   currentRadius: number;
   currentDays: number;
   currentFormat?: string;
+  /** Active view ("list" | "calendar" | "map"). The timeframe chip only
+   *  renders for the map view since list has its own Load-more affordance
+   *  and calendar has built-in week navigation. */
+  currentView: string;
   formats: string[];
   eventCount: number;
   /** Human label for the current location (e.g. "Philly", "Cherry Hill, NJ"). */
@@ -382,18 +387,22 @@ export default function RadiusSelector({
           isCustom={isLocationCustom}
         />
 
-        {/* Timeframe selector + the "in" connector hidden per user request.
-            Footer "Load more events" button extends the visible window
-            forward when needed. Re-enable by un-commenting the block below. */}
-        {/* <span className={CONNECTOR}>in</span>
-        <ChipSelect
-          label={TIME_OPTIONS.find((t) => t.value === String(currentDays))?.label || "This week"}
-          heading="Timeframe"
-          options={TIME_OPTIONS}
-          value={String(currentDays)}
-          onChange={(v) => updateParam("days", v)}
-          align="end"
-        /> */}
+        {/* Timeframe selector — only shown in map view. List view extends
+            forward via the footer "Load more events" button, and calendar
+            view has its own week navigation, so neither needs a chip here. */}
+        {currentView === "map" && (
+          <>
+            <span className={CONNECTOR}>,</span>
+            <ChipSelect
+              label={TIME_OPTIONS.find((t) => t.value === String(currentDays))?.label || "This week"}
+              heading="Timeframe"
+              options={TIME_OPTIONS}
+              value={String(currentDays)}
+              onChange={(v) => updateParam("days", v)}
+              align="end"
+            />
+          </>
+        )}
 
         {/* "= N" event count hidden per user request. Re-enable by un-commenting. */}
         {/* <span className={CONNECTOR}>=</span>

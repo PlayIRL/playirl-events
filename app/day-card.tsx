@@ -103,11 +103,17 @@ export default function DayCard({
           container, so the sticky heading still anchors to the viewport
           (overflow-hidden would break that). */}
       <div className={`overflow-clip rounded-lg divide-y divide-neutral-200 dark:divide-white/10 bg-white dark:bg-neutral-900 ${frameBorder}`}>
-        <div className="sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 py-4 bg-white dark:bg-neutral-900">
-          <span className={`text-base ${isToday ? "font-bold text-neutral-900 dark:text-white" : "font-medium text-neutral-700 dark:text-neutral-300"}`}>
+        <div
+          className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 py-4 ${
+            isToday
+              ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+              : "bg-white dark:bg-neutral-900"
+          }`}
+        >
+          <span className={`text-base ${isToday ? "font-bold" : "font-medium text-neutral-700 dark:text-neutral-300"}`}>
             {headingLabel || weekday}
           </span>
-          <span className="ml-auto text-neutral-500 dark:text-neutral-400 text-sm">
+          <span className={`ml-auto text-sm ${isToday ? "text-neutral-300 dark:text-neutral-600" : "text-neutral-500 dark:text-neutral-400"}`}>
             {events.length === 0 ? "No events" : `${events.length} event${events.length === 1 ? "" : "s"}`}
           </span>
         </div>

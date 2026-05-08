@@ -3,7 +3,8 @@
     "allow": [
       "Bash(node -e ':*)",
       "mcp__Claude_Preview__preview_start",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(npm install *)"
     ]
   }
 }
