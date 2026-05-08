@@ -279,6 +279,9 @@ export default async function HomePage({
       )}
 
       <footer className="mt-16 pt-6 text-sm text-neutral-500 dark:text-neutral-400 text-center">
+        <div className="text-neutral-900 dark:text-white mb-4 flex justify-center">
+          <PlayIrlLogo className="text-2xl" />
+        </div>
         <p className="text-xs leading-relaxed mb-4 max-w-md mx-auto">
           An open-source, community-run alternative to the official Wizards of the Coast event locator. Not affiliated with WotC.
         </p>
