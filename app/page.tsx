@@ -50,9 +50,14 @@ export default async function HomePage({
   const defaultFormat = prefs?.formats[0] ?? "";
 
   const currentRadius = params.radius ? parseInt(params.radius, 10) : defaultRadius;
-  const currentDays = params.days ? parseInt(params.days, 10) : defaultDays;
-  const currentFormat = params.format ?? defaultFormat;
   const currentView = params.view || "list";
+  // Map view defaults to today (1 day) instead of the global week default —
+  // a map of the next 7 days clusters too many pins to be useful for "what's
+  // happening tonight". Explicit `?days=` always wins.
+  const currentDays = params.days
+    ? parseInt(params.days, 10)
+    : currentView === "map" ? 1 : defaultDays;
+  const currentFormat = params.format ?? defaultFormat;
   const currentOffset = params.offset ? Math.max(0, parseInt(params.offset, 10)) : 0;
 
   // Location resolution: URL params > user_preferences > config.location default.

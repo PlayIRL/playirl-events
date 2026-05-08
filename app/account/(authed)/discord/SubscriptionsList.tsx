@@ -101,6 +101,15 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
       // Re-fetch the preview against the new persisted state so the panel
       // refills immediately instead of staying empty after invalidation.
       if (previewOpen) await loadPreview();
+      // Sanity-check the new filter set against the matching event count.
+      // Fetched separately from the preview load so we always get the
+      // number even when the preview accordion is closed.
+      try {
+        const sanity = await fetch(`/api/account/discord/${sub.id}/preview`).then(r => r.json());
+        setVolumeWarning(sanity.eventCount > HIGH_VOLUME_THRESHOLD ? sanity.eventCount : null);
+      } catch {
+        setVolumeWarning(null);
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -112,6 +121,12 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
   // `error` (which is for save/edit/delete failures) so successful sends
   // don't get stuck in the same red-text channel.
   const [testStatus, setTestStatus] = useState<{ kind: "ok" | "err"; message: string } | null>(null);
+
+  // Surfaces a "this auto-post will include a lot of events" warning after
+  // save when the new filter set matches more than this many events. Helps
+  // catch the common foot-gun of saving an unfiltered (no-location) sub.
+  const HIGH_VOLUME_THRESHOLD = 50;
+  const [volumeWarning, setVolumeWarning] = useState<number | null>(null);
 
   async function sendTest() {
     setBusy(true);
@@ -298,6 +313,26 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
         >
           {testStatus.message}
         </p>
+      )}
+
+      {volumeWarning !== null && (
+        <div className="mt-3 flex items-start gap-2 rounded-md border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-3 py-2 text-xs">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 shrink-0 mt-0.5 text-amber-700 dark:text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M5.07 19h13.86c1.54 0 2.5-1.67 1.73-3L13.73 4a2 2 0 00-3.46 0L3.34 16c-.77 1.33.19 3 1.73 3z" />
+          </svg>
+          <div className="flex-1 text-amber-900 dark:text-amber-200">
+            <strong className="font-semibold">Heads up:</strong> this auto-post will include {volumeWarning.toLocaleString()} events. Add a location filter or tighten the radius to scope it.
+          </div>
+          <button
+            onClick={() => setVolumeWarning(null)}
+            aria-label="Dismiss"
+            className="shrink-0 -mr-1 -mt-1 p-1 text-amber-700 dark:text-amber-400 hover:text-amber-900 dark:hover:text-amber-200"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
       )}
 
       {!editing && (

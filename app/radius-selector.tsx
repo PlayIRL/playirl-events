@@ -16,10 +16,11 @@ function buildFeedPath({ format, radius, days }: { format?: string; radius: numb
   return qs ? `/calendar?${qs}` : `/calendar`;
 }
 
-const RADIUS_OPTIONS = [5, 10, 15, 25, 50];
+const RADIUS_OPTIONS = [1, 5, 10, 15, 25, 50];
 function getTimeOptions() {
   const now = new Date();
   const options: { value: string; label: string }[] = [
+    { value: "1", label: "Today" },
     { value: "7", label: "This week" },
   ];
 
@@ -62,6 +63,7 @@ function ChipSelect({
   onChange,
   dot,
   align = "center",
+  custom,
 }: {
   label: string;
   heading: string;
@@ -70,10 +72,24 @@ function ChipSelect({
   onChange: (v: string) => void;
   dot?: boolean;
   align?: "start" | "center" | "end";
+  /** Optional freeform numeric input at the bottom of the dropdown — used by
+   *  the Range chip so users can pick e.g. "3 mi" without a preset for it. */
+  custom?: { unit: string; placeholder: string; min: number; max: number };
 }) {
   const [status, setStatus] = useState<"closed" | "open" | "closing">("closed");
   const statusRef = useRef<"closed" | "open" | "closing">("closed");
   const ref = useRef<HTMLDivElement>(null);
+  const [customDraft, setCustomDraft] = useState("");
+
+  function applyCustom() {
+    if (!custom) return;
+    const n = parseInt(customDraft.trim(), 10);
+    if (!Number.isFinite(n)) return;
+    const clamped = Math.max(custom.min, Math.min(custom.max, n));
+    setCustomDraft("");
+    close();
+    onChange(String(clamped));
+  }
 
   const close = useCallback(() => {
     if (statusRef.current !== "open") return;
@@ -120,6 +136,29 @@ function ChipSelect({
               </button>
             );
           })}
+          {custom && (
+            <div className="border-t border-neutral-100 dark:border-white/8 px-3 py-2 flex items-center gap-1.5">
+              <input
+                type="number"
+                inputMode="numeric"
+                min={custom.min}
+                max={custom.max}
+                value={customDraft}
+                onChange={(e) => setCustomDraft(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); applyCustom(); } }}
+                placeholder={custom.placeholder}
+                className="flex-1 min-w-0 px-2 py-1.5 rounded-md border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-sm text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20"
+              />
+              <span className="text-xs text-neutral-500 dark:text-neutral-400 shrink-0">{custom.unit}</span>
+              <button
+                onClick={applyCustom}
+                disabled={!customDraft.trim()}
+                className="text-xs px-2.5 py-1.5 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
+              >
+                Set
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -341,7 +380,7 @@ export default function RadiusSelector({
     ...formats.map((f) => ({ value: f, label: f, dot: FORMAT_DOT[f] || "bg-neutral-400" })),
   ];
 
-  const radiusOptions = RADIUS_OPTIONS.map((r) => ({ value: String(r), label: `${r} miles` }));
+  const radiusOptions = RADIUS_OPTIONS.map((r) => ({ value: String(r), label: `${r} ${r === 1 ? "mile" : "miles"}` }));
 
   return (
     <>
@@ -376,6 +415,7 @@ export default function RadiusSelector({
           options={radiusOptions}
           value={String(currentRadius)}
           onChange={(v) => updateParam("radius", v)}
+          custom={{ unit: "miles", placeholder: String(currentRadius), min: 1, max: 500 }}
         />
 
         <span className={CONNECTOR}>miles of</span>
