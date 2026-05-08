@@ -279,17 +279,34 @@ export default async function EventPage({
             both themes so logos with baked-in white backgrounds blend in;
             keeping a dark bg here in dark mode would frame them with a stark
             white-on-near-black halo. */}
-        <div className={`relative aspect-video overflow-hidden rounded-t-md ${heroIsPhoto ? "" : "bg-neutral-50"}`}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={hero.url}
-            alt={ev.title}
-            className={`w-full h-full ${heroIsPhoto ? "object-cover" : "object-contain"} ${heroPadding}`}
-          />
-          {heroIsPhoto && (
-            <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-[#0c1220] via-transparent to-transparent pointer-events-none" />
-          )}
-        </div>
+        {(() => {
+          // The hero is the venue's visual identity — clicking it should take
+          // the visitor to the venue page (all upcoming events at that store).
+          // Only wrap in a link when there's a location to link to; otherwise
+          // render the bare div.
+          const heroInner = (
+            <div className={`relative aspect-video overflow-hidden rounded-t-md ${heroIsPhoto ? "" : "bg-neutral-50"}`}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={hero.url}
+                alt={ev.title}
+                className={`w-full h-full ${heroIsPhoto ? "object-cover" : "object-contain"} ${heroPadding}`}
+              />
+              {heroIsPhoto && (
+                <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-[#0c1220] via-transparent to-transparent pointer-events-none" />
+              )}
+            </div>
+          );
+          return ev.location ? (
+            <Link
+              href={`/venue/${encodeURIComponent(venueSlug(ev.location))}`}
+              className="block hover:opacity-95 transition-opacity"
+              title={`View all events at ${ev.location}`}
+            >
+              {heroInner}
+            </Link>
+          ) : heroInner;
+        })()}
 
         {/* Header */}
         <div className="p-6 pb-4 space-y-4">
