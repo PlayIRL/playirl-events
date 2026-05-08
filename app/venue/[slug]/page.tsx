@@ -150,19 +150,12 @@ export default async function VenuePage({ params }: RouteParams) {
       )}
 
       <header className="mb-8 anim-fade-in-up">
-        <div className="flex items-start justify-between gap-3 mb-2">
-          <div className="min-w-0">
-            <p className="text-[10px] font-semibold text-neutral-500 dark:text-neutral-400 mb-2">
-              Venue
-            </p>
-            <h1 className="text-2xl sm:text-3xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white">
-              {venue.name}
-            </h1>
-          </div>
-          <div className="shrink-0">
-            <VenueSubscribeButton venueName={venue.name} />
-          </div>
-        </div>
+        <p className="text-[10px] font-semibold text-neutral-500 dark:text-neutral-400 mb-2">
+          Venue
+        </p>
+        <h1 className="text-2xl sm:text-3xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white mb-2">
+          {venue.name}
+        </h1>
         {venue.address && (
           <p className="text-sm text-neutral-600 dark:text-neutral-400">
             {mapsHref ? (
@@ -202,13 +195,13 @@ export default async function VenuePage({ params }: RouteParams) {
         )}
       </header>
 
-      <Reveal className="mb-4 flex items-baseline justify-between" delay={60}>
+      <Reveal className="mb-4 flex items-center justify-between gap-3" delay={60}>
         <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-          Upcoming events
+          ({events.length}) Upcoming events
         </h2>
-        <span className="text-xs text-neutral-500 dark:text-neutral-400">
-          {events.length} {events.length === 1 ? "event" : "events"}
-        </span>
+        <div className="shrink-0">
+          <VenueSubscribeButton venueName={venue.name} />
+        </div>
       </Reveal>
 
       {events.length === 0 ? (
