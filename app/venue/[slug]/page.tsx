@@ -196,8 +196,11 @@ export default async function VenuePage({ params }: RouteParams) {
       </header>
 
       <Reveal className="mb-4 flex items-center justify-between gap-3" delay={60}>
-        <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-          ({events.length}) Upcoming events
+        <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 inline-flex items-center gap-2">
+          <span className="inline-flex items-center justify-center min-w-[1.5rem] h-5 px-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 text-xs font-semibold">
+            {events.length}
+          </span>
+          Upcoming events
         </h2>
         <div className="shrink-0">
           <VenueSubscribeButton venueName={venue.name} />
