@@ -100,7 +100,7 @@ export default function RsvpButton({
             <button
               type="button"
               disabled
-              className={`${SEG_BASE} bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300`}
+              className={`${SEG_BASE} bg-neutral-900 text-white dark:bg-white dark:text-neutral-900`}
               aria-pressed="true"
             >
               Waitlist {waitlistPos != null ? `· #${waitlistPos}` : ""}
@@ -110,7 +110,7 @@ export default function RsvpButton({
               type="button"
               onClick={() => setRsvp("waitlist")}
               disabled={busy || pending}
-              className={`${SEG_BASE} text-amber-700 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-500/10`}
+              className={`${SEG_BASE} text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-white/10`}
             >
               Join waitlist
             </button>
@@ -136,7 +136,7 @@ export default function RsvpButton({
             aria-pressed={status === "maybe"}
             className={`${SEG_BASE} border-l border-neutral-200 dark:border-white/10 ${
               status === "maybe"
-                ? "bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300"
+                ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
                 : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-white/5"
             }`}
           >

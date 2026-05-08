@@ -77,7 +77,7 @@ export default function RetryAllButton() {
           type="button"
           onClick={run}
           disabled={busy}
-          className="text-sm px-4 py-2 rounded-md bg-amber-500 text-white hover:bg-amber-600 disabled:opacity-50 shrink-0"
+          className="text-sm px-4 py-2 rounded-md bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-100 disabled:opacity-50 shrink-0"
         >
           {busy ? "Working…" : "Retry all empty"}
         </button>

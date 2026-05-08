@@ -7,7 +7,7 @@ export default function StoreLink({ name, url }: { name: string; url?: string })
     <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
       <span
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(url, "_blank"); }}
-        className="hover:text-amber-600 dark:hover:text-amber-400 hover:underline cursor-pointer transition-colors"
+        className="hover:text-neutral-900 dark:hover:text-white hover:underline cursor-pointer transition-colors"
       >
         {name}
       </span>

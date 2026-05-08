@@ -57,8 +57,8 @@ export default function SaveEventButton({ eventId, initiallySaved, compact = fal
         aria-pressed={saved}
         className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition ${
           saved
-            ? "text-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950"
-            : "text-neutral-400 hover:text-amber-500 hover:bg-neutral-100 dark:hover:bg-neutral-800 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
+            ? "text-neutral-900 dark:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            : "text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
         } ${busy ? "opacity-50" : ""} ${className}`}
       >
         <StarIcon filled={saved} />
@@ -75,7 +75,7 @@ export default function SaveEventButton({ eventId, initiallySaved, compact = fal
       aria-pressed={saved}
       className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition border ${
         saved
-          ? "bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800 dark:hover:bg-amber-900"
+          ? "bg-neutral-900 text-white border-neutral-900 hover:bg-neutral-800 dark:bg-white dark:text-neutral-900 dark:border-white dark:hover:bg-neutral-100"
           : "bg-white text-neutral-700 border-neutral-300 hover:bg-neutral-50 dark:bg-neutral-900 dark:text-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-800"
       } ${busy ? "opacity-50" : ""} ${className}`}
     >

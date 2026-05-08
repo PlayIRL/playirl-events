@@ -57,7 +57,7 @@ export default function FlagsPage() {
                 role="switch"
                 aria-checked={f.enabled === 1}
                 className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition disabled:opacity-50 ${
-                  f.enabled === 1 ? "bg-amber-500" : "bg-neutral-300 dark:bg-neutral-700"
+                  f.enabled === 1 ? "bg-neutral-900 dark:bg-white" : "bg-neutral-300 dark:bg-neutral-700"
                 }`}
               >
                 <span

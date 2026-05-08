@@ -130,7 +130,7 @@ export default function ScrapersPage() {
           {running ? "Scraping…" : refreshing ? "Starting…" : "Refresh now"}
         </button>
         {running && (
-          <p className="text-xs text-amber-700 dark:text-amber-400 mt-3">
+          <p className="text-xs text-neutral-600 dark:text-neutral-300 mt-3">
             ⏳ {running.runningSource} scrape running since {new Date(running.runningSince).toLocaleTimeString()} · cold runs take ~10–15 min
           </p>
         )}

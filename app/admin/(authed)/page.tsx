@@ -63,7 +63,7 @@ export default async function AdminDashboard() {
         <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-neutral-100">
           Dashboard
         </h1>
-        <Link href="/admin/scrapers" className="text-sm text-amber-700 dark:text-amber-400 hover:underline">
+        <Link href="/admin/scrapers" className="text-sm text-neutral-900 dark:text-white hover:underline">
           Run a scrape →
         </Link>
       </div>
@@ -99,7 +99,7 @@ export default async function AdminDashboard() {
                 <span className="text-xs text-neutral-500 dark:text-neutral-400 w-32 truncate">{r.source}</span>
                 <div className="flex-1 h-2 bg-neutral-100 dark:bg-neutral-800 rounded-md overflow-hidden">
                   <div
-                    className="h-full bg-amber-500 dark:bg-amber-500"
+                    className="h-full bg-neutral-900 dark:bg-white"
                     style={{ width: `${Math.max(2, Math.round((r.count / Math.max(1, eventActive)) * 100))}%` }}
                   />
                 </div>
