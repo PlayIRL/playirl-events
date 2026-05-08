@@ -29,7 +29,10 @@ export function PlayIrlLogo({ className = "text-base" }: Props) {
             geometric tone of Figtree black. */}
         <path d="M14 8 C12 7 10 8.5 10 10.5 L10 89.5 C10 91.5 12 93 14 92 L88 52.5 C90 51.5 90 48.5 88 47.5 Z" />
       </svg>
-      <span>IRL</span>
+      <span>
+        IRL
+        <span className="font-medium text-[0.5em] opacity-50 tracking-normal">.gg</span>
+      </span>
     </span>
   );
 }
