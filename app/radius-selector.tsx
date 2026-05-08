@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { FORMAT_DOT } from "@/lib/format-style";
 import LocationPicker from "./location-picker";
 
@@ -204,11 +205,6 @@ function SubscribeDropdown({
       </button>
       {status !== "closed" && (
         <div className={`${DROPDOWN_BASE} right-0 ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}>
-          <div className="px-4 py-2.5 border-b border-neutral-100 dark:border-white/8">
-            <p className="text-[10px] font-semibold text-neutral-500 dark:text-neutral-400">Subscribe</p>
-            <p className="mt-0.5 text-xs text-neutral-600 dark:text-neutral-300 font-medium">{filterSummary}</p>
-          </div>
-
           <a
             href={webcalUrl}
             onClick={close}
@@ -243,25 +239,28 @@ function SubscribeDropdown({
             Download .ics
           </a>
 
-          {/* Discord pair — visible affordance, action lands later. Dimmed
-              with a `Soon` pill so the row reads as roadmap, not broken. */}
+          {/* Discord pair: the first one is wired to the auto-posts manager
+              we already shipped. The second is roadmap (Discord guild
+              scheduled-events API integration) — kept as a Soon pill. */}
           <div className="border-t border-neutral-100 dark:border-white/8 mt-1 pt-1">
+            <Link
+              href="/account?tab=discord"
+              onClick={close}
+              className={`${OPTION} text-neutral-700 dark:text-neutral-200`}
+            >
+              <DiscordIcon />
+              <span className="flex-1">Post to Discord</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
             <button
               type="button"
-              onClick={() => comingSoon("Discord posting coming soon!")}
+              onClick={() => comingSoon("Creating Discord scheduled events is coming soon!")}
               className={`${OPTION} text-neutral-500 dark:text-neutral-400 cursor-pointer opacity-70 hover:opacity-100`}
             >
               <DiscordIcon />
-              <span className="flex-1">Post summary to Discord</span>
-              <SoonPill />
-            </button>
-            <button
-              type="button"
-              onClick={() => comingSoon("Discord events coming soon!")}
-              className={`${OPTION} text-neutral-500 dark:text-neutral-400 cursor-pointer opacity-70 hover:opacity-100`}
-            >
-              <DiscordIcon />
-              <span className="flex-1">Add as Discord events</span>
+              <span className="flex-1">Add to a server&apos;s Events tab</span>
               <SoonPill />
             </button>
           </div>

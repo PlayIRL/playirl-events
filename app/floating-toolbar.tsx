@@ -85,8 +85,11 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
 
   return (
     <>
-      {/* View toggle — desktop only, vertically centered, sliding indicator */}
-      <div className="hidden sm:flex fixed right-4 top-1/2 -translate-y-1/2 z-40">
+      {/* View toggle — vertically centered with sliding indicator. Always
+          visible on sm+; on mobile hidden in calendar view (the calendar's
+          own week-nav already crowds the right edge) but shown in list /
+          map where there's room. */}
+      <div className={`fixed right-4 top-1/2 -translate-y-1/2 z-40 ${activeView === "calendar" ? "hidden sm:flex" : "flex"}`}>
         <div className="relative flex flex-col bg-neutral-100/80 dark:bg-neutral-900 rounded-md p-1 border border-neutral-200/60 dark:border-white/10 shadow-lg shadow-black/10 dark:shadow-black/40 backdrop-blur-sm">
           {/* sliding pill — each step is 36px (h-8 button + 4px gap) */}
           <div

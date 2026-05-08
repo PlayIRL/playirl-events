@@ -111,18 +111,7 @@ export default function MapView({
   }
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between text-xs text-neutral-500 dark:text-neutral-400">
-        <span>
-          {groups.length} venue{groups.length === 1 ? "" : "s"} · {totalMapped} mapped event{totalMapped === 1 ? "" : "s"}
-        </span>
-        {unmapped > 0 && (
-          <span title="Events without geocoded coordinates aren't shown on the map">
-            {unmapped} without coordinates
-          </span>
-        )}
-      </div>
-      <div className="relative rounded-lg overflow-hidden border border-neutral-200 dark:border-white/15 h-[70vh] min-h-[420px]">
+    <div className="relative rounded-lg overflow-hidden border border-neutral-200 dark:border-white/15 h-[70vh] min-h-[420px]">
         <APIProvider apiKey={apiKey}>
           <GoogleMap
             mapId={MAP_ID}
@@ -173,8 +162,20 @@ export default function MapView({
             Recenter
           </button>
         )}
+
+        {/* Stats badge — bottom-center overlay. Sits above the Google attribution
+            line via a small bottom offset so it doesn't compete with it. */}
+        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-[1] inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-neutral-900/90 dark:bg-neutral-100/90 text-white dark:text-neutral-900 text-xs font-medium shadow-lg backdrop-blur-sm pointer-events-none">
+          <span>
+            {groups.length} venue{groups.length === 1 ? "" : "s"} · {totalMapped} mapped event{totalMapped === 1 ? "" : "s"}
+          </span>
+          {unmapped > 0 && (
+            <span className="text-neutral-400 dark:text-neutral-500" title="Events without geocoded coordinates aren't shown on the map">
+              · {unmapped} unmapped
+            </span>
+          )}
+        </div>
       </div>
-    </div>
   );
 }
 
