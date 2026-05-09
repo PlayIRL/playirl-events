@@ -10,7 +10,7 @@ export default async function NewAccountEventPage() {
 
   return (
     <SubpageShell
-      title="Submit an event"
+      title="Create an event"
       description={
         publishesImmediately
           ? "Your event goes live immediately and shows up on the public calendar."

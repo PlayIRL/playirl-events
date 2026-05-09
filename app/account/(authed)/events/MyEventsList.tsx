@@ -63,7 +63,7 @@ export default function MyEventsList() {
           href="/account/events/new"
           className="inline-block mt-3 text-sm text-neutral-900 dark:text-white hover:underline"
         >
-          Submit your first one →
+          Create your first one →
         </Link>
       </div>
     );
@@ -85,7 +85,7 @@ export default function MyEventsList() {
         <Section
           title="Rejected"
           count={rejected.length}
-          hint="An admin declined these. The reason is shown on each card — fix the issue and submit a new event if it's something you can correct."
+          hint="An admin declined these. The reason is shown on each card — fix the issue and create a new event if it's something you can correct."
           events={rejected}
           busyId={busyId}
           onRemove={remove}

@@ -510,7 +510,7 @@ export default function RadiusSelector({
             here that'd just duplicate the auth middleware. */}
         <Link
           href="/account/events/new"
-          title="Submit a new event for review"
+          title="Create a new event"
           className="ml-1 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white text-xs font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800 transition cursor-pointer focus:outline-none"
         >
           <svg

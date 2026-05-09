@@ -146,10 +146,10 @@ async function EventsTab({ userId }: { userId: string }) {
       />
 
       <EventListSection
-        title="My submitted events"
-        emptyMessage="You haven't submitted any events yet."
+        title="My events"
+        emptyMessage="You haven't created any events yet."
         emptyHref="/account/events/new"
-        emptyHrefLabel="Submit your first event →"
+        emptyHrefLabel="Create your first event →"
         viewAllHref="/account/events"
         events={mineUpcoming.map((e) => ({ id: e.id, title: e.title, date: e.date, time: e.time, location: e.location, cost: e.cost, status: e.status }))}
         totalCount={mineUpcoming.length}
