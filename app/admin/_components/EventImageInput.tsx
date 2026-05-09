@@ -69,7 +69,11 @@ export default function EventImageInput({
           <img
             src={value}
             alt="Event preview"
+            width={128}
+            height={80}
             className="w-32 h-20 object-cover rounded-md border border-neutral-200 dark:border-neutral-700"
+            loading="lazy"
+            decoding="async"
           />
           <div className="flex flex-col gap-2">
             <button

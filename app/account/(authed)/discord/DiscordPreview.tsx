@@ -125,7 +125,13 @@ function EmbedCard({ embed }: { embed: PreviewEmbed }) {
 
         {embed.image && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={embed.image.url} alt="" className="rounded-[3px] max-w-full mt-2" />
+          <img
+            src={embed.image.url}
+            alt=""
+            className="rounded-[3px] max-w-full mt-2"
+            loading="lazy"
+            decoding="async"
+          />
         )}
 
         {embed.footer && (

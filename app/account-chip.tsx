@@ -45,7 +45,16 @@ export default async function AccountChip() {
         <span className="flex items-center justify-center w-7 h-7 rounded-md overflow-hidden shrink-0">
           {showImage ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={user.image!} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            <img
+              src={user.image!}
+              alt=""
+              width={28}
+              height={28}
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+              loading="lazy"
+              decoding="async"
+            />
           ) : (
             <span className="w-full h-full rounded-md bg-neutral-800 dark:bg-neutral-100 text-white dark:text-neutral-900 text-[11px] font-bold flex items-center justify-center tracking-wide">
               {initials}

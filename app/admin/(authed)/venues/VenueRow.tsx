@@ -121,7 +121,15 @@ export default function VenueRow({
       <div className="w-20 h-14 rounded-md overflow-hidden bg-neutral-100 dark:bg-neutral-800 shrink-0 flex items-center justify-center">
         {imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={imageUrl} alt="" className="w-full h-full object-cover" />
+          <img
+            src={imageUrl}
+            alt=""
+            width={80}
+            height={56}
+            className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
         ) : (
           <span className="text-[10px] text-neutral-500 dark:text-neutral-400">No default</span>
         )}
