@@ -1,18 +1,23 @@
-import { LinkButton } from "./button";
+import Link from "next/link";
 
-// Inline "About" CTA that follows the homepage hero subhead. Was a tiny
-// 28px info-icon button — too small to read as a tappable target on
-// mobile and easy to miss as an action affordance entirely. Promoted to
-// a text-with-arrow chip that mirrors the Subscribe / Create-event chips
-// in the radius bar so the visual vocabulary stays consistent.
+// Inline "About" CTA that follows the homepage hero subhead. Styling
+// mirrors the Subscribe + Create-event chips in radius-selector.tsx
+// exactly (gap, padding, border weight, text color, font weight, hover)
+// so all three CTAs in the hero area read as one family.
+//
+// Doesn't reuse `LinkButton` from app/button.tsx because none of those
+// variants match the Subscribe/Create-event lockup — they use a fully
+// neutral-900 text color + font-medium that the `chip` variant
+// deliberately doesn't (chip is meant to feel quieter for things like
+// load-more). Inlining keeps the three buttons stylistically locked
+// without leaking that into other chip callsites.
 export default function AboutInfoButton() {
   return (
-    <LinkButton
+    <Link
       href="/about"
       title="About PlayIRL.GG"
       aria-label="About PlayIRL.GG"
-      variant="chip"
-      className="ml-2 align-middle"
+      className="ml-2 align-middle inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white text-xs font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800 transition cursor-pointer focus:outline-none"
     >
       About
       <svg
@@ -26,6 +31,6 @@ export default function AboutInfoButton() {
       >
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
       </svg>
-    </LinkButton>
+    </Link>
   );
 }
