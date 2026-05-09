@@ -37,6 +37,10 @@
 html {
   background-color: var(--bg) !important;
   overflow-x: clip;
+  /* Disable iOS Safari's automatic text inflation in landscape — without
+     this, body copy gets enlarged when the page rotates and breaks our
+     carefully-set type scale. */
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -45,6 +49,29 @@ body {
   font-family: var(--font-figtree), system-ui, sans-serif;
   overflow-x: clip;
   letter-spacing: -0.01em;
+  /* Damp the blue tap-flash that iOS Safari overlays on every <a>/<button>.
+     Brand wants the consistent neutral hover state to be the only feedback;
+     the system flash is loud and off-brand. */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Utility for full-viewport-height containers. iOS Safari's `100vh` includes
+ * the URL bar / keyboard region, so an element sized `h-screen` sticks out
+ * past the visible area when the keyboard opens. `100dvh` (dynamic viewport
+ * height) tracks the actual visible region and is the modern fix. We expose
+ * it as a class instead of redefining `h-screen` so callsites that NEED the
+ * static `100vh` behavior still get it.
+ * Fallback to `100vh` for browsers without dvh support (older Safari ≤15.3,
+ * Firefox ≤108) — those just lose the keyboard-aware behavior. */
+.min-h-screen-dynamic {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Tap-target reset for native form controls in iOS — without it iOS adds
+ * its own padding to <button>/<input> that throws off layout pixels. */
+button, [role="button"] {
+  -webkit-touch-callout: none;
 }
 
 /* Default browser styling renders code/pre/kbd/samp/tt in monospace.
