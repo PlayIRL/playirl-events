@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import EventTable, { type EventRow } from "../../_components/EventTable";
+import { TableSkeleton } from "@/app/skeleton";
 
 export default function AdminEventsPage() {
   const [events, setEvents] = useState<EventRow[]>([]);
@@ -31,7 +32,9 @@ export default function AdminEventsPage() {
       </div>
 
       {loading ? (
-        <p className="text-sm text-neutral-500 dark:text-neutral-400">Loading…</p>
+        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md overflow-hidden">
+          <TableSkeleton rows={8} cols={5} />
+        </div>
       ) : (
         <EventTable
           events={events}

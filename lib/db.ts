@@ -425,6 +425,14 @@ function initSchema(db: Database.Database) {
   // only those whose `location` matches this venue (case/whitespace insensitive)
   // and ignores radius/center filters since the venue is exact.
   try { db.exec("ALTER TABLE discord_subscriptions ADD COLUMN venue_name TEXT"); } catch {}
+  // Dead-channel tracking. The dispatcher bumps `consecutive_failures` on
+  // every Discord 4xx and resets to 0 on success. After 5 in a row OR any
+  // 403/404/410 (channel deleted, bot kicked, missing permission), we flip
+  // `enabled` to 0 and stash the HTTP status + reason in `disabled_reason`
+  // so the user can see why on /account/discord.
+  try { db.exec("ALTER TABLE discord_subscriptions ADD COLUMN consecutive_failures INTEGER NOT NULL DEFAULT 0"); } catch {}
+  try { db.exec("ALTER TABLE discord_subscriptions ADD COLUMN last_failure_at TEXT"); } catch {}
+  try { db.exec("ALTER TABLE discord_subscriptions ADD COLUMN disabled_reason TEXT DEFAULT ''"); } catch {}
 
   // Default settings
   const insert = db.prepare("INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)");

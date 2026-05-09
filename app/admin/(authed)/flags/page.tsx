@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
+import { CardListSkeleton } from "@/app/skeleton";
 
 interface Flag {
   key: string;
@@ -43,7 +44,7 @@ export default function FlagsPage() {
       </p>
 
       {loading ? (
-        <p className="text-sm text-neutral-500 dark:text-neutral-400">Loading…</p>
+        <CardListSkeleton rows={4} />
       ) : (
         <ul className="space-y-3">
           {flags.map((f) => (

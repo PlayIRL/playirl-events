@@ -393,6 +393,33 @@ export function bulkDelete(ids: string[]): number {
   return r.changes;
 }
 
+/**
+ * Lean projection used by `app/sitemap.ts`. Returns only the columns the
+ * sitemap actually consumes (id, updated_date), so we don't pull a full
+ * EventRow per row × 49k rows into memory just to discard everything but
+ * two strings. At nationwide scale (~25-50k active events) the difference
+ * is roughly 25 MB of allocations vs ~2 MB.
+ *
+ * Caps at `limit` rows server-side so a runaway query against an empty
+ * /sitemap.xml doesn't lock up the DB. Sitemap protocol's per-file ceiling
+ * is 50,000 URLs; we default to 48,000 to leave headroom for static + venue
+ * URLs above the events list.
+ */
+export function getActiveEventIdsForSitemap(limit = 48_000): { id: string; updated_date: string }[] {
+  const db = getDb();
+  return db
+    .prepare(
+      `SELECT id, updated_date
+         FROM events
+        WHERE status IN ('active','pinned')
+          AND visibility = 'public'
+          AND cancelled_at IS NULL
+        ORDER BY date ASC
+        LIMIT ?`,
+    )
+    .all(limit) as { id: string; updated_date: string }[];
+}
+
 export function getEventsByOwner(ownerId: string): EventRow[] {
   return getDb().prepare("SELECT * FROM events WHERE owner_id = ? ORDER BY date ASC, time ASC").all(ownerId) as EventRow[];
 }

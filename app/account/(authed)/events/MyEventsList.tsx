@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import { CardListSkeleton } from "@/app/skeleton";
 
 interface EventRow {
   id: string;
@@ -45,7 +46,7 @@ export default function MyEventsList() {
   const upcoming = events.filter((e) => e.status !== "pending" && e.date >= today);
   const past = events.filter((e) => e.status !== "pending" && e.date < today);
 
-  if (loading) return <p className="text-sm text-neutral-500 dark:text-neutral-400">Loading…</p>;
+  if (loading) return <CardListSkeleton rows={3} />;
 
   if (events.length === 0) {
     return (

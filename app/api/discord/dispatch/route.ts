@@ -26,13 +26,46 @@ import {
   listEnabledSubscriptions,
   markSubscriptionDispatched,
   recordPostMessageId,
+  recordSubscriptionFailure,
   releasePost,
 } from "@/lib/discord-subscriptions";
 import {
+  DiscordPostError,
   postToChannel,
   renderDigestSummary,
   renderReminderMessage,
 } from "@/lib/discord-post";
+
+/**
+ * Centralized handler for a Discord post failure inside the dispatch loop.
+ * Bumps the per-subscription failure counter, auto-disables the subscription
+ * if the failure is permanent (403/404/410) or after enough consecutive
+ * failures, and logs context. Pulled out so the digest, reminder, and retry
+ * paths share the same dead-channel cleanup behavior.
+ */
+function handleDispatchFailure(
+  subId: string,
+  err: unknown,
+  context: string,
+): void {
+  const isPermanent = err instanceof DiscordPostError && err.isPermanent;
+  const reason =
+    err instanceof DiscordPostError
+      ? `HTTP ${err.status}: ${err.body.slice(0, 200)}`
+      : err instanceof Error
+        ? err.message.slice(0, 200)
+        : String(err).slice(0, 200);
+  const result = recordSubscriptionFailure(subId, reason, isPermanent);
+  if (result.disabled) {
+    console.error(
+      `[discord-dispatch] sub=${subId} ${context} disabled after ${result.consecutiveFailures} consecutive failures (${isPermanent ? "permanent" : "threshold"}): ${reason}`,
+    );
+  } else {
+    console.error(
+      `[discord-dispatch] sub=${subId} ${context} failed (${result.consecutiveFailures} in a row): ${reason}`,
+    );
+  }
+}
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -132,7 +165,7 @@ async function fireDigest(
   } catch (err) {
     releasePost(sub.id, headEvent.id, "digest", bucket);
     summary.errors++;
-    console.error(`[discord-dispatch] sub=${sub.id} digest failed:`, err);
+    handleDispatchFailure(sub.id, err, "digest");
   }
 }
 
@@ -178,7 +211,7 @@ async function fireReminders(
       // the next-tick retry pattern that digests use.
       summary.errors++;
       const errMsg = err instanceof Error ? err.message : String(err);
-      console.error(`[discord-dispatch] sub=${sub.id} reminder ${ev.id} failed (queued):`, errMsg);
+      handleDispatchFailure(sub.id, err, `reminder ${ev.id}`);
       enqueuePendingPost(sub.id, ev.id, "reminder", bucket, errMsg);
     }
   }
@@ -218,6 +251,10 @@ async function drainPendingPosts(now: Date, summary: DispatchSummary): Promise<v
       } else {
         console.error(`[discord-dispatch] retry attempt ${result.attempt} failed sub=${sub.id} event=${ev.id}: ${errMsg}`);
       }
+      // Also feed the per-subscription dead-channel cleanup so a retry
+      // queue full of "channel deleted" failures eventually disables the
+      // subscription instead of keeping the rows around forever.
+      handleDispatchFailure(sub.id, err, `retry ${ev.id}`);
       summary.errors++;
     }
   }

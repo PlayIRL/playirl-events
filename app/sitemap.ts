@@ -13,7 +13,7 @@
 
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/config";
-import { getActiveEvents } from "@/lib/events";
+import { getActiveEventIdsForSitemap } from "@/lib/events";
 import { listKnownVenues, venueSlug } from "@/lib/venues";
 
 export const dynamic = "force-dynamic";
@@ -27,10 +27,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/bot`,   lastModified: now, changeFrequency: "monthly", priority: 0.4 },
   ];
 
-  // Public events only. visibility=public + status active/pinned + not
-  // cancelled — same chokepoint as the homepage uses, so the sitemap
-  // never leaks unlisted/private/skip events.
-  const events = getActiveEvents();
+  // Public events only. Lean projection (id + updated_date) capped at the
+  // SQL layer so we don't allocate a full EventRow per row when scaling
+  // past 25k. The same visibility/status/cancellation chokepoint is
+  // applied inside the query — unlisted/private/skip never leak here.
+  const events = getActiveEventIdsForSitemap();
   const eventPages: MetadataRoute.Sitemap = events.map((ev) => {
     const updated = ev.updated_date ? new Date(ev.updated_date) : now;
     return {

@@ -236,6 +236,30 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
             )}
           </div>
 
+          {/* Auto-disable notice. Surfaces the dispatcher's dead-channel
+              cleanup so the user sees "we stopped trying because the bot
+              was kicked" instead of silently noticing the digests dried
+              up. The toggle above is the re-enable path — flipping it
+              clears `disabled_reason` server-side. */}
+          {!editing && !sub.enabled && sub.disabled_reason && (
+            <div
+              role="alert"
+              className="text-xs bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 text-amber-900 dark:text-amber-200 rounded-md px-3 py-2"
+            >
+              <p className="font-semibold mb-0.5">Auto-disabled by Discord</p>
+              <p className="leading-relaxed">
+                {sub.disabled_reason.includes("403")
+                  ? "Discord rejected our posts — usually the bot lost permission to post in this channel, or was kicked from the server. Re-add the bot or grant the SEND_MESSAGES permission, then flip the switch above."
+                  : sub.disabled_reason.includes("404")
+                    ? "Discord can't find the channel anymore. It was probably deleted. Either re-create it (and re-link this subscription to a new channel) or delete the subscription."
+                    : "Five Discord posts in a row failed. Once the issue is resolved, flip the switch above to retry."}
+                <span className="block mt-1 font-mono text-[10px] opacity-70">
+                  ref: {sub.disabled_reason.slice(0, 120)}
+                </span>
+              </p>
+            </div>
+          )}
+
           {!editing && (
             <dl className="grid grid-cols-[max-content_1fr] gap-x-4 gap-y-2.5 text-sm">
               <Field label="Mode" value={modeLabel} help={modeHelp} />

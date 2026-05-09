@@ -40,6 +40,15 @@ export interface DiscordSubscription {
   created_at: string;
   updated_at: string;
   last_dispatched_at: string | null;
+  /** Bumped every consecutive Discord post failure on this subscription;
+   *  reset to 0 on the next success. The dispatcher auto-disables once it
+   *  reaches PERMANENT_FAILURE_LIMIT or a permanent error fires. */
+  consecutive_failures: number;
+  last_failure_at: string | null;
+  /** When the dispatcher auto-disables a subscription, the reason (HTTP
+   *  status + Discord error body) lands here so the user sees it on
+   *  /account/discord. Empty string when never disabled / re-enabled. */
+  disabled_reason: string;
 }
 
 export interface CreateSubscriptionInput {
@@ -154,9 +163,20 @@ export function deleteSubscription(id: string): boolean {
 }
 
 export function setSubscriptionEnabled(id: string, enabled: boolean): boolean {
-  const r = getDb()
-    .prepare("UPDATE discord_subscriptions SET enabled = ?, updated_at = datetime('now') WHERE id = ?")
-    .run(enabled ? 1 : 0, id);
+  // When the user manually re-enables a subscription, clear the auto-disable
+  // failure trail too. Otherwise the next failure walks straight back into
+  // "5 in a row" because the counter was sitting at 5+ from the prior
+  // dead-channel run, and the user's "I fixed the bot permission" attempt
+  // gets disabled on the very next tick.
+  const r = enabled
+    ? getDb()
+        .prepare(
+          "UPDATE discord_subscriptions SET enabled = 1, consecutive_failures = 0, disabled_reason = '', updated_at = datetime('now') WHERE id = ?",
+        )
+        .run(id)
+    : getDb()
+        .prepare("UPDATE discord_subscriptions SET enabled = 0, updated_at = datetime('now') WHERE id = ?")
+        .run(id);
   return r.changes > 0;
 }
 
@@ -191,9 +211,48 @@ export function updateSubscription(id: string, patch: Partial<CreateSubscription
 }
 
 export function markSubscriptionDispatched(id: string): void {
+  // A successful dispatch implies the channel + permissions are healthy —
+  // reset the consecutive-failure counter so a previously-flaky channel
+  // doesn't get auto-disabled by an old streak.
   getDb()
-    .prepare("UPDATE discord_subscriptions SET last_dispatched_at = datetime('now') WHERE id = ?")
+    .prepare(
+      "UPDATE discord_subscriptions SET last_dispatched_at = datetime('now'), consecutive_failures = 0 WHERE id = ?",
+    )
     .run(id);
+}
+
+const PERMANENT_FAILURE_LIMIT = 5;
+
+/**
+ * Record a Discord post failure against a subscription. Bumps the consecutive
+ * failure counter and stamps the time. If `permanent` is true (403/404/410)
+ * OR the counter has reached `PERMANENT_FAILURE_LIMIT`, the subscription is
+ * also auto-disabled with `disabled_reason` set so the user can see why on
+ * /account/discord. Returns whether the subscription was disabled by this
+ * call (so the dispatcher can log it).
+ */
+export function recordSubscriptionFailure(
+  id: string,
+  reason: string,
+  permanent: boolean,
+): { disabled: boolean; consecutiveFailures: number } {
+  const db = getDb();
+  // Read-modify-write — small, on a single row, fine without an explicit
+  // transaction. The dispatcher serializes calls per-subscription via the
+  // for-of loop, so concurrent writers aren't a concern.
+  const next = db
+    .prepare(
+      "UPDATE discord_subscriptions SET consecutive_failures = consecutive_failures + 1, last_failure_at = datetime('now') WHERE id = ? RETURNING consecutive_failures",
+    )
+    .get(id) as { consecutive_failures: number } | undefined;
+  const cf = next?.consecutive_failures ?? 0;
+  const shouldDisable = permanent || cf >= PERMANENT_FAILURE_LIMIT;
+  if (shouldDisable) {
+    db.prepare(
+      "UPDATE discord_subscriptions SET enabled = 0, disabled_reason = ?, updated_at = datetime('now') WHERE id = ?",
+    ).run(reason.slice(0, 500), id);
+  }
+  return { disabled: shouldDisable, consecutiveFailures: cf };
 }
 
 /**
