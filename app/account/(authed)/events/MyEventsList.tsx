@@ -15,6 +15,8 @@ interface EventRow {
   notes: string;
   capacity: number | null;
   rsvp_enabled: number;
+  rejected_at: string | null;
+  rejection_reason: string;
 }
 
 export default function MyEventsList() {
@@ -42,9 +44,13 @@ export default function MyEventsList() {
   }
 
   const today = new Date().toISOString().slice(0, 10);
-  const pending = events.filter((e) => e.status === "pending");
-  const upcoming = events.filter((e) => e.status !== "pending" && e.date >= today);
-  const past = events.filter((e) => e.status !== "pending" && e.date < today);
+  // Rejected events are status='skip' with rejected_at stamped — split them
+  // out of the past/upcoming buckets so the host sees them as a distinct
+  // section with the admin's reason rather than mixed into "Past."
+  const rejected = events.filter((e) => e.rejected_at);
+  const pending = events.filter((e) => !e.rejected_at && e.status === "pending");
+  const upcoming = events.filter((e) => !e.rejected_at && e.status !== "pending" && e.date >= today);
+  const past = events.filter((e) => !e.rejected_at && e.status !== "pending" && e.date < today);
 
   if (loading) return <CardListSkeleton rows={3} />;
 
@@ -75,6 +81,17 @@ export default function MyEventsList() {
           onRemove={remove}
         />
       )}
+      {rejected.length > 0 && (
+        <Section
+          title="Rejected"
+          count={rejected.length}
+          hint="An admin declined these. The reason is shown on each card — fix the issue and submit a new event if it's something you can correct."
+          events={rejected}
+          busyId={busyId}
+          onRemove={remove}
+          showRejection
+        />
+      )}
       {upcoming.length > 0 && (
         <Section title="Upcoming" count={upcoming.length} events={upcoming} busyId={busyId} onRemove={remove} />
       )}
@@ -91,6 +108,7 @@ function Section({
   busyId,
   onRemove,
   dim = false,
+  showRejection = false,
 }: {
   title: string;
   count: number;
@@ -99,6 +117,8 @@ function Section({
   busyId: string | null;
   onRemove: (id: string) => void;
   dim?: boolean;
+  /** When true, render rejection_reason inline beneath each row. */
+  showRejection?: boolean;
 }) {
   return (
     <section>
@@ -114,7 +134,8 @@ function Section({
         }`}
       >
         {events.map((e) => (
-          <li key={e.id} className="flex items-center gap-3 px-4 py-3">
+          <li key={e.id} className="flex flex-col gap-2 px-4 py-3">
+            <div className="flex items-center gap-3">
             <div className="flex-1 min-w-0">
               <div className="flex items-baseline gap-2 flex-wrap">
                 <span className="text-xs text-neutral-500 dark:text-neutral-400">
@@ -129,7 +150,7 @@ function Section({
                     {e.format}
                   </span>
                 )}
-                <StatusPill status={e.status} />
+                <StatusPill status={e.rejected_at ? "rejected" : e.status} />
               </div>
               {e.location && (
                 <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5 truncate">📍 {e.location}</div>
@@ -158,6 +179,15 @@ function Section({
                 Delete
               </button>
             </div>
+            </div>
+            {showRejection && e.rejected_at && (
+              <div className="ml-0 sm:ml-2 rounded-md border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 text-red-900 dark:text-red-200 text-xs px-3 py-2">
+                <p className="font-semibold">Admin's note:</p>
+                <p className="leading-relaxed whitespace-pre-wrap">
+                  {e.rejection_reason || "No reason given."}
+                </p>
+              </div>
+            )}
           </li>
         ))}
       </ul>
@@ -178,6 +208,10 @@ function StatusPill({ status }: { status: string }) {
     pending: {
       label: "Pending review",
       cls: "bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800",
+    },
+    rejected: {
+      label: "Rejected",
+      cls: "bg-red-50 text-red-800 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800",
     },
     skip: {
       label: "Hidden",

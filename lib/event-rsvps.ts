@@ -124,8 +124,13 @@ export function setRsvp(
         )
         .get(eventId) as { user_id: string } | undefined;
       if (oldest) {
+        // Stamp `promoted_at` alongside the status flip so the event detail
+        // page can show the promoted user a "🎉 You came off the waitlist"
+        // banner the next time they land. Without this, the user has no way
+        // to discover the promotion until they happen to RSVP-check the
+        // event again, defeating the point of waitlist auto-promotion.
         db.prepare(
-          "UPDATE event_rsvps SET status = 'going', updated_at = datetime('now') WHERE event_id = ? AND user_id = ?",
+          "UPDATE event_rsvps SET status = 'going', promoted_at = datetime('now'), updated_at = datetime('now') WHERE event_id = ? AND user_id = ?",
         ).run(eventId, oldest.user_id);
         promoted = { user_id: oldest.user_id };
       }
@@ -184,18 +189,43 @@ export function getRsvpSummary(eventId: string, userId: string | null): {
   myStatus: RsvpStatus | null;
   counts: RsvpCounts;
   waitlistPosition: number | null;
+  /** Set when the user was auto-promoted from waitlist→going by another
+   *  user's cancellation. UI surfaces a banner; clear via
+   *  `acknowledgePromotion()` once the user has seen it. */
+  promotedAt: string | null;
 } {
   const db = getDb();
   let myStatus: RsvpStatus | null = null;
+  let promotedAt: string | null = null;
   if (userId) {
     const row = db
-      .prepare("SELECT status FROM event_rsvps WHERE user_id = ? AND event_id = ?")
-      .get(userId, eventId) as { status: RsvpStatus } | undefined;
+      .prepare(
+        "SELECT status, promoted_at FROM event_rsvps WHERE user_id = ? AND event_id = ?",
+      )
+      .get(userId, eventId) as { status: RsvpStatus; promoted_at: string | null } | undefined;
     myStatus = row?.status ?? null;
+    promotedAt = row?.promoted_at ?? null;
   }
   const waitlistPosition =
     userId && myStatus === "waitlist" ? positionOnWaitlist(eventId, userId) : null;
-  return { myStatus, counts: countAll(eventId), waitlistPosition };
+  return { myStatus, counts: countAll(eventId), waitlistPosition, promotedAt };
+}
+
+/**
+ * Clear the `promoted_at` stamp on a (user, event) RSVP. Called after the
+ * UI has shown the "🎉 You came off the waitlist" banner; without this the
+ * banner would render every visit forever.
+ *
+ * We don't delete the row or change status — just null out the stamp. The
+ * user is still 'going'; we're just acknowledging they've seen the
+ * notification.
+ */
+export function acknowledgePromotion(eventId: string, userId: string): void {
+  getDb()
+    .prepare(
+      "UPDATE event_rsvps SET promoted_at = NULL WHERE user_id = ? AND event_id = ? AND promoted_at IS NOT NULL",
+    )
+    .run(userId, eventId);
 }
 
 /** Host-only: full attendee roster joined to users. */

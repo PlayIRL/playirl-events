@@ -19,6 +19,7 @@ import {
 import ShareButton from "./share-button";
 import RsvpButton from "./rsvp-button";
 import HostActions from "./host-actions";
+import WaitlistPromotedBanner from "./waitlist-promoted-banner";
 import Reveal from "@/app/reveal";
 
 function formatDate(dateStr: string): string {
@@ -253,6 +254,15 @@ export default async function EventPage({
             attendees can confirm what happened.
           </p>
         </div>
+      )}
+
+      {/* Waitlist auto-promotion banner. Renders when the user's RSVP was
+          flipped from waitlist→going by another user's cancellation and
+          they haven't acknowledged it yet. The cancellation banner above
+          takes precedence — if the event itself was cancelled, the
+          promotion is moot. */}
+      {!cancelled && rsvp.promotedAt && rsvp.myStatus === "going" && (
+        <WaitlistPromotedBanner eventId={ev.id} />
       )}
 
       {ev.visibility !== "public" && !cancelled && (

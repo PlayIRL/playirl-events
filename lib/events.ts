@@ -30,6 +30,14 @@ export interface EventRow {
   visibility: string;
   /** ISO timestamp when the host cancelled. NULL = active. */
   cancelled_at: string | null;
+  /** When an admin rejects a host-submitted event, this stamps the
+   *  rejection time (status flips to 'skip' simultaneously). NULL means
+   *  "never rejected" — the row's status alone tells you whether it's
+   *  active / pending / skip / pinned for non-rejection reasons. */
+  rejected_at: string | null;
+  /** Free-text reason the admin gave when rejecting. Surfaced to the host
+   *  on /account/events so they know why their submission didn't go live. */
+  rejection_reason: string;
 }
 
 export interface ScrapedEvent {
@@ -430,18 +438,55 @@ export interface PendingEventRow extends EventRow {
 }
 
 export function getPendingEvents(): PendingEventRow[] {
+  // Rejected events still live at status='skip' (re-using the existing
+  // CHECK-constraint value rather than rebuilding the table for a new one),
+  // but the rejected_at filter keeps them out of the admin pending queue
+  // so the queue stays clean post-rejection. The host's MyEventsList still
+  // shows them via owner_id.
   return getDb()
     .prepare(`
       SELECT e.*, u.email AS owner_email, u.name AS owner_name
       FROM events e
       LEFT JOIN users u ON u.id = e.owner_id
-      WHERE e.status = 'pending'
+      WHERE e.status = 'pending' AND e.rejected_at IS NULL
       ORDER BY e.added_date DESC, e.date ASC
     `)
     .all() as PendingEventRow[];
 }
 
 export function countPendingEvents(): number {
-  const row = getDb().prepare("SELECT COUNT(*) AS n FROM events WHERE status = 'pending'").get() as { n: number };
+  const row = getDb()
+    .prepare("SELECT COUNT(*) AS n FROM events WHERE status = 'pending' AND rejected_at IS NULL")
+    .get() as { n: number };
   return row.n;
+}
+
+/**
+ * Soft-reject a pending event. Flips status to 'skip' (so it stays out of
+ * the public calendar without needing a new CHECK-constraint enum value)
+ * and stamps `rejected_at` + `rejection_reason` so the host sees a clear
+ * "Rejected — because: …" entry on /account/events. Replaces the previous
+ * hard-delete flow that left submitters with no feedback.
+ */
+export function rejectEvent(id: string, reason: string): boolean {
+  const trimmed = reason.trim().slice(0, 1000);
+  const r = getDb()
+    .prepare(
+      "UPDATE events SET status = 'skip', rejected_at = datetime('now'), rejection_reason = ?, updated_date = date('now') WHERE id = ? AND status = 'pending'",
+    )
+    .run(trimmed, id);
+  return r.changes > 0;
+}
+
+export function bulkRejectEvents(ids: string[], reason: string): number {
+  if (ids.length === 0) return 0;
+  const trimmed = reason.trim().slice(0, 1000);
+  const placeholders = ids.map(() => "?").join(",");
+  const r = getDb()
+    .prepare(
+      `UPDATE events SET status = 'skip', rejected_at = datetime('now'), rejection_reason = ?, updated_date = date('now')
+        WHERE id IN (${placeholders}) AND status = 'pending'`,
+    )
+    .run(trimmed, ...ids);
+  return r.changes;
 }
