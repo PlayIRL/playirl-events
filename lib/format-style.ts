@@ -12,49 +12,51 @@ export const FORMAT_EMOJI: Record<string, string> = {
 // Format colors map to the actual MTG mana-symbol swatches — the cream,
 // sky-blue, bone, salmon, and sage that show on the mana cost roundels
 // and card frames, not Tailwind's generic palette. Hex values below are
-// the canonical "lightest" mana symbol bg, paired with deeper tones for
-// text and borders pulled from the same color identity.
+// tuned to match the saturation of the WUBRG color wheel: vivid enough to
+// be instantly recognizable as MTG mana, with deeper tones for text and
+// borders pulled from the same color identity.
 //
-//   W (Plains)      #FFFBD5 cream         → Pauper (commons)
-//   U (Island)      #AAE0FA / #0E68AB     → Modern (control)
-//   B (Swamp)       #CBC2BF / #150B00     → Legacy (eternal)
-//   R (Mountain)    #F9AA8F / #D3202A     → Pioneer (aggressive)
-//   G (Forest)      #9BD3AE / #00733E     → Standard (current)
-//   Plum            #E1D2EE / #6B3FA0     → Commander (legendary/mythic)
-//   Amber-gold      #F5C988 / #E08F2B     → Draft (limited)
-//   Bronze          #E8C28A / #B86E1F     → Sealed (sealed-pack)
+//   W (Plains)      #F8DC68 / #5C4400     → Pauper (commons)
+//   U (Island)      #9BCBEC / #0E68AB     → Modern (control)
+//   B (Swamp)       #B8B0A8 / #3A352F     → Legacy (eternal)
+//   R (Mountain)    #F8A992 / #D3202A     → Pioneer (aggressive)
+//   G (Forest)      #9CDCB1 / #00733E     → Standard (current)
+//   Plum            #D9BCEE / #6B3FA0     → Commander (legendary/mythic)
+//   Amber-gold      #F5BB75 / #E08F2B     → Draft (limited)
+//   Bronze          #DDA873 / #B86E1F     → Sealed (sealed-pack)
 //
 // Commander uses plum (the "mythic / legendary stamp" color in MTG
 // culture) rather than gold so it sits visually clear of Pauper's cream.
 // Gold/multicolor stays for Draft (limited) and Sealed (sealed-pack).
-// Pastel-bright fills with near-black text. Borderless — the colored
-// fill carries the chip's identity on its own; a 2px border at this
-// size was reading as decorative weight rather than information.
+// Saturated fills with near-black text — saturated enough to read as the
+// matching mana symbol at a glance. Borderless: the colored fill carries
+// the chip's identity on its own; a 2px border at this size was reading
+// as decorative weight rather than information.
 export const FORMAT_BADGE: Record<string, string> = {
   // Plum — legendary / mythic
   Commander:
-    "bg-[#EBDBF6] text-[#2A1145] dark:bg-[#6B3FA0]/35 dark:text-[#F1E4F9]",
+    "bg-[#D9BCEE] text-[#2A1145] dark:bg-[#6B3FA0]/45 dark:text-[#F1E4F9]",
   // U — Island
   Modern:
-    "bg-[#C5E6F6] text-[#0A2D4D] dark:bg-[#0E68AB]/35 dark:text-[#D6ECF7]",
+    "bg-[#9BCBEC] text-[#0A2D4D] dark:bg-[#0E68AB]/50 dark:text-[#D6ECF7]",
   // G — Forest
   Standard:
-    "bg-[#C8EBD2] text-[#0A2E1A] dark:bg-[#00733E]/35 dark:text-[#D6F0DD]",
+    "bg-[#9CDCB1] text-[#0A2E1A] dark:bg-[#00733E]/50 dark:text-[#D6F0DD]",
   // R — Mountain
   Pioneer:
-    "bg-[#FCC9B8] text-[#3D0E0E] dark:bg-[#D3202A]/30 dark:text-[#FAD8C9]",
+    "bg-[#F8A992] text-[#3D0E0E] dark:bg-[#D3202A]/45 dark:text-[#FAD8C9]",
   // B — Swamp / eternal
   Legacy:
-    "bg-[#D8D2CC] text-[#15110D] dark:bg-[#3A352F]/65 dark:text-[#E8E2DC]",
-  // W — Plains / commons
+    "bg-[#B8B0A8] text-[#15110D] dark:bg-[#3A352F]/80 dark:text-[#E8E2DC]",
+  // W — Plains / commons (cream-yellow, matching the wheel's sun panel)
   Pauper:
-    "bg-[#FBF09F] text-[#3D2E08] dark:bg-[#F8E26B]/25 dark:text-[#FBF4C5]",
+    "bg-[#F8DC68] text-[#5C4400] dark:bg-[#F8E26B]/40 dark:text-[#FBF4C5]",
   // Amber-gold — limited
   Draft:
-    "bg-[#F8CC8B] text-[#3D1F08] dark:bg-[#E08F2B]/35 dark:text-[#F9DCB0]",
+    "bg-[#F5BB75] text-[#3D1F08] dark:bg-[#E08F2B]/50 dark:text-[#F9DCB0]",
   // Bronze-gold — sealed mystery
   Sealed:
-    "bg-[#E8BC85] text-[#291A07] dark:bg-[#B86E1F]/40 dark:text-[#EBCFA5]",
+    "bg-[#DDA873] text-[#291A07] dark:bg-[#B86E1F]/55 dark:text-[#EBCFA5]",
 };
 
 // Saturated swatches for the format-selector dot in the radius dropdown.
