@@ -159,200 +159,212 @@ export default function EventForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} className="space-y-8">
       {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
 
-      <Field label="Title" required>
-        <input className={FIELD} value={values.title} onChange={field("title")} required />
-      </Field>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Field label="Date" required>
-          <input className={FIELD} type="date" value={values.date} onChange={field("date")} required />
+      {/* Section 1 — Basics. Title sits alone above the 3-up date/time/
+          format row so the most-typed field gets full breathing room. */}
+      <Section label="The basics">
+        <Field label="Title" required>
+          <input className={FIELD} value={values.title} onChange={field("title")} required />
         </Field>
-        <Field label="Time">
-          <input className={FIELD} type="time" value={values.time} onChange={field("time")} placeholder="HH:MM" />
-        </Field>
-        <Field label="Format">
-          <FormatCombobox
-            value={values.format}
-            onChange={(next) => setValues((v) => ({ ...v, format: next }))}
-            options={FORMAT_SUGGESTIONS}
-            className={FIELD}
-            placeholder="Start typing…"
-          />
-        </Field>
-      </div>
 
-      <Field
-        label="Location (venue name)"
-        hint={
-          venueFilled
-            ? "We filled in what we know. Edit anything that's changed."
-            : "Start typing — we'll suggest venues we already know."
-        }
-      >
-        <VenueAutocomplete
-          value={values.location}
-          onChange={(next) => {
-            setValues((v) => ({ ...v, location: next }));
-            if (venueFilled) setVenueFilled(false);
-          }}
-          onPick={applyVenue}
-          className={FIELD}
-          placeholder="e.g. Hamilton's Hand"
-        />
-      </Field>
-
-      <Field label="Address">
-        <input className={FIELD} value={values.address} onChange={field("address")} onBlur={lookupAddress} />
-      </Field>
-
-      <Field label="Cost">
-        <div className="flex flex-wrap items-center gap-4">
-          <label className="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300">
-            <input
-              type="radio"
-              name="cost-kind"
-              checked={!costPaid}
-              onChange={() => updateCost(false, costAmount)}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Field label="Date" required>
+            <input className={FIELD} type="date" value={values.date} onChange={field("date")} required />
+          </Field>
+          <Field label="Time">
+            <input className={FIELD} type="time" value={values.time} onChange={field("time")} placeholder="HH:MM" />
+          </Field>
+          <Field label="Format">
+            <FormatCombobox
+              value={values.format}
+              onChange={(next) => setValues((v) => ({ ...v, format: next }))}
+              options={FORMAT_SUGGESTIONS}
+              className={FIELD}
+              placeholder="Start typing…"
             />
-            Free
-          </label>
-          <label className="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300">
-            <input
-              type="radio"
-              name="cost-kind"
-              checked={costPaid}
-              onChange={() => updateCost(true, costAmount)}
-            />
-            Paid
-          </label>
-          <div className={`flex items-center gap-1 transition ${costPaid ? "opacity-100" : "opacity-40 pointer-events-none"}`}>
-            <span className="text-neutral-500 dark:text-neutral-400">$</span>
-            <input
-              type="number"
-              inputMode="decimal"
-              min="0"
-              step="1"
-              value={costAmount}
-              onChange={(e) => updateCost(costPaid, e.target.value)}
-              placeholder="5"
-              aria-label="Price in dollars"
-              className="w-24 px-2 py-1.5 text-sm border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20"
-            />
-          </div>
+          </Field>
         </div>
-      </Field>
+      </Section>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Section label="Where">
         <Field
-          label="Venue website"
-          hint="Optional. The store, bar, or club's main site — e.g. hamiltons.com."
+          label="Location (venue name)"
+          hint={
+            venueFilled
+              ? "We filled in what we know. Edit anything that's changed."
+              : "Start typing — we'll suggest venues we already know."
+          }
         >
-          <input
+          <VenueAutocomplete
+            value={values.location}
+            onChange={(next) => {
+              setValues((v) => ({ ...v, location: next }));
+              if (venueFilled) setVenueFilled(false);
+            }}
+            onPick={applyVenue}
             className={FIELD}
-            type="url"
-            value={values.store_url}
-            onChange={field("store_url")}
-            placeholder="https://"
+            placeholder="e.g. Hamilton's Hand"
           />
         </Field>
-        <Field
-          label="Event detail URL"
-          hint="Optional. Link directly to this event's registration or info page, if different from the venue site."
-        >
-          <input
-            className={FIELD}
-            type="url"
-            value={values.detail_url}
-            onChange={field("detail_url")}
-            placeholder="https://"
-          />
-        </Field>
-      </div>
 
-      {showStatus && (
-        <Field label="Status">
-          <select className={FIELD} value={values.status} onChange={field("status")}>
-            <option value="active">active</option>
-            <option value="skip">skip</option>
-            <option value="pinned">pinned</option>
-            <option value="pending">pending</option>
-          </select>
+        <Field label="Address">
+          <input className={FIELD} value={values.address} onChange={field("address")} onBlur={lookupAddress} />
         </Field>
-      )}
+      </Section>
 
-      <Field label="Photo">
-        <EventImageInput
-          value={values.image_url}
-          onChange={(next) => setValues((v) => ({ ...v, image_url: next }))}
-          onUploadingChange={setImageUploading}
-        />
-      </Field>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Field
-          label="Player capacity"
-          hint="Optional. Cap on the number of people who can RSVP &lsquo;Going&rsquo;. Leave blank for no cap."
-        >
-          <input
-            className={FIELD}
-            type="number"
-            inputMode="numeric"
-            min="1"
-            step="1"
-            value={values.capacity}
-            onChange={field("capacity")}
-            placeholder="e.g. 16"
-          />
-        </Field>
-        <Field
-          label="RSVPs"
-          hint="Let signed-in players RSVP &lsquo;Going&rsquo; or &lsquo;Maybe&rsquo;. You'll see a roster on your event."
-        >
-          <label className="inline-flex items-center gap-2 mt-2 text-sm text-neutral-700 dark:text-neutral-300">
-            <input
-              type="checkbox"
-              checked={values.rsvp_enabled}
-              onChange={(e) => setValues((v) => ({ ...v, rsvp_enabled: e.target.checked }))}
-              className="rounded-md border-neutral-300 dark:border-neutral-600"
-            />
-            Enabled
-          </label>
-        </Field>
-      </div>
-
-      <Field label="Visibility">
-        <div className="space-y-2 mt-1">
-          {[
-            { v: "public", label: "Public", hint: "Listed on the homepage and in the public ICS feed." },
-            { v: "unlisted", label: "Unlisted", hint: "Only viewable with a direct link. Hidden from the homepage and feeds." },
-            { v: "private", label: "Private", hint: "Invite-only. Viewers must be signed in and either invited, RSVP'd, or the host." },
-          ].map((opt) => (
-            <label key={opt.v} className="flex items-start gap-2 cursor-pointer">
+      <Section label="Cost & links">
+        <Field label="Cost">
+          <div className="flex flex-wrap items-center gap-4">
+            <label className="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300">
               <input
                 type="radio"
-                name="visibility"
-                value={opt.v}
-                checked={values.visibility === opt.v}
-                onChange={() => setValues((v) => ({ ...v, visibility: opt.v }))}
-                className="mt-0.5"
+                name="cost-kind"
+                checked={!costPaid}
+                onChange={() => updateCost(false, costAmount)}
               />
-              <span className="flex-1">
-                <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">{opt.label}</span>
-                <span className="block text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">{opt.hint}</span>
-              </span>
+              Free
             </label>
-          ))}
+            <label className="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300">
+              <input
+                type="radio"
+                name="cost-kind"
+                checked={costPaid}
+                onChange={() => updateCost(true, costAmount)}
+              />
+              Paid
+            </label>
+            <div className={`flex items-center gap-1 transition ${costPaid ? "opacity-100" : "opacity-40 pointer-events-none"}`}>
+              <span className="text-neutral-500 dark:text-neutral-400">$</span>
+              <input
+                type="number"
+                inputMode="decimal"
+                min="0"
+                step="1"
+                value={costAmount}
+                onChange={(e) => updateCost(costPaid, e.target.value)}
+                placeholder="5"
+                aria-label="Price in dollars"
+                className="w-24 px-2 py-1.5 text-sm border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20"
+              />
+            </div>
+          </div>
+        </Field>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Field
+            label="Venue website"
+            hint="Optional. The store, bar, or club's main site — e.g. hamiltons.com."
+          >
+            <input
+              className={FIELD}
+              type="url"
+              value={values.store_url}
+              onChange={field("store_url")}
+              placeholder="https://"
+            />
+          </Field>
+          <Field
+            label="Event detail URL"
+            hint="Optional. Link directly to this event's registration or info page, if different from the venue site."
+          >
+            <input
+              className={FIELD}
+              type="url"
+              value={values.detail_url}
+              onChange={field("detail_url")}
+              placeholder="https://"
+            />
+          </Field>
         </div>
-      </Field>
+      </Section>
 
-      <Field label="Description">
-        <textarea className={FIELD} rows={3} value={values.notes} onChange={field("notes")} />
-      </Field>
+      <Section label="Photo & description">
+        <Field label="Photo">
+          <EventImageInput
+            value={values.image_url}
+            onChange={(next) => setValues((v) => ({ ...v, image_url: next }))}
+            onUploadingChange={setImageUploading}
+          />
+        </Field>
 
-      <div className="flex gap-3">
+        <Field label="Description">
+          <textarea className={FIELD} rows={3} value={values.notes} onChange={field("notes")} />
+        </Field>
+      </Section>
+
+      <Section label="Settings">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Field
+            label="Player capacity"
+            hint="Optional. Cap on the number of people who can RSVP &lsquo;Going&rsquo;. Leave blank for no cap."
+          >
+            <input
+              className={FIELD}
+              type="number"
+              inputMode="numeric"
+              min="1"
+              step="1"
+              value={values.capacity}
+              onChange={field("capacity")}
+              placeholder="e.g. 16"
+            />
+          </Field>
+          <Field
+            label="RSVPs"
+            hint="Let signed-in players RSVP &lsquo;Going&rsquo; or &lsquo;Maybe&rsquo;. You'll see a roster on your event."
+          >
+            <label className="inline-flex items-center gap-2 mt-2 text-sm text-neutral-700 dark:text-neutral-300">
+              <input
+                type="checkbox"
+                checked={values.rsvp_enabled}
+                onChange={(e) => setValues((v) => ({ ...v, rsvp_enabled: e.target.checked }))}
+                className="rounded-md border-neutral-300 dark:border-neutral-600"
+              />
+              Enabled
+            </label>
+          </Field>
+        </div>
+
+        <Field label="Visibility">
+          <div className="space-y-2 mt-1">
+            {[
+              { v: "public", label: "Public", hint: "Listed on the homepage and in the public ICS feed." },
+              { v: "unlisted", label: "Unlisted", hint: "Only viewable with a direct link. Hidden from the homepage and feeds." },
+              { v: "private", label: "Private", hint: "Invite-only. Viewers must be signed in and either invited, RSVP'd, or the host." },
+            ].map((opt) => (
+              <label key={opt.v} className="flex items-start gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="visibility"
+                  value={opt.v}
+                  checked={values.visibility === opt.v}
+                  onChange={() => setValues((v) => ({ ...v, visibility: opt.v }))}
+                  className="mt-0.5"
+                />
+                <span className="flex-1">
+                  <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">{opt.label}</span>
+                  <span className="block text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">{opt.hint}</span>
+                </span>
+              </label>
+            ))}
+          </div>
+        </Field>
+
+        {showStatus && (
+          <Field label="Status">
+            <select className={FIELD} value={values.status} onChange={field("status")}>
+              <option value="active">active</option>
+              <option value="skip">skip</option>
+              <option value="pinned">pinned</option>
+              <option value="pending">pending</option>
+            </select>
+          </Field>
+        )}
+      </Section>
+
+      <div className="flex gap-3 pt-2">
         <Button type="submit" variant="primary" disabled={saving || imageUploading}>
           {saving ? "Saving…" : imageUploading ? "Uploading photo…" : "Save"}
         </Button>
@@ -361,6 +373,27 @@ export default function EventForm({
         </Button>
       </div>
     </form>
+  );
+}
+
+/**
+ * Section break for the event form. Renders an uppercase label tag + a
+ * hairline divider above the children. Lighter-touch than card chrome
+ * (no "boxes-within-boxes" feel that was making the form read as
+ * chunky), but still gives the eye a clear stopping point between
+ * groups of fields.
+ *
+ * Hides the divider on the first section so the form doesn't open with
+ * an orphaned line under the page header.
+ */
+function Section({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <section className="space-y-4 pt-6 border-t border-neutral-200/70 dark:border-white/8 first:pt-0 first:border-t-0">
+      <h2 className="text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-500 dark:text-neutral-400">
+        {label}
+      </h2>
+      {children}
+    </section>
   );
 }
 
