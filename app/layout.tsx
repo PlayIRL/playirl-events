@@ -1,9 +1,27 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Figtree } from "next/font/google";
 import { cookies } from "next/headers";
 import { SITE_URL } from "@/lib/config";
 import "./globals.css";
 import ThemeSync from "./theme-sync";
+
+// Viewport / theme-color split out of `metadata` per the Next.js 14+ API.
+// Critical on mobile: without `width=device-width, initial-scale=1`, iOS
+// Safari renders at 980px and pinch-zoom the page, breaking every layout.
+// We intentionally DO allow user zoom (no `maximum-scale` / `user-scalable=no`)
+// because forcing fixed scale is a WCAG 1.4.4 fail.
+//
+// `themeColor` matches the body-bg per theme so the browser chrome (notch,
+// pull-to-refresh strip) blends with the page in both light and dark modes.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
+};
 
 // One font for the whole site. Both --font-inter and --font-ultra resolve
 // to Figtree (see globals.css), so existing callsites continue to work

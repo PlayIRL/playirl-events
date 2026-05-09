@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 
-const BTN = "flex items-center justify-center w-8 h-8 rounded-md transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20";
+const BTN = "flex items-center justify-center w-10 h-10 rounded-md transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20";
 const BTN_ACTIVE = "bg-white dark:bg-white/15 shadow-sm text-neutral-900 dark:text-white";
 const BTN_INACTIVE = "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300";
 
@@ -91,41 +91,45 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
           screen size. */}
       <div className="fixed right-4 top-1/2 -translate-y-1/2 z-40 flex">
         <div className="relative flex flex-col bg-neutral-100/80 dark:bg-neutral-900 rounded-md p-1 border border-neutral-200/60 dark:border-white/10 shadow-lg shadow-black/10 dark:shadow-black/40 backdrop-blur-sm">
-          {/* sliding pill — each step is 36px (h-8 button + 4px gap) */}
+          {/* sliding pill — each step is 44px (h-10 button + 4px gap) */}
           <div
-            className="absolute left-1 right-1 h-8 rounded-md bg-white dark:bg-white/12 shadow-sm transition-transform duration-200 ease-out"
+            className="absolute left-1 right-1 h-10 rounded-md bg-white dark:bg-white/12 shadow-sm transition-transform duration-200 ease-out"
             style={{
               top: "4px",
-              transform: `translateY(${activeView === "calendar" ? 36 : activeView === "map" ? 72 : 0}px)`,
+              transform: `translateY(${activeView === "calendar" ? 44 : activeView === "map" ? 88 : 0}px)`,
             }}
           />
           <button
             onClick={() => setView("list")}
             title="List view"
-            className={`relative z-10 flex items-center justify-center w-8 h-8 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ${activeView === "list" ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-400"}`}
+            className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ${activeView === "list" ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-400"}`}
           >
             <ListIcon />
           </button>
           <button
             onClick={() => setView("calendar")}
             title="Calendar view"
-            className={`relative z-10 flex items-center justify-center w-8 h-8 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 mt-1 ${activeView === "calendar" ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-400"}`}
+            className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 mt-1 ${activeView === "calendar" ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-400"}`}
           >
             <CalendarIcon />
           </button>
           <button
             onClick={() => setView("map")}
             title="Map view"
-            className={`relative z-10 flex items-center justify-center w-8 h-8 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 mt-1 ${activeView === "map" ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-400"}`}
+            className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 mt-1 ${activeView === "map" ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-400"}`}
           >
             <MapIcon />
           </button>
         </div>
       </div>
 
-      {/* Theme toggle — bottom-right corner. (AccountChip pill now lives
-          at top-right so this no longer needs to shift up.) */}
-      <div className={`${PILL} bottom-6`}>
+      {/* Theme toggle — bottom-right corner. Bottom inset uses
+          env(safe-area-inset-bottom) so the pill clears iPhone home bars
+          and Android gesture bars instead of disappearing under them. */}
+      <div
+        className={`${PILL}`}
+        style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
+      >
         <button
           onClick={toggleTheme}
           title={isDark ? "Switch to light mode" : "Switch to dark mode"}

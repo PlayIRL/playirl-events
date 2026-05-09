@@ -58,7 +58,11 @@ export default function SaveEventButton({ eventId, initiallySaved, compact = fal
         className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition ${
           saved
             ? "text-neutral-900 dark:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800"
-            : "text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100"
+            : // On hover-capable devices (mouse/trackpad), de-emphasize the
+              // unsaved icon until the row is hovered so cards stay quiet.
+              // On touch (no hover), keep it visible — hover-reveal isn't
+              // discoverable when there's no cursor.
+              "text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 [@media(hover:hover)]:sm:opacity-0 [@media(hover:hover)]:sm:group-hover:opacity-100 [@media(hover:hover)]:sm:focus-visible:opacity-100"
         } ${busy ? "opacity-50" : ""} ${className}`}
       >
         <StarIcon filled={saved} />

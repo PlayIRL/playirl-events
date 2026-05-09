@@ -85,7 +85,8 @@ export default function AdminUsersPage() {
             No users yet. They'll appear here after the first OAuth or magic-link sign-in.
           </p>
         ) : (
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[480px]">
             <thead className="bg-neutral-50 dark:bg-neutral-800 text-xs text-neutral-500 dark:text-neutral-400">
               <tr>
                 <th className="text-left px-3 py-2">User</th>
@@ -141,6 +142,7 @@ export default function AdminUsersPage() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
     </div>
