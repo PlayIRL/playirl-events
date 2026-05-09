@@ -433,6 +433,20 @@ function initSchema(db: Database.Database) {
   try { db.exec("ALTER TABLE discord_subscriptions ADD COLUMN consecutive_failures INTEGER NOT NULL DEFAULT 0"); } catch {}
   try { db.exec("ALTER TABLE discord_subscriptions ADD COLUMN last_failure_at TEXT"); } catch {}
   try { db.exec("ALTER TABLE discord_subscriptions ADD COLUMN disabled_reason TEXT DEFAULT ''"); } catch {}
+  // Pending-event rejection trail. When an admin rejects a host-submitted
+  // event we flip status to 'skip' (existing CHECK-constraint value) and
+  // stamp the time + reason. The host's /account/events view filters owned
+  // events with rejected_at NOT NULL into a separate "Rejected" section
+  // showing the reason — replaces the previous flow where rejected events
+  // were silently deleted with zero feedback.
+  try { db.exec("ALTER TABLE events ADD COLUMN rejected_at TEXT"); } catch {}
+  try { db.exec("ALTER TABLE events ADD COLUMN rejection_reason TEXT DEFAULT ''"); } catch {}
+  // Waitlist→going promotion timestamp on event_rsvps. When capacity opens
+  // up and lib/event-rsvps.ts promotes the next waitlister, we stamp
+  // promoted_at so the event detail page can render a "🎉 You got off the
+  // waitlist" banner the next time the user visits — instead of them
+  // discovering the change by accident.
+  try { db.exec("ALTER TABLE event_rsvps ADD COLUMN promoted_at TEXT"); } catch {}
 
   // Default settings
   const insert = db.prepare("INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)");
