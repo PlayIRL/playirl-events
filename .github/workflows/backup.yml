@@ -60,9 +60,13 @@ jobs:
           mkdir -p artifact
           STAMP=$(date -u +%Y%m%d-%H%M%S)
           OUT="artifact/mtg-cal-${STAMP}.db.gz"
-          # --fail-with-body so a 401/500 response surfaces the JSON error
-          # body in the workflow log instead of silently writing it to disk.
-          curl -sS -fL "https://playirl.gg/api/internal/backup" \
+          # --fail-with-body surfaces the JSON error body on 4xx/5xx in the
+          # workflow log instead of silently writing it to disk. It is
+          # MUTUALLY EXCLUSIVE with -f / --fail (curl rejects both at parse
+          # time with "option ... is badly used here") — so we drop -f and
+          # rely on --fail-with-body alone for failure surfacing. Keep -L
+          # so a 30x doesn't break the artifact path.
+          curl -sS -L "https://playirl.gg/api/internal/backup" \
                -H "x-backup-secret: ${BACKUP_SECRET}" \
                -o "${OUT}" \
                --fail-with-body \

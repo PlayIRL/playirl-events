@@ -1,5 +1,6 @@
 import { runScraper } from "@/lib/scraper";
 import { tryAcquireScrapeLock, releaseScrapeLock } from "@/lib/scraper-lock";
+import { safeEqualSecret } from "@/lib/security";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
@@ -34,7 +35,7 @@ export async function POST(request: Request) {
   }
 
   const provided = request.headers.get("x-scrape-secret");
-  if (!provided || provided !== secret) {
+  if (!safeEqualSecret(provided, secret)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

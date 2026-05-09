@@ -143,6 +143,17 @@ function initSchema(db: Database.Database) {
     -- predicate in getActiveEvents — SQLite picks up the leading column for
     -- range scans. Without this, every homepage render full-table-scans.
     CREATE INDEX IF NOT EXISTS idx_events_lat_lng ON events(latitude, longitude);
+    -- Composite index for the public-event hot path: getActiveEvents filters
+    -- on status IN ('active','pinned') AND visibility='public' AND cancelled_at
+    -- IS NULL AND date BETWEEN x AND y. SQLite's planner picks this up for the
+    -- (status, date) prefix; the scan still has to evaluate visibility and
+    -- cancelled_at row-by-row, but ~99% of rows match those, so the cost
+    -- collapses. Touches the homepage, ICS feeds, and format dropdown.
+    CREATE INDEX IF NOT EXISTS idx_events_active_date ON events(status, date);
+    -- Case-insensitive venue lookup for /venue/[slug]. getEventsForVenue
+    -- compares LOWER(TRIM(location)) so the index has to match expression
+    -- shape exactly. SQLite supports indexes on expressions since 3.9.0.
+    CREATE INDEX IF NOT EXISTS idx_events_location_lower ON events(LOWER(TRIM(location)));
 
     CREATE TABLE IF NOT EXISTS settings (
       key   TEXT PRIMARY KEY,

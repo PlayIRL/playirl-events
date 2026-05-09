@@ -18,6 +18,7 @@
 
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
+import { safeEqualSecret } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 // integrity_check is O(rows × indexes); at 50k events with our index set
@@ -30,7 +31,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "BACKUP_SECRET not configured" }, { status: 500 });
   }
   const provided = request.headers.get("x-backup-secret");
-  if (!provided || provided !== secret) {
+  if (!safeEqualSecret(provided, secret)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
