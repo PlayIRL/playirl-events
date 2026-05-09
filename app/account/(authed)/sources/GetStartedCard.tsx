@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DiscordIcon } from "@/app/discord-icon";
 
 /**
  * Two-step "connect your Discord" walkthrough used both on /account/sources
@@ -41,7 +42,7 @@ export default function GetStartedCard({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-[#5865F2] text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-[#4752c4] transition"
               >
-                <DiscordMark />
+                <DiscordIcon className="w-4 h-4" />
                 Open Discord
               </a>
             </>
@@ -83,10 +84,3 @@ function Step({ n, title, body }: { n: number; title: string; body: React.ReactN
   );
 }
 
-function DiscordMark() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M20.317 4.369A19.791 19.791 0 0 0 16.558 3c-.177.318-.384.744-.527 1.084a18.251 18.251 0 0 0-5.064 0A12.495 12.495 0 0 0 10.441 3a19.74 19.74 0 0 0-3.76 1.369C3.097 9.42 2.12 14.338 2.606 19.173a19.93 19.93 0 0 0 6.073 3.066c.49-.671.927-1.384 1.302-2.134a12.9 12.9 0 0 1-2.053-.978c.172-.127.341-.259.504-.395 3.96 1.825 8.243 1.825 12.152 0 .165.136.334.268.504.395-.655.39-1.344.72-2.056.98.375.749.812 1.462 1.302 2.133a19.897 19.897 0 0 0 6.077-3.066c.573-5.583-.978-10.46-4.093-14.805zM8.02 16.353c-1.217 0-2.22-1.129-2.22-2.513 0-1.383.98-2.513 2.22-2.513 1.245 0 2.243 1.14 2.221 2.513 0 1.384-.98 2.513-2.22 2.513zm7.96 0c-1.217 0-2.22-1.129-2.22-2.513 0-1.383.98-2.513 2.22-2.513 1.244 0 2.243 1.14 2.221 2.513 0 1.384-.977 2.513-2.22 2.513z" />
-    </svg>
-  );
-}
