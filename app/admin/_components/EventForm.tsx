@@ -377,11 +377,10 @@ export default function EventForm({
 }
 
 /**
- * Section break for the event form. Renders an uppercase label tag + a
- * hairline divider above the children. Lighter-touch than card chrome
- * (no "boxes-within-boxes" feel that was making the form read as
- * chunky), but still gives the eye a clear stopping point between
- * groups of fields.
+ * Section break for the event form. Renders a standard h2 + hairline
+ * divider above the children. Lighter-touch than card chrome (no
+ * "boxes-within-boxes" feel) but still gives the eye a clear stopping
+ * point between groups of fields.
  *
  * Hides the divider on the first section so the form doesn't open with
  * an orphaned line under the page header.
@@ -389,7 +388,7 @@ export default function EventForm({
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <section className="space-y-4 pt-6 border-t border-neutral-200/70 dark:border-white/8 first:pt-0 first:border-t-0">
-      <h2 className="text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-500 dark:text-neutral-400">
+      <h2 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
         {label}
       </h2>
       {children}
