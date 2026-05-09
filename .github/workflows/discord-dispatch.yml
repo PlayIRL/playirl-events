@@ -33,7 +33,19 @@ jobs:
           if [ "${{ inputs.force }}" = "true" ]; then
             URL="${URL}?force=1"
           fi
+          # --retry 3 / --retry-delay 5 / --retry-all-errors swallows
+          # transient 5xx responses from Railway (the most common is a
+          # 502 when a tick happens to hit a container mid-restart —
+          # health-check recycle, OOM auto-recovery, brief platform
+          # blip). A real outage still fails after ~15s of attempts so
+          # we still get the email; one-off blips don't page anymore.
+          # Re-firing the dispatcher is safe: claimPost()'s composite
+          # PK in the idempotency ledger short-circuits any duplicate
+          # window.
           curl -sS -X POST "$URL" \
             -H "x-dispatch-secret: ${{ secrets.DISPATCH_SECRET }}" \
             -w "\nHTTP %{http_code}\n" \
+            --retry 3 \
+            --retry-delay 5 \
+            --retry-all-errors \
             --fail-with-body
