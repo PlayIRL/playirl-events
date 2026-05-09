@@ -290,7 +290,7 @@ export default async function HomePage({
           <a href="/bot" className="hover:text-neutral-900 dark:hover:text-white">Discord bot</a>
           <a href="https://github.com/i1986o/mtg-cal" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-white">GitHub</a>
           <a href="https://discord.gg/axDSujPTfj" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-white">Discord</a>
-          <a href="/account/events/new" className="hover:text-neutral-900 dark:hover:text-white">Submit events</a>
+          <a href="/account/events/new" className="hover:text-neutral-900 dark:hover:text-white">Create event</a>
           <a href="/account" className="hover:text-neutral-900 dark:hover:text-white">Sign in</a>
         </div>
       </footer>

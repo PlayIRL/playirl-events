@@ -111,7 +111,7 @@ export default function AboutPage() {
                 href="/account/events/new"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-100 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/20 active:translate-y-0 transition-all duration-200"
               >
-                {"\u270F\uFE0F"} Submit an event
+                {"\u270F\uFE0F"} Create an event
               </Link>
               <a
                 href="https://discord.gg/axDSujPTfj"
