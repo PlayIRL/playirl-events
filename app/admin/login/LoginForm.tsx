@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/app/button";
 import OAuthButton from "@/app/oauth-button";
+import AuthErrorBanner from "@/app/auth-error-banner";
 
 interface Provider { id: string; name: string }
 
@@ -38,6 +39,8 @@ export default function LoginForm({ providers }: { providers: Provider[] }) {
         <h1 className="text-xl font-[family-name:var(--font-ultra)] font-bold text-center text-neutral-900 dark:text-neutral-100">
           Admin sign in
         </h1>
+
+        <AuthErrorBanner />
 
         {noProviders && (
           <div className="text-center text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-md p-3">

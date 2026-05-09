@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/app/button";
 import OAuthButton from "@/app/oauth-button";
 import { PlayIrlLogo } from "@/app/playirl-logo";
+import AuthErrorBanner from "@/app/auth-error-banner";
 
 interface Provider { id: string; name: string }
 
@@ -70,6 +71,8 @@ export default function AccountLoginForm({ providers }: { providers: Provider[] 
             Submit your own events and sync with Discord — pull events from a server, or publish PlayIRL events to one.
           </p>
         </div>
+
+        <AuthErrorBanner />
 
         {noProviders && !hasOAuth && !hasEmail && (
           <div className="text-center text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-md p-3">

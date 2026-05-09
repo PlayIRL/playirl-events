@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { geocodeAddress } from "@/lib/geocode";
+import { FormSkeleton } from "@/app/skeleton";
 
 interface ConfigShape {
   location: { zip: string; city: string; state: string; lat: number; lng: number };
@@ -68,7 +69,11 @@ export default function ConfigPage() {
     setTimeout(() => setMessage(""), 3000);
   }
 
-  if (!config) return <div className="p-6 lg:p-8 text-sm text-neutral-500">Loading…</div>;
+  if (!config) return (
+    <div className="p-6 lg:p-8 max-w-3xl">
+      <FormSkeleton fields={6} />
+    </div>
+  );
 
   function update<K extends keyof ConfigShape>(key: K, value: ConfigShape[K]) {
     setConfig((c) => c ? { ...c, [key]: value } : c);

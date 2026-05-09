@@ -232,8 +232,30 @@ export interface PostedMessage {
 }
 
 /**
- * POST a message to a channel using the bot token. Throws on non-2xx so the
- * dispatcher's catch can release the idempotency claim and retry next tick.
+ * Typed error thrown by `postToChannel` on non-2xx Discord responses. Carries
+ * the HTTP status and the response body so the dispatcher can decide whether
+ * to retry (5xx, 429) or auto-disable the subscription (403, 404, 410).
+ */
+export class DiscordPostError extends Error {
+  status: number;
+  body: string;
+  constructor(status: number, body: string) {
+    super(`Discord POST failed: ${status} ${body}`);
+    this.name = "DiscordPostError";
+    this.status = status;
+    this.body = body;
+  }
+  /** True when the channel is permanently unreachable (deleted, bot kicked,
+   *  or bot lacks the SEND_MESSAGES permission). 410 = Discord's "Gone." */
+  get isPermanent(): boolean {
+    return this.status === 403 || this.status === 404 || this.status === 410;
+  }
+}
+
+/**
+ * POST a message to a channel using the bot token. Throws DiscordPostError
+ * on non-2xx so the dispatcher's catch can release the idempotency claim,
+ * decide retry vs. give-up, and handle dead-channel cleanup.
  */
 export async function postToChannel(
   channelId: string,
@@ -251,7 +273,7 @@ export async function postToChannel(
   });
   if (!res.ok) {
     const body = await res.text().catch(() => "");
-    throw new Error(`Discord POST /channels/${channelId}/messages failed: ${res.status} ${body}`);
+    throw new DiscordPostError(res.status, body);
   }
   const data = await res.json() as { id: string };
   return { id: data.id };

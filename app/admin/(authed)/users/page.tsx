@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import RoleBadge from "../../_components/RoleBadge";
+import { TableSkeleton } from "@/app/skeleton";
 
 interface UserRow {
   id: string;
@@ -79,7 +80,7 @@ export default function AdminUsersPage() {
 
       <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md overflow-hidden">
         {loading ? (
-          <p className="text-sm text-neutral-500 dark:text-neutral-400 p-6">Loading…</p>
+          <TableSkeleton rows={6} cols={5} />
         ) : users.length === 0 ? (
           <p className="text-sm text-neutral-500 dark:text-neutral-400 p-6 text-center">
             No users yet. They'll appear here after the first OAuth or magic-link sign-in.
