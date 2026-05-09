@@ -508,6 +508,30 @@ export default function RadiusSelector({
           currentDays={currentDays}
           onToast={showToast}
         />
+
+        {/* Create Event — sits next to Subscribe so the chip bar carries
+            both directions ("get events out" + "put events in"). Links to
+            /account/events/new; non-signed-in users get bounced to the
+            login page by the (authed) route group's gate, which is the
+            expected behavior — no need for a separate signed-in check
+            here that'd just duplicate the auth middleware. */}
+        <Link
+          href="/account/events/new"
+          title="Submit a new event for review"
+          className="ml-1 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white text-xs font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800 transition cursor-pointer focus:outline-none"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-3.5 h-3.5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          Create event
+        </Link>
       </div>
     </>
   );
