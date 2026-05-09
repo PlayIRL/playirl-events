@@ -22,6 +22,7 @@
 import { NextResponse } from "next/server";
 import { gzipSync } from "node:zlib";
 import { getDb } from "@/lib/db";
+import { safeEqualSecret } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 // The serialize+gzip is in-process and CPU-bound. At ~30 MB raw / ~5 MB
@@ -39,7 +40,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "BACKUP_SECRET not configured" }, { status: 500 });
   }
   const provided = request.headers.get("x-backup-secret");
-  if (!provided || provided !== secret) {
+  if (!safeEqualSecret(provided, secret)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

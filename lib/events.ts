@@ -202,9 +202,18 @@ export function getActiveEvents(filters?: {
   return rows;
 }
 
-export function getAllEvents(): EventRow[] {
+/**
+ * Admin-only: every event in the DB. Default-limited to 5000 rows because
+ * nationwide scrape can produce 50k+ rows and shipping the whole table to a
+ * browser tanks both server memory and the admin event-table page render.
+ * Callers that need more should either page (pass `offset`) or query the DB
+ * directly with a focused WHERE clause.
+ */
+export function getAllEvents(limit = 5000, offset = 0): EventRow[] {
   const db = getDb();
-  return db.prepare("SELECT * FROM events ORDER BY date ASC, time ASC").all() as EventRow[];
+  return db
+    .prepare("SELECT * FROM events ORDER BY date ASC, time ASC LIMIT ? OFFSET ?")
+    .all(limit, offset) as EventRow[];
 }
 
 /**

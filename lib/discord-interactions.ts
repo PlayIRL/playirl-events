@@ -101,9 +101,16 @@ const ED25519_SPKI_PREFIX = Buffer.from("302a300506032b6570032100", "hex");
  * the public key as 32 raw bytes; Node's crypto.verify wants a PEM/SPKI key,
  * so we prepend the standard Ed25519 SPKI DER prefix.
  *
+ * Also rejects timestamps older than ±5 minutes. Without that check, a
+ * captured-and-replayed interaction (e.g. from logs or a sniffed transit) is
+ * still cryptographically valid — Discord's signature covers the timestamp
+ * but doesn't bound its freshness. Discord recommends ±300 seconds.
+ *
  * Returns false on any error — never throws — so a malformed signature is
  * treated as a verification failure rather than a 500.
  */
+const SIGNATURE_FRESHNESS_SECONDS = 300; // 5 minutes; Discord-recommended.
+
 export function verifyInteractionSignature(
   rawBody: string,
   signatureHex: string,
@@ -111,6 +118,13 @@ export function verifyInteractionSignature(
   publicKeyHex: string,
 ): boolean {
   try {
+    // Replay defense: timestamps come from Discord as Unix seconds. Reject
+    // anything outside ±5 minutes of our wall clock.
+    const tsSec = Number(timestamp);
+    if (!Number.isFinite(tsSec)) return false;
+    const driftSec = Math.abs(Date.now() / 1000 - tsSec);
+    if (driftSec > SIGNATURE_FRESHNESS_SECONDS) return false;
+
     const sig = Buffer.from(signatureHex, "hex");
     const pub = Buffer.from(publicKeyHex, "hex");
     if (sig.length !== 64 || pub.length !== 32) return false;

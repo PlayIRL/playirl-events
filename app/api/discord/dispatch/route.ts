@@ -14,6 +14,7 @@
 
 import { NextResponse } from "next/server";
 import { getActiveEvents, getEvent } from "@/lib/events";
+import { safeEqualSecret } from "@/lib/security";
 import {
   type DiscordSubscription,
   bumpPendingPost,
@@ -250,7 +251,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "DISPATCH_SECRET not configured" }, { status: 500 });
   }
   const provided = request.headers.get("x-dispatch-secret");
-  if (!provided || provided !== secret) {
+  if (!safeEqualSecret(provided, secret)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
