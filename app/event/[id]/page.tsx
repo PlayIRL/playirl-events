@@ -300,7 +300,11 @@ export default async function EventPage({
               <img
                 src={hero.url}
                 alt={ev.title}
+                width={1200}
+                height={675}
                 className={`w-full h-full ${heroIsPhoto ? "object-cover" : "object-contain"} ${heroPadding}`}
+                fetchPriority="high"
+                decoding="async"
               />
               {heroIsPhoto && (
                 <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-[#0c1220] via-transparent to-transparent pointer-events-none" />

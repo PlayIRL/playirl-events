@@ -170,7 +170,11 @@ export default async function VenuePage({ params }: RouteParams) {
           <img
             src={hero.url}
             alt={venue.name}
+            width={1200}
+            height={675}
             className={`w-full h-full ${heroIsPhoto ? "object-cover" : "object-contain p-6"}`}
+            fetchPriority="high"
+            decoding="async"
           />
           {heroIsPhoto && (
             <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-[#0c1220] via-transparent to-transparent pointer-events-none" />

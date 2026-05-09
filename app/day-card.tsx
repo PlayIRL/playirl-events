@@ -146,10 +146,13 @@ export default function DayCard({
               <img
                 src={ev.imageUrl}
                 alt=""
+                width={56}
+                height={56}
                 className={`hidden sm:block w-14 h-14 rounded-md shrink-0 bg-neutral-100 ${
                   ev.imageFit === "cover" ? "object-cover" : "object-contain p-1"
                 }`}
                 loading="lazy"
+                decoding="async"
               />
               <div className="flex-1 min-w-0">
                 <span className="block sm:hidden text-xs text-neutral-500 dark:text-neutral-400 mb-1">
