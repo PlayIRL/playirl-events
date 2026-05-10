@@ -200,12 +200,17 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                         className={`group block rounded-md p-2 transition-all duration-150 hover:-translate-y-px hover:shadow-sm ${status === "completed" ? "opacity-50 saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.06]" : "hover:bg-black/[0.04] dark:hover:bg-white/10"}`}
                       >
                         <div className="flex flex-col gap-px">
-                          <div className="text-[10px] text-neutral-500 dark:text-neutral-400 leading-none">{formatEventTime(ev.date, ev.time, ev.timezone)}</div>
-                          <div className="flex items-center gap-1 flex-wrap">
+                          {/* Time line carries the compact LIVE dot so the
+                              "happening now" cue sits next to the temporal
+                              cue — same logic as the day-card row. */}
+                          <div className="flex items-center gap-1 leading-none">
+                            <span className="text-[10px] text-neutral-500 dark:text-neutral-400">{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
+                            {status === "in_progress" && <LivePill compact />}
+                          </div>
+                          <div>
                             <span className={`px-1.5 py-0.5 rounded-sm text-[10px] font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
                               {ev.format}
                             </span>
-                            {status === "in_progress" && <LivePill compact />}
                           </div>
                         </div>
                         <div className="text-xs font-medium text-neutral-900 dark:text-white leading-tight line-clamp-2 mt-1 group-hover:text-neutral-700 dark:group-hover:text-neutral-100">
