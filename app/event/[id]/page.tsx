@@ -281,13 +281,35 @@ export default async function EventPage({
             both themes so logos with baked-in white backgrounds blend in;
             keeping a dark bg here in dark mode would frame them with a stark
             white-on-near-black halo. */}
+        {/* Header — title + format pill above the hero photo so the
+            event identity reads first and the visual is a supporting
+            element. Border-b separates the header from the photo;
+            rounded-t-md sits on the header now (used to be on the
+            hero) since the header is the top-most child of the card. */}
+        <div className="p-6 pb-4 space-y-4 rounded-t-md border-b border-neutral-100 dark:border-white/8">
+          <div>
+            <div className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Format</div>
+            <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+              {FORMAT_EMOJI[ev.format] || FORMAT_EMOJI_DEFAULT} {ev.format || "MTG"}
+            </span>
+          </div>
+          <div>
+            <div className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Event</div>
+            <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white break-words">{ev.title}</h1>
+          </div>
+        </div>
+
         {(() => {
           // The hero is the venue's visual identity — clicking it should take
           // the visitor to the venue page (all upcoming events at that store).
           // Only wrap in a link when there's a location to link to; otherwise
           // render the bare div.
+          //
+          // No `rounded-t-md` here anymore — the header above carries the
+          // top-corner rounding of the card now. The image sits flush
+          // edge-to-edge between the header and the details table.
           const heroInner = (
-            <div className={`relative aspect-video overflow-hidden rounded-t-md ${heroIsPhoto ? "" : "bg-neutral-50"}`}>
+            <div className={`relative aspect-video overflow-hidden ${heroIsPhoto ? "" : "bg-neutral-50"}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={hero.url}
@@ -313,20 +335,6 @@ export default async function EventPage({
             </Link>
           ) : heroInner;
         })()}
-
-        {/* Header */}
-        <div className="p-6 pb-4 space-y-4">
-          <div>
-            <div className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Format</div>
-            <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
-              {FORMAT_EMOJI[ev.format] || FORMAT_EMOJI_DEFAULT} {ev.format || "MTG"}
-            </span>
-          </div>
-          <div>
-            <div className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Event</div>
-            <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white break-words">{ev.title}</h1>
-          </div>
-        </div>
 
         {/* Details table */}
         <Reveal delay={120}>
