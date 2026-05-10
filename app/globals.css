@@ -122,6 +122,19 @@ code, pre, kbd, samp, tt {
   to   { opacity: var(--row-opacity, 1); transform: translateY(0); }
 }
 
+@keyframes livePulse {
+  /* Slow, organic pulse for the "happening now" dot. ease-in-out + scale
+     reads as a heartbeat instead of the linear strobe Tailwind's default
+     animate-pulse produces — fits the editorial aesthetic of the rest of
+     the app, where motion is subtle and intentional. */
+  0%, 100% { opacity: 1;    transform: scale(1); }
+  50%      { opacity: 0.45; transform: scale(0.7); }
+}
+
+.anim-live-pulse {
+  animation: livePulse 2.4s ease-in-out infinite;
+}
+
 /* Reusable animation classes */
 .anim-fade-in-up {
   animation: fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -150,5 +163,6 @@ code, pre, kbd, samp, tt {
   .anim-fade-in-up,
   .anim-fade-in,
   .anim-scale-in,
-  .anim-row-in { animation: none; }
+  .anim-row-in,
+  .anim-live-pulse { animation: none; }
 }
