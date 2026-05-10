@@ -2,9 +2,10 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT } from "@/lib/format-style";
-import { eventHasStarted, formatEventTime } from "@/lib/format-time";
+import { eventDisplayStatus, formatEventTime } from "@/lib/format-time";
 import SaveEventButton from "./save-event-button";
 import AdminEventActions from "./admin-event-actions";
+import { LivePill } from "./live-pill";
 
 interface EventRow {
   id: string;
@@ -119,18 +120,18 @@ export default function DayCard({
         </div>
 
         {events.map((ev, i) => {
-            // Per-row "already started" check — an event whose start
-            // moment is in the past gets rendered as inactive (greyed
-            // out) instead of being hidden, so users see what they
-            // missed without it crowding the upcoming list.
-            const past = eventHasStarted(ev.date, ev.time);
+            // Three-tier display state — see lib/format-time.ts. "Completed"
+            // events are dimmed so the eye skips past them; "in_progress"
+            // events stay full-color but pick up a LIVE pill so users can
+            // spot what's happening right now at a glance.
+            const status = eventDisplayStatus(ev.date, ev.time);
             return (
             <Link
               key={ev.id}
               href={`/event/${encodeURIComponent(ev.id)}`}
               data-row
               style={revealed ? { animationDelay: `${80 + i * 45}ms` } : { opacity: 0 }}
-              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-4 sm:py-5 ${past ? "opacity-50 saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
+              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-4 sm:py-5 ${status === "completed" ? "opacity-50 saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
             >
               {/* Desktop: time as a fixed left column. Mobile: hidden here
                   and rendered above the title (see middle div below) so the
@@ -160,10 +161,15 @@ export default function DayCard({
                 </span>
                 {/* Format badge sits above the title — it's the
                     fastest way to scan "what kind of event is this".
-                    Title takes the strong-visual second slot. */}
-                <span className={`inline-block px-2 py-0.5 rounded-sm text-[10px] font-bold mb-1 ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
-                  {ev.format}
-                </span>
+                    Title takes the strong-visual second slot. LIVE pill
+                    sits alongside it so the two status cues read
+                    together: this kind of event, happening right now. */}
+                <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+                  <span className={`inline-block px-2 py-0.5 rounded-sm text-[10px] font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                    {ev.format}
+                  </span>
+                  {status === "in_progress" && <LivePill />}
+                </div>
                 <p className="text-base sm:text-lg font-semibold tracking-tight text-neutral-900 dark:text-white line-clamp-2 sm:line-clamp-none sm:truncate">{ev.title}</p>
                 {ev.location && (
                   <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate mt-0.5">{ev.location}</p>
