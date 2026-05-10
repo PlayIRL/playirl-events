@@ -262,26 +262,71 @@ export default async function HomePage({
             </div>
           )}
 
-          <div className="space-y-8">
-            {Object.entries(grouped).map(([date, dayEvents], i) => {
-              const d = new Date(date + "T12:00:00");
-              return (
-                <DayCard
-                  key={date}
-                  date={date}
-                  weekday={d.toLocaleDateString("en-US", { weekday: "long" })}
-                  isToday={date === todayStr}
-                  isPast={date < todayStr}
-                  events={dayEvents}
-                  headingLabel={dayHeadingLabel(date, todayStr, tomorrowStr, yesterdayStr)}
-                  staggerBase={Math.min(i * 60, 120)}
-                  signedIn={signedIn}
-                  isAdmin={isAdmin}
-                  savedEventIds={savedEventIds}
-                />
-              );
-            })}
-          </div>
+          {/* Split grouped dates into future-or-today (rendered first, ASC
+              date) and past (rendered after a divider, DESC date — most
+              recent past day at the top of the past section). Without this
+              the page opens to a week of past events and the user has to
+              scroll down to find today, missing the LIVE pills entirely. */}
+          {(() => {
+            const entries = Object.entries(grouped);
+            const futureOrToday = entries.filter(([d]) => d >= todayStr);
+            const past = entries.filter(([d]) => d < todayStr).reverse();
+            return (
+              <>
+                <div className="space-y-8">
+                  {futureOrToday.map(([date, dayEvents], i) => {
+                    const d = new Date(date + "T12:00:00");
+                    return (
+                      <DayCard
+                        key={date}
+                        date={date}
+                        weekday={d.toLocaleDateString("en-US", { weekday: "long" })}
+                        isToday={date === todayStr}
+                        isPast={false}
+                        events={dayEvents}
+                        headingLabel={dayHeadingLabel(date, todayStr, tomorrowStr, yesterdayStr)}
+                        staggerBase={Math.min(i * 60, 120)}
+                        signedIn={signedIn}
+                        isAdmin={isAdmin}
+                        savedEventIds={savedEventIds}
+                      />
+                    );
+                  })}
+                </div>
+
+                {past.length > 0 && (
+                  <>
+                    <div className="mt-12 mb-6 flex items-center gap-3">
+                      <h2 className="text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                        Recent past events
+                      </h2>
+                      <div className="flex-1 h-px bg-neutral-200 dark:bg-white/10" />
+                    </div>
+                    <div className="space-y-8">
+                      {past.map(([date, dayEvents], i) => {
+                        const d = new Date(date + "T12:00:00");
+                        return (
+                          <DayCard
+                            key={date}
+                            date={date}
+                            weekday={d.toLocaleDateString("en-US", { weekday: "long" })}
+                            isToday={false}
+                            isPast={true}
+                            events={dayEvents}
+                            headingLabel={dayHeadingLabel(date, todayStr, tomorrowStr, yesterdayStr)}
+                            staggerBase={Math.min(i * 60, 120)}
+                            signedIn={signedIn}
+                            isAdmin={isAdmin}
+                            savedEventIds={savedEventIds}
+                          />
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+              </>
+            );
+          })()}
 
           {/* Footer navigation — list view extends forward with "Load
               more events" (bumps `days` by 7), styled as a continuation
