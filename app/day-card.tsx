@@ -156,10 +156,10 @@ export default function DayCard({
                   with the format badge for attention. Mobile renders both
                   inline above the title (see middle div below). */}
               <div className="hidden sm:flex flex-col items-start gap-1 shrink-0 w-16">
+                {status === "in_progress" && <LivePill />}
                 <span className="text-sm text-neutral-500 dark:text-neutral-400 transition-colors duration-200 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">
                   {formatEventTime(ev.date, ev.time, ev.timezone)}
                 </span>
-                {status === "in_progress" && <LivePill />}
               </div>
               {/* Image is decorative on mobile (most events render the same
                   source-type SVG placeholder) so we drop it under sm to give
@@ -178,14 +178,14 @@ export default function DayCard({
                 decoding="async"
               />
               <div className="flex-1 min-w-0">
-                {/* Mobile: time line carries the LIVE pill inline so the
-                    "happening now" cue sits next to the temporal cue,
-                    matching the desktop time-column treatment. */}
-                <div className="flex sm:hidden items-center gap-1.5 mb-1">
+                {/* Mobile: stack the LIVE pill above the time so the
+                    "happening now" cue reads as a status flag,
+                    matching the desktop column treatment. */}
+                <div className="flex sm:hidden flex-col items-start gap-0.5 mb-1">
+                  {status === "in_progress" && <LivePill />}
                   <span className="text-xs text-neutral-500 dark:text-neutral-400">
                     {formatEventTime(ev.date, ev.time, ev.timezone)}
                   </span>
-                  {status === "in_progress" && <LivePill />}
                 </div>
                 {/* Format badge sits above the title — it's the
                     fastest way to scan "what kind of event is this".
