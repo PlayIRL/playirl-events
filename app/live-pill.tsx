@@ -11,11 +11,11 @@ export function LivePill({ compact = false }: { compact?: boolean }) {
   return (
     <span
       aria-label="Happening now"
-      className="inline-flex items-center gap-0.5 px-1 py-px rounded-sm text-[9px] font-extrabold uppercase tracking-wider bg-sky-500 text-white dark:bg-sky-400 dark:text-sky-950"
+      className="inline-flex items-center gap-0.5 px-1 py-px rounded-sm text-[9px] font-medium uppercase tracking-wider bg-cyan-400 text-cyan-950 dark:bg-cyan-300 dark:text-cyan-950"
     >
       <span
         aria-hidden="true"
-        className="w-1 h-1 rounded-full bg-white dark:bg-sky-950 animate-pulse"
+        className="w-1 h-1 rounded-full bg-cyan-950 animate-pulse"
       />
       {!compact && "Now"}
     </span>
