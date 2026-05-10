@@ -3,22 +3,19 @@
 // (full color). Used by day-card.tsx and calendar-view.tsx so the badge
 // stays consistent across both surfaces.
 //
-// Emerald rather than red because the brand palette reserves red for
-// destructive actions; emerald is already the project's positive accent
-// (used for "Free" cost and the active RSVP state). Saturated fill (not
-// transparent) so the pill reads at a glance against both the format
-// badge beside it and the page background — earlier 15%-alpha version
-// was effectively invisible against the dark theme.
+// Bright sky-blue with a colored glow shadow for a neon feel — sits
+// above the event time so the "happening now" cue reads as a status
+// flag, not as another inline tag.
 
 export function LivePill({ compact = false }: { compact?: boolean }) {
   return (
     <span
       aria-label="Happening now"
-      className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm text-[10px] font-extrabold uppercase tracking-wider bg-emerald-600 text-white dark:bg-emerald-500 dark:text-emerald-50 shadow-sm shadow-emerald-700/30 dark:shadow-emerald-900/40"
+      className="inline-flex items-center gap-0.5 px-1 py-px rounded-sm text-[9px] font-extrabold uppercase tracking-wider bg-sky-500 text-white shadow-[0_0_8px_rgba(14,165,233,0.55)] dark:bg-sky-400 dark:text-sky-950 dark:shadow-[0_0_10px_rgba(56,189,248,0.6)]"
     >
       <span
         aria-hidden="true"
-        className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"
+        className="w-1 h-1 rounded-full bg-white dark:bg-sky-950 animate-pulse"
       />
       {!compact && "Now"}
     </span>
