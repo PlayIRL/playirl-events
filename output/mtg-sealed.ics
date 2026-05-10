@@ -9,12 +9,13 @@ X-WR-CALDESC:Sealed events in Philadelphia area
 BEGIN:VEVENT
 UID:wotc-10862490
 SEQUENCE:0
-DTSTAMP:20260510T165007Z
+DTSTAMP:20260510T170045Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
  ook Game Cafe
-LOCATION:Queen and Rook Game Cafe
+LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
+ nsylvania\, 19106
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: https://queenandrookcafe.com
  /\nDetails: https://locator.wizards.com/store/12804/\nSource: wizards-loca
  tor
@@ -23,12 +24,13 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10925310
 SEQUENCE:0
-DTSTAMP:20260510T165007Z
+DTSTAMP:20260510T170045Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:MTG Marvel: Super Heroes #1 Prerelease @ Top Deck Games - Cherry H
  ill
-LOCATION:Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
  ne.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards
  -locator
@@ -37,12 +39,13 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10819527
 SEQUENCE:0
-DTSTAMP:20260510T165007Z
+DTSTAMP:20260510T170045Z
 DTSTART:20260619T230000Z
 DTEND:20260620T020000Z
 SUMMARY:Kryptic Collections Marvel Super Heroes Prerelease @ Kryptic Colle
  ctions
-LOCATION:Kryptic Collections
+LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
+  Jersey\, 08077
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: http://www.krypticcollection
  s.com/\nDetails: https://locator.wizards.com/store/14773/\nSource: wizards
  -locator
@@ -51,11 +54,12 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10702521
 SEQUENCE:0
-DTSTAMP:20260510T165007Z
+DTSTAMP:20260510T170045Z
 DTSTART:20260619T230000Z
 DTEND:20260620T020000Z
 SUMMARY:Marvel Super Heroes Prerelease @ 7th Dimension Games
-LOCATION:7th Dimension Games
+LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
+ , 19046
 DESCRIPTION:Format: Sealed\nCost: $35\nStore: http://www.7thdimensiongames
  .com\nDetails: https://locator.wizards.com/store/8863/\nSource: wizards-lo
  cator
@@ -64,11 +68,12 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10702522
 SEQUENCE:0
-DTSTAMP:20260510T165007Z
+DTSTAMP:20260510T170045Z
 DTSTART:20260620T130000Z
 DTEND:20260620T160000Z
 SUMMARY:Marvel Super Heroes Prerelease @ 7th Dimension Games
-LOCATION:7th Dimension Games
+LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
+ , 19046
 DESCRIPTION:Format: Sealed\nCost: $35\nStore: http://www.7thdimensiongames
  .com\nDetails: https://locator.wizards.com/store/8863/\nSource: wizards-lo
  cator
@@ -77,12 +82,13 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952141
 SEQUENCE:0
-DTSTAMP:20260510T165007Z
+DTSTAMP:20260510T170045Z
 DTSTART:20260620T150000Z
 DTEND:20260620T180000Z
 SUMMARY:MTG Marvel: Super Heroes #2 Prerelease @ Top Deck Games - Cherry H
  ill
-LOCATION:Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
  ne.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards
  -locator
@@ -91,12 +97,13 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10862492
 SEQUENCE:0
-DTSTAMP:20260510T165007Z
+DTSTAMP:20260510T170045Z
 DTSTART:20260620T163000Z
 DTEND:20260620T193000Z
 SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
  ook Game Cafe
-LOCATION:Queen and Rook Game Cafe
+LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
+ nsylvania\, 19106
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: https://queenandrookcafe.com
  /\nDetails: https://locator.wizards.com/store/12804/\nSource: wizards-loca
  tor
@@ -105,12 +112,13 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10819530
 SEQUENCE:0
-DTSTAMP:20260510T165007Z
+DTSTAMP:20260510T170045Z
 DTSTART:20260620T170000Z
 DTEND:20260620T200000Z
 SUMMARY:Kryptic Collections Marvel Super Heroes Prerelease @ Kryptic Colle
  ctions
-LOCATION:Kryptic Collections
+LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
+  Jersey\, 08077
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: http://www.krypticcollection
  s.com/\nDetails: https://locator.wizards.com/store/14773/\nSource: wizards
  -locator
@@ -119,12 +127,13 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10902252
 SEQUENCE:0
-DTSTAMP:20260510T165007Z
+DTSTAMP:20260510T170045Z
 DTSTART:20260620T190000Z
 DTEND:20260620T220000Z
 SUMMARY:Marvel Super-Heroes 2HG #3 Prerelease @ Top Deck Games - Cherry Hi
  ll
-LOCATION:Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
  ne.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards
  -locator
@@ -133,12 +142,13 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952164
 SEQUENCE:0
-DTSTAMP:20260510T165007Z
+DTSTAMP:20260510T170045Z
 DTSTART:20260620T230000Z
 DTEND:20260621T020000Z
 SUMMARY:MTG Marvel: Super Heroes #4 Prerelease @ Top Deck Games - Cherry H
  ill
-LOCATION:Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
  ne.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards
  -locator
@@ -147,12 +157,13 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952167
 SEQUENCE:0
-DTSTAMP:20260510T165007Z
+DTSTAMP:20260510T170045Z
 DTSTART:20260621T150000Z
 DTEND:20260621T180000Z
 SUMMARY:MTG Marvel: Super Heroes #5 Prerelease @ Top Deck Games - Cherry H
  ill
-LOCATION:Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
  ne.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards
  -locator
@@ -161,12 +172,13 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10862493
 SEQUENCE:0
-DTSTAMP:20260510T165007Z
+DTSTAMP:20260510T170045Z
 DTSTART:20260621T163000Z
 DTEND:20260621T193000Z
 SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
  ook Game Cafe
-LOCATION:Queen and Rook Game Cafe
+LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
+ nsylvania\, 19106
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: https://queenandrookcafe.com
  /\nDetails: https://locator.wizards.com/store/12804/\nSource: wizards-loca
  tor
@@ -175,11 +187,12 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10702524
 SEQUENCE:0
-DTSTAMP:20260510T165007Z
+DTSTAMP:20260510T170045Z
 DTSTART:20260621T170000Z
 DTEND:20260621T200000Z
 SUMMARY:Marvel Super Heroes Prerelease @ 7th Dimension Games
-LOCATION:7th Dimension Games
+LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
+ , 19046
 DESCRIPTION:Format: Sealed\nCost: $35\nStore: http://www.7thdimensiongames
  .com\nDetails: https://locator.wizards.com/store/8863/\nSource: wizards-lo
  cator
@@ -188,12 +201,13 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10862491
 SEQUENCE:0
-DTSTAMP:20260510T165007Z
+DTSTAMP:20260510T170045Z
 DTSTART:20260623T223000Z
 DTEND:20260624T013000Z
 SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
  ook Game Cafe
-LOCATION:Queen and Rook Game Cafe
+LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
+ nsylvania\, 19106
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: https://queenandrookcafe.com
  /\nDetails: https://locator.wizards.com/store/12804/\nSource: wizards-loca
  tor
