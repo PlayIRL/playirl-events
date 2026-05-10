@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT } from "@/lib/format-style";
-import { eventHasStarted, formatEventTime } from "@/lib/format-time";
+import { dateStrInTz, eventHasStarted, formatEventTime } from "@/lib/format-time";
 import { useStickySentinel } from "@/lib/use-sticky-sentinel";
 
 interface EventRow {
@@ -36,8 +36,12 @@ function addDays(date: Date, days: number): Date {
   return d;
 }
 
+// YYYY-MM-DD in the app's anchor TZ (America/New_York). Used both for the
+// today-cell highlight and for building the visible day grid — keeps day
+// boundaries aligned with the server-rendered list view, which is also
+// anchored to ET (see lib/format-time.ts:dateStrInTz).
 function isoDate(date: Date): string {
-  return date.toISOString().split("T")[0];
+  return dateStrInTz(date);
 }
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
