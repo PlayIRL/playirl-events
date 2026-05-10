@@ -208,7 +208,7 @@ export default async function EventPage({
     <main className="w-full max-w-2xl min-w-0 mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6 anim-fade-in">
         <Link href="/" className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:underline">
-          &larr; Back to PlayIRL.GG
+          &larr; Back
         </Link>
         <div className="flex items-center gap-2">
           {rsvpEnabled && (
@@ -229,10 +229,10 @@ export default async function EventPage({
             // forces the browser to save rather than navigate, which is what
             // .ics files want — Calendar apps register as the default
             // handler on most desktops, so the file imports cleanly.
-            className="inline-flex items-center justify-center gap-1 h-7 px-2 rounded-md bg-neutral-100 dark:bg-white/5 border border-neutral-100 dark:border-white/8 shadow-sm text-neutral-700 dark:text-neutral-300 text-xs font-medium hover:bg-neutral-200 dark:hover:bg-white/10 hover:text-neutral-900 dark:hover:text-white transition"
+            className="inline-flex items-center justify-center gap-2 h-9 px-4 rounded-md bg-neutral-100 dark:bg-white/5 border border-neutral-100 dark:border-white/8 shadow-sm text-neutral-700 dark:text-neutral-300 text-sm font-medium hover:bg-neutral-200 dark:hover:bg-white/10 hover:text-neutral-900 dark:hover:text-white transition"
             title="Download a single-event .ics for your calendar app"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
             Add to calendar
@@ -284,17 +284,11 @@ export default async function EventPage({
             element. Border-b separates the header from the photo;
             rounded-t-md sits on the header now (used to be on the
             hero) since the header is the top-most child of the card. */}
-        <div className="p-6 pb-4 space-y-4 rounded-t-md border-b border-neutral-100 dark:border-white/8">
-          <div>
-            <div className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Format</div>
-            <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
-              {ev.format || "MTG"}
-            </span>
-          </div>
-          <div>
-            <div className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Event</div>
-            <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white break-words">{ev.title}</h1>
-          </div>
+        <div className="p-6 pb-4 space-y-3 rounded-t-md border-b border-neutral-100 dark:border-white/8">
+          <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+            {ev.format || "MTG"}
+          </span>
+          <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white break-words">{ev.title}</h1>
         </div>
 
         {(() => {

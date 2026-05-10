@@ -58,7 +58,7 @@ export default function AccountLoginForm({ providers }: { providers: Provider[] 
         <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
-        Back to PlayIRL.GG
+        Back
       </Link>
       <div className="bg-white dark:bg-neutral-900 p-8 rounded-md shadow-md dark:shadow-black/40 w-full max-w-sm border border-transparent dark:border-neutral-700 space-y-6">
         <div className="text-center space-y-2">

@@ -157,7 +157,7 @@ export default async function VenuePage({ params }: RouteParams) {
     <main className="w-full max-w-3xl mx-auto px-4 py-8">
       <div className="mb-6 anim-fade-in">
         <Link href="/" className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:underline">
-          &larr; Back to PlayIRL.GG
+          &larr; Back
         </Link>
       </div>
 
