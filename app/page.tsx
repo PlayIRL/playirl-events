@@ -22,12 +22,18 @@ import Link from "next/link";
 import AccountChip from "./account-chip";
 import { PlayIrlLogo } from "./playirl-logo";
 
-function dayHeadingLabel(dateStr: string, todayStr: string, tomorrowStr: string): string {
+function dayHeadingLabel(
+  dateStr: string,
+  todayStr: string,
+  tomorrowStr: string,
+  yesterdayStr: string,
+): string {
   const d = new Date(dateStr + "T12:00:00");
   const weekday = d.toLocaleDateString("en-US", { weekday: "long" });
   const monthDay = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   if (dateStr === todayStr) return `Today · ${weekday}, ${monthDay}`;
   if (dateStr === tomorrowStr) return `Tomorrow · ${weekday}, ${monthDay}`;
+  if (dateStr === yesterdayStr) return `Yesterday · ${weekday}, ${monthDay}`;
   return `${weekday}, ${monthDay}`;
 }
 
@@ -124,11 +130,20 @@ export default async function HomePage({
   const today = new Date();
   let fromDate: Date;
   let toDate: Date;
+  // Default: include the past N days so users can see "what just happened"
+  // alongside upcoming events. Past day cards render greyed via DayCard's
+  // isPast flag. Suppress when the user has paged via offset — explicit
+  // navigation means they're targeting a specific window and bleeding
+  // history around it would just be noise.
+  const LIST_PAST_DAYS = 7;
+  const CALENDAR_PAST_DAYS = 28;
   if (currentView === "calendar") {
-    // Start-of-week (Sunday) so today's week renders fully; wide look-ahead for week nav.
+    // Start a few weeks before the current week so calendar prev/next nav has
+    // historical events to render without a page round-trip. Forward look-
+    // ahead stays at 60 days for the same reason.
     fromDate = new Date(today);
     fromDate.setHours(0, 0, 0, 0);
-    fromDate.setDate(fromDate.getDate() - fromDate.getDay());
+    fromDate.setDate(fromDate.getDate() - fromDate.getDay() - CALENDAR_PAST_DAYS);
     toDate = new Date(today.getTime() + 60 * 24 * 60 * 60 * 1000);
   } else if (currentView === "map") {
     // Map view honors the `days` window so users can zoom in (1 day) or out
@@ -137,7 +152,8 @@ export default async function HomePage({
     fromDate.setHours(0, 0, 0, 0);
     toDate = new Date(today.getTime() + currentDays * 24 * 60 * 60 * 1000);
   } else {
-    fromDate = new Date(today.getTime() + currentOffset * 24 * 60 * 60 * 1000);
+    const pastDays = currentOffset === 0 ? LIST_PAST_DAYS : 0;
+    fromDate = new Date(today.getTime() + (currentOffset - pastDays) * 24 * 60 * 60 * 1000);
     toDate = new Date(today.getTime() + (currentOffset + currentDays) * 24 * 60 * 60 * 1000);
   }
   // Anchor "today" / range bounds to America/New_York. Railway runs Node in
@@ -147,6 +163,7 @@ export default async function HomePage({
   // both list and calendar views.
   const todayStr = dateStrInTz(today);
   const tomorrowStr = dateStrInTz(new Date(today.getTime() + 24 * 60 * 60 * 1000));
+  const yesterdayStr = dateStrInTz(new Date(today.getTime() - 24 * 60 * 60 * 1000));
   const fromStr = dateStrInTz(fromDate);
   const toStr = dateStrInTz(toDate);
   const isAdmin = signedIn && user?.role === "admin";
@@ -256,7 +273,7 @@ export default async function HomePage({
                   isToday={date === todayStr}
                   isPast={date < todayStr}
                   events={dayEvents}
-                  headingLabel={dayHeadingLabel(date, todayStr, tomorrowStr)}
+                  headingLabel={dayHeadingLabel(date, todayStr, tomorrowStr, yesterdayStr)}
                   staggerBase={Math.min(i * 60, 120)}
                   signedIn={signedIn}
                   isAdmin={isAdmin}
