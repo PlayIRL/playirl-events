@@ -19,12 +19,15 @@ export function botClientId(): string | null {
 
 // Permission bitfield for the invite URL. Discord docs:
 // https://discord.com/developers/docs/topics/permissions#permissions-bitwise-permission-flags
-//   VIEW_CHANNEL          0x00000400 — see channels the bot is allowed in
-//   SEND_MESSAGES         0x00000800 — post digests / reminders
-//   EMBED_LINKS           0x00004000 — render rich embeds (the entire UX)
-//   READ_MESSAGE_HISTORY  0x00010000 — required to PATCH our own messages on cancellation (v2)
-// Sum = 0x00014C00 = 84992
-const BOT_PERMISSIONS = String(0x00014C00);
+//   VIEW_CHANNEL          0x000000400 — see channels the bot is allowed in
+//   SEND_MESSAGES         0x000000800 — post digests / reminders
+//   EMBED_LINKS           0x000004000 — render rich embeds (the entire UX)
+//   READ_MESSAGE_HISTORY  0x000010000 — required to PATCH our own messages on cancellation (v2)
+//   MANAGE_EVENTS         0x200000000 — create/update Discord scheduled events from the
+//                                       host's PlayIRL event detail page (Events-tab feature).
+// Sum = 0x200014C00 = 8590019584. Hex literal works fine as a Number —
+// the value is well under Number.MAX_SAFE_INTEGER (2^53).
+const BOT_PERMISSIONS = String(0x200014C00);
 
 export function botInviteUrl(state?: string): string | null {
   const id = botClientId();
