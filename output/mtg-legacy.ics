@@ -9,12 +9,11 @@ X-WR-CALDESC:Legacy events in Philadelphia area
 BEGIN:VEVENT
 UID:wotc-10653624
 SEQUENCE:0
-DTSTAMP:20260510T163058Z
+DTSTAMP:20260510T165007Z
 DTSTART:20260511T223000Z
 DTEND:20260512T013000Z
 SUMMARY:Monday Legacy @ Top Deck Games - Cherry Hill
-LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
- rry Hill Township\, New Jersey\, 08003
+LOCATION:Top Deck Games - Cherry Hill
 DESCRIPTION:Format: Legacy\nCost: $15\nStore: https://www.topdeckgamesonli
  ne.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards
  -locator
@@ -23,12 +22,11 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653625
 SEQUENCE:0
-DTSTAMP:20260510T163058Z
+DTSTAMP:20260510T165007Z
 DTSTART:20260518T223000Z
 DTEND:20260519T013000Z
 SUMMARY:Monday Legacy @ Top Deck Games - Cherry Hill
-LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
- rry Hill Township\, New Jersey\, 08003
+LOCATION:Top Deck Games - Cherry Hill
 DESCRIPTION:Format: Legacy\nCost: $15\nStore: https://www.topdeckgamesonli
  ne.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards
  -locator
@@ -37,12 +35,11 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653626
 SEQUENCE:0
-DTSTAMP:20260510T163058Z
+DTSTAMP:20260510T165007Z
 DTSTART:20260525T223000Z
 DTEND:20260526T013000Z
 SUMMARY:Monday Legacy @ Top Deck Games - Cherry Hill
-LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
- rry Hill Township\, New Jersey\, 08003
+LOCATION:Top Deck Games - Cherry Hill
 DESCRIPTION:Format: Legacy\nCost: $15\nStore: https://www.topdeckgamesonli
  ne.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards
  -locator
