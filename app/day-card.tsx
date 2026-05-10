@@ -150,12 +150,17 @@ export default function DayCard({
               }
               className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-4 sm:py-5 ${status === "completed" ? "saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
             >
-              {/* Desktop: time as a fixed left column. Mobile: hidden here
-                  and rendered above the title (see middle div below) so the
-                  full row width goes to the title. */}
-              <span className="hidden sm:block text-sm text-neutral-500 dark:text-neutral-400 shrink-0 w-16 transition-colors duration-200 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">
-                {formatEventTime(ev.date, ev.time, ev.timezone)}
-              </span>
+              {/* Desktop: time as a fixed left column, with the LIVE pill
+                  stacked underneath when in progress so the "happening now"
+                  cue lives next to the temporal cue instead of competing
+                  with the format badge for attention. Mobile renders both
+                  inline above the title (see middle div below). */}
+              <div className="hidden sm:flex flex-col items-start gap-1 shrink-0 w-16">
+                <span className="text-sm text-neutral-500 dark:text-neutral-400 transition-colors duration-200 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">
+                  {formatEventTime(ev.date, ev.time, ev.timezone)}
+                </span>
+                {status === "in_progress" && <LivePill />}
+              </div>
               {/* Image is decorative on mobile (most events render the same
                   source-type SVG placeholder) so we drop it under sm to give
                   the title and location the room they need. Container bg is
@@ -173,20 +178,21 @@ export default function DayCard({
                 decoding="async"
               />
               <div className="flex-1 min-w-0">
-                <span className="block sm:hidden text-xs text-neutral-500 dark:text-neutral-400 mb-1">
-                  {formatEventTime(ev.date, ev.time, ev.timezone)}
-                </span>
-                {/* Format badge sits above the title — it's the
-                    fastest way to scan "what kind of event is this".
-                    Title takes the strong-visual second slot. LIVE pill
-                    sits alongside it so the two status cues read
-                    together: this kind of event, happening right now. */}
-                <div className="flex items-center gap-1.5 mb-1 flex-wrap">
-                  <span className={`inline-block px-2 py-0.5 rounded-sm text-[10px] font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
-                    {ev.format}
+                {/* Mobile: time line carries the LIVE pill inline so the
+                    "happening now" cue sits next to the temporal cue,
+                    matching the desktop time-column treatment. */}
+                <div className="flex sm:hidden items-center gap-1.5 mb-1">
+                  <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                    {formatEventTime(ev.date, ev.time, ev.timezone)}
                   </span>
                   {status === "in_progress" && <LivePill />}
                 </div>
+                {/* Format badge sits above the title — it's the
+                    fastest way to scan "what kind of event is this".
+                    Title takes the strong-visual second slot. */}
+                <span className={`inline-block px-2 py-0.5 rounded-sm text-[10px] font-bold mb-1 ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                  {ev.format}
+                </span>
                 <p className="text-base sm:text-lg font-semibold tracking-tight text-neutral-900 dark:text-white line-clamp-2 sm:line-clamp-none sm:truncate">{ev.title}</p>
                 {ev.location && (
                   <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate mt-0.5">{ev.location}</p>
