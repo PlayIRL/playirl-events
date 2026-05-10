@@ -3,6 +3,7 @@ import { getEvent } from "@/lib/events";
 import { requireRole } from "@/lib/session";
 import EventForm from "../../../../../admin/_components/EventForm";
 import SubpageShell from "../../../_components/SubpageShell";
+import DiscordEventsPanel from "./DiscordEventsPanel";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +42,7 @@ export default async function AccountEditEventPage({ params }: { params: Promise
           visibility: event.visibility,
         }}
       />
+      <DiscordEventsPanel eventId={event.id} />
     </SubpageShell>
   );
 }

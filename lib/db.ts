@@ -448,6 +448,28 @@ function initSchema(db: Database.Database) {
   // discovering the change by accident.
   try { db.exec("ALTER TABLE event_rsvps ADD COLUMN promoted_at TEXT"); } catch {}
 
+  // Per-event posts to Discord guilds' native Events-tab. Distinct from the
+  // discord_subscription_posts ledger because the model is different:
+  // - subscription_posts = one subscription posts MANY events as channel
+  //   messages on a recurring schedule.
+  // - scheduled_event_posts = one event gets pushed ONCE to a guild's
+  //   Events tab as a Discord scheduled event with its own life cycle
+  //   (create/update/cancel). Indexed (event_id, guild_id) so a single
+  //   event can fan out to multiple servers.
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS discord_scheduled_event_posts (
+      event_id          TEXT NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+      guild_id          TEXT NOT NULL,
+      discord_event_id  TEXT NOT NULL,
+      posted_by_user_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+      posted_at         TEXT NOT NULL DEFAULT (datetime('now')),
+      last_synced_at    TEXT,
+      PRIMARY KEY (event_id, guild_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_disc_sched_event_eid ON discord_scheduled_event_posts(event_id);
+    CREATE INDEX IF NOT EXISTS idx_disc_sched_event_gid ON discord_scheduled_event_posts(guild_id);
+  `);
+
   // Default settings
   const insert = db.prepare("INSERT OR IGNORE INTO settings (key, value) VALUES (?, ?)");
   insert.run("scrape_interval_hours", "24");
