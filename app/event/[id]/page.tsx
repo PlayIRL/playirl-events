@@ -273,14 +273,6 @@ export default async function EventPage({
         </div>
       )}
 
-      {isHost && (
-        <HostActions
-          eventId={ev.id}
-          cancelled={cancelled}
-          visibility={ev.visibility}
-        />
-      )}
-
       <div className="bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/8 rounded-md anim-fade-in-up" style={{ "--delay": "60ms" } as React.CSSProperties}>
         {/* Hero image — uploaded photo, scraped cover, venue default, or placeholder. */}
         {/* When the hero is a real photo or map (`object-cover`), no padding
@@ -420,6 +412,21 @@ export default async function EventPage({
           </div>
         </Reveal>
       </div>
+
+      {/* Host actions — moved to the bottom of the page since they're
+          owner-/admin-only and shouldn't compete with the event detail
+          for the casual viewer's attention. Edit / Attendees / Cancel
+          live here so a host scrolls past their own event content
+          before getting to management controls. */}
+      {isHost && (
+        <div className="mt-6">
+          <HostActions
+            eventId={ev.id}
+            cancelled={cancelled}
+            visibility={ev.visibility}
+          />
+        </div>
+      )}
     </main>
   );
 }
