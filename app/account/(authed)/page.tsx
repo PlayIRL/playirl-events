@@ -4,6 +4,7 @@ import { getSavedEvents } from "@/lib/event-saves";
 import { getEventsByOwner } from "@/lib/events";
 import { listSourcesForUser } from "@/lib/user-sources";
 import { listSubscriptionsManageableByUser } from "@/lib/discord-subscriptions";
+import { listEventsTabSubsManageableByUser } from "@/lib/discord-events-tab-subs";
 import { botInviteUrl } from "@/lib/discord-bot";
 import SubpageShell from "./_components/SubpageShell";
 import LogoutButton from "./_components/LogoutButton";
@@ -11,6 +12,8 @@ import SourcesList from "./sources/SourcesList";
 import GetStartedCard from "./sources/GetStartedCard";
 import SubscriptionsList from "./discord/SubscriptionsList";
 import AddSubscriptionForm from "./discord/AddSubscriptionForm";
+import EventsTabSubsList from "./discord/EventsTabSubsList";
+import AddEventsTabSubForm from "./discord/AddEventsTabSubForm";
 
 function CreateEventAction() {
   return (
@@ -265,6 +268,7 @@ function formatShortDate(dateStr: string): string {
 async function DiscordTab({ userId }: { userId: string }) {
   const sources = listSourcesForUser(userId);
   const subs = listSubscriptionsManageableByUser(userId);
+  const eventsTabSubs = listEventsTabSubsManageableByUser(userId);
   const inviteUrl = botInviteUrl();
 
   return (
@@ -309,6 +313,27 @@ async function DiscordTab({ userId }: { userId: string }) {
             icon="📅"
             heading="No auto-posts yet"
             body="Click + New auto-post to schedule a recurring event digest in one of your Discord channels."
+          />
+        )}
+      </section>
+
+      <section className="space-y-4">
+        <header className="flex items-end justify-between gap-4 flex-wrap">
+          <div>
+            <h2 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">Add to a server&rsquo;s Events tab</h2>
+            <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
+              Push matching events into a Discord server&rsquo;s native Events tab as scheduled events &mdash; one-shot or auto-syncing.
+            </p>
+          </div>
+          <AddEventsTabSubForm inviteUrl={inviteUrl} />
+        </header>
+        {eventsTabSubs.length > 0 ? (
+          <EventsTabSubsList subs={eventsTabSubs} />
+        ) : (
+          <DiscordEmptyPanel
+            icon="🗓️"
+            heading="No Events-tab subs yet"
+            body="Click + Add server's Events tab to push matching events into a Discord server's native Events tab."
           />
         )}
       </section>

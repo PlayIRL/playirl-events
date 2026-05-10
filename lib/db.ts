@@ -468,6 +468,38 @@ function initSchema(db: Database.Database) {
     );
     CREATE INDEX IF NOT EXISTS idx_disc_sched_event_eid ON discord_scheduled_event_posts(event_id);
     CREATE INDEX IF NOT EXISTS idx_disc_sched_event_gid ON discord_scheduled_event_posts(guild_id);
+
+    -- Per-guild Events-tab subscriptions: when a new event matches this
+    -- filter, the dispatcher creates a Discord guild scheduled event in the
+    -- target guild's Events tab. Companion to discord_subscriptions (which
+    -- posts channel messages) — same filter shape, different output.
+    -- Idempotency lives in discord_scheduled_event_posts (the (event_id,
+    -- guild_id) PK there guarantees one Discord scheduled event per pair
+    -- regardless of which sub created it).
+    CREATE TABLE IF NOT EXISTS discord_scheduled_event_subs (
+      id                  TEXT PRIMARY KEY,
+      guild_id            TEXT NOT NULL,
+      name                TEXT,
+      venue_name          TEXT,
+      format              TEXT,
+      source              TEXT,
+      radius_miles        INTEGER,
+      center_lat          REAL,
+      center_lng          REAL,
+      near_label          TEXT DEFAULT '',
+      days_ahead          INTEGER NOT NULL DEFAULT 30,
+      enabled             INTEGER NOT NULL DEFAULT 1,
+      linked_user_id      TEXT REFERENCES users(id) ON DELETE SET NULL,
+      created_by          TEXT,
+      created_at          TEXT DEFAULT (datetime('now')),
+      updated_at          TEXT DEFAULT (datetime('now')),
+      last_dispatched_at  TEXT,
+      consecutive_failures INTEGER NOT NULL DEFAULT 0,
+      last_failure_at     TEXT,
+      disabled_reason     TEXT DEFAULT ''
+    );
+    CREATE INDEX IF NOT EXISTS idx_disc_sched_event_subs_enabled ON discord_scheduled_event_subs(enabled);
+    CREATE INDEX IF NOT EXISTS idx_disc_sched_event_subs_guild ON discord_scheduled_event_subs(guild_id);
   `);
 
   // Default settings

@@ -35,6 +35,13 @@ import {
   renderDigestSummary,
   renderReminderMessage,
 } from "@/lib/discord-post";
+import {
+  eventsMatchingEventsTabSub,
+  listEnabledEventsTabSubs,
+  markEventsTabSubDispatched,
+  pushEventsToGuild,
+  recordEventsTabSubFailure,
+} from "@/lib/discord-events-tab-subs";
 
 /**
  * Centralized handler for a Discord post failure inside the dispatch loop.
@@ -82,6 +89,8 @@ interface DispatchSummary {
   reminders_posted: number;
   retries_posted: number;
   retries_gave_up: number;
+  events_tab_subs_checked: number;
+  events_tab_events_posted: number;
   errors: number;
 }
 
@@ -300,6 +309,8 @@ export async function POST(request: Request) {
     reminders_posted: 0,
     retries_posted: 0,
     retries_gave_up: 0,
+    events_tab_subs_checked: 0,
+    events_tab_events_posted: 0,
     errors: 0,
   };
 
@@ -341,6 +352,42 @@ export async function POST(request: Request) {
     } catch (err) {
       summary.errors++;
       console.error(`[discord-dispatch] sub=${sub.id} top-level failure:`, err);
+    }
+  }
+
+  // Events-tab subs: every tick, scan each enabled sub for matching events
+  // not yet posted to its guild and create the missing scheduled events.
+  // The (event_id, guild_id) ledger guarantees no double-posts even if two
+  // subs overlap in filter+guild.
+  const eventsTabSubs = listEnabledEventsTabSubs();
+  summary.events_tab_subs_checked = eventsTabSubs.length;
+  for (const sub of eventsTabSubs) {
+    try {
+      const matches = eventsMatchingEventsTabSub(sub, now);
+      if (matches.length === 0) continue;
+      const result = await pushEventsToGuild(sub.guild_id, matches, sub.linked_user_id);
+      summary.events_tab_events_posted += result.posted;
+      if (result.permanentError) {
+        summary.errors++;
+        const reason = `HTTP ${result.permanentError.status}: ${result.permanentError.body.slice(0, 200)}`;
+        const r = recordEventsTabSubFailure(sub.id, reason, true);
+        console.error(
+          `[discord-dispatch] events-tab sub=${sub.id} ${r.disabled ? "disabled" : "failed"} (permanent): ${reason}`,
+        );
+      } else if (result.failed > 0) {
+        summary.errors += result.failed;
+        const r = recordEventsTabSubFailure(sub.id, `${result.failed} non-permanent failure(s)`, false);
+        if (r.disabled) {
+          console.error(
+            `[discord-dispatch] events-tab sub=${sub.id} disabled after ${r.consecutiveFailures} consecutive failure runs`,
+          );
+        }
+      } else if (result.posted > 0) {
+        markEventsTabSubDispatched(sub.id);
+      }
+    } catch (err) {
+      summary.errors++;
+      console.error(`[discord-dispatch] events-tab sub=${sub.id} top-level failure:`, err);
     }
   }
 
