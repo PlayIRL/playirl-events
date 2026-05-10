@@ -12,8 +12,6 @@ import { SITE_URL } from "@/lib/config";
 import {
   FORMAT_BADGE,
   FORMAT_BADGE_DEFAULT,
-  FORMAT_EMOJI,
-  FORMAT_EMOJI_DEFAULT,
   SOURCE_LABELS,
 } from "@/lib/format-style";
 import ShareButton from "./share-button";
@@ -290,7 +288,7 @@ export default async function EventPage({
           <div>
             <div className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Format</div>
             <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
-              {FORMAT_EMOJI[ev.format] || FORMAT_EMOJI_DEFAULT} {ev.format || "MTG"}
+              {ev.format || "MTG"}
             </span>
           </div>
           <div>
