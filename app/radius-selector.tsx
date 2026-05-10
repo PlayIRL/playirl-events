@@ -190,7 +190,6 @@ export function SubscribeDropdown({
   const [status, setStatus] = useState<"closed" | "open" | "closing">("closed");
   const statusRef = useRef<"closed" | "open" | "closing">("closed");
   const ref = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
   const [copied, setCopied] = useState(false);
 
   const close = useCallback(() => {
@@ -241,17 +240,9 @@ export function SubscribeDropdown({
     });
   }
 
-  function comingSoon(text: string) {
-    if (triggerRef.current) {
-      onToast(text, triggerRef.current.getBoundingClientRect());
-    }
-    close();
-  }
-
   return (
     <div ref={ref} className="relative ml-1 inline-block">
       <button
-        ref={triggerRef}
         onClick={() => status === "open" ? close() : open()}
         title="Subscribe to calendar"
         className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white text-xs font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800 transition cursor-pointer focus:outline-none"
@@ -297,9 +288,9 @@ export function SubscribeDropdown({
             Download .ics
           </a>
 
-          {/* Discord pair: the first one is wired to the auto-posts manager
-              we already shipped. The second is roadmap (Discord guild
-              scheduled-events API integration) — kept as a Soon pill. */}
+          {/* Discord pair: both items go to /account?tab=discord — the first
+              prefills the channel-message subscription form, the second
+              prefills the Events-tab subscription form. */}
           <div className="border-t border-neutral-100 dark:border-white/8 mt-1 pt-1">
             <Link
               href={venueName ? `/account?tab=discord&venue=${encodeURIComponent(venueName)}` : "/account?tab=discord"}
@@ -312,27 +303,23 @@ export function SubscribeDropdown({
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </Link>
-            <button
-              type="button"
-              onClick={() => comingSoon("Creating Discord scheduled events is coming soon!")}
-              className={`${OPTION} text-neutral-500 dark:text-neutral-400 cursor-pointer opacity-70 hover:opacity-100`}
+            <Link
+              href={venueName
+                ? `/account?tab=discord&events_tab_open=1&venue=${encodeURIComponent(venueName)}`
+                : `/account?tab=discord&events_tab_open=1`}
+              onClick={close}
+              className={`${OPTION} text-neutral-700 dark:text-neutral-200`}
             >
               <DiscordIcon className="w-4 h-4 text-neutral-400" />
               <span className="flex-1">Add to a server&apos;s Events tab</span>
-              <SoonPill />
-            </button>
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
           </div>
         </div>
       )}
     </div>
-  );
-}
-
-function SoonPill() {
-  return (
-    <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-neutral-100 dark:bg-white/8 text-neutral-500 dark:text-neutral-400 font-semibold">
-      Soon
-    </span>
   );
 }
 
