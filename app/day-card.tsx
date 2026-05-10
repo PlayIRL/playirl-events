@@ -5,7 +5,6 @@ import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT } from "@/lib/format-style";
 import { eventDisplayStatus, formatEventTime } from "@/lib/format-time";
 import SaveEventButton from "./save-event-button";
 import AdminEventActions from "./admin-event-actions";
-import { LivePill } from "./live-pill";
 
 interface EventRow {
   id: string;
@@ -150,16 +149,21 @@ export default function DayCard({
               }
               className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-4 sm:py-5 ${status === "completed" ? "saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
             >
-              {/* Desktop: time as a fixed left column, with the LIVE pill
-                  stacked underneath when in progress so the "happening now"
-                  cue lives next to the temporal cue instead of competing
-                  with the format badge for attention. Mobile renders both
-                  inline above the title (see middle div below). */}
-              <div className="hidden sm:flex flex-col items-start gap-1 shrink-0 w-16">
-                {status === "in_progress" && <LivePill />}
-                <span className="text-sm text-neutral-500 dark:text-neutral-400 transition-colors duration-200 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">
-                  {formatEventTime(ev.date, ev.time, ev.timezone)}
-                </span>
+              {/* Desktop: time as a fixed left column. When the event is
+                  in progress the time itself shifts to emerald and gets a
+                  small pulsing-dot prefix — same palette as the rest of
+                  the app (emerald for active/positive), no shouty badge. */}
+              <div className="hidden sm:block shrink-0 w-16">
+                {status === "in_progress" ? (
+                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-700 dark:text-emerald-400">
+                    <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 anim-live-pulse shrink-0" />
+                    <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
+                  </span>
+                ) : (
+                  <span className="text-sm text-neutral-500 dark:text-neutral-400 transition-colors duration-200 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">
+                    {formatEventTime(ev.date, ev.time, ev.timezone)}
+                  </span>
+                )}
               </div>
               {/* Image is decorative on mobile (most events render the same
                   source-type SVG placeholder) so we drop it under sm to give
@@ -178,14 +182,20 @@ export default function DayCard({
                 decoding="async"
               />
               <div className="flex-1 min-w-0">
-                {/* Mobile: stack the LIVE pill above the time so the
-                    "happening now" cue reads as a status flag,
-                    matching the desktop column treatment. */}
-                <div className="flex sm:hidden flex-col items-start gap-0.5 mb-1">
-                  {status === "in_progress" && <LivePill />}
-                  <span className="text-xs text-neutral-500 dark:text-neutral-400">
-                    {formatEventTime(ev.date, ev.time, ev.timezone)}
-                  </span>
+                {/* Mobile mirrors the desktop column: when in-progress
+                    the time line picks up a leading pulse dot + emerald
+                    color shift, otherwise renders flat neutral. */}
+                <div className="block sm:hidden mb-1">
+                  {status === "in_progress" ? (
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">
+                      <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 anim-live-pulse shrink-0" />
+                      <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
+                    </span>
+                  ) : (
+                    <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                      {formatEventTime(ev.date, ev.time, ev.timezone)}
+                    </span>
+                  )}
                 </div>
                 {/* Format badge sits above the title — it's the
                     fastest way to scan "what kind of event is this".

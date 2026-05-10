@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT } from "@/lib/format-style";
 import { dateStrInTz, eventDisplayStatus, formatEventTime } from "@/lib/format-time";
-import { LivePill } from "./live-pill";
 import { useStickySentinel } from "@/lib/use-sticky-sentinel";
 
 interface EventRow {
@@ -200,15 +199,18 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                         className={`group block rounded-md p-2 transition-all duration-150 hover:-translate-y-px hover:shadow-sm ${status === "completed" ? "opacity-50 saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.06]" : "hover:bg-black/[0.04] dark:hover:bg-white/10"}`}
                       >
                         <div className="flex flex-col gap-px">
-                          {/* LIVE pill stacks above the time so the
-                              "happening now" cue reads as a status flag —
-                              same vertical order as the day-card row. */}
-                          {status === "in_progress" && (
-                            <div className="mb-0.5">
-                              <LivePill compact />
+                          {/* When the event is in progress the time shifts
+                              to emerald with a leading pulse dot — same
+                              treatment as the day-card row, scaled down
+                              for the calendar cell. */}
+                          {status === "in_progress" ? (
+                            <div className="inline-flex items-center gap-1 leading-none text-[10px] font-medium text-emerald-700 dark:text-emerald-400">
+                              <span aria-hidden="true" className="w-1 h-1 rounded-full bg-emerald-500 dark:bg-emerald-400 anim-live-pulse shrink-0" />
+                              <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
                             </div>
+                          ) : (
+                            <div className="text-[10px] text-neutral-500 dark:text-neutral-400 leading-none">{formatEventTime(ev.date, ev.time, ev.timezone)}</div>
                           )}
-                          <div className="text-[10px] text-neutral-500 dark:text-neutral-400 leading-none">{formatEventTime(ev.date, ev.time, ev.timezone)}</div>
                           <div>
                             <span className={`px-1.5 py-0.5 rounded-sm text-[10px] font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
                               {ev.format}
