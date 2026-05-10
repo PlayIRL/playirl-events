@@ -93,10 +93,19 @@ export default function DayCard({
     ? "border-2 border-neutral-900 dark:border-white"
     : "border border-neutral-300 dark:border-white/15";
 
+  // Past day cards land at 70% opacity (subtle "this is history" treatment);
+  // today + future render at full color. The CSS var is read by the
+  // `fadeInUp` keyframe's `to` rule so the dim survives the reveal anim.
+  const wrapperOpacity = isPast && !isToday ? 0.7 : 1;
+
   return (
     <div
       ref={wrapperRef}
-      style={revealed ? undefined : { opacity: 0 }}
+      style={
+        revealed
+          ? ({ "--wrapper-opacity": wrapperOpacity } as React.CSSProperties)
+          : ({ opacity: 0, "--wrapper-opacity": wrapperOpacity } as React.CSSProperties)
+      }
       className={`${revealed ? "anim-fade-in-up" : ""} ${isPast && !isToday ? "opacity-70" : ""}`}
     >
       {/* Single bordered frame around heading + rows. overflow-clip clips
@@ -130,8 +139,16 @@ export default function DayCard({
               key={ev.id}
               href={`/event/${encodeURIComponent(ev.id)}`}
               data-row
-              style={revealed ? { animationDelay: `${80 + i * 45}ms` } : { opacity: 0 }}
-              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-4 sm:py-5 ${status === "completed" ? "opacity-50 saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
+              // --row-opacity drives the `to` value in the fadeInRow keyframe
+              // so completed rows actually land at 50% — without it, the
+              // animation's `to: opacity: 1` (fill-mode both) overrode the
+              // opacity-50 class and rows rendered full-color after reveal.
+              style={
+                revealed
+                  ? ({ animationDelay: `${80 + i * 45}ms`, "--row-opacity": status === "completed" ? 0.5 : 1 } as React.CSSProperties)
+                  : ({ opacity: 0, "--row-opacity": status === "completed" ? 0.5 : 1 } as React.CSSProperties)
+              }
+              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-4 sm:py-5 ${status === "completed" ? "saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
             >
               {/* Desktop: time as a fixed left column. Mobile: hidden here
                   and rendered above the title (see middle div below) so the
