@@ -58,6 +58,41 @@ export function eventHasStarted(date: string, time: string): boolean {
   return utc.getTime() < Date.now();
 }
 
+// Default duration assumption for "completed" detection. Matches the
+// default duration `formatEventTimeRange` uses to compute end-of-event,
+// so the visual states agree with the rendered time range.
+const DEFAULT_DURATION_HOURS = 3;
+
+export type EventDisplayStatus = "upcoming" | "in_progress" | "completed";
+
+/**
+ * Three-tier render status for event cards. Distinct from
+ * `eventHasStarted` (binary) so the list/calendar can paint events that
+ * are happening RIGHT NOW differently from events that are already over.
+ *
+ * - `upcoming`: start moment is in the future → full color.
+ * - `in_progress`: started, but the estimated end (start + 3h) hasn't
+ *   passed yet → a LIVE indicator on the card with no dimming.
+ * - `completed`: estimated end is in the past → greyed out, same
+ *   treatment as today's earlier rows.
+ *
+ * Date-only events (no time) are treated as upcoming until the entire
+ * UTC day has elapsed, then flip to completed — matching the
+ * sometime-that-day storage convention.
+ */
+export function eventDisplayStatus(date: string, time: string): EventDisplayStatus {
+  if (!date) return "upcoming";
+  const start = new Date(`${date}T${time || "00:00"}:00Z`).getTime();
+  if (isNaN(start)) return "upcoming";
+  const now = Date.now();
+  if (start > now) return "upcoming";
+  // Treat date-only entries as "completed at end of UTC day" — we can't
+  // claim they're in progress for some specific hour-band.
+  const durationMs = (time ? DEFAULT_DURATION_HOURS : 24) * 60 * 60 * 1000;
+  if (start + durationMs > now) return "in_progress";
+  return "completed";
+}
+
 export function formatEventTime(
   date: string,
   time: string,
