@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Reveal from "@/app/reveal";
 import { PlayIrlLogo } from "@/app/playirl-logo";
+import UserGuide from "./_components/UserGuide";
 
 export const metadata = {
   title: "About — PlayIRL.GG",
@@ -9,7 +10,7 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="max-w-2xl mx-auto px-4 py-10 text-left">
+    <main className="max-w-3xl mx-auto px-4 py-10 text-left">
       <Link
         href="/"
         className="inline-flex items-center gap-1.5 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition mb-6 anim-fade-in"
@@ -38,7 +39,7 @@ export default function AboutPage() {
       </Reveal>
 
       <Reveal delay={140}>
-        <div className="flex flex-wrap items-center gap-1.5 mb-6 text-xs font-medium">
+        <div className="flex flex-wrap items-center gap-1.5 mb-3 text-xs font-medium">
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/30">
             {"\u2728"} Open source
           </span>
@@ -49,6 +50,16 @@ export default function AboutPage() {
             Not affiliated with Wizards of the Coast
           </span>
         </div>
+      </Reveal>
+
+      <Reveal delay={160}>
+        <p className="mb-6 text-xs text-neutral-500 dark:text-neutral-400">
+          New here? Skip ahead to the{" "}
+          <a href="#guide" className="font-medium underline decoration-dotted underline-offset-2 hover:decoration-solid text-neutral-900 dark:text-white">
+            user guide
+          </a>{" "}
+          for step-by-step walkthroughs.
+        </p>
       </Reveal>
 
       <div className="space-y-5 text-base text-neutral-700 dark:text-neutral-300 leading-relaxed">
@@ -147,6 +158,10 @@ export default function AboutPage() {
           </div>
         </Reveal>
       </div>
+
+      <Reveal>
+        <UserGuide />
+      </Reveal>
     </main>
   );
 }
