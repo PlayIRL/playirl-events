@@ -5,6 +5,7 @@ import { getSavedEventIds } from "@/lib/event-saves";
 import { getPreferences, setPreferences } from "@/lib/user-preferences";
 import { getCurrentUser } from "@/lib/session";
 import { resolveEventImage } from "@/lib/event-image";
+import { dateStrInTz } from "@/lib/format-time";
 import { getLabelForCoords } from "@/lib/geocode";
 import { config } from "@/lib/config";
 import DateJumper from "./date-jumper";
@@ -139,14 +140,23 @@ export default async function HomePage({
     fromDate = new Date(today.getTime() + currentOffset * 24 * 60 * 60 * 1000);
     toDate = new Date(today.getTime() + (currentOffset + currentDays) * 24 * 60 * 60 * 1000);
   }
+  // Anchor "today" / range bounds to America/New_York. Railway runs Node in
+  // UTC, so naively slicing toISOString() returns UTC dates — which after
+  // 8pm ET resolves to "tomorrow", excluding today's events from the
+  // `date >= ?` filter and breaking the past-but-still-today rendering on
+  // both list and calendar views.
+  const todayStr = dateStrInTz(today);
+  const tomorrowStr = dateStrInTz(new Date(today.getTime() + 24 * 60 * 60 * 1000));
+  const fromStr = dateStrInTz(fromDate);
+  const toStr = dateStrInTz(toDate);
   const isAdmin = signedIn && user?.role === "admin";
   const savedEventIds = signedIn && user ? getSavedEventIds(user.id) : new Set<string>();
 
   const formats = getFormats();
   const events = getActiveEvents({
     format: currentFormat || undefined,
-    from: fromDate.toISOString().split("T")[0],
-    to: toDate.toISOString().split("T")[0],
+    from: fromStr,
+    to: toStr,
     radiusMiles: currentRadius,
     centerLat: currentLocationLat,
     centerLng: currentLocationLng,
@@ -238,8 +248,6 @@ export default async function HomePage({
           <div className="space-y-8">
             {Object.entries(grouped).map(([date, dayEvents], i) => {
               const d = new Date(date + "T12:00:00");
-              const todayStr = today.toISOString().split("T")[0];
-              const tomorrowStr = new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString().split("T")[0];
               return (
                 <DayCard
                   key={date}

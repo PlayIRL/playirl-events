@@ -6,6 +6,41 @@
 const DEFAULT_TZ = "America/New_York";
 
 /**
+ * The app's anchor timezone for "today" / "tomorrow" comparisons. Railway
+ * runs Node in UTC, so naive `new Date().toISOString().slice(0, 10)` returns
+ * the UTC date — which silently shifts to tomorrow after 8pm ET (when UTC
+ * has already rolled over). That broke list/calendar views in the evening:
+ * the `date >= today` filter excluded same-day events whose stored date
+ * matched the UTC day. Anchoring to ET keeps the user-visible "today" stable
+ * for the project's primary audience.
+ */
+export const APP_TIMEZONE = DEFAULT_TZ;
+
+/**
+ * YYYY-MM-DD for `date` rendered in `timeZone` (IANA). Use this — not
+ * `date.toISOString().split('T')[0]` — anywhere we compare against the
+ * `events.date` column or surface a "today/tomorrow" label, since the
+ * toISOString variant is UTC-anchored and silently shifts the day across
+ * the UTC midnight boundary on negative-offset zones.
+ *
+ * en-CA's date format happens to be YYYY-MM-DD, which is why we lean on
+ * Intl.DateTimeFormat instead of manual string assembly — the locale does
+ * the zero-padding and ordering for us.
+ */
+export function dateStrInTz(date: Date = new Date(), timeZone: string = APP_TIMEZONE): string {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const y = parts.find(p => p.type === "year")!.value;
+  const m = parts.find(p => p.type === "month")!.value;
+  const d = parts.find(p => p.type === "day")!.value;
+  return `${y}-${m}-${d}`;
+}
+
+/**
  * True when the event's start moment (UTC) has already passed. Used to
  * render today's already-started events (and this-week's past events in
  * the calendar view) as inactive rather than hiding them — gives users
