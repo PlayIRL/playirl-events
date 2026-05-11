@@ -11,52 +11,49 @@ export const FORMAT_EMOJI: Record<string, string> = {
 
 // Format colors map to the actual MTG mana-symbol swatches — the cream,
 // sky-blue, bone, salmon, and sage that show on the mana cost roundels
-// and card frames, not Tailwind's generic palette. Hex values below are
-// tuned to match the saturation of the WUBRG color wheel: vivid enough to
-// be instantly recognizable as MTG mana, with deeper tones for text and
-// borders pulled from the same color identity.
+// and card frames, not Tailwind's generic palette. Light-mode values are
+// the vivid mid-tone of each mana color (saturated enough to pop as
+// a status flag); dark-mode pairs the ink color at 70-85% alpha so the
+// chip stays readable on a near-black surface without going washed-out.
 //
-//   W (Plains)      #F8DC68 / #5C4400     → Pauper (commons)
-//   U (Island)      #9BCBEC / #0E68AB     → Modern (control)
-//   B (Swamp)       #B8B0A8 / #3A352F     → Legacy (eternal)
-//   R (Mountain)    #F8A992 / #D3202A     → Pioneer (aggressive)
-//   G (Forest)      #9CDCB1 / #00733E     → Standard (current)
-//   Plum            #D9BCEE / #6B3FA0     → Commander (legendary/mythic)
-//   Amber-gold      #F5BB75 / #E08F2B     → Draft (limited)
-//   Bronze          #DDA873 / #B86E1F     → Sealed (sealed-pack)
+//   W (Plains)      #FFD53D / #5C4400     → Pauper (commons)
+//   U (Island)      #6FB6EA / #0E68AB     → Modern (control)
+//   B (Swamp)       #A89F94 / #3A352F     → Legacy (eternal)
+//   R (Mountain)    #FA8770 / #D3202A     → Pioneer (aggressive)
+//   G (Forest)      #5FCB87 / #00733E     → Standard (current)
+//   Plum            #C896EA / #6B3FA0     → Commander (legendary/mythic)
+//   Amber-gold      #FFA84A / #E08F2B     → Draft (limited)
+//   Bronze          #D89651 / #B86E1F     → Sealed (sealed-pack)
 //
 // Commander uses plum (the "mythic / legendary stamp" color in MTG
 // culture) rather than gold so it sits visually clear of Pauper's cream.
-// Gold/multicolor stays for Draft (limited) and Sealed (sealed-pack).
 // Saturated fills with near-black text — saturated enough to read as the
-// matching mana symbol at a glance. Borderless: the colored fill carries
-// the chip's identity on its own; a 2px border at this size was reading
-// as decorative weight rather than information.
+// matching mana symbol at a glance.
 export const FORMAT_BADGE: Record<string, string> = {
   // Plum — legendary / mythic
   Commander:
-    "bg-[#D9BCEE] text-[#2A1145] dark:bg-[#6B3FA0]/45 dark:text-[#F1E4F9]",
+    "bg-[#C896EA] text-[#2A1145] dark:bg-[#6B3FA0]/75 dark:text-[#F1E4F9]",
   // U — Island
   Modern:
-    "bg-[#9BCBEC] text-[#0A2D4D] dark:bg-[#0E68AB]/50 dark:text-[#D6ECF7]",
+    "bg-[#6FB6EA] text-[#0A2D4D] dark:bg-[#0E68AB]/80 dark:text-[#D6ECF7]",
   // G — Forest
   Standard:
-    "bg-[#9CDCB1] text-[#0A2E1A] dark:bg-[#00733E]/50 dark:text-[#D6F0DD]",
+    "bg-[#5FCB87] text-[#0A2E1A] dark:bg-[#00733E]/80 dark:text-[#D6F0DD]",
   // R — Mountain
   Pioneer:
-    "bg-[#F8A992] text-[#3D0E0E] dark:bg-[#D3202A]/45 dark:text-[#FAD8C9]",
+    "bg-[#FA8770] text-[#3D0E0E] dark:bg-[#D3202A]/70 dark:text-[#FAD8C9]",
   // B — Swamp / eternal
   Legacy:
-    "bg-[#B8B0A8] text-[#15110D] dark:bg-[#3A352F]/80 dark:text-[#E8E2DC]",
-  // W — Plains / commons (cream-yellow, matching the wheel's sun panel)
+    "bg-[#A89F94] text-[#15110D] dark:bg-[#3A352F] dark:text-[#E8E2DC]",
+  // W — Plains / commons (saturated sun-gold, matching the wheel's sun panel)
   Pauper:
-    "bg-[#F8DC68] text-[#5C4400] dark:bg-[#F8E26B]/40 dark:text-[#FBF4C5]",
+    "bg-[#FFD53D] text-[#5C4400] dark:bg-[#F8E26B]/70 dark:text-[#FBF4C5]",
   // Amber-gold — limited
   Draft:
-    "bg-[#F5BB75] text-[#3D1F08] dark:bg-[#E08F2B]/50 dark:text-[#F9DCB0]",
+    "bg-[#FFA84A] text-[#3D1F08] dark:bg-[#E08F2B]/80 dark:text-[#F9DCB0]",
   // Bronze-gold — sealed mystery
   Sealed:
-    "bg-[#DDA873] text-[#291A07] dark:bg-[#B86E1F]/55 dark:text-[#EBCFA5]",
+    "bg-[#D89651] text-[#291A07] dark:bg-[#B86E1F]/80 dark:text-[#EBCFA5]",
 };
 
 // Saturated swatches for the format-selector dot in the radius dropdown.
@@ -73,8 +70,11 @@ export const FORMAT_DOT: Record<string, string> = {
   Sealed: "bg-[#B86E1F]",
 };
 
+// Unknown / freeform formats (e.g. "Dungeons and Dragons Event") fall back
+// to a neutral but still-vivid stone so the badge keeps the same visual
+// weight as the colored MTG-format chips around it instead of fading out.
 export const FORMAT_BADGE_DEFAULT =
-  "bg-gray-100 text-gray-700 dark:bg-gray-500/20 dark:text-gray-200";
+  "bg-stone-300 text-stone-900 dark:bg-stone-600/60 dark:text-stone-100";
 
 export const FORMAT_EMOJI_DEFAULT = "\uD83C\uDCCF";
 
