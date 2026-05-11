@@ -300,20 +300,15 @@ export default async function EventPage({
             element. Border-b separates the header from the photo;
             rounded-t-md sits on the header now (used to be on the
             hero) since the header is the top-most child of the card. */}
-        <div className="p-6 pb-4 space-y-4 rounded-t-md border-b border-neutral-100 dark:border-white/8">
-          <div>
-            <div className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Format</div>
-            {/* Same vocabulary as the list/calendar badges (Beleren,
-                uppercase, tracking-wide, mana-color fill) — just sized
-                up a notch for the detail-page header. */}
-            <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold tracking-wide uppercase font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
-              {ev.format || "MTG"}
-            </span>
-          </div>
-          <div>
-            <div className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Event</div>
-            <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white break-words">{ev.title}</h1>
-          </div>
+        <div className="p-6 pb-4 space-y-3 rounded-t-md border-b border-neutral-100 dark:border-white/8">
+          {/* Format chip + title stand on their own — the "Format" /
+              "Event" eyebrow labels were redundant scaffolding once the
+              chip got the Beleren + uppercase treatment that already
+              communicates "this is the format". */}
+          <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold tracking-wide uppercase font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+            {ev.format || "MTG"}
+          </span>
+          <h1 className="text-3xl sm:text-4xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white break-words leading-tight">{ev.title}</h1>
         </div>
 
         {(() => {
