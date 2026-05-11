@@ -79,8 +79,11 @@ function findStore(stores: Store[], lat: number, lng: number): Store | null {
       best = s;
     }
   }
-  // ~0.002 degrees ≈ 200m — generous tolerance for GPS variance
-  return bestDist < 0.002 ? best : null;
+  // ~0.005 degrees ≈ 500m — bumped from 0.002 (200m) to catch GPS drift
+  // between event coords and store coords. We already pick the *closest*
+  // store inside the loop, so widening the cutoff just rescues borderline
+  // matches, it doesn't introduce wrong ones across town.
+  return bestDist < 0.005 ? best : null;
 }
 
 async function fetchEventsAt(
@@ -206,12 +209,27 @@ export default async function fetchWizardsEvents(_sourceConfig = {}) {
 
   console.log(`[wotc] ${eventsById.size} unique events across ${regions.length} regions`);
 
-  // Step 4: shape into ScrapedEvent rows.
+  // Step 4: shape into ScrapedEvent rows. Venue resolution order:
+  //   1. `ev.venue.{name,address,id}` returned with the event itself —
+  //      what the GraphQL query already asks for. Previously ignored,
+  //      which left ~47% of WotC events with empty venue columns despite
+  //      having valid coords.
+  //   2. Coord-matched store from the separately-fetched stores list +
+  //      its reverse-geocoded address (still useful when `ev.venue` is
+  //      null — gives us name, website, and store-detail URL).
+  //   3. Top-level `ev.address` as a final address fallback.
   const stores = [...storesById.values()];
   const allEvents: any[] = [];
   for (const ev of eventsById.values()) {
     const fee = ev.entryFee;
-    const store = findStore(stores, ev.latitude, ev.longitude);
+    const coordStore = findStore(stores, ev.latitude, ev.longitude);
+    const venueName = ev.venue?.name || coordStore?.name || "";
+    const venueAddress =
+      ev.venue?.address ||
+      (coordStore ? storeAddresses[coordStore.id] || "" : "") ||
+      ev.address ||
+      "";
+    const storeId = ev.venue?.id || coordStore?.id || null;
     allEvents.push({
       id: "wotc-" + ev.id,
       title: (ev.title || "").trim(),
@@ -219,11 +237,13 @@ export default async function fetchWizardsEvents(_sourceConfig = {}) {
       date: (ev.scheduledStartTime || "").slice(0, 10),
       time: (ev.scheduledStartTime || "").slice(11, 16),
       timezone: "America/New_York",
-      location: store?.name || "",
-      address: store ? storeAddresses[store.id] || "" : "",
+      location: venueName,
+      address: venueAddress,
       cost: fee ? (fee.amount === 0 ? "Free" : "$" + Math.round(fee.amount / 100)) : "",
-      store_url: store?.website || "",
-      detail_url: store ? "https://locator.wizards.com/store/" + store.id + "/" : "",
+      // store_url is the venue's external website — only the coord-matched
+      // store list carries this; `ev.venue` doesn't include a URL.
+      store_url: coordStore?.website || "",
+      detail_url: storeId ? "https://locator.wizards.com/store/" + storeId + "/" : "",
       latitude: ev.latitude ?? null,
       longitude: ev.longitude ?? null,
       // WotC's searchEvents returns per-event coords — trust them.
