@@ -409,13 +409,12 @@ export default async function EventPage({
                   )}
                 </div>
               )}
-              {/* Suppress the Source row when there's no detail_url —
-                  a labeled value with no link is dead weight. Most
-                  often empty for WotC events with no registered store
-                  (WotC's locator has no per-event URL we can link to). */}
-              {ev.detail_url && (
-                <DetailRow label="Source" value={SOURCE_LABELS[ev.source] || ev.source} href={ev.detail_url} />
-              )}
+              {/* DetailRow itself returns null for empty `value`, so a
+                  missing source-label still won't render this row.
+                  Source links: WotC events all carry a working
+                  /events/{id} URL after the scraper fix; other sources
+                  set detail_url where it exists. */}
+              <DetailRow label="Source" value={SOURCE_LABELS[ev.source] || ev.source} href={ev.detail_url || undefined} />
             </dl>
           </div>
         </Reveal>
