@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Figtree } from "next/font/google";
+import { Figtree, Cinzel } from "next/font/google";
 import { cookies } from "next/headers";
 import { SITE_URL } from "@/lib/config";
 import "./globals.css";
@@ -31,6 +31,16 @@ const figtree = Figtree({
   variable: "--font-figtree",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800", "900"],
+});
+
+// Card-title font for the format badge — closest free Google Font to MTG's
+// proprietary Beleren typeface (regal serif with calligraphic touches). We
+// only need 700 (the badge renders bold); skip 400 so the bundle stays lean.
+const cinzel = Cinzel({
+  variable: "--font-card-title",
+  subsets: ["latin"],
+  weight: ["700"],
+  display: "swap",
 });
 
 const BUILD_SHA = process.env.RAILWAY_GIT_COMMIT_SHA ?? process.env.VERCEL_GIT_COMMIT_SHA ?? "local";
@@ -81,7 +91,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${figtree.variable} h-full antialiased${isDark ? " dark" : ""}`}
+      className={`${figtree.variable} ${cinzel.variable} h-full antialiased${isDark ? " dark" : ""}`}
       style={{ colorScheme: isDark ? "dark" : "light" }}
       suppressHydrationWarning
     >
