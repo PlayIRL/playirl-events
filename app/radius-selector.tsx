@@ -323,6 +323,72 @@ export function SubscribeDropdown({
   );
 }
 
+function CreateEventDropdown() {
+  const [status, setStatus] = useState<"closed" | "open" | "closing">("closed");
+  const statusRef = useRef<"closed" | "open" | "closing">("closed");
+  const ref = useRef<HTMLDivElement>(null);
+
+  const close = useCallback(() => {
+    if (statusRef.current !== "open") return;
+    statusRef.current = "closing";
+    setStatus("closing");
+    setTimeout(() => {
+      statusRef.current = "closed";
+      setStatus("closed");
+    }, 140);
+  }, []);
+
+  const open = useCallback(() => {
+    statusRef.current = "open";
+    setStatus("open");
+  }, []);
+
+  useClickOutside(ref, close);
+
+  return (
+    <div ref={ref} className="relative ml-1 inline-block">
+      <button
+        onClick={() => status === "open" ? close() : open()}
+        title="Create a new event"
+        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white text-xs font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800 transition cursor-pointer focus:outline-none"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
+        Create event
+      </button>
+      {status !== "closed" && (
+        <div className={`${DROPDOWN_BASE} right-0 ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}>
+          <Link
+            href="/account/events/new"
+            onClick={close}
+            className={`${OPTION} text-neutral-700 dark:text-neutral-200`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            <span className="flex-1">Create new event</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+          <Link
+            href="/account/sources"
+            onClick={close}
+            className={`${OPTION} text-neutral-700 dark:text-neutral-200`}
+          >
+            <DiscordIcon className="w-4 h-4 shrink-0 text-neutral-400" />
+            <span className="flex-1">Sync from Discord</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /**
  * Standalone Subscribe button for pages that don't have the full filter
  * chip bar (e.g., the venue page). Wraps SubscribeDropdown with sensible
@@ -494,23 +560,7 @@ export default function RadiusSelector({
             currentDays={currentDays}
             onToast={showToast}
           />
-          <Link
-            href="/account/events/new"
-            title="Create a new event"
-            className="ml-1 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white text-xs font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800 transition cursor-pointer focus:outline-none"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-3.5 h-3.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-            </svg>
-            Create event
-          </Link>
+          <CreateEventDropdown />
         </span>
       </div>
     </>
