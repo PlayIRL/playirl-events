@@ -204,7 +204,7 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                               treatment as the day-card row, scaled down
                               for the calendar cell. */}
                           {status === "in_progress" ? (
-                            <div className="inline-flex items-center gap-1 leading-none text-[10px] font-medium text-sky-600 dark:text-sky-400">
+                            <div className="inline-flex items-center gap-1 leading-none text-[10px] font-medium text-sky-600 dark:text-sky-400 ring-1 ring-inset ring-sky-400/60 dark:ring-sky-400/40 rounded px-1 py-0.5 self-start">
                               <span aria-hidden="true" className="w-1 h-1 rounded-full bg-sky-500 dark:bg-sky-400 anim-live-pulse shrink-0" />
                               <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
                             </div>
