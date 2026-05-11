@@ -305,7 +305,7 @@ export default async function EventPage({
               "Event" eyebrow labels were redundant scaffolding once the
               chip got the Beleren + uppercase treatment that already
               communicates "this is the format". */}
-          <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold tracking-[0.075em] uppercase font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+          <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold tracking-[0.0875em] uppercase font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
             {ev.format || "MTG"}
           </span>
           <h1 className="text-3xl sm:text-4xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white break-words leading-tight tracking-[0.01em]">{ev.title}</h1>
