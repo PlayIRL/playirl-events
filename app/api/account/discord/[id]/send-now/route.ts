@@ -1,11 +1,10 @@
-// On-demand "send a test post now" trigger for a Discord auto-post. Bypasses
-// the idempotency ledger (test posts shouldn't block the next scheduled fire)
-// and uses the same renderer the dispatcher does, so what users see in the
-// channel matches what they'd get from a real run.
+// On-demand "send now" trigger for a Discord auto-post — fires the same
+// payload the dispatcher would produce so the channel sees exactly what a
+// scheduled run would deliver. Bypasses the idempotency ledger so a manual
+// fire doesn't block the next scheduled tick.
 //
 // Trade-off vs. the preview API: this writes to Discord. Use the preview UI
-// to iterate on filters; use this to validate the bot has channel permissions
-// and the message looks right in-channel.
+// to iterate on filters; use this to manually trigger the auto-post one time.
 
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
@@ -55,22 +54,13 @@ export async function POST(_request: Request, ctx: { params: Promise<{ id: strin
 
   if (sub.mode === "reminder" && events.length === 0) {
     return NextResponse.json({
-      error: "No matching events to render a sample reminder. Add events that match this subscription's filters and try again.",
+      error: "No matching events to send a reminder for. Add events that match this subscription's filters and try again.",
     }, { status: 400 });
   }
 
   const payload = sub.mode === "reminder"
     ? renderReminderMessage(events[0])
-    : renderDigestSummary(events, { windowLabel: `${windowLabel} (test)` });
-
-  // Prepend a [TEST] marker on digests so channel members can tell this isn't
-  // the regularly scheduled post. Reminder messages get a [TEST] prefix on
-  // their content line.
-  if (payload.embeds && payload.embeds[0]) {
-    payload.embeds[0].title = `[TEST] ${payload.embeds[0].title ?? "Auto-post preview"}`;
-  } else if (payload.content) {
-    payload.content = `[TEST] ${payload.content}`;
-  }
+    : renderDigestSummary(events, { windowLabel });
 
   try {
     const msg = await postToChannel(sub.channel_id, payload);

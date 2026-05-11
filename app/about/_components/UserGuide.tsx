@@ -252,7 +252,7 @@ export default function UserGuide() {
               The preview panel shows exactly what will land.
             </Step>
             <Step>
-              Use the per-card <Pill>Send test</Pill> button to fire one post
+              Use the per-card <Pill>Send now</Pill> button to fire one post
               right now without waiting for the next scheduled tick.
             </Step>
           </Steps>
