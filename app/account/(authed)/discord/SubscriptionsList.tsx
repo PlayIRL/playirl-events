@@ -119,10 +119,10 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
     }
   }
 
-  // Inline status banner shown after a Send test attempt — distinct from
+  // Inline status banner shown after a Send now attempt — distinct from
   // `error` (which is for save/edit/delete failures) so successful sends
   // don't get stuck in the same red-text channel.
-  const [testStatus, setTestStatus] = useState<{ kind: "ok" | "err"; message: string } | null>(null);
+  const [sendNowStatus, setSendNowStatus] = useState<{ kind: "ok" | "err"; message: string } | null>(null);
 
   // Surfaces a "this auto-post will include a lot of events" warning after
   // save when the new filter set matches more than this many events. Helps
@@ -130,19 +130,19 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
   const HIGH_VOLUME_THRESHOLD = 50;
   const [volumeWarning, setVolumeWarning] = useState<number | null>(null);
 
-  async function sendTest() {
+  async function sendNow() {
     setBusy(true);
-    setTestStatus(null);
+    setSendNowStatus(null);
     try {
-      const res = await fetch(`/api/account/discord/${sub.id}/send-test`, { method: "POST" });
+      const res = await fetch(`/api/account/discord/${sub.id}/send-now`, { method: "POST" });
       const body = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
-      setTestStatus({
+      setSendNowStatus({
         kind: "ok",
         message: `Sent · ${body.eventCount} matching event${body.eventCount === 1 ? "" : "s"} included.`,
       });
     } catch (e) {
-      setTestStatus({ kind: "err", message: e instanceof Error ? e.message : String(e) });
+      setSendNowStatus({ kind: "err", message: e instanceof Error ? e.message : String(e) });
     } finally {
       setBusy(false);
     }
@@ -309,14 +309,14 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
           {!editing && (
             <>
               <button
-                onClick={sendTest}
+                onClick={sendNow}
                 disabled={busy}
                 className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition cursor-pointer disabled:opacity-60"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                 </svg>
-                Send test
+                Send now
               </button>
               <button
                 onClick={remove}
@@ -337,15 +337,15 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
         <p className="mt-3 text-xs text-red-600 dark:text-red-400">{error}</p>
       )}
 
-      {testStatus && (
+      {sendNowStatus && (
         <p
           className={`mt-3 text-xs ${
-            testStatus.kind === "ok"
+            sendNowStatus.kind === "ok"
               ? "text-neutral-700 dark:text-neutral-300"
               : "text-red-600 dark:text-red-400"
           }`}
         >
-          {testStatus.message}
+          {sendNowStatus.message}
         </p>
       )}
 
