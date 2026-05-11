@@ -32,19 +32,27 @@ function CreateEventAction() {
   );
 }
 
-export const dynamic = "force-dynamic";
-
-type TabKey = "overview" | "events" | "discord" | "admin";
-
-interface NavCard {
-  href: string;
-  title: string;
-  description: string;
+// Admin-only deep-link to the moderation/scrape/users portal. Lives next to
+// "Create event" in the page header instead of as a tab — most users will
+// never see this, and a tab for a one-click pass-through reads as filler.
+function AdminPortalAction() {
+  return (
+    <Link
+      href="/admin"
+      className="inline-flex items-center gap-1.5 h-9 px-4 rounded-md border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-200 text-sm font-medium transition cursor-pointer"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317a1 1 0 011.35 0l.396.396a1 1 0 001.06.21l.518-.215a1 1 0 011.32.587l.18.527a1 1 0 00.823.682l.553.092a1 1 0 01.821 1.135l-.086.553a1 1 0 00.412 1.005l.452.323a1 1 0 010 1.638l-.452.323a1 1 0 00-.412 1.005l.086.553a1 1 0 01-.821 1.135l-.553.092a1 1 0 00-.823.682l-.18.527a1 1 0 01-1.32.587l-.518-.215a1 1 0 00-1.06.21l-.396.396a1 1 0 01-1.35 0l-.396-.396a1 1 0 00-1.06-.21l-.518.215a1 1 0 01-1.32-.587l-.18-.527a1 1 0 00-.823-.682l-.553-.092a1 1 0 01-.821-1.135l.086-.553a1 1 0 00-.412-1.005l-.452-.323a1 1 0 010-1.638l.452-.323a1 1 0 00.412-1.005l-.086-.553a1 1 0 01.821-1.135l.553-.092a1 1 0 00.823-.682l.18-.527a1 1 0 011.32-.587l.518.215a1 1 0 001.06-.21l.396-.396z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+      Admin portal
+    </Link>
+  );
 }
 
-const ADMIN_CARDS: NavCard[] = [
-  { href: "/admin", title: "Admin portal", description: "Moderation, scrape stats, user management." },
-];
+export const dynamic = "force-dynamic";
+
+type TabKey = "overview" | "events" | "discord";
 
 export default async function AccountDashboard({
   searchParams,
@@ -56,13 +64,13 @@ export default async function AccountDashboard({
   const isAdmin = user.role === "admin";
 
   // Resolve the requested tab. Overview is the default landing — base-level
-  // settings + quick stats + log out. Non-admins requesting ?tab=admin fall
-  // back to overview so a stale link doesn't render an empty page.
-  const requested = params.tab as TabKey | undefined;
+  // settings + quick stats + log out. The retired ?tab=admin URL (we used to
+  // render an admin tab here, now superseded by the header button) falls
+  // through to overview.
+  const requested = params.tab;
   const activeTab: TabKey =
     requested === "events" ? "events"
     : requested === "discord" ? "discord"
-    : requested === "admin" && isAdmin ? "admin"
     : "overview";
 
   return (
@@ -76,10 +84,15 @@ export default async function AccountDashboard({
           )}
         </>
       }
-      actions={<CreateEventAction />}
+      actions={
+        <div className="flex items-center gap-2">
+          {isAdmin && <AdminPortalAction />}
+          <CreateEventAction />
+        </div>
+      }
       hideChip
     >
-      <TabNav active={activeTab} isAdmin={isAdmin} />
+      <TabNav active={activeTab} />
 
       {activeTab === "overview" && (
         <OverviewTab userId={user.id} />
@@ -91,12 +104,6 @@ export default async function AccountDashboard({
 
       {activeTab === "discord" && (
         <DiscordTab userId={user.id} />
-      )}
-
-      {activeTab === "admin" && isAdmin && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {ADMIN_CARDS.map((c) => <NavTile key={c.href} {...c} />)}
-        </div>
       )}
     </SubpageShell>
   );
@@ -181,12 +188,11 @@ function StatRow({ label, count, href }: { label: string; count: number; href: s
   );
 }
 
-function TabNav({ active, isAdmin }: { active: TabKey; isAdmin: boolean }) {
+function TabNav({ active }: { active: TabKey }) {
   const tabs: { key: TabKey; label: string }[] = [
     { key: "overview", label: "Overview" },
     { key: "events", label: "Events" },
     { key: "discord", label: "Discord" },
-    ...(isAdmin ? [{ key: "admin" as TabKey, label: "Admin" }] : []),
   ];
   return (
     <div className="flex gap-1 border-b border-neutral-200 dark:border-neutral-800 -mt-2">
@@ -467,19 +473,3 @@ function DiscordEmptyPanel({
   );
 }
 
-function NavTile({ href, title, description }: NavCard) {
-  return (
-    <Link
-      href={href}
-      className="group block p-4 rounded-lg border border-neutral-200 dark:border-white/15 bg-white dark:bg-neutral-900 hover:border-neutral-400 dark:hover:border-white/25 hover:bg-neutral-50 dark:hover:bg-white/[0.03] transition"
-    >
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">{title}</span>
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-neutral-400 group-hover:text-neutral-700 dark:group-hover:text-neutral-200 transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-        </svg>
-      </div>
-      <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">{description}</p>
-    </Link>
-  );
-}
