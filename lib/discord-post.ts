@@ -319,6 +319,12 @@ export class DiscordPostError extends Error {
  * POST a message to a channel using the bot token. Throws DiscordPostError
  * on non-2xx so the dispatcher's catch can release the idempotency claim,
  * decide retry vs. give-up, and handle dead-channel cleanup.
+ *
+ * Transparently handles 429 by sleeping `retry_after` and retrying up to
+ * three times. The per-channel limit is 5 messages / 5 seconds; per-day
+ * digest fan-out can trip it even with proactive pacing if a reminder for
+ * the same channel posts concurrently. Three retries with the server-
+ * supplied wait is enough to absorb that overlap without losing the post.
  */
 export async function postToChannel(
   channelId: string,
@@ -326,20 +332,40 @@ export async function postToChannel(
 ): Promise<PostedMessage> {
   const token = botToken();
   if (!token) throw new Error("DISCORD_BOT_TOKEN is not configured");
-  const res = await fetch(`${DISCORD_API}/channels/${channelId}/messages`, {
+
+  const url = `${DISCORD_API}/channels/${channelId}/messages`;
+  const init: RequestInit = {
     method: "POST",
     headers: {
       Authorization: `Bot ${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(payload),
-  });
-  if (!res.ok) {
+  };
+
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const res = await fetch(url, init);
+    if (res.ok) {
+      const data = await res.json() as { id: string };
+      return { id: data.id };
+    }
     const body = await res.text().catch(() => "");
+    if (res.status === 429 && attempt < 3) {
+      let retryAfterMs = 1000;
+      try {
+        const parsed = JSON.parse(body) as { retry_after?: number };
+        if (typeof parsed.retry_after === "number") {
+          // Discord sends seconds (float). Add 100ms margin for clock skew.
+          retryAfterMs = Math.ceil(parsed.retry_after * 1000) + 100;
+        }
+      } catch { /* fall back to 1s default */ }
+      await new Promise(r => setTimeout(r, retryAfterMs));
+      continue;
+    }
     throw new DiscordPostError(res.status, body);
   }
-  const data = await res.json() as { id: string };
-  return { id: data.id };
+  // Unreachable — loop returns or throws.
+  throw new DiscordPostError(429, "exhausted retry budget");
 }
 
 /**

@@ -15,9 +15,11 @@ import { postToChannel, renderDigestByDay, renderReminderMessage } from "@/lib/d
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-// Inter-message gap when fanning out a multi-day digest. 25ms matches the
-// dispatcher and keeps us well under Discord's 50 req/s global limit.
-const POST_GAP_MS = 25;
+// Inter-message gap when fanning out a multi-day digest to the SAME channel.
+// Discord's per-channel limit is 5 messages / 5 seconds (1 msg/sec average);
+// 1200ms keeps us under it with margin. The 25ms gap used for cross-channel
+// reminder fan-out is too tight here — same channel + bursty posts trips 429.
+const POST_GAP_MS = 1200;
 
 export async function POST(_request: Request, ctx: { params: Promise<{ id: string }> }) {
   const user = await getCurrentUser();
