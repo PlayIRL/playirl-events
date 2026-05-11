@@ -260,18 +260,12 @@ export default async function EventPage({
           event is cancelled because the cancel banner above takes
           precedence. */}
       {!cancelled && eventDisplayStatus(ev.date, ev.time) === "in_progress" && (
-        <div className="mb-6 rounded-md border border-sky-300 dark:border-sky-500/40 bg-sky-50 dark:bg-sky-500/10 px-4 py-3 anim-fade-in">
-          <div className="flex items-start gap-2.5">
-            <span aria-hidden="true" className="mt-1.5 w-2 h-2 rounded-full bg-sky-500 dark:bg-sky-400 anim-live-pulse shrink-0" />
-            <div>
-              <p className="text-sm font-semibold text-sky-900 dark:text-sky-100">
-                Happening now
-              </p>
-              <p className="text-xs text-sky-800/80 dark:text-sky-200/80 mt-0.5">
-                This event is currently in progress &mdash; check in with the host
-                if you&rsquo;re heading over.
-              </p>
-            </div>
+        <div className="mb-6 rounded-md border border-sky-300 dark:border-sky-500/40 bg-sky-50 dark:bg-sky-500/10 px-4 py-2.5 anim-fade-in">
+          <div className="flex items-center gap-2.5">
+            <span aria-hidden="true" className="w-2 h-2 rounded-full bg-sky-500 dark:bg-sky-400 anim-live-pulse shrink-0" />
+            <p className="text-sm font-semibold text-sky-900 dark:text-sky-100">
+              Happening now
+            </p>
           </div>
         </div>
       )}
@@ -309,7 +303,10 @@ export default async function EventPage({
         <div className="p-6 pb-4 space-y-4 rounded-t-md border-b border-neutral-100 dark:border-white/8">
           <div>
             <div className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Format</div>
-            <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+            {/* Same vocabulary as the list/calendar badges (Beleren,
+                uppercase, tracking-wide, mana-color fill) — just sized
+                up a notch for the detail-page header. */}
+            <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold tracking-wide uppercase font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
               {ev.format || "MTG"}
             </span>
           </div>
