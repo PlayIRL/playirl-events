@@ -230,7 +230,12 @@ export default function DayCard({
                     above. Save-star reveals on hover to its left.
                     "Free" is the standout \u2014 bolder + colored. Paid
                     prices stay quiet (regular weight, default ink). */}
-                <span className={`text-sm font-[family-name:var(--font-ultra)] ${ev.cost === "Free" ? "font-bold text-emerald-600 dark:text-emerald-400" : "font-normal text-neutral-700 dark:text-neutral-300"}`}>
+                {/* Free events normally pop with bold emerald — except on
+                    completed rows, where the row is already dimmed and
+                    de-saturated. Forcing those back to neutral + regular
+                    weight stops the "Free" label from competing with
+                    upcoming free events further up the list. */}
+                <span className={`text-sm font-[family-name:var(--font-ultra)] ${status !== "completed" && ev.cost === "Free" ? "font-bold text-emerald-600 dark:text-emerald-400" : "font-normal text-neutral-700 dark:text-neutral-300"}`}>
                   {ev.cost === "Free" ? "Free" : ev.cost || "\u2014"}
                 </span>
               </div>
