@@ -409,7 +409,13 @@ export default async function EventPage({
                   )}
                 </div>
               )}
-              <DetailRow label="Source" value={SOURCE_LABELS[ev.source] || ev.source} href={ev.detail_url || undefined} />
+              {/* Suppress the Source row when there's no detail_url —
+                  a labeled value with no link is dead weight. Most
+                  often empty for WotC events with no registered store
+                  (WotC's locator has no per-event URL we can link to). */}
+              {ev.detail_url && (
+                <DetailRow label="Source" value={SOURCE_LABELS[ev.source] || ev.source} href={ev.detail_url} />
+              )}
             </dl>
           </div>
         </Reveal>
