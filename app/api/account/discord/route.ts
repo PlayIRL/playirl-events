@@ -14,6 +14,7 @@ import {
   type DiscordSubMode,
   createSubscription,
   parseLeadArgument,
+  validateSubScope,
 } from "@/lib/discord-subscriptions";
 
 export const dynamic = "force-dynamic";
@@ -126,6 +127,20 @@ export async function POST(req: Request) {
     centerLat = hit.latitude;
     centerLng = hit.longitude;
     nearLabel = body.near.trim();
+  }
+
+  // Every sub must be scoped — either pinned to a venue or bounded by
+  // location + radius. Run the shared check on the FINAL state (post-geocode)
+  // so the API doesn't accept what the form blocked client-side.
+  const scopeError = validateSubScope({
+    venue_name: body.venue_name ?? null,
+    near_label: nearLabel,
+    center_lat: centerLat,
+    center_lng: centerLng,
+    radius_miles: radiusMiles,
+  });
+  if (scopeError) {
+    return NextResponse.json({ error: scopeError }, { status: 400 });
   }
 
   const account = getDiscordAccountForUser(user.id);

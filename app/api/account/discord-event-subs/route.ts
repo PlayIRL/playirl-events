@@ -34,6 +34,7 @@ import {
   listEventsTabSubsManageableByUser,
   pushEventsToGuild,
 } from "@/lib/discord-events-tab-subs";
+import { validateSubScope } from "@/lib/discord-subscriptions";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -131,6 +132,19 @@ export async function POST(req: Request) {
     centerLat = hit.latitude;
     centerLng = hit.longitude;
     nearLabel = body.near.trim();
+  }
+
+  // Every sub must be scoped — either pinned to a venue or bounded by
+  // location + radius. Run the shared check on the FINAL state (post-geocode).
+  const scopeError = validateSubScope({
+    venue_name: venueName,
+    near_label: nearLabel,
+    center_lat: centerLat,
+    center_lng: centerLng,
+    radius_miles: radiusMiles,
+  });
+  if (scopeError) {
+    return NextResponse.json({ error: scopeError }, { status: 400 });
   }
 
   // Build the filter shape we'll use for the immediate push and (optionally)

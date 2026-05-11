@@ -15,6 +15,7 @@ import {
   setSubscriptionEnabled,
   updateSubscription,
   userCanManageSubscription,
+  validateSubScope,
 } from "@/lib/discord-subscriptions";
 import { geocodeAddress } from "@/lib/geocode";
 
@@ -143,6 +144,22 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     }
     dbPatch.lead_preset = parsed.preset;
     dbPatch.lead_minutes = parsed.minutes;
+  }
+
+  // Merge the patch with the existing row so the scope-required rule sees
+  // the post-update state (not just the partial). Otherwise editing only the
+  // schedule on a row that already has location+radius would falsely fail.
+  const existing = getSubscription(id);
+  if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  const scopeError = validateSubScope({
+    venue_name: dbPatch.venue_name !== undefined ? dbPatch.venue_name : existing.venue_name,
+    near_label: dbPatch.near_label !== undefined ? dbPatch.near_label : existing.near_label,
+    center_lat: dbPatch.center_lat !== undefined ? dbPatch.center_lat : existing.center_lat,
+    center_lng: dbPatch.center_lng !== undefined ? dbPatch.center_lng : existing.center_lng,
+    radius_miles: dbPatch.radius_miles !== undefined ? dbPatch.radius_miles : existing.radius_miles,
+  });
+  if (scopeError) {
+    return NextResponse.json({ error: scopeError }, { status: 400 });
   }
 
   const updated = updateSubscription(id, dbPatch);

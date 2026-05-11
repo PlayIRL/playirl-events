@@ -554,34 +554,49 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
             </span>
           </label>
 
-          <ScheduleAndFilterSections
-            value={{
-              mode: sub.mode as Mode,
-              hourUtc, dow, daysAhead, lead, customLeadMinutes,
-              format, near, radiusMiles,
-            }}
-            on={{
-              setHourUtc, setDow, setDaysAhead, setLead, setCustomLeadMinutes,
-              setFormat, setNear, setRadiusMiles,
-            }}
-          />
+          {(() => {
+            const scopeOk = venueName.trim() !== ""
+              || (near.trim() !== "" && radiusMiles !== "" && Number(radiusMiles) > 0);
+            return (
+              <>
+                <ScheduleAndFilterSections
+                  value={{
+                    mode: sub.mode as Mode,
+                    hourUtc, dow, daysAhead, lead, customLeadMinutes,
+                    format, near, radiusMiles,
+                  }}
+                  on={{
+                    setHourUtc, setDow, setDaysAhead, setLead, setCustomLeadMinutes,
+                    setFormat, setNear, setRadiusMiles,
+                  }}
+                  geoRequired={venueName.trim() === ""}
+                />
 
-          <div className="flex justify-end gap-2 pt-2">
-            <button
-              onClick={() => setEditing(false)}
-              disabled={busy}
-              className="px-3 py-1.5 rounded-md border border-neutral-200 dark:border-neutral-700 text-sm hover:bg-neutral-50 dark:hover:bg-neutral-800 transition"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={save}
-              disabled={busy}
-              className="px-3 py-1.5 rounded-md bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-neutral-900 text-sm font-medium transition disabled:opacity-50"
-            >
-              {busy ? "Saving…" : "Save"}
-            </button>
-          </div>
+                {!scopeOk && (
+                  <div className="rounded-md border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-3 py-2 text-xs text-amber-900 dark:text-amber-200">
+                    Set a <strong>Venue scope</strong> above OR fill in both <strong>Near</strong> and <strong>Radius</strong> below.
+                  </div>
+                )}
+
+                <div className="flex justify-end gap-2 pt-2">
+                  <button
+                    onClick={() => setEditing(false)}
+                    disabled={busy}
+                    className="px-3 py-1.5 rounded-md border border-neutral-200 dark:border-neutral-700 text-sm hover:bg-neutral-50 dark:hover:bg-neutral-800 transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={save}
+                    disabled={busy || !scopeOk}
+                    className="px-3 py-1.5 rounded-md bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-neutral-900 text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {busy ? "Saving…" : "Save"}
+                  </button>
+                </div>
+              </>
+            );
+          })()}
         </div>
       )}
     </div>

@@ -25,7 +25,20 @@ interface Channel {
   name: string;
 }
 
-export default function AddSubscriptionForm({ inviteUrl }: { inviteUrl: string | null }) {
+export interface SubscriptionDefaults {
+  /** Pre-fill the "near" location label from the user's saved preferences. */
+  near: string;
+  /** Pre-fill the radius from the user's saved preferences. */
+  radius_miles: number;
+}
+
+export default function AddSubscriptionForm({
+  inviteUrl,
+  defaults,
+}: {
+  inviteUrl: string | null;
+  defaults: SubscriptionDefaults;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
@@ -50,6 +63,7 @@ export default function AddSubscriptionForm({ inviteUrl }: { inviteUrl: string |
         <FormModal
           inviteUrl={inviteUrl}
           venuePrefill={venuePrefill}
+          defaults={defaults}
           onClose={() => setOpen(false)}
           onCreated={() => {
             setOpen(false);
@@ -64,11 +78,13 @@ export default function AddSubscriptionForm({ inviteUrl }: { inviteUrl: string |
 function FormModal({
   inviteUrl,
   venuePrefill,
+  defaults,
   onClose,
   onCreated,
 }: {
   inviteUrl: string | null;
   venuePrefill?: string;
+  defaults: SubscriptionDefaults;
   onClose: () => void;
   onCreated: () => void;
 }) {
@@ -87,8 +103,14 @@ function FormModal({
   const [venueName, setVenueName] = useState(venuePrefill ?? "");
   const [mode, setMode] = useState<Mode>("weekly");
   const [format, setFormat] = useState("");
-  const [near, setNear] = useState("");
-  const [radiusMiles, setRadiusMiles] = useState<number | "">("");
+  // Seed location + radius from the user's Overview-tab preferences so they
+  // can hit Create with sensible defaults instead of staring at empty fields.
+  // A venue scope (set via venuePrefill) supersedes both, so we only prefill
+  // when there's no venue.
+  const [near, setNear] = useState(venuePrefill ? "" : defaults.near);
+  const [radiusMiles, setRadiusMiles] = useState<number | "">(
+    venuePrefill ? "" : defaults.radius_miles,
+  );
   const [hourUtc, setHourUtc] = useState(14);
   const [dow, setDow] = useState(1);
   const [daysAhead, setDaysAhead] = useState(7);
@@ -195,7 +217,13 @@ function FormModal({
     }
   }
 
-  const canSubmit = !!guildId && !!channelId && !submitting && !botMissing;
+  // A sub needs a scope — either a venue OR (location + radius). Block submit
+  // until one path is satisfied so users don't end up with a sub that posts
+  // every event nationwide.
+  const scopeOk = venueName.trim() !== ""
+    || (near.trim() !== "" && radiusMiles !== "" && Number(radiusMiles) > 0);
+
+  const canSubmit = !!guildId && !!channelId && !submitting && !botMissing && scopeOk;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
@@ -302,7 +330,14 @@ function FormModal({
               <ScheduleAndFilterSections
                 value={{ mode, hourUtc, dow, daysAhead, lead, customLeadMinutes, format, near, radiusMiles }}
                 on={{ setHourUtc, setDow, setDaysAhead, setLead, setCustomLeadMinutes, setFormat, setNear, setRadiusMiles }}
+                geoRequired={venueName.trim() === ""}
               />
+
+              {!scopeOk && (
+                <div className="rounded-md border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-3 py-2 text-xs text-amber-900 dark:text-amber-200">
+                  Set a <strong>Venue scope</strong> above OR fill in both <strong>Near</strong> and <strong>Radius</strong> below. An auto-post needs a scope so it doesn&apos;t fire on every event nationwide.
+                </div>
+              )}
 
               {error && (
                 <div className="rounded-md border border-red-200 dark:border-red-500/30 bg-red-50 dark:bg-red-500/10 px-3 py-2 text-xs text-red-700 dark:text-red-300">

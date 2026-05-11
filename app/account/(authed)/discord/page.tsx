@@ -1,6 +1,8 @@
 import { requireRole } from "@/lib/session";
 import { listSubscriptionsManageableByUser } from "@/lib/discord-subscriptions";
 import { botInviteUrl } from "@/lib/discord-bot";
+import { getPreferences } from "@/lib/user-preferences";
+import { getConfig } from "@/lib/runtime-config";
 import SubpageShell from "../_components/SubpageShell";
 import SubscriptionsList from "./SubscriptionsList";
 import AddSubscriptionForm from "./AddSubscriptionForm";
@@ -16,13 +18,20 @@ export default async function DiscordAccountPage() {
   const user = await requireRole(["user", "organizer", "admin"]);
   const subs = listSubscriptionsManageableByUser(user.id);
   const inviteUrl = botInviteUrl();
+  const prefs = getPreferences(user.id);
+  const config = getConfig();
+  const fallbackLocationLabel = `${config.location.city}, ${config.location.state}`;
+  const formDefaults = {
+    near: prefs.location_label?.trim() || fallbackLocationLabel,
+    radius_miles: prefs.radius_miles || 25,
+  };
 
   return (
     <SubpageShell
       title="Discord auto-posts"
       description="Schedule recurring event posts to your Discord channels. Pick a channel, set a cadence, choose what to include — the bot does the rest."
       maxWidth="max-w-3xl"
-      actions={<AddSubscriptionForm inviteUrl={inviteUrl} />}
+      actions={<AddSubscriptionForm inviteUrl={inviteUrl} defaults={formDefaults} />}
     >
       {subs.length === 0 ? (
         <EmptyState inviteUrl={inviteUrl} />

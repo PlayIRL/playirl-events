@@ -355,6 +355,17 @@ async function DiscordTab({ userId }: { userId: string }) {
   const subs = listSubscriptionsManageableByUser(userId);
   const eventsTabSubs = listEventsTabSubsManageableByUser(userId);
   const inviteUrl = botInviteUrl();
+  // Seed both Add modals with the user's Overview-tab defaults so creating
+  // a sub starts pre-filled with sensible scope values instead of forcing
+  // the user to retype their location every time. Falls back to the global
+  // location label (e.g. "Philadelphia, PA") when the user hasn't set one.
+  const prefs = getPreferences(userId);
+  const config = getConfig();
+  const fallbackLocationLabel = `${config.location.city}, ${config.location.state}`;
+  const formDefaults = {
+    near: prefs.location_label?.trim() || fallbackLocationLabel,
+    radius_miles: prefs.radius_miles || 25,
+  };
 
   return (
     <div className="space-y-10">
@@ -389,7 +400,7 @@ async function DiscordTab({ userId }: { userId: string }) {
               Schedule recurring event posts to your Discord channels.
             </p>
           </div>
-          <AddSubscriptionForm inviteUrl={inviteUrl} />
+          <AddSubscriptionForm inviteUrl={inviteUrl} defaults={formDefaults} />
         </header>
         {subs.length > 0 ? (
           <SubscriptionsList subscriptions={subs} />
@@ -410,7 +421,7 @@ async function DiscordTab({ userId }: { userId: string }) {
               Push matching events into a Discord server&rsquo;s native Events tab as scheduled events &mdash; one-shot or auto-syncing.
             </p>
           </div>
-          <AddEventsTabSubForm inviteUrl={inviteUrl} />
+          <AddEventsTabSubForm inviteUrl={inviteUrl} defaults={formDefaults} />
         </header>
         {eventsTabSubs.length > 0 ? (
           <EventsTabSubsList subs={eventsTabSubs} />
