@@ -8,7 +8,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
 import { getActiveEvents } from "@/lib/events";
 import { getSubscription, userCanManageSubscription } from "@/lib/discord-subscriptions";
-import { renderDigestSummary, renderReminderMessage } from "@/lib/discord-post";
+import { renderDigestByDay, renderReminderMessage } from "@/lib/discord-post";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +24,6 @@ export async function GET(_request: Request, ctx: { params: Promise<{ id: string
 
   const now = new Date();
   const windowDays = sub.mode === "weekly" ? sub.days_ahead : sub.mode === "daily" ? Math.min(sub.days_ahead, 2) : sub.days_ahead;
-  const windowLabel = sub.mode === "weekly" ? "this week" : sub.mode === "daily" ? "today" : "upcoming";
   const to = new Date(now.getTime() + windowDays * 24 * 60 * 60 * 1000);
 
   // Venue scope is stricter than radius — when set, drop the radius filter
@@ -51,21 +50,26 @@ export async function GET(_request: Request, ctx: { params: Promise<{ id: string
     if (events.length === 0) {
       return NextResponse.json({
         empty: true,
-        message: { content: `No upcoming events match this subscription's filters within ${windowDays} days.` },
+        messages: [{ content: `No upcoming events match this subscription's filters within ${windowDays} days.` }],
         eventCount: 0,
       });
     }
     return NextResponse.json({
       empty: false,
-      message: renderReminderMessage(events[0]),
+      messages: [renderReminderMessage(events[0])],
       eventCount: events.length,
       sample: true,
     });
   }
 
+  // Digest preview mirrors the live dispatcher — one message per date with
+  // events. Matches what the channel would actually receive on a fire.
+  const messages = renderDigestByDay(events);
   return NextResponse.json({
-    empty: events.length === 0,
-    message: renderDigestSummary(events, { windowLabel }),
+    empty: messages.length === 0,
+    messages: messages.length > 0
+      ? messages
+      : [{ content: `No upcoming events match this subscription's filters within ${windowDays} days.` }],
     eventCount: events.length,
   });
 }
