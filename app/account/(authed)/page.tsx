@@ -6,8 +6,11 @@ import { listSourcesForUser } from "@/lib/user-sources";
 import { listSubscriptionsManageableByUser } from "@/lib/discord-subscriptions";
 import { listEventsTabSubsManageableByUser } from "@/lib/discord-events-tab-subs";
 import { botInviteUrl } from "@/lib/discord-bot";
+import { getPreferences } from "@/lib/user-preferences";
+import { getConfig } from "@/lib/runtime-config";
 import SubpageShell from "./_components/SubpageShell";
 import LogoutButton from "./_components/LogoutButton";
+import PreferencesEditor from "./_components/PreferencesEditor";
 import SourcesList from "./sources/SourcesList";
 import GetStartedCard from "./sources/GetStartedCard";
 import SubscriptionsList from "./discord/SubscriptionsList";
@@ -31,7 +34,7 @@ function CreateEventAction() {
 
 export const dynamic = "force-dynamic";
 
-type TabKey = "events" | "discord" | "admin";
+type TabKey = "overview" | "events" | "discord" | "admin";
 
 interface NavCard {
   href: string;
@@ -52,13 +55,15 @@ export default async function AccountDashboard({
   const params = await searchParams;
   const isAdmin = user.role === "admin";
 
-  // Resolve the requested tab. Non-admins requesting ?tab=admin fall back to
-  // events so a stale link doesn't render an empty page.
+  // Resolve the requested tab. Overview is the default landing — base-level
+  // settings + quick stats + log out. Non-admins requesting ?tab=admin fall
+  // back to overview so a stale link doesn't render an empty page.
   const requested = params.tab as TabKey | undefined;
   const activeTab: TabKey =
-    requested === "discord" ? "discord"
+    requested === "events" ? "events"
+    : requested === "discord" ? "discord"
     : requested === "admin" && isAdmin ? "admin"
-    : "events";
+    : "overview";
 
   return (
     <SubpageShell
@@ -76,6 +81,10 @@ export default async function AccountDashboard({
     >
       <TabNav active={activeTab} isAdmin={isAdmin} />
 
+      {activeTab === "overview" && (
+        <OverviewTab userId={user.id} />
+      )}
+
       {activeTab === "events" && (
         <EventsTab userId={user.id} />
       )}
@@ -89,16 +98,92 @@ export default async function AccountDashboard({
           {ADMIN_CARDS.map((c) => <NavTile key={c.href} {...c} />)}
         </div>
       )}
+    </SubpageShell>
+  );
+}
 
-      <section className="pt-6">
+async function OverviewTab({ userId }: { userId: string }) {
+  const today = new Date().toISOString().slice(0, 10);
+  const prefs = getPreferences(userId);
+  const config = getConfig();
+  const fallbackLocationLabel = `${config.location.city}, ${config.location.state}`;
+
+  // Lightweight counts to surface activity at a glance. Each row links into
+  // the corresponding tab so the overview doubles as a directory.
+  const savedUpcoming = getSavedEvents(userId).filter(e => e.date >= today);
+  const mineUpcoming = getEventsByOwner(userId).filter(e => e.date >= today && e.status !== "skip");
+  const discordSubs = listSubscriptionsManageableByUser(userId);
+  const eventsTabSubs = listEventsTabSubsManageableByUser(userId);
+
+  return (
+    <div className="space-y-8">
+      <PreferencesEditor
+        initial={{
+          location_label: prefs.location_label,
+          radius_miles: prefs.radius_miles,
+          days_ahead: prefs.days_ahead,
+          formats: prefs.formats,
+        }}
+        fallbackLocationLabel={fallbackLocationLabel}
+      />
+
+      <section className="space-y-3">
+        <h2 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
+          Quick stats
+        </h2>
+        <ul className="rounded-lg border border-neutral-200 dark:border-white/15 bg-white dark:bg-neutral-900 divide-y divide-neutral-100 dark:divide-white/10 overflow-clip">
+          <StatRow
+            label="Saved events (upcoming)"
+            count={savedUpcoming.length}
+            href="/account?tab=events"
+          />
+          <StatRow
+            label="Your events (upcoming)"
+            count={mineUpcoming.length}
+            href="/account?tab=events"
+          />
+          <StatRow
+            label="Discord auto-posts"
+            count={discordSubs.length}
+            href="/account?tab=discord"
+          />
+          <StatRow
+            label="Events-tab subscriptions"
+            count={eventsTabSubs.length}
+            href="/account?tab=discord"
+          />
+        </ul>
+      </section>
+
+      <section className="pt-2">
         <LogoutButton />
       </section>
-    </SubpageShell>
+    </div>
+  );
+}
+
+function StatRow({ label, count, href }: { label: string; count: number; href: string }) {
+  return (
+    <li>
+      <Link
+        href={href}
+        className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-white/[0.03] transition"
+      >
+        <span className="text-sm text-neutral-700 dark:text-neutral-300">{label}</span>
+        <span className="flex items-center gap-2 text-sm font-semibold text-neutral-900 dark:text-neutral-100 tabular-nums">
+          {count}
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 text-neutral-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </span>
+      </Link>
+    </li>
   );
 }
 
 function TabNav({ active, isAdmin }: { active: TabKey; isAdmin: boolean }) {
   const tabs: { key: TabKey; label: string }[] = [
+    { key: "overview", label: "Overview" },
     { key: "events", label: "Events" },
     { key: "discord", label: "Discord" },
     ...(isAdmin ? [{ key: "admin" as TabKey, label: "Admin" }] : []),
@@ -106,7 +191,7 @@ function TabNav({ active, isAdmin }: { active: TabKey; isAdmin: boolean }) {
   return (
     <div className="flex gap-1 border-b border-neutral-200 dark:border-neutral-800 -mt-2">
       {tabs.map((t) => {
-        const href = t.key === "events" ? "/account" : `/account?tab=${t.key}`;
+        const href = t.key === "overview" ? "/account" : `/account?tab=${t.key}`;
         const isActive = active === t.key;
         return (
           <Link
