@@ -206,7 +206,7 @@ export default function DayCard({
                     Cinzel (--font-card-title) is our closest free
                     stand-in for MTG's proprietary Beleren typeface, so
                     the badge reads as a nod to the card-title look. */}
-                <span className={`inline-block px-2 py-0.5 rounded-sm text-[11px] font-bold mb-1 tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                <span className={`inline-block px-2 py-0.5 rounded-sm text-[11px] font-bold mb-1 tracking-wide uppercase font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
                   {ev.format}
                 </span>
                 <p className="text-base sm:text-lg font-semibold tracking-tight text-neutral-900 dark:text-white line-clamp-2 sm:line-clamp-none sm:truncate">{ev.title}</p>
