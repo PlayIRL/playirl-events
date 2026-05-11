@@ -12,6 +12,7 @@ import {
   FORMAT_EMBED_COLOR,
   FORMAT_EMBED_COLOR_DEFAULT,
   SOURCE_LABELS,
+  formatDiscordPill,
 } from "./format-style";
 
 const DISCORD_API = "https://discord.com/api/v10";
@@ -64,7 +65,12 @@ export function renderEventEmbed(event: EventRow): DiscordEmbed {
 
   const fields: NonNullable<DiscordEmbed["fields"]> = [];
   if (event.format) {
-    fields.push({ name: "Format", value: event.format, inline: true });
+    // Pill = colored unicode square + inline-code format name. The square is
+    // the closest unicode-palette match to the site's format chip color;
+    // inline code gives Discord's rounded gray background so the chunk reads
+    // as a pill instead of plain text.
+    const pill = formatDiscordPill(event.format) ?? event.format;
+    fields.push({ name: "Format", value: pill, inline: true });
   }
   fields.push({
     name: "Cost",
@@ -131,7 +137,13 @@ function formatDigestEventBlock(event: EventRow): string {
   const titleLine = `${time} · **${titleLink}**`;
 
   const meta: string[] = [];
-  if (event.format) meta.push(event.format);
+  if (event.format) {
+    // Render the format as a colored-square + inline-code pill so the
+    // chunk reads as a badge in chat instead of an undifferentiated word
+    // in the meta string. Matches the site's format-chip visual language
+    // as closely as Discord's text primitives allow.
+    meta.push(formatDiscordPill(event.format) ?? event.format);
+  }
   if (event.location) meta.push(event.location);
   if (event.cost && event.cost.trim()) meta.push(event.cost);
   const metaLine = meta.length > 0 ? meta.join(" · ") : "";
