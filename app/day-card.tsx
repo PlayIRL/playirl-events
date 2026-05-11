@@ -150,13 +150,13 @@ export default function DayCard({
               className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-4 sm:py-5 ${status === "completed" ? "saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
             >
               {/* Desktop: time as a fixed left column. When the event is
-                  in progress the time itself shifts to emerald and gets a
-                  small pulsing-dot prefix — same palette as the rest of
-                  the app (emerald for active/positive), no shouty badge. */}
+                  in progress the time itself shifts to a high-energy sky
+                  blue and gets a small pulsing-dot prefix — punchy enough
+                  to draw the eye, no shouty badge. */}
               <div className="hidden sm:block shrink-0 w-16">
                 {status === "in_progress" ? (
-                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-emerald-700 dark:text-emerald-400">
-                    <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 anim-live-pulse shrink-0" />
+                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-sky-600 dark:text-sky-400">
+                    <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-sky-500 dark:bg-sky-400 anim-live-pulse shrink-0" />
                     <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
                   </span>
                 ) : (
@@ -183,12 +183,12 @@ export default function DayCard({
               />
               <div className="flex-1 min-w-0">
                 {/* Mobile mirrors the desktop column: when in-progress
-                    the time line picks up a leading pulse dot + emerald
+                    the time line picks up a leading pulse dot + sky-blue
                     color shift, otherwise renders flat neutral. */}
                 <div className="block sm:hidden mb-1">
                   {status === "in_progress" ? (
-                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 dark:text-emerald-400">
-                      <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 anim-live-pulse shrink-0" />
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-sky-600 dark:text-sky-400">
+                      <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-sky-500 dark:bg-sky-400 anim-live-pulse shrink-0" />
                       <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
                     </span>
                   ) : (
