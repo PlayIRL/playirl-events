@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT } from "@/lib/format-style";
+import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, showFormatBadge } from "@/lib/format-style";
 import { dateStrInTz, eventDisplayStatus, formatEventTime } from "@/lib/format-time";
 import { useStickySentinel } from "@/lib/use-sticky-sentinel";
 
@@ -211,11 +211,13 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                           ) : (
                             <div className="text-[10px] text-neutral-500 dark:text-neutral-400 leading-none">{formatEventTime(ev.date, ev.time, ev.timezone)}</div>
                           )}
-                          <div>
-                            <span className={`px-1.5 py-0.5 rounded-sm text-[11px] font-bold tracking-[0.0875em] uppercase font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
-                              {ev.format}
-                            </span>
-                          </div>
+                          {showFormatBadge(ev.format) && (
+                            <div>
+                              <span className={`px-1.5 py-0.5 rounded-sm text-[11px] font-bold tracking-[0.0875em] uppercase font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                                {ev.format}
+                              </span>
+                            </div>
+                          )}
                         </div>
                         <div className="text-xs font-medium text-neutral-900 dark:text-white leading-tight line-clamp-2 mt-1 group-hover:text-neutral-700 dark:group-hover:text-neutral-100">
                           {ev.title}

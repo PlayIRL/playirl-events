@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT } from "@/lib/format-style";
+import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, showFormatBadge } from "@/lib/format-style";
 import { eventDisplayStatus, formatEventTime } from "@/lib/format-time";
 import SaveEventButton from "./save-event-button";
 import AdminEventActions from "./admin-event-actions";
@@ -202,13 +202,13 @@ export default function DayCard({
                 </div>
                 {/* Format badge sits above the title — it's the
                     fastest way to scan "what kind of event is this".
-                    Title takes the strong-visual second slot.
-                    Cinzel (--font-card-title) is our closest free
-                    stand-in for MTG's proprietary Beleren typeface, so
-                    the badge reads as a nod to the card-title look. */}
-                <span className={`inline-block px-2 py-0.5 rounded-sm text-[11px] font-bold mb-1 tracking-[0.0875em] uppercase font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
-                  {ev.format}
-                </span>
+                    Suppressed entirely for "Other" / empty formats so
+                    the row doesn't carry a meaningless chip. */}
+                {showFormatBadge(ev.format) && (
+                  <span className={`inline-block px-2 py-0.5 rounded-sm text-[11px] font-bold mb-1 tracking-[0.0875em] uppercase font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                    {ev.format}
+                  </span>
+                )}
                 <p className="text-base sm:text-lg font-semibold tracking-tight text-neutral-900 dark:text-white line-clamp-2 sm:line-clamp-none sm:truncate">{ev.title}</p>
                 {ev.location && (
                   <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate mt-0.5">{ev.location}</p>

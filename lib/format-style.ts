@@ -77,6 +77,16 @@ export const FORMAT_BADGE_DEFAULT =
 
 export const FORMAT_EMOJI_DEFAULT = "\uD83C\uDCCF";
 
+// Format strings that shouldn't render a badge \u2014 empty / null and the
+// catch-all "Other" label. Anything else (recognized MTG formats AND
+// freeform-but-meaningful values like "Dungeons and Dragons Event")
+// still gets a chip.
+const HIDDEN_FORMAT_VALUES = new Set(["", "Other"]);
+
+export function showFormatBadge(format: string | null | undefined): boolean {
+  return !!format && !HIDDEN_FORMAT_VALUES.has(format);
+}
+
 // Hex-int values for Discord embed `color` field. Mirrors FORMAT_DOT —
 // the deep ("ink") version of each mana color, so the embed accent matches
 // the dot color shown elsewhere.
