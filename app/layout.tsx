@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Figtree, Cinzel } from "next/font/google";
+import { Figtree } from "next/font/google";
+import localFont from "next/font/local";
 import { cookies } from "next/headers";
 import { SITE_URL } from "@/lib/config";
 import "./globals.css";
@@ -33,14 +34,15 @@ const figtree = Figtree({
   weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
 
-// Card-title font for the format badge — closest free Google Font to MTG's
-// proprietary Beleren typeface (regal serif with calligraphic touches).
-// Load 900 (Black) so the badge can render in the heaviest weight Cinzel
-// offers, matching the visual punch of actual MTG card title type.
-const cinzel = Cinzel({
+// Card-title font: the actual Beleren-Bold ttf used on MTG cards, self-
+// hosted from public/fonts. Sourced from the magarena open-source MTG
+// project. PlayIRL.GG is explicitly unaffiliated with Wizards of the
+// Coast (see the About page disclaimer) — the font is shipped only as
+// a stylistic nod on the format badge, not as a claim of endorsement.
+const cardTitleFont = localFont({
+  src: "../public/fonts/Beleren-Bold.ttf",
   variable: "--font-card-title",
-  subsets: ["latin"],
-  weight: ["900"],
+  weight: "700",
   display: "swap",
 });
 
@@ -92,7 +94,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${figtree.variable} ${cinzel.variable} h-full antialiased${isDark ? " dark" : ""}`}
+      className={`${figtree.variable} ${cardTitleFont.variable} h-full antialiased${isDark ? " dark" : ""}`}
       style={{ colorScheme: isDark ? "dark" : "light" }}
       suppressHydrationWarning
     >
