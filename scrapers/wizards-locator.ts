@@ -243,12 +243,13 @@ export default async function fetchWizardsEvents(_sourceConfig = {}) {
       // store_url is the venue's external website — only the coord-matched
       // store list carries this; `ev.venue` doesn't include a URL.
       store_url: coordStore?.website || "",
-      // Per-event deep-link on WotC's locator. Works for every event
-      // (even those without a venue/store) because it keys off the
-      // event's own ID, not the store's. The Source row on the event
-      // detail page (app/event/[id]/page.tsx) renders this as the
-      // "Wizards of the Coast Event Locator" link.
-      detail_url: "https://locator.wizards.com/event/" + ev.id,
+      // WotC's locator is store-centric: locator.wizards.com/store/{id}/
+      // is a real page, but locator.wizards.com/event/{id} 404s — the
+      // SPA has no per-event route. So we only get a "Source" link when
+      // a store ID is known; venueless events (where we resolved
+      // ev.venue.id only or got no venue at all) have no public WotC
+      // URL we can link to.
+      detail_url: storeId ? "https://locator.wizards.com/store/" + storeId + "/" : "",
       latitude: ev.latitude ?? null,
       longitude: ev.longitude ?? null,
       // WotC's searchEvents returns per-event coords — trust them.
