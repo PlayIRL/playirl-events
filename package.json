@@ -11,7 +11,8 @@
     "lint": "eslint",
     "discord:register": "tsx cli/register-discord-commands.ts",
     "scrape:trigger": "tsx cli/trigger-prod-scrape.ts",
-    "prod:diagnose": "tsx cli/diagnose-prod.ts"
+    "prod:diagnose": "tsx cli/diagnose-prod.ts",
+    "seed:test-admin": "tsx cli/seed-test-admin.ts"
   },
   "dependencies": {
     "@vis.gl/react-google-maps": "^1.8.3",
