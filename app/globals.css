@@ -82,16 +82,14 @@ code, pre, kbd, samp, tt {
   font-family: inherit;
 }
 
-/* Display callsites (chips, prices, headings, calendar week labels)
- * inherit Figtree from the body but bump to weight 900. We intentionally
- * DON'T set letter-spacing here: a previous global tracking default
- * silently overrode every Tailwind `tracking-*` utility callsites tried
- * to apply (same selector specificity, but our rule landed later in the
- * CSS bundle → won). Callsites that want tighter type opt in via
- * `tracking-tight` / `tracking-tighter` from Tailwind. */
-.font-\[family-name\:var\(--font-ultra\)\] {
-  font-weight: 900;
-}
+/* `--font-ultra` is just an alias for Figtree (see :root above). We
+ * intentionally don't bake font-weight or letter-spacing into a global
+ * rule on the family — same-specificity collisions with Tailwind's
+ * `font-*` and `tracking-*` utilities (which compile later in the
+ * bundle) silently overrode every per-callsite override callers
+ * thought they were making. Callsites that want display weight opt in
+ * explicitly via `font-bold` / `font-extrabold` / `font-black`, and
+ * tighter type via `tracking-tight` / `tracking-tighter`. */
 
 @keyframes fadeInUp {
   /* `to` targets a CSS variable so callers that want a non-1 final opacity
