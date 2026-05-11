@@ -298,7 +298,7 @@ async function DiscordTab({ userId }: { userId: string }) {
 
       <section className="space-y-4">
         <header className="flex items-end justify-between gap-4 flex-wrap">
-          <div>
+          <div className="min-w-0 flex-1">
             <h2 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">Post events to Discord</h2>
             <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
               Schedule recurring event posts to your Discord channels.
@@ -319,7 +319,7 @@ async function DiscordTab({ userId }: { userId: string }) {
 
       <section className="space-y-4">
         <header className="flex items-end justify-between gap-4 flex-wrap">
-          <div>
+          <div className="min-w-0 flex-1">
             <h2 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">Add to a server&rsquo;s Events tab</h2>
             <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
               Push matching events into a Discord server&rsquo;s native Events tab as scheduled events &mdash; one-shot or auto-syncing.
