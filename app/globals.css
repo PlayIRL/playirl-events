@@ -83,12 +83,14 @@ code, pre, kbd, samp, tt {
 }
 
 /* Display callsites (chips, prices, headings, calendar week labels)
- * inherit Figtree from the body but bump to weight 900 with tighter
- * tracking. Same selector as before so callsites still picking
- * font-[family-name:var(--font-ultra)] keep working. */
+ * inherit Figtree from the body but bump to weight 900. We intentionally
+ * DON'T set letter-spacing here: a previous global tracking default
+ * silently overrode every Tailwind `tracking-*` utility callsites tried
+ * to apply (same selector specificity, but our rule landed later in the
+ * CSS bundle → won). Callsites that want tighter type opt in via
+ * `tracking-tight` / `tracking-tighter` from Tailwind. */
 .font-\[family-name\:var\(--font-ultra\)\] {
   font-weight: 900;
-  letter-spacing: -0.02em;
 }
 
 @keyframes fadeInUp {
