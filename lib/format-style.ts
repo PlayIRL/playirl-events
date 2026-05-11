@@ -103,6 +103,42 @@ export const FORMAT_EMBED_COLOR: Record<string, number> = {
 
 export const FORMAT_EMBED_COLOR_DEFAULT = 0x6b7280;
 
+// Colored-square unicode used as the Discord-side substitute for the site's
+// colored format pill. Discord won't render arbitrary backgrounds inside
+// message text, but it does render these square emojis at their unicode
+// color — paired with inline-code wrapping on the format name (which Discord
+// draws as a rounded gray block), the result reads as a pill at a glance:
+//
+//     🟪 `Commander`
+//
+// Each square is the closest unicode-palette match to the site's FORMAT_DOT
+// ink color. Falls back to ⬜ for unknown formats.
+export const FORMAT_DISCORD_SQUARE: Record<string, string> = {
+  Commander: "🟪", // 🟪 plum
+  Modern: "🟦",    // 🟦 Island blue
+  Standard: "🟩",  // 🟩 Forest green
+  Pioneer: "🟥",   // 🟥 Mountain red
+  Legacy: "⬛",          // ⬛ Swamp dark
+  Pauper: "🟨",    // 🟨 Plains gold
+  Draft: "🟧",     // 🟧 amber
+  Sealed: "🟫",    // 🟫 bronze
+};
+
+export const FORMAT_DISCORD_SQUARE_DEFAULT = "⬜"; // ⬜
+
+/**
+ * Renders a format name as a Discord chat "pill": a colored unicode square
+ * followed by the format wrapped in inline code (which Discord styles as a
+ * rounded gray block). Matches what the site shows as a colored chip as
+ * closely as Discord's text primitives allow. Returns null when the format
+ * shouldn't render a chip (empty / "Other").
+ */
+export function formatDiscordPill(format: string | null | undefined): string | null {
+  if (!format || !showFormatBadge(format)) return null;
+  const square = FORMAT_DISCORD_SQUARE[format] ?? FORMAT_DISCORD_SQUARE_DEFAULT;
+  return `${square} \`${format}\``;
+}
+
 // Human-readable source labels. Used by the event detail page footer and
 // Discord embed footers — keeping one map means the surface vocabulary
 // stays in sync as we add new sources.
