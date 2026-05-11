@@ -34,7 +34,7 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [previewError, setPreviewError] = useState<string | null>(null);
-  const [previewData, setPreviewData] = useState<{ message: PreviewMessage; eventCount: number; empty: boolean; sample?: boolean } | null>(null);
+  const [previewData, setPreviewData] = useState<{ messages: PreviewMessage[]; eventCount: number; empty: boolean; sample?: boolean } | null>(null);
 
   async function loadPreview() {
     setPreviewLoading(true);
@@ -139,7 +139,7 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
       if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
       setSendNowStatus({
         kind: "ok",
-        message: `Sent · ${body.eventCount} matching event${body.eventCount === 1 ? "" : "s"} included.`,
+        message: `Sent · ${body.eventCount} matching event${body.eventCount === 1 ? "" : "s"} across ${body.messagesPosted ?? 1} message${(body.messagesPosted ?? 1) === 1 ? "" : "s"}.`,
       });
     } catch (e) {
       setSendNowStatus({ kind: "err", message: e instanceof Error ? e.message : String(e) });
@@ -409,12 +409,13 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
               {previewError && (
                 <p className="text-xs text-red-600 dark:text-red-400">{previewError}</p>
               )}
-              {previewData && (
+              {previewData && previewData.messages.map((msg, i) => (
                 <DiscordPreview
-                  message={previewData.message}
+                  key={i}
+                  message={msg}
                   channelName={`channel-${sub.channel_id.slice(-4)}`}
                 />
-              )}
+              ))}
             </div>
           )}
         </div>
