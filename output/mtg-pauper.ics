@@ -9,160 +9,169 @@ X-WR-CALDESC:Pauper events in Philadelphia area
 BEGIN:VEVENT
 UID:wotc-10461057
 SEQUENCE:0
-DTSTAMP:20260511T040108Z
+DTSTAMP:20260511T040815Z
 DTSTART:20260511T223000Z
 DTEND:20260512T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ Details: https://locator.wizards.com/events/10461057\nSource: wizards-loca
+ tor
+URL;VALUE=URI:https://locator.wizards.com/events/10461057
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653631
 SEQUENCE:0
-DTSTAMP:20260511T040108Z
+DTSTAMP:20260511T040815Z
 DTSTART:20260511T223000Z
 DTEND:20260512T013000Z
 SUMMARY:Monday Pauper @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Pauper\nCost: $15\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards
- -locator
-URL;VALUE=URI:https://locator.wizards.com/store/8281/
+ ne.com/\nDetails: https://locator.wizards.com/events/10653631\nSource: wiz
+ ards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/10653631
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461058
 SEQUENCE:0
-DTSTAMP:20260511T040108Z
+DTSTAMP:20260511T040815Z
 DTSTART:20260518T223000Z
 DTEND:20260519T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ Details: https://locator.wizards.com/events/10461058\nSource: wizards-loca
+ tor
+URL;VALUE=URI:https://locator.wizards.com/events/10461058
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653632
 SEQUENCE:0
-DTSTAMP:20260511T040108Z
+DTSTAMP:20260511T040815Z
 DTSTART:20260518T223000Z
 DTEND:20260519T013000Z
 SUMMARY:Monday Pauper @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Pauper\nCost: $15\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards
- -locator
-URL;VALUE=URI:https://locator.wizards.com/store/8281/
+ ne.com/\nDetails: https://locator.wizards.com/events/10653632\nSource: wiz
+ ards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/10653632
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461060
 SEQUENCE:0
-DTSTAMP:20260511T040108Z
+DTSTAMP:20260511T040815Z
 DTSTART:20260525T223000Z
 DTEND:20260526T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ Details: https://locator.wizards.com/events/10461060\nSource: wizards-loca
+ tor
+URL;VALUE=URI:https://locator.wizards.com/events/10461060
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653633
 SEQUENCE:0
-DTSTAMP:20260511T040108Z
+DTSTAMP:20260511T040815Z
 DTSTART:20260525T223000Z
 DTEND:20260526T013000Z
 SUMMARY:Monday Pauper @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Pauper\nCost: $15\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards
- -locator
-URL;VALUE=URI:https://locator.wizards.com/store/8281/
+ ne.com/\nDetails: https://locator.wizards.com/events/10653633\nSource: wiz
+ ards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/10653633
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968409
 SEQUENCE:0
-DTSTAMP:20260511T040108Z
+DTSTAMP:20260511T040815Z
 DTSTART:20260601T223000Z
 DTEND:20260602T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ Details: https://locator.wizards.com/events/10968409\nSource: wizards-loca
+ tor
+URL;VALUE=URI:https://locator.wizards.com/events/10968409
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968410
 SEQUENCE:0
-DTSTAMP:20260511T040108Z
+DTSTAMP:20260511T040815Z
 DTSTART:20260608T223000Z
 DTEND:20260609T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ Details: https://locator.wizards.com/events/10968410\nSource: wizards-loca
+ tor
+URL;VALUE=URI:https://locator.wizards.com/events/10968410
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968411
 SEQUENCE:0
-DTSTAMP:20260511T040108Z
+DTSTAMP:20260511T040815Z
 DTSTART:20260615T223000Z
 DTEND:20260616T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ Details: https://locator.wizards.com/events/10968411\nSource: wizards-loca
+ tor
+URL;VALUE=URI:https://locator.wizards.com/events/10968411
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968412
 SEQUENCE:0
-DTSTAMP:20260511T040108Z
+DTSTAMP:20260511T040815Z
 DTSTART:20260622T223000Z
 DTEND:20260623T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ Details: https://locator.wizards.com/events/10968412\nSource: wizards-loca
+ tor
+URL;VALUE=URI:https://locator.wizards.com/events/10968412
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968413
 SEQUENCE:0
-DTSTAMP:20260511T040108Z
+DTSTAMP:20260511T040815Z
 DTSTART:20260629T223000Z
 DTEND:20260630T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ Details: https://locator.wizards.com/events/10968413\nSource: wizards-loca
+ tor
+URL;VALUE=URI:https://locator.wizards.com/events/10968413
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968414
 SEQUENCE:0
-DTSTAMP:20260511T040108Z
+DTSTAMP:20260511T040815Z
 DTSTART:20260706T223000Z
 DTEND:20260707T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ Details: https://locator.wizards.com/events/10968414\nSource: wizards-loca
+ tor
+URL;VALUE=URI:https://locator.wizards.com/events/10968414
 END:VEVENT
 END:VCALENDAR

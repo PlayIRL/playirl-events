@@ -9,7 +9,7 @@ X-WR-CALDESC:Pick 2 Draft events in Philadelphia area
 BEGIN:VEVENT
 UID:wotc-10926585
 SEQUENCE:0
-DTSTAMP:20260511T040108Z
+DTSTAMP:20260511T040815Z
 DTSTART:20260530T223000Z
 DTEND:20260531T013000Z
 SUMMARY:Magic Presents: Open The Archive MTG Open the Archive Event @ Hobb
@@ -17,8 +17,8 @@ SUMMARY:Magic Presents: Open The Archive MTG Open the Archive Event @ Hobb
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Pick 2 Draft\nCost: $25\nStore: http://www.hobby-vault
- .com/\nDetails: https://locator.wizards.com/store/15549/\nSource: wizards-
- locator
-URL;VALUE=URI:https://locator.wizards.com/store/15549/
+ .com/\nDetails: https://locator.wizards.com/events/10926585\nSource: wizar
+ ds-locator
+URL;VALUE=URI:https://locator.wizards.com/events/10926585
 END:VEVENT
 END:VCALENDAR
