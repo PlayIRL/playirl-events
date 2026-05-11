@@ -229,7 +229,7 @@ export default async function EventPage({
             // forces the browser to save rather than navigate, which is what
             // .ics files want — Calendar apps register as the default
             // handler on most desktops, so the file imports cleanly.
-            className="inline-flex items-center justify-center gap-1 h-7 px-2 rounded-md bg-neutral-100 dark:bg-white/5 border border-neutral-100 dark:border-white/8 shadow-sm text-neutral-700 dark:text-neutral-300 text-xs font-medium hover:bg-neutral-200 dark:hover:bg-white/10 hover:text-neutral-900 dark:hover:text-white transition"
+            className="inline-flex items-center justify-center gap-1.5 h-7 px-3 rounded-md bg-neutral-100 dark:bg-white/5 border border-neutral-100 dark:border-white/8 shadow-sm text-neutral-700 dark:text-neutral-300 text-xs font-medium hover:bg-neutral-200 dark:hover:bg-white/10 hover:text-neutral-900 dark:hover:text-white transition"
             title="Download a single-event .ics for your calendar app"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
