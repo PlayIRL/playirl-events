@@ -9,7 +9,11 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
 import { getActiveEvents } from "@/lib/events";
-import { getSubscription, userCanManageSubscription } from "@/lib/discord-subscriptions";
+import {
+  getSubscription,
+  recordSubscriptionActivity,
+  userCanManageSubscription,
+} from "@/lib/discord-subscriptions";
 import { postToChannel, renderDigestByDay, renderReminderMessage } from "@/lib/discord-post";
 
 export const dynamic = "force-dynamic";
@@ -78,6 +82,19 @@ export async function POST(_request: Request, ctx: { params: Promise<{ id: strin
         await new Promise(r => setTimeout(r, POST_GAP_MS));
       }
     }
+    try {
+      recordSubscriptionActivity({
+        subscriptionId: sub.id,
+        kind: "send_now",
+        trigger: "manual",
+        status: "ok",
+        eventCount: events.length,
+        messagesPosted: messageIds.length,
+        channelId: sub.channel_id,
+      });
+    } catch (logErr) {
+      console.error("[send-now] activity log failed:", logErr);
+    }
     return NextResponse.json({
       ok: true,
       messageIds,
@@ -86,6 +103,22 @@ export async function POST(_request: Request, ctx: { params: Promise<{ id: strin
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
+    try {
+      recordSubscriptionActivity({
+        subscriptionId: sub.id,
+        kind: "send_now",
+        trigger: "manual",
+        // Partial = at least one message landed before the failure. Lets the
+        // UI distinguish "nothing got through" from "Discord ate days 3-5".
+        status: messageIds.length > 0 ? "partial" : "error",
+        eventCount: events.length,
+        messagesPosted: messageIds.length,
+        error: message,
+        channelId: sub.channel_id,
+      });
+    } catch (logErr) {
+      console.error("[send-now] activity log failed:", logErr);
+    }
     return NextResponse.json({
       error: message,
       messagesPosted: messageIds.length,

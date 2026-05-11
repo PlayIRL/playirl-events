@@ -500,6 +500,26 @@ function initSchema(db: Database.Database) {
     );
     CREATE INDEX IF NOT EXISTS idx_disc_sched_event_subs_enabled ON discord_scheduled_event_subs(enabled);
     CREATE INDEX IF NOT EXISTS idx_disc_sched_event_subs_guild ON discord_scheduled_event_subs(guild_id);
+
+    -- Per-fire activity log for Discord subscriptions. One row per attempt
+    -- (scheduled digest, scheduled reminder, manual Send Now, retry-queue
+    -- drain) so users can see "what posted when" on /account/discord without
+    -- mining the dedupe ledger. Distinct from discord_subscription_posts
+    -- which is keyed on (sub, event, kind, bucket) and doesn't record
+    -- failures or the number of events folded into a digest fire.
+    CREATE TABLE IF NOT EXISTS discord_subscription_activity (
+      id              INTEGER PRIMARY KEY AUTOINCREMENT,
+      subscription_id TEXT NOT NULL REFERENCES discord_subscriptions(id) ON DELETE CASCADE,
+      fired_at        TEXT NOT NULL DEFAULT (datetime('now')),
+      kind            TEXT NOT NULL,         -- 'digest' | 'reminder' | 'send_now'
+      trigger         TEXT NOT NULL,         -- 'scheduled' | 'manual' | 'retry'
+      status          TEXT NOT NULL,         -- 'ok' | 'partial' | 'error' | 'skipped'
+      event_count     INTEGER NOT NULL DEFAULT 0,
+      messages_posted INTEGER NOT NULL DEFAULT 0,
+      error           TEXT,
+      channel_id      TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_dsa_sub_fired ON discord_subscription_activity(subscription_id, fired_at DESC);
   `);
 
   // Default settings

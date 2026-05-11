@@ -316,6 +316,73 @@ export interface PostedMessageForEvent {
   subscription_id: string;
 }
 
+// --- Activity log ----------------------------------------------------------
+
+export type DiscordActivityKind = "digest" | "reminder" | "send_now";
+export type DiscordActivityTrigger = "scheduled" | "manual" | "retry";
+export type DiscordActivityStatus = "ok" | "partial" | "error" | "skipped";
+
+export interface DiscordSubscriptionActivity {
+  id: number;
+  subscription_id: string;
+  fired_at: string;
+  kind: DiscordActivityKind;
+  trigger: DiscordActivityTrigger;
+  status: DiscordActivityStatus;
+  event_count: number;
+  messages_posted: number;
+  error: string | null;
+  channel_id: string;
+}
+
+/**
+ * Append one row to the per-subscription activity log. Best-effort — wrapped
+ * in a try/catch by callers so a logging failure never breaks the actual
+ * post path. Error strings are truncated to keep the table small.
+ */
+export function recordSubscriptionActivity(args: {
+  subscriptionId: string;
+  kind: DiscordActivityKind;
+  trigger: DiscordActivityTrigger;
+  status: DiscordActivityStatus;
+  eventCount: number;
+  messagesPosted: number;
+  error?: string | null;
+  channelId: string;
+}): void {
+  getDb().prepare(`
+    INSERT INTO discord_subscription_activity
+      (subscription_id, kind, trigger, status, event_count, messages_posted, error, channel_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    args.subscriptionId,
+    args.kind,
+    args.trigger,
+    args.status,
+    args.eventCount,
+    args.messagesPosted,
+    args.error ? args.error.slice(0, 500) : null,
+    args.channelId,
+  );
+}
+
+/** Most-recent-first activity for a subscription. Default cap is 25 rows. */
+export function listSubscriptionActivity(
+  subscriptionId: string,
+  limit = 25,
+): DiscordSubscriptionActivity[] {
+  return getDb()
+    .prepare(`
+      SELECT id, subscription_id, fired_at, kind, trigger, status,
+             event_count, messages_posted, error, channel_id
+        FROM discord_subscription_activity
+       WHERE subscription_id = ?
+       ORDER BY fired_at DESC, id DESC
+       LIMIT ?
+    `)
+    .all(subscriptionId, limit) as DiscordSubscriptionActivity[];
+}
+
 // --- Pending retry queue ---------------------------------------------------
 
 export interface PendingPost {
