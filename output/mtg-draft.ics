@@ -9,129 +9,133 @@ X-WR-CALDESC:Draft events in Philadelphia area
 BEGIN:VEVENT
 UID:wotc-10972547
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260512T220000Z
 DTEND:20260513T010000Z
 SUMMARY:Chaos Booster Draft @ Runehammer Games
 LOCATION:Runehammer Games\, 2401 Frankford Avenue\, Philadelphia\, Pennsyl
  vania\, 19125
 DESCRIPTION:Format: Draft\nCost: $25\nStore: http://www.runehammer.online\
- nDetails: https://locator.wizards.com/store/19433/\nSource: wizards-locato
- r
-URL;VALUE=URI:https://locator.wizards.com/store/19433/
+ nDetails: https://locator.wizards.com/event/10972547\nSource: wizards-loca
+ tor
+URL;VALUE=URI:https://locator.wizards.com/event/10972547
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461069
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260512T223000Z
 DTEND:20260513T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10461069\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10461069
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653659
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260513T223000Z
 DTEND:20260514T013000Z
 SUMMARY:Wednesday Booster Draft @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Draft\nCost: $25\nStore: https://www.topdeckgamesonlin
- e.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards-
- locator
-URL;VALUE=URI:https://locator.wizards.com/store/8281/
+ e.com/\nDetails: https://locator.wizards.com/event/10653659\nSource: wizar
+ ds-locator
+URL;VALUE=URI:https://locator.wizards.com/event/10653659
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461084
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260515T223000Z
 DTEND:20260516T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10461084\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10461084
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653673
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260515T223000Z
 DTEND:20260516T013000Z
 SUMMARY:Friday Night Magic Booster Draft @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Draft\nCost: $30\nStore: https://www.topdeckgamesonlin
- e.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards-
- locator
-URL;VALUE=URI:https://locator.wizards.com/store/8281/
+ e.com/\nDetails: https://locator.wizards.com/event/10653673\nSource: wizar
+ ds-locator
+URL;VALUE=URI:https://locator.wizards.com/event/10653673
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599269
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260516T170000Z
 DTEND:20260516T200000Z
 SUMMARY:Saturday Draft @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Draft\nCost: $25\nStore: http://www.7thdimensiongames.
- com\nDetails: https://locator.wizards.com/store/8863/\nSource: wizards-loc
- ator
-URL;VALUE=URI:https://locator.wizards.com/store/8863/
+ com\nDetails: https://locator.wizards.com/event/10599269\nSource: wizards-
+ locator
+URL;VALUE=URI:https://locator.wizards.com/event/10599269
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461070
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260519T223000Z
 DTEND:20260520T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10461070\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10461070
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653660
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260520T223000Z
 DTEND:20260521T013000Z
 SUMMARY:Wednesday Booster Draft @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Draft\nCost: $25\nStore: https://www.topdeckgamesonlin
- e.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards-
- locator
-URL;VALUE=URI:https://locator.wizards.com/store/8281/
+ e.com/\nDetails: https://locator.wizards.com/event/10653660\nSource: wizar
+ ds-locator
+URL;VALUE=URI:https://locator.wizards.com/event/10653660
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461085
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260522T223000Z
 DTEND:20260523T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10461085\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10461085
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10484119
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260523T170000Z
 DTEND:20260523T200000Z
 SUMMARY:Magic Presents: Open The Archive Special Draft @ 7th Dimension Gam
@@ -139,260 +143,274 @@ SUMMARY:Magic Presents: Open The Archive Special Draft @ 7th Dimension Gam
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Draft\nCost: $25\nStore: http://www.7thdimensiongames.
- com\nDetails: https://locator.wizards.com/store/8863/\nSource: wizards-loc
- ator
-URL;VALUE=URI:https://locator.wizards.com/store/8863/
+ com\nDetails: https://locator.wizards.com/event/10484119\nSource: wizards-
+ locator
+URL;VALUE=URI:https://locator.wizards.com/event/10484119
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461071
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260526T223000Z
 DTEND:20260527T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10461071\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10461071
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653661
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260527T223000Z
 DTEND:20260528T013000Z
 SUMMARY:Wednesday Booster Draft @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Draft\nCost: $25\nStore: https://www.topdeckgamesonlin
- e.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards-
- locator
-URL;VALUE=URI:https://locator.wizards.com/store/8281/
+ e.com/\nDetails: https://locator.wizards.com/event/10653661\nSource: wizar
+ ds-locator
+URL;VALUE=URI:https://locator.wizards.com/event/10653661
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461086
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260529T223000Z
 DTEND:20260530T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10461086\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10461086
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599271
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260530T170000Z
 DTEND:20260530T200000Z
 SUMMARY:Saturday Draft @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Draft\nCost: $25\nStore: http://www.7thdimensiongames.
- com\nDetails: https://locator.wizards.com/store/8863/\nSource: wizards-loc
- ator
-URL;VALUE=URI:https://locator.wizards.com/store/8863/
+ com\nDetails: https://locator.wizards.com/event/10599271\nSource: wizards-
+ locator
+URL;VALUE=URI:https://locator.wizards.com/event/10599271
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461072
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260602T223000Z
 DTEND:20260603T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10461072\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10461072
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461087
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260605T223000Z
 DTEND:20260606T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10461087\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10461087
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599268
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260606T170000Z
 DTEND:20260606T200000Z
 SUMMARY:Saturday Draft @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Draft\nCost: $25\nStore: http://www.7thdimensiongames.
- com\nDetails: https://locator.wizards.com/store/8863/\nSource: wizards-loc
- ator
-URL;VALUE=URI:https://locator.wizards.com/store/8863/
+ com\nDetails: https://locator.wizards.com/event/10599268\nSource: wizards-
+ locator
+URL;VALUE=URI:https://locator.wizards.com/event/10599268
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461073
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260609T223000Z
 DTEND:20260610T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10461073\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10461073
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461088
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260612T223000Z
 DTEND:20260613T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10461088\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10461088
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599270
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260613T170000Z
 DTEND:20260613T200000Z
 SUMMARY:Saturday Draft @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Draft\nCost: $25\nStore: http://www.7thdimensiongames.
- com\nDetails: https://locator.wizards.com/store/8863/\nSource: wizards-loc
- ator
-URL;VALUE=URI:https://locator.wizards.com/store/8863/
+ com\nDetails: https://locator.wizards.com/event/10599270\nSource: wizards-
+ locator
+URL;VALUE=URI:https://locator.wizards.com/event/10599270
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461074
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260616T223000Z
 DTEND:20260617T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10461074\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10461074
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461089
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10461089\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10461089
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952190
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260621T190000Z
 DTEND:20260621T220000Z
 SUMMARY:MTG Marvel: Super Heroes Draft @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Draft\nCost: $30\nStore: https://www.topdeckgamesonlin
- e.com/\nDetails: https://locator.wizards.com/store/8281/\nSource: wizards-
- locator
-URL;VALUE=URI:https://locator.wizards.com/store/8281/
+ e.com/\nDetails: https://locator.wizards.com/event/10952190\nSource: wizar
+ ds-locator
+URL;VALUE=URI:https://locator.wizards.com/event/10952190
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968422
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260623T223000Z
 DTEND:20260624T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10968422\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10968422
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968435
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260626T223000Z
 DTEND:20260627T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10968435\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10968435
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968423
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260630T223000Z
 DTEND:20260701T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10968423\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10968423
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968436
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260703T223000Z
 DTEND:20260704T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10968436\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10968436
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968424
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260707T223000Z
 DTEND:20260708T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10968424\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10968424
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968437
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260710T223000Z
 DTEND:20260711T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/store/13099/\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/13099/
+ etails: https://locator.wizards.com/event/10968437\nSource: wizards-locato
+ r
+URL;VALUE=URI:https://locator.wizards.com/event/10968437
 END:VEVENT
 END:VCALENDAR

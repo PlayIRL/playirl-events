@@ -9,21 +9,21 @@ X-WR-CALDESC:New Player Event events in Philadelphia area
 BEGIN:VEVENT
 UID:wotc-10893386
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260531T170000Z
 DTEND:20260531T200000Z
 SUMMARY:Magic Academy: Learn to Play @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: New Player Event\nCost: $10\nStore: https://www.topdec
- kgamesonline.com/\nDetails: https://locator.wizards.com/store/8281/\nSourc
- e: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/8281/
+ kgamesonline.com/\nDetails: https://locator.wizards.com/event/10893386\nSo
+ urce: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/event/10893386
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10902362
 SEQUENCE:0
-DTSTAMP:20260511T033338Z
+DTSTAMP:20260511T034615Z
 DTSTART:20260613T190000Z
 DTEND:20260613T220000Z
 SUMMARY:Avengers Academy Magic Presents: Avengers Academy @ Top Deck Games
@@ -31,8 +31,8 @@ SUMMARY:Avengers Academy Magic Presents: Avengers Academy @ Top Deck Games
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: New Player Event\nCost: Free\nStore: https://www.topde
- ckgamesonline.com/\nDetails: https://locator.wizards.com/store/8281/\nSour
- ce: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/store/8281/
+ ckgamesonline.com/\nDetails: https://locator.wizards.com/event/10902362\nS
+ ource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/event/10902362
 END:VEVENT
 END:VCALENDAR
