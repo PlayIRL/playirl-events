@@ -147,7 +147,7 @@ export default function DayCard({
                   ? ({ animationDelay: `${80 + i * 45}ms`, "--row-opacity": status === "completed" ? 0.5 : 1 } as React.CSSProperties)
                   : ({ opacity: 0, "--row-opacity": status === "completed" ? 0.5 : 1 } as React.CSSProperties)
               }
-              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-4 sm:py-5 ${status === "completed" ? "saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
+              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 ${status === "completed" ? "py-2 sm:py-2.5 saturate-50" : "py-4 sm:py-5"} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
             >
               {/* Desktop: time as a fixed left column. When the event is
                   in progress the time itself shifts to a high-energy sky
@@ -170,20 +170,23 @@ export default function DayCard({
               </div>
               {/* Image is decorative on mobile (most events render the same
                   source-type SVG placeholder) so we drop it under sm to give
-                  the title and location the room they need. Container bg is
-                  light in both themes so logos with baked-in white bgs blend. */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={ev.imageUrl}
-                alt=""
-                width={56}
-                height={56}
-                className={`hidden sm:block w-14 h-14 rounded-md shrink-0 bg-neutral-100 ${
-                  ev.imageFit === "cover" ? "object-cover" : "object-contain p-1"
-                }`}
-                loading="lazy"
-                decoding="async"
-              />
+                  the title and location the room they need. Completed rows
+                  drop it on all viewports too — past events render in the
+                  condensed layout so a long backlog doesn't dominate. */}
+              {status !== "completed" && (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={ev.imageUrl}
+                  alt=""
+                  width={56}
+                  height={56}
+                  className={`hidden sm:block w-14 h-14 rounded-md shrink-0 bg-neutral-100 ${
+                    ev.imageFit === "cover" ? "object-cover" : "object-contain p-1"
+                  }`}
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
               <div className="flex-1 min-w-0">
                 {/* Mobile mirrors the desktop column: when in-progress
                     the time line picks up a leading pulse dot + sky-blue
@@ -204,13 +207,13 @@ export default function DayCard({
                     fastest way to scan "what kind of event is this".
                     Suppressed entirely for "Other" / empty formats so
                     the row doesn't carry a meaningless chip. */}
-                {showFormatBadge(ev.format) && (
+                {status !== "completed" && showFormatBadge(ev.format) && (
                   <span className={`inline-block px-2 py-0.5 rounded-sm text-[11px] font-bold mb-1 tracking-[0.0875em] uppercase font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
                     {ev.format}
                   </span>
                 )}
-                <p className="text-base sm:text-lg font-semibold tracking-tight text-neutral-900 dark:text-white line-clamp-2 sm:line-clamp-none sm:truncate">{ev.title}</p>
-                {ev.location && (
+                <p className={`${status === "completed" ? "text-sm" : "text-base sm:text-lg"} font-semibold tracking-tight text-neutral-900 dark:text-white ${status === "completed" ? "truncate" : "line-clamp-2 sm:line-clamp-none sm:truncate"}`}>{ev.title}</p>
+                {status !== "completed" && ev.location && (
                   <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate mt-0.5">{ev.location}</p>
                 )}
               </div>
