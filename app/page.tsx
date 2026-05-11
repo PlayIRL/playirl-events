@@ -130,30 +130,22 @@ export default async function HomePage({
   const today = new Date();
   let fromDate: Date;
   let toDate: Date;
-  // Default: include the past N days so users can see "what just happened"
-  // alongside upcoming events. Past day cards render greyed via DayCard's
-  // isPast flag. Suppress when the user has paged via offset — explicit
-  // navigation means they're targeting a specific window and bleeding
-  // history around it would just be noise.
-  const LIST_PAST_DAYS = 7;
+  // List view is strictly today-forward — past events would just take up
+  // space without helping users plan. Calendar view still fetches a
+  // wider window backward so its prev-week nav has data without a page
+  // round-trip.
   const CALENDAR_PAST_DAYS = 28;
   if (currentView === "calendar") {
-    // Start a few weeks before the current week so calendar prev/next nav has
-    // historical events to render without a page round-trip. Forward look-
-    // ahead stays at 60 days for the same reason.
     fromDate = new Date(today);
     fromDate.setHours(0, 0, 0, 0);
     fromDate.setDate(fromDate.getDate() - fromDate.getDay() - CALENDAR_PAST_DAYS);
     toDate = new Date(today.getTime() + 60 * 24 * 60 * 60 * 1000);
   } else if (currentView === "map") {
-    // Map view honors the `days` window so users can zoom in (1 day) or out
-    // (a week+) without leaving the view.
     fromDate = new Date(today);
     fromDate.setHours(0, 0, 0, 0);
     toDate = new Date(today.getTime() + currentDays * 24 * 60 * 60 * 1000);
   } else {
-    const pastDays = currentOffset === 0 ? LIST_PAST_DAYS : 0;
-    fromDate = new Date(today.getTime() + (currentOffset - pastDays) * 24 * 60 * 60 * 1000);
+    fromDate = new Date(today.getTime() + currentOffset * 24 * 60 * 60 * 1000);
     toDate = new Date(today.getTime() + (currentOffset + currentDays) * 24 * 60 * 60 * 1000);
   }
   // Anchor "today" / range bounds to America/New_York. Railway runs Node in
@@ -262,71 +254,31 @@ export default async function HomePage({
             </div>
           )}
 
-          {/* Split grouped dates into future-or-today (rendered first, ASC
-              date) and past (rendered after a divider, DESC date — most
-              recent past day at the top of the past section). Without this
-              the page opens to a week of past events and the user has to
-              scroll down to find today, missing the LIVE pills entirely. */}
-          {(() => {
-            const entries = Object.entries(grouped);
-            const futureOrToday = entries.filter(([d]) => d >= todayStr);
-            const past = entries.filter(([d]) => d < todayStr).reverse();
-            return (
-              <>
-                <div className="space-y-8">
-                  {futureOrToday.map(([date, dayEvents], i) => {
-                    const d = new Date(date + "T12:00:00");
-                    return (
-                      <DayCard
-                        key={date}
-                        date={date}
-                        weekday={d.toLocaleDateString("en-US", { weekday: "long" })}
-                        isToday={date === todayStr}
-                        isPast={false}
-                        events={dayEvents}
-                        headingLabel={dayHeadingLabel(date, todayStr, tomorrowStr, yesterdayStr)}
-                        staggerBase={Math.min(i * 60, 120)}
-                        signedIn={signedIn}
-                        isAdmin={isAdmin}
-                        savedEventIds={savedEventIds}
-                      />
-                    );
-                  })}
-                </div>
-
-                {past.length > 0 && (
-                  <>
-                    <div className="mt-12 mb-6 flex items-center gap-3">
-                      <h2 className="text-sm font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
-                        Recent past events
-                      </h2>
-                      <div className="flex-1 h-px bg-neutral-200 dark:bg-white/10" />
-                    </div>
-                    <div className="space-y-8">
-                      {past.map(([date, dayEvents], i) => {
-                        const d = new Date(date + "T12:00:00");
-                        return (
-                          <DayCard
-                            key={date}
-                            date={date}
-                            weekday={d.toLocaleDateString("en-US", { weekday: "long" })}
-                            isToday={false}
-                            isPast={true}
-                            events={dayEvents}
-                            headingLabel={dayHeadingLabel(date, todayStr, tomorrowStr, yesterdayStr)}
-                            staggerBase={Math.min(i * 60, 120)}
-                            signedIn={signedIn}
-                            isAdmin={isAdmin}
-                            savedEventIds={savedEventIds}
-                          />
-                        );
-                      })}
-                    </div>
-                  </>
-                )}
-              </>
-            );
-          })()}
+          {/* Today + future only. The list view is strictly forward-
+              looking; any past-event display lives elsewhere (calendar
+              view's prev-week nav, the venue page's history). */}
+          <div className="space-y-8">
+            {Object.entries(grouped)
+              .filter(([d]) => d >= todayStr)
+              .map(([date, dayEvents], i) => {
+                const d = new Date(date + "T12:00:00");
+                return (
+                  <DayCard
+                    key={date}
+                    date={date}
+                    weekday={d.toLocaleDateString("en-US", { weekday: "long" })}
+                    isToday={date === todayStr}
+                    isPast={false}
+                    events={dayEvents}
+                    headingLabel={dayHeadingLabel(date, todayStr, tomorrowStr, yesterdayStr)}
+                    staggerBase={Math.min(i * 60, 120)}
+                    signedIn={signedIn}
+                    isAdmin={isAdmin}
+                    savedEventIds={savedEventIds}
+                  />
+                );
+              })}
+          </div>
 
           {/* Footer navigation — list view extends forward with "Load
               more events" (bumps `days` by 7), styled as a continuation
