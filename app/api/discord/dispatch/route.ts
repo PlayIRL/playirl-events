@@ -79,9 +79,15 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 const REMINDER_WINDOW_MINUTES = 5;
-// Inter-message gap. Discord's global rate limit is 50 req/s; 25ms keeps us
-// well under that even when fanning out a single tick to many channels.
+// Inter-message gap for CROSS-channel fan-out (reminders + retry queue).
+// Discord's global rate limit is 50 req/s; 25ms keeps us well under that
+// when fanning out a single tick to many channels.
 const POST_GAP_MS = 25;
+// Inter-message gap for SAME-channel fan-out (multi-day digest chunks).
+// Discord's per-channel limit is 5 messages / 5 seconds = 1 msg/sec average;
+// 1200ms gives us margin. The 429 retry in postToChannel is the backstop if
+// a concurrent reminder for the same channel overlaps with us.
+const SAME_CHANNEL_GAP_MS = 1200;
 
 interface DispatchSummary {
   ticked_at: string;
@@ -185,7 +191,7 @@ async function fireDigest(
         recordPostMessageId(sub.id, headEvent.id, "digest", bucket, result.id);
       }
       if (i < payloads.length - 1) {
-        await new Promise(r => setTimeout(r, POST_GAP_MS));
+        await new Promise(r => setTimeout(r, SAME_CHANNEL_GAP_MS));
       }
     } catch (err) {
       lastErr = err;
