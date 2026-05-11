@@ -5,7 +5,7 @@ import { findInviteByToken, redeemInvite } from "@/lib/event-invites";
 import { getCurrentUser } from "@/lib/session";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { formatEventTimeRange } from "@/lib/format-time";
+import { eventDisplayStatus, formatEventTimeRange } from "@/lib/format-time";
 import { resolveEventImage, hasRealEventImage } from "@/lib/event-image";
 import { venueSlug } from "@/lib/venues";
 import { SITE_URL } from "@/lib/config";
@@ -251,6 +251,28 @@ export default async function EventPage({
             All RSVPs have been marked cancelled. The event remains visible so
             attendees can confirm what happened.
           </p>
+        </div>
+      )}
+
+      {/* "Happening now" banner — same sky-blue + pulse-dot vocabulary as
+          the in-progress treatment on the list/calendar views, so an event
+          card and its detail page agree at a glance. Suppressed when the
+          event is cancelled because the cancel banner above takes
+          precedence. */}
+      {!cancelled && eventDisplayStatus(ev.date, ev.time) === "in_progress" && (
+        <div className="mb-6 rounded-md border border-sky-300 dark:border-sky-500/40 bg-sky-50 dark:bg-sky-500/10 px-4 py-3 anim-fade-in">
+          <div className="flex items-start gap-2.5">
+            <span aria-hidden="true" className="mt-1.5 w-2 h-2 rounded-full bg-sky-500 dark:bg-sky-400 anim-live-pulse shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-sky-900 dark:text-sky-100">
+                Happening now
+              </p>
+              <p className="text-xs text-sky-800/80 dark:text-sky-200/80 mt-0.5">
+                This event is currently in progress &mdash; check in with the host
+                if you&rsquo;re heading over.
+              </p>
+            </div>
+          </div>
         </div>
       )}
 
