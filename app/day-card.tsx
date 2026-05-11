@@ -213,7 +213,7 @@ export default function DayCard({
                   </span>
                 )}
                 <p className={`${status === "completed" ? "text-sm" : "text-base sm:text-lg"} font-semibold tracking-tight text-neutral-900 dark:text-white ${status === "completed" ? "truncate" : "line-clamp-2 sm:line-clamp-none sm:truncate"}`}>{ev.title}</p>
-                {status !== "completed" && ev.location && (
+                {ev.location && (
                   <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate mt-0.5">{ev.location}</p>
                 )}
               </div>
