@@ -153,9 +153,12 @@ export default function DayCard({
                   in progress the time itself shifts to a high-energy sky
                   blue and gets a small pulsing-dot prefix — punchy enough
                   to draw the eye, no shouty badge. */}
-              <div className="hidden sm:block shrink-0 w-16">
+              {/* Column is w-24 (not w-16) so the in-progress outline
+                  has room for the widest time strings like "11:30 PM"
+                  without the ring clipping or the text wrapping. */}
+              <div className="hidden sm:block shrink-0 w-24">
                 {status === "in_progress" ? (
-                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-sky-600 dark:text-sky-400 ring-1 ring-inset ring-sky-400/60 dark:ring-sky-400/40 rounded-md px-1.5 py-0.5">
+                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-sky-600 dark:text-sky-400 ring-1 ring-inset ring-sky-400/60 dark:ring-sky-400/40 rounded-md px-1.5 py-0.5 whitespace-nowrap">
                     <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-sky-500 dark:bg-sky-400 anim-live-pulse shrink-0" />
                     <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
                   </span>
@@ -187,7 +190,7 @@ export default function DayCard({
                     color shift, otherwise renders flat neutral. */}
                 <div className="block sm:hidden mb-1">
                   {status === "in_progress" ? (
-                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-sky-600 dark:text-sky-400 ring-1 ring-inset ring-sky-400/60 dark:ring-sky-400/40 rounded-md px-1.5 py-0.5">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-sky-600 dark:text-sky-400 ring-1 ring-inset ring-sky-400/60 dark:ring-sky-400/40 rounded-md px-1.5 py-0.5 whitespace-nowrap">
                       <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-sky-500 dark:bg-sky-400 anim-live-pulse shrink-0" />
                       <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
                     </span>
