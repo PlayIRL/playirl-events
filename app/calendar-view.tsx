@@ -212,7 +212,7 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                             <div className="text-[10px] text-neutral-500 dark:text-neutral-400 leading-none">{formatEventTime(ev.date, ev.time, ev.timezone)}</div>
                           )}
                           <div>
-                            <span className={`px-1.5 py-0.5 rounded-sm text-[11px] font-bold tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                            <span className={`px-1.5 py-0.5 rounded-sm text-[11px] font-black tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
                               {ev.format}
                             </span>
                           </div>

@@ -34,12 +34,13 @@ const figtree = Figtree({
 });
 
 // Card-title font for the format badge — closest free Google Font to MTG's
-// proprietary Beleren typeface (regal serif with calligraphic touches). We
-// only need 700 (the badge renders bold); skip 400 so the bundle stays lean.
+// proprietary Beleren typeface (regal serif with calligraphic touches).
+// Load 900 (Black) so the badge can render in the heaviest weight Cinzel
+// offers, matching the visual punch of actual MTG card title type.
 const cinzel = Cinzel({
   variable: "--font-card-title",
   subsets: ["latin"],
-  weight: ["700"],
+  weight: ["900"],
   display: "swap",
 });
 
