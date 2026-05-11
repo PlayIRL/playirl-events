@@ -35,15 +35,15 @@ function CreateEventAction() {
 // Admin-only deep-link to the moderation/scrape/users portal. Lives next to
 // "Create event" in the page header instead of as a tab — most users will
 // never see this, and a tab for a one-click pass-through reads as filler.
+// Style mirrors CreateEventAction so both header actions read as a pair.
 function AdminPortalAction() {
   return (
     <Link
       href="/admin"
-      className="inline-flex items-center gap-1.5 h-9 px-4 rounded-md border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-200 text-sm font-medium transition cursor-pointer"
+      className="inline-flex items-center gap-1.5 h-9 px-4 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 transition cursor-pointer"
     >
       <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317a1 1 0 011.35 0l.396.396a1 1 0 001.06.21l.518-.215a1 1 0 011.32.587l.18.527a1 1 0 00.823.682l.553.092a1 1 0 01.821 1.135l-.086.553a1 1 0 00.412 1.005l.452.323a1 1 0 010 1.638l-.452.323a1 1 0 00-.412 1.005l.086.553a1 1 0 01-.821 1.135l-.553.092a1 1 0 00-.823.682l-.18.527a1 1 0 01-1.32.587l-.518-.215a1 1 0 00-1.06.21l-.396.396a1 1 0 01-1.35 0l-.396-.396a1 1 0 00-1.06-.21l-.518.215a1 1 0 01-1.32-.587l-.18-.527a1 1 0 00-.823-.682l-.553-.092a1 1 0 01-.821-1.135l.086-.553a1 1 0 00-.412-1.005l-.452-.323a1 1 0 010-1.638l.452-.323a1 1 0 00.412-1.005l-.086-.553a1 1 0 01.821-1.135l.553-.092a1 1 0 00.823-.682l.18-.527a1 1 0 011.32-.587l.518.215a1 1 0 001.06-.21l.396-.396z" />
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L4 5v6.5C4 16.5 7.5 20.5 12 22c4.5-1.5 8-5.5 8-10.5V5l-8-3z" />
       </svg>
       Admin portal
     </Link>
