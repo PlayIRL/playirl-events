@@ -16,6 +16,9 @@ import { NextResponse } from "next/server";
 import { getActiveEvents, getEvent } from "@/lib/events";
 import { safeEqualSecret } from "@/lib/security";
 import {
+  type DiscordActivityKind,
+  type DiscordActivityStatus,
+  type DiscordActivityTrigger,
   type DiscordSubscription,
   bumpPendingPost,
   claimPost,
@@ -26,6 +29,7 @@ import {
   listEnabledSubscriptions,
   markSubscriptionDispatched,
   recordPostMessageId,
+  recordSubscriptionActivity,
   recordSubscriptionFailure,
   releasePost,
 } from "@/lib/discord-subscriptions";
@@ -51,6 +55,32 @@ import {
  * failures, and logs context. Pulled out so the digest, reminder, and retry
  * paths share the same dead-channel cleanup behavior.
  */
+/**
+ * Append a row to discord_subscription_activity. Wrapped in try/catch so a
+ * logging failure never breaks the actual post path — activity is best-effort
+ * observability, not part of the dispatch contract.
+ */
+function logActivity(args: {
+  subscriptionId: string;
+  channelId: string;
+  kind: DiscordActivityKind;
+  trigger: DiscordActivityTrigger;
+  status: DiscordActivityStatus;
+  eventCount: number;
+  messagesPosted: number;
+  error?: string | null;
+}): void {
+  try {
+    recordSubscriptionActivity(args);
+  } catch (err) {
+    console.error(`[discord-dispatch] activity log failed for sub=${args.subscriptionId}:`, err);
+  }
+}
+
+function errorMessage(err: unknown): string {
+  return err instanceof Error ? err.message : String(err);
+}
+
 function handleDispatchFailure(
   subId: string,
   err: unknown,
@@ -182,10 +212,12 @@ async function fireDigest(
   if (!claimPost(sub.id, headEvent.id, "digest", bucket)) return;
 
   let firstMsgId: string | null = null;
+  let messagesPosted = 0;
   let lastErr: unknown = null;
   for (let i = 0; i < payloads.length; i++) {
     try {
       const result = await postToChannel(sub.channel_id, payloads[i]);
+      messagesPosted++;
       if (firstMsgId === null) {
         firstMsgId = result.id;
         recordPostMessageId(sub.id, headEvent.id, "digest", bucket, result.id);
@@ -213,10 +245,29 @@ async function fireDigest(
       lastErr,
       firstMsgId === null ? "digest" : "digest partial",
     );
+    logActivity({
+      subscriptionId: sub.id,
+      channelId: sub.channel_id,
+      kind: "digest",
+      trigger: "scheduled",
+      status: messagesPosted > 0 ? "partial" : "error",
+      eventCount: events.length,
+      messagesPosted,
+      error: errorMessage(lastErr),
+    });
     return;
   }
 
   summary.digests_posted++;
+  logActivity({
+    subscriptionId: sub.id,
+    channelId: sub.channel_id,
+    kind: "digest",
+    trigger: "scheduled",
+    status: "ok",
+    eventCount: events.length,
+    messagesPosted,
+  });
 }
 
 async function fireReminders(
@@ -254,6 +305,15 @@ async function fireReminders(
       const msg = await postToChannel(sub.channel_id, payload);
       recordPostMessageId(sub.id, ev.id, "reminder", bucket, msg.id);
       summary.reminders_posted++;
+      logActivity({
+        subscriptionId: sub.id,
+        channelId: sub.channel_id,
+        kind: "reminder",
+        trigger: "scheduled",
+        status: "ok",
+        eventCount: 1,
+        messagesPosted: 1,
+      });
       await new Promise(r => setTimeout(r, POST_GAP_MS));
     } catch (err) {
       // Keep the ledger claim so the main loop won't retry; queue for
@@ -263,6 +323,16 @@ async function fireReminders(
       const errMsg = err instanceof Error ? err.message : String(err);
       handleDispatchFailure(sub.id, err, `reminder ${ev.id}`);
       enqueuePendingPost(sub.id, ev.id, "reminder", bucket, errMsg);
+      logActivity({
+        subscriptionId: sub.id,
+        channelId: sub.channel_id,
+        kind: "reminder",
+        trigger: "scheduled",
+        status: "error",
+        eventCount: 1,
+        messagesPosted: 0,
+        error: errMsg,
+      });
     }
   }
 }
@@ -291,6 +361,15 @@ async function drainPendingPosts(now: Date, summary: DispatchSummary): Promise<v
       recordPostMessageId(row.subscription_id, row.event_id, row.kind, row.bucket, msg.id);
       deletePendingPost(row.subscription_id, row.event_id, row.kind, row.bucket);
       summary.retries_posted++;
+      logActivity({
+        subscriptionId: sub.id,
+        channelId: sub.channel_id,
+        kind: row.kind === "reminder" ? "reminder" : "digest",
+        trigger: "retry",
+        status: "ok",
+        eventCount: 1,
+        messagesPosted: 1,
+      });
       await new Promise(r => setTimeout(r, POST_GAP_MS));
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : String(err);
@@ -306,6 +385,16 @@ async function drainPendingPosts(now: Date, summary: DispatchSummary): Promise<v
       // subscription instead of keeping the rows around forever.
       handleDispatchFailure(sub.id, err, `retry ${ev.id}`);
       summary.errors++;
+      logActivity({
+        subscriptionId: sub.id,
+        channelId: sub.channel_id,
+        kind: row.kind === "reminder" ? "reminder" : "digest",
+        trigger: "retry",
+        status: "error",
+        eventCount: 1,
+        messagesPosted: 0,
+        error: errMsg,
+      });
     }
   }
 }

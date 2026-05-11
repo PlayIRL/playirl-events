@@ -12,6 +12,18 @@ import {
   shortTimezoneLabel,
 } from "./_form-controls";
 
+interface ActivityEntry {
+  id: number;
+  fired_at: string;
+  kind: "digest" | "reminder" | "send_now";
+  trigger: "scheduled" | "manual" | "retry";
+  status: "ok" | "partial" | "error" | "skipped";
+  event_count: number;
+  messages_posted: number;
+  error: string | null;
+  channel_id: string;
+}
+
 export default function SubscriptionsList({ subscriptions }: { subscriptions: DiscordSubscription[] }) {
   return (
     <div className="space-y-4">
@@ -54,6 +66,34 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
   function togglePreview() {
     if (!previewOpen && !previewData) loadPreview();
     setPreviewOpen(v => !v);
+  }
+
+  // Activity log — recent fires for this subscription. Same lazy-load pattern
+  // as the preview panel: fetched on first open, manually refreshed after
+  // Send Now succeeds so the new entry shows up without a reload.
+  const [activityOpen, setActivityOpen] = useState(false);
+  const [activityLoading, setActivityLoading] = useState(false);
+  const [activityError, setActivityError] = useState<string | null>(null);
+  const [activityData, setActivityData] = useState<ActivityEntry[] | null>(null);
+
+  async function loadActivity() {
+    setActivityLoading(true);
+    setActivityError(null);
+    try {
+      const res = await fetch(`/api/account/discord/${sub.id}/activity`);
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
+      setActivityData(body.activity ?? []);
+    } catch (e) {
+      setActivityError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setActivityLoading(false);
+    }
+  }
+
+  function toggleActivity() {
+    if (!activityOpen && !activityData) loadActivity();
+    setActivityOpen(v => !v);
   }
 
   // Mirror the create form's local state shape so we can reuse
@@ -145,6 +185,9 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
       setSendNowStatus({ kind: "err", message: e instanceof Error ? e.message : String(e) });
     } finally {
       setBusy(false);
+      // Always refresh activity if the panel is open — both success and
+      // failure now write a row, and the user opened the log to see it.
+      if (activityOpen) loadActivity();
     }
   }
 
@@ -421,6 +464,60 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
         </div>
       )}
 
+      {!editing && (
+        <div className="mt-4 pt-4 border-t border-neutral-100 dark:border-neutral-800">
+          <button
+            onClick={toggleActivity}
+            disabled={busy}
+            aria-expanded={activityOpen}
+            aria-controls={`discord-activity-${sub.id}`}
+            className="w-full flex items-center gap-2 text-left text-xs font-medium text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition"
+          >
+            <span>Activity log</span>
+            {activityOpen && activityData && (
+              <span className="text-[10px] text-neutral-500 dark:text-neutral-400 font-normal">
+                {activityData.length === 0
+                  ? "No activity yet"
+                  : `Last ${activityData.length} fire${activityData.length === 1 ? "" : "s"}`}
+              </span>
+            )}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`ml-auto w-3.5 h-3.5 text-neutral-500 dark:text-neutral-400 transition-transform duration-200 ${activityOpen ? "rotate-180" : ""}`}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {activityOpen && (
+            <div id={`discord-activity-${sub.id}`} className="mt-3">
+              {activityLoading && (
+                <p className="text-xs text-neutral-500 dark:text-neutral-400">Loading…</p>
+              )}
+              {activityError && (
+                <p className="text-xs text-red-600 dark:text-red-400">{activityError}</p>
+              )}
+              {activityData && activityData.length === 0 && (
+                <p className="text-xs text-neutral-500 dark:text-neutral-400">
+                  Nothing has fired yet. The next scheduled tick or a manual <strong>Send now</strong> will show up here.
+                </p>
+              )}
+              {activityData && activityData.length > 0 && (
+                <ul className="space-y-1.5">
+                  {activityData.map(entry => (
+                    <ActivityRow key={entry.id} entry={entry} />
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
       {editing && (
         <div className="mt-4 pt-4 border-t border-neutral-100 dark:border-neutral-800 space-y-5">
           <div className="rounded-md bg-neutral-50 dark:bg-neutral-800/50 px-3 py-2 text-xs text-neutral-600 dark:text-neutral-300">
@@ -560,5 +657,90 @@ function Field({
         )}
       </dd>
     </>
+  );
+}
+
+// Server stamps fired_at as UTC SQLite "YYYY-MM-DD HH:MM:SS" with no zone
+// marker. Treat it as UTC explicitly so we don't double-convert in the
+// browser, then render in the viewer's local time.
+function parseFiredAt(raw: string): Date {
+  return new Date(raw.replace(" ", "T") + "Z");
+}
+
+function formatFiredAt(d: Date): string {
+  return d.toLocaleString(undefined, {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
+function ActivityRow({ entry }: { entry: ActivityEntry }) {
+  const firedAt = parseFiredAt(entry.fired_at);
+  const ts = formatFiredAt(firedAt);
+
+  const kindLabel =
+    entry.kind === "digest" ? "Digest"
+    : entry.kind === "reminder" ? "Reminder"
+    : "Send now";
+
+  const triggerLabel =
+    entry.trigger === "manual" ? "manual"
+    : entry.trigger === "retry" ? "retry"
+    : "scheduled";
+
+  // Indicator dot color tracks status — green ok, amber partial, red error.
+  // Keeps the row scannable without needing to read every status word.
+  const indicator =
+    entry.status === "ok"
+      ? "bg-emerald-500"
+      : entry.status === "partial"
+        ? "bg-amber-500"
+        : entry.status === "error"
+          ? "bg-red-500"
+          : "bg-neutral-400";
+
+  const statusText =
+    entry.status === "ok"
+      ? `Posted ${entry.event_count} event${entry.event_count === 1 ? "" : "s"} across ${entry.messages_posted} message${entry.messages_posted === 1 ? "" : "s"}`
+      : entry.status === "partial"
+        ? `Partial — ${entry.messages_posted} of ${entry.event_count > 0 ? entry.event_count : "?"} message${entry.messages_posted === 1 ? "" : "s"} landed before Discord rejected the rest`
+        : entry.status === "error"
+          ? `Failed before any message landed`
+          : `Skipped`;
+
+  return (
+    <li className="flex items-start gap-2.5 text-xs">
+      <span
+        aria-hidden="true"
+        className={`mt-1 inline-block w-2 h-2 rounded-full shrink-0 ${indicator}`}
+      />
+      <div className="flex-1 min-w-0">
+        <div className="flex items-baseline gap-2 flex-wrap">
+          <time
+            dateTime={firedAt.toISOString()}
+            className="text-neutral-700 dark:text-neutral-200 font-medium tabular-nums"
+            title={firedAt.toISOString()}
+          >
+            {ts}
+          </time>
+          <span className="text-[10px] uppercase tracking-wider px-1.5 py-px rounded bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
+            {kindLabel}
+          </span>
+          <span className="text-[10px] uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+            {triggerLabel}
+          </span>
+        </div>
+        <div className="mt-0.5 text-neutral-600 dark:text-neutral-300 leading-snug">
+          {statusText}
+        </div>
+        {entry.error && (
+          <div className="mt-1 text-[11px] text-red-600 dark:text-red-400 font-mono break-words">
+            {entry.error}
+          </div>
+        )}
+      </div>
+    </li>
   );
 }
