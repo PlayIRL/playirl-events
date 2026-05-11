@@ -31,8 +31,8 @@ export const HINTS = {
   hour: "When during the day the post lands. Shown in your local timezone.",
   lead: "How long before each event to send the reminder.",
   format: "Filter to events of a single format (e.g. Commander). Leave blank to include all formats.",
-  near: "Center events on a city, address, or zip. We'll geocode it server-side.",
-  radius: "Only include events within this many miles of \"Near\". Leave blank for no distance limit.",
+  near: "Center events on a city, address, or zip. We'll geocode it server-side. Required unless you set a venue scope above.",
+  radius: "Only include events within this many miles of \"Near\". Required unless you set a venue scope above.",
   daysAhead: "How far ahead the digest looks for events. Default is one week.",
 } as const;
 
@@ -197,9 +197,14 @@ export interface ScheduleFiltersHandlers {
 export function ScheduleAndFilterSections({
   value,
   on,
+  /** When true, Near + Radius render with required-* markers and a visible
+   *  hint reminding the user a scope must be set. The parent form is still
+   *  the source of truth for actually blocking submission. */
+  geoRequired = false,
 }: {
   value: ScheduleFiltersValue;
   on: ScheduleFiltersHandlers;
+  geoRequired?: boolean;
 }) {
   const { hourOptions, tzLabel } = useTimePicker();
 
@@ -272,16 +277,24 @@ export function ScheduleAndFilterSections({
           </select>
         </Field>
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Near" hint={HINTS.near}>
+          <Field
+            label={geoRequired ? "Near *" : "Near"}
+            hint={HINTS.near}
+          >
             <input
               type="text"
               className={INPUT_CLASS}
               value={value.near}
               onChange={e => on.setNear(e.target.value)}
               placeholder="e.g. Philadelphia, PA"
+              required={geoRequired}
+              aria-required={geoRequired}
             />
           </Field>
-          <Field label="Radius (miles)" hint={HINTS.radius}>
+          <Field
+            label={geoRequired ? "Radius (miles) *" : "Radius (miles)"}
+            hint={HINTS.radius}
+          >
             <input
               type="number"
               min={1}
@@ -289,7 +302,9 @@ export function ScheduleAndFilterSections({
               className={INPUT_CLASS}
               value={value.radiusMiles}
               onChange={e => on.setRadiusMiles(e.target.value === "" ? "" : Number(e.target.value))}
-              placeholder="(no limit)"
+              placeholder={geoRequired ? "Required" : "(no limit)"}
+              required={geoRequired}
+              aria-required={geoRequired}
             />
           </Field>
         </div>

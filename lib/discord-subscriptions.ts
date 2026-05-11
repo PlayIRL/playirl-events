@@ -221,6 +221,36 @@ export function markSubscriptionDispatched(id: string): void {
     .run(id);
 }
 
+/**
+ * Every Discord subscription must be scoped — either pinned to a specific
+ * venue, OR bounded by a geo center + radius. An unscoped sub would post the
+ * entire scrape catalog (potentially nationwide), which is the foot-gun this
+ * rule closes. Returns null if the scope is valid, otherwise a user-facing
+ * error string the API routes return verbatim.
+ */
+export function validateSubScope(args: {
+  venue_name: string | null | undefined;
+  near_label: string | null | undefined;
+  center_lat: number | null | undefined;
+  center_lng: number | null | undefined;
+  radius_miles: number | null | undefined;
+}): string | null {
+  const hasVenue = !!args.venue_name && args.venue_name.trim() !== "";
+  if (hasVenue) return null;
+
+  const hasLabel = !!args.near_label && args.near_label.trim() !== "";
+  const hasCenter = typeof args.center_lat === "number" && typeof args.center_lng === "number";
+  const hasRadius = typeof args.radius_miles === "number" && args.radius_miles > 0;
+
+  if (!hasLabel || !hasCenter) {
+    return "Location is required. Enter a city, ZIP, or address.";
+  }
+  if (!hasRadius) {
+    return "Radius is required. Pick how many miles from your location to include.";
+  }
+  return null;
+}
+
 const PERMANENT_FAILURE_LIMIT = 5;
 
 /**

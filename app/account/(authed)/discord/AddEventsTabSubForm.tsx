@@ -29,7 +29,20 @@ interface Guild {
   bot_present: boolean;
 }
 
-export default function AddEventsTabSubForm({ inviteUrl }: { inviteUrl: string | null }) {
+export interface EventsTabSubDefaults {
+  /** Pre-fill the "near" location label from the user's saved preferences. */
+  near: string;
+  /** Pre-fill the radius from the user's saved preferences. */
+  radius_miles: number;
+}
+
+export default function AddEventsTabSubForm({
+  inviteUrl,
+  defaults,
+}: {
+  inviteUrl: string | null;
+  defaults: EventsTabSubDefaults;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
@@ -58,6 +71,7 @@ export default function AddEventsTabSubForm({ inviteUrl }: { inviteUrl: string |
           venuePrefill={venuePrefill}
           nearPrefill={nearPrefill}
           radiusPrefill={radiusPrefill}
+          defaults={defaults}
           onClose={() => setOpen(false)}
           onCreated={() => {
             setOpen(false);
@@ -74,6 +88,7 @@ function FormModal({
   venuePrefill,
   nearPrefill,
   radiusPrefill,
+  defaults,
   onClose,
   onCreated,
 }: {
@@ -81,6 +96,7 @@ function FormModal({
   venuePrefill?: string;
   nearPrefill?: string;
   radiusPrefill?: string;
+  defaults: EventsTabSubDefaults;
   onClose: () => void;
   onCreated: () => void;
 }) {
@@ -91,8 +107,14 @@ function FormModal({
 
   const [name, setName] = useState("");
   const [venueName, setVenueName] = useState(venuePrefill ?? "");
-  const [near, setNear] = useState(nearPrefill ?? "");
-  const [radiusMiles, setRadiusMiles] = useState<number | "">(radiusPrefill ? Number(radiusPrefill) : "");
+  // Seed from URL prefill first, then the user's Overview-tab preferences,
+  // then empty. A venue scope (set above) overrides both at submit time.
+  const [near, setNear] = useState(nearPrefill || (venuePrefill ? "" : defaults.near));
+  const [radiusMiles, setRadiusMiles] = useState<number | "">(
+    radiusPrefill
+      ? Number(radiusPrefill)
+      : venuePrefill ? "" : defaults.radius_miles,
+  );
   const [format, setFormat] = useState("");
   const [daysAhead, setDaysAhead] = useState(30);
 
@@ -170,7 +192,13 @@ function FormModal({
     }
   }
 
-  const canSubmit = !!guildId && !submitting && !botMissing;
+  // Every sub needs a scope — either a venue OR (location + radius). Block
+  // submit until one path is satisfied so users don't end up auto-syncing
+  // events from across the country into their Discord Events tab.
+  const scopeOk = venueName.trim() !== ""
+    || (near.trim() !== "" && radiusMiles !== "" && Number(radiusMiles) > 0);
+
+  const canSubmit = !!guildId && !submitting && !botMissing && scopeOk;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
@@ -251,16 +279,24 @@ function FormModal({
                   </select>
                 </Field>
                 <div className="grid grid-cols-2 gap-3">
-                  <Field label="Near" hint={HINTS.near}>
+                  <Field
+                    label={venueName.trim() === "" ? "Near *" : "Near"}
+                    hint={HINTS.near}
+                  >
                     <input
                       type="text"
                       className={INPUT_CLASS}
                       value={near}
                       onChange={e => setNear(e.target.value)}
                       placeholder="e.g. Philadelphia, PA"
+                      required={venueName.trim() === ""}
+                      aria-required={venueName.trim() === ""}
                     />
                   </Field>
-                  <Field label="Radius (miles)" hint={HINTS.radius}>
+                  <Field
+                    label={venueName.trim() === "" ? "Radius (miles) *" : "Radius (miles)"}
+                    hint={HINTS.radius}
+                  >
                     <input
                       type="number"
                       min={1}
@@ -268,10 +304,17 @@ function FormModal({
                       className={INPUT_CLASS}
                       value={radiusMiles}
                       onChange={e => setRadiusMiles(e.target.value === "" ? "" : Number(e.target.value))}
-                      placeholder="(no limit)"
+                      placeholder={venueName.trim() === "" ? "Required" : "(no limit)"}
+                      required={venueName.trim() === ""}
+                      aria-required={venueName.trim() === ""}
                     />
                   </Field>
                 </div>
+                {!scopeOk && (
+                  <div className="rounded-md border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-3 py-2 text-xs text-amber-900 dark:text-amber-200">
+                    Set a <strong>Venue scope</strong> above OR fill in both <strong>Near</strong> and <strong>Radius</strong>. An Events-tab subscription needs a scope so it doesn&apos;t pull events from nationwide.
+                  </div>
+                )}
                 <Field label="Days ahead to include" hint="How far ahead to look for matching events. Default 30.">
                   <input
                     type="number"
