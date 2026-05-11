@@ -105,13 +105,17 @@ function escapeMarkdown(text: string): string {
   return text.replace(/([\\[\]()*_~`>])/g, "\\$1");
 }
 
-function formatDigestDateHeading(dateStr: string): string {
+function formatDateLabel(dateStr: string): string {
   const d = new Date(`${dateStr}T12:00:00Z`);
   const weekday = d.toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" });
   const monthDay = d.toLocaleDateString("en-US", { month: "long", day: "numeric", timeZone: "UTC" });
+  return `${weekday}, ${monthDay}`;
+}
+
+function formatDigestDateHeading(dateStr: string): string {
   // `## ` is Discord's h2 markdown — renders large + bold so the day jumps
   // out as a section divider when scanning a multi-day digest.
-  return `## ${weekday}, ${monthDay}`;
+  return `## ${formatDateLabel(dateStr)}`;
 }
 
 // Two-line block per event:
@@ -209,6 +213,65 @@ export function renderDigestSummary(events: EventRow[], opts: {
     }],
     allowed_mentions: { parse: [] },
   };
+}
+
+/**
+ * Multi-message digest: one Discord message per date with events. Used by the
+ * scheduled dispatcher and the manual "send now" trigger so very long digests
+ * don't get truncated against Discord's 4096-char embed cap (each day's slice
+ * is small enough to fit comfortably), and so a 7+ day window doesn't render
+ * two side-by-side "Monday" sections that read as duplicates. Days with no
+ * matching events are skipped entirely. Returns `[]` when there are no events
+ * at all — caller decides whether to post a "no events" placeholder.
+ */
+export function renderDigestByDay(events: EventRow[]): DiscordMessagePayload[] {
+  if (events.length === 0) return [];
+
+  // Preserve chronological order — caller passes events sorted by date+time.
+  const byDate = new Map<string, EventRow[]>();
+  for (const ev of events) {
+    const list = byDate.get(ev.date);
+    if (list) list.push(ev);
+    else byDate.set(ev.date, [ev]);
+  }
+
+  const messages: DiscordMessagePayload[] = [];
+  for (const [date, evs] of byDate) {
+    if (evs.length === 0) continue;
+
+    const blocks = evs.map(formatDigestEventBlock);
+    // Each day's embed should never overflow 4096 chars in practice (50+
+    // events at one venue on the same day is implausible), but keep the
+    // budget-aware truncation as a safety rail.
+    let used = 0;
+    const kept: string[] = [];
+    let omitted = 0;
+    for (const block of blocks) {
+      const cost = block.length + 2; // \n\n separator
+      if (used + cost > DIGEST_DESC_BUDGET) {
+        omitted++;
+        continue;
+      }
+      kept.push(block);
+      used += cost;
+    }
+    let description = kept.join("\n\n");
+    if (omitted > 0) {
+      description += `\n\n_…and ${omitted} more · [view all](${SITE_URL}/?utm_source=discord)_`;
+    }
+
+    messages.push({
+      embeds: [{
+        title: `📅 ${formatDateLabel(date)} · ${evs.length} event${evs.length === 1 ? "" : "s"}`,
+        url: `${SITE_URL}/?utm_source=discord`,
+        description,
+        color: FORMAT_EMBED_COLOR_DEFAULT,
+        footer: { text: "PlayIRL.GG" },
+      }],
+      allowed_mentions: { parse: [] },
+    });
+  }
+  return messages;
 }
 
 export function renderReminderMessage(event: EventRow): DiscordMessagePayload {

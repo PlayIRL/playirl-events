@@ -32,6 +32,7 @@ import {
 import {
   DiscordPostError,
   postToChannel,
+  renderDigestByDay,
   renderDigestSummary,
   renderReminderMessage,
 } from "@/lib/discord-post";
@@ -144,7 +145,6 @@ async function fireDigest(
   sub: DiscordSubscription,
   bucket: string,
   windowDays: number,
-  windowLabel: string,
   summary: DispatchSummary,
 ): Promise<void> {
   const now = new Date();
@@ -161,21 +161,56 @@ async function fireDigest(
   // actual content, and /playirl preview lets admins sanity-check filters.
   if (events.length === 0) return;
 
-  // Single summary message. Claim under the first event's id so the dedupe
-  // ledger key (subscription_id, event_id, kind, bucket) stays unique per
-  // bucket, matching the per-event PK shape the schema expects.
-  const payload = renderDigestSummary(events, { windowLabel });
+  // Fan out one message per date so a long window (e.g. a 7-day weekly
+  // digest with 30+ events) doesn't truncate at Discord's 4096-char embed
+  // cap. Claim under the first event's id so the dedupe ledger key
+  // (subscription_id, event_id, kind, bucket) stays unique per bucket; the
+  // first chunk's message_id is what gets recorded, which is what the
+  // cancellation patcher will reach for. Trade-off: cancellations only
+  // patch the first day's message on a multi-day digest. Acceptable
+  // (cancellations are best-effort) and avoids a schema migration.
+  const payloads = renderDigestByDay(events);
+  if (payloads.length === 0) return;
+
   const headEvent = events[0];
   if (!claimPost(sub.id, headEvent.id, "digest", bucket)) return;
-  try {
-    const result = await postToChannel(sub.channel_id, payload);
-    recordPostMessageId(sub.id, headEvent.id, "digest", bucket, result.id);
-    summary.digests_posted++;
-  } catch (err) {
-    releasePost(sub.id, headEvent.id, "digest", bucket);
-    summary.errors++;
-    handleDispatchFailure(sub.id, err, "digest");
+
+  let firstMsgId: string | null = null;
+  let lastErr: unknown = null;
+  for (let i = 0; i < payloads.length; i++) {
+    try {
+      const result = await postToChannel(sub.channel_id, payloads[i]);
+      if (firstMsgId === null) {
+        firstMsgId = result.id;
+        recordPostMessageId(sub.id, headEvent.id, "digest", bucket, result.id);
+      }
+      if (i < payloads.length - 1) {
+        await new Promise(r => setTimeout(r, POST_GAP_MS));
+      }
+    } catch (err) {
+      lastErr = err;
+      break;
+    }
   }
+
+  if (lastErr) {
+    // First chunk never landed → release the claim so the next tick retries
+    // the whole digest. Otherwise: at least one day's content reached the
+    // channel — keep the claim to prevent duplicate days on retry, log, and
+    // accept the partial delivery.
+    if (firstMsgId === null) {
+      releasePost(sub.id, headEvent.id, "digest", bucket);
+    }
+    summary.errors++;
+    handleDispatchFailure(
+      sub.id,
+      lastErr,
+      firstMsgId === null ? "digest" : "digest partial",
+    );
+    return;
+  }
+
+  summary.digests_posted++;
 }
 
 async function fireReminders(
@@ -337,13 +372,13 @@ export async function POST(request: Request) {
       if (sub.mode === "weekly") {
         const due = force || (sub.dow === utcDow && sub.hour_utc === utcHour && inFireWindow);
         if (due) {
-          await fireDigest(sub, isoWeekKey(now), sub.days_ahead, "this week", summary);
+          await fireDigest(sub, isoWeekKey(now), sub.days_ahead, summary);
           markSubscriptionDispatched(sub.id);
         }
       } else if (sub.mode === "daily") {
         const due = force || (sub.hour_utc === utcHour && inFireWindow);
         if (due) {
-          await fireDigest(sub, dateKey(now), Math.min(sub.days_ahead, 2), "today", summary);
+          await fireDigest(sub, dateKey(now), Math.min(sub.days_ahead, 2), summary);
           markSubscriptionDispatched(sub.id);
         }
       } else if (sub.mode === "reminder") {
