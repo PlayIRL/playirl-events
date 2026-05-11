@@ -332,9 +332,6 @@ export default async function EventPage({
                 fetchPriority="high"
                 decoding="async"
               />
-              {heroIsPhoto && (
-                <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-[#0c1220] via-transparent to-transparent pointer-events-none" />
-              )}
             </div>
           );
           return ev.location ? (
