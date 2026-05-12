@@ -19,6 +19,7 @@ const REQUIRED = ["id", "title", "date", "source"];
 const ALL_FIELDS = [
   "id", "title", "format", "date", "time", "timezone",
   "location", "address", "cost", "store_url", "detail_url", "source", "image_url",
+  "description",
 ];
 
 export function validateEvents(events: any, sourceName: string) {

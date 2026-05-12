@@ -58,12 +58,15 @@ function buildEventDescription(ev: {
   timezone: string;
   cost: string;
   notes: string;
+  description: string;
 }): string {
-  // Prefer the first sentence of host-written notes when present and useful;
+  // Prefer the first sentence of any human-readable description (host-written
+  // notes take priority; scraper-supplied description is the fallback);
   // otherwise compose from the structured fields so every event still gets
   // a meaningful preview snippet.
-  if (ev.notes && ev.notes.trim().length > 0) {
-    const firstSentence = ev.notes.split(/(?<=[.!?])\s+/)[0] ?? ev.notes;
+  const blurb = (ev.notes || ev.description || "").trim();
+  if (blurb.length > 0) {
+    const firstSentence = blurb.split(/(?<=[.!?])\s+/)[0] ?? blurb;
     return clampDescription(firstSentence);
   }
   const timeRange = formatEventTimeRange(ev.date, ev.time, ev.timezone);
@@ -419,12 +422,14 @@ export default async function EventPage({
           </div>
         </Reveal>
 
-        {/* Notes */}
-        {ev.notes && (
+        {/* Description: prefer host/admin-authored `notes` (override) over
+            scraper-supplied `description`. Both render with the same
+            "Description" label so the viewer sees a single section. */}
+        {(ev.notes || ev.description) && (
           <Reveal>
             <div className="mx-6 mb-4 bg-neutral-50 dark:bg-neutral-800 rounded-md p-4">
               <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Description</p>
-              <p className="text-sm text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap break-words">{ev.notes}</p>
+              <p className="text-sm text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap break-words">{ev.notes || ev.description}</p>
             </div>
           </Reveal>
         )}
