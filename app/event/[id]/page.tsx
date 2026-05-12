@@ -212,7 +212,7 @@ export default async function EventPage({
     <main className="w-full max-w-2xl min-w-0 mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-6 anim-fade-in">
         <Link href="/" className="text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:underline">
-          &larr; Back to PlayIRL.GG
+          &larr; Back
         </Link>
         <div className="flex items-center gap-2">
           {rsvpEnabled && (
