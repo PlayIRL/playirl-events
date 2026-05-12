@@ -29,7 +29,7 @@ export default function NotFound() {
           href="/"
           className="inline-flex items-center gap-2 px-4 h-10 rounded-md bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-100 transition"
         >
-          ← Back to PlayIRL.GG
+          ← Back
         </Link>
         <a
           href="https://discord.gg/axDSujPTfj"
