@@ -31,6 +31,10 @@ export interface ScrapedEvent {
   status?: "active" | "skip" | "pending";
   /** Cover image URL provided by the source (e.g. Discord CDN). */
   image_url?: string;
+  /** Source-provided description (e.g. WotC's GraphQL `description`). The
+   *  upsert path refreshes this on every scrape — admin overrides live in
+   *  the separate `notes` column, which scrapers leave alone. */
+  description?: string;
   /**
    * Where lat/lng came from. `"source"` means a per-event API gave them to us
    * (trust). `"guild_fallback"` means we used a hardcoded or guild-wide

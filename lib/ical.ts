@@ -7,7 +7,10 @@ function buildDescription(event: EventRow): string {
   if (event.cost) lines.push(`Cost: ${event.cost}`);
   if (event.store_url) lines.push(`Store: ${event.store_url}`);
   if (event.detail_url) lines.push(`Details: ${event.detail_url}`);
-  if (event.notes) lines.push(`\n${event.notes}`);
+  // Host-written `notes` overrides the scraper's `description` when both
+  // exist (same priority as the detail page).
+  const blurb = event.notes || event.description;
+  if (blurb) lines.push(`\n${blurb}`);
   lines.push(`Source: ${event.source}`);
   return lines.join("\n");
 }

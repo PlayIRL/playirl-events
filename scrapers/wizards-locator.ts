@@ -239,6 +239,7 @@ export default async function fetchWizardsEvents(_sourceConfig = {}) {
       timezone: "America/New_York",
       location: venueName,
       address: venueAddress,
+      description: (ev.description || "").trim(),
       cost: fee ? (fee.amount === 0 ? "Free" : "$" + Math.round(fee.amount / 100)) : "",
       // store_url is the venue's external website — only the coord-matched
       // store list carries this; `ev.venue` doesn't include a URL.

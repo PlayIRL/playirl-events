@@ -17,6 +17,11 @@ export interface EventRow {
   source: string;
   status: string;
   notes: string;
+  /** Source-provided description (e.g. WotC GraphQL `description`). Scrapers
+   *  refresh this on every run. The detail page renders `notes` if set,
+   *  otherwise falls back to this field. Empty string for user-created events
+   *  (those use `notes` directly). */
+  description: string;
   added_date: string;
   updated_date: string;
   owner_id: string | null;
@@ -61,6 +66,9 @@ export interface ScrapedEvent {
   status?: "active" | "skip" | "pending";
   /** Cover image URL (e.g. Discord CDN or hosted upload). Empty string if none. */
   image_url?: string;
+  /** Source-provided description. Refreshed on every scrape — admin/host
+   *  overrides live in `notes` instead, which the scraper leaves alone. */
+  description?: string;
 }
 
 export function upsertEvents(events: ScrapedEvent[]): {
@@ -74,14 +82,16 @@ export function upsertEvents(events: ScrapedEvent[]): {
   const getStmt = db.prepare("SELECT status, notes, added_date, owner_id, source_type, image_url FROM events WHERE id = ?");
 
   const insertStmt = db.prepare(`
-    INSERT INTO events (id, title, format, date, time, timezone, location, address, cost, store_url, detail_url, latitude, longitude, source, status, notes, added_date, updated_date, owner_id, source_type, image_url)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', ?, ?, ?, ?, ?)
+    INSERT INTO events (id, title, format, date, time, timezone, location, address, cost, store_url, detail_url, latitude, longitude, source, status, notes, description, added_date, updated_date, owner_id, source_type, image_url)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', ?, ?, ?, ?, ?, ?)
   `);
 
   // Note: owner_id and source_type are intentionally omitted from UPDATE so they survive scraper re-runs (same pattern as pinned/skip).
   // image_url is preserved when an existing row already has one — uploads should never get clobbered by a re-scrape.
+  // `notes` is also omitted: host/admin-authored, scrapers must not overwrite it.
+  // `description` IS refreshed on every update — it's source-authoritative.
   const updateStmt = db.prepare(`
-    UPDATE events SET title=?, format=?, date=?, time=?, timezone=?, location=?, address=?, cost=?, store_url=?, detail_url=?, latitude=?, longitude=?, source=?, status=?, updated_date=?, image_url=?
+    UPDATE events SET title=?, format=?, date=?, time=?, timezone=?, location=?, address=?, cost=?, store_url=?, detail_url=?, latitude=?, longitude=?, source=?, status=?, updated_date=?, image_url=?, description=?
     WHERE id=?
   `);
 
@@ -96,7 +106,7 @@ export function upsertEvents(events: ScrapedEvent[]): {
       if (!existing) {
         const insertStatus = ev.status ?? "active";
         const insertSourceType = ev.source_type ?? "scraper";
-        insertStmt.run(ev.id, ev.title, ev.format, ev.date, ev.time, ev.timezone, ev.location, ev.address, ev.cost, ev.store_url, ev.detail_url, ev.latitude ?? null, ev.longitude ?? null, ev.source, insertStatus, now, now, ev.owner_id ?? null, insertSourceType, ev.image_url ?? "");
+        insertStmt.run(ev.id, ev.title, ev.format, ev.date, ev.time, ev.timezone, ev.location, ev.address, ev.cost, ev.store_url, ev.detail_url, ev.latitude ?? null, ev.longitude ?? null, ev.source, insertStatus, ev.description ?? "", now, now, ev.owner_id ?? null, insertSourceType, ev.image_url ?? "");
         added++;
       } else if (existing.source_type === "organizer" || existing.source_type === "user" || existing.source_type === "user-discord" || existing.owner_id) {
         // User- and organizer-owned events are authoritative — never overwritten by re-scrapes.
@@ -114,7 +124,7 @@ export function upsertEvents(events: ScrapedEvent[]): {
             : "active";
         // Keep an existing image_url if the re-scrape doesn't carry one.
         const nextImage = ev.image_url || existing.image_url || "";
-        updateStmt.run(ev.title, ev.format, ev.date, ev.time, ev.timezone, ev.location, ev.address, ev.cost, ev.store_url, ev.detail_url, ev.latitude ?? null, ev.longitude ?? null, ev.source, status, now, nextImage, ev.id);
+        updateStmt.run(ev.title, ev.format, ev.date, ev.time, ev.timezone, ev.location, ev.address, ev.cost, ev.store_url, ev.detail_url, ev.latitude ?? null, ev.longitude ?? null, ev.source, status, now, nextImage, ev.description ?? "", ev.id);
         updated++;
       }
     }
@@ -309,8 +319,8 @@ export function createEvent(input: EventInput & { id: string; title: string; dat
   const db = getDb();
   const now = new Date().toISOString().split("T")[0];
   db.prepare(`
-    INSERT INTO events (id, title, format, date, time, timezone, location, address, cost, store_url, detail_url, latitude, longitude, source, status, notes, added_date, updated_date, owner_id, source_type, image_url, capacity, rsvp_enabled, visibility)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO events (id, title, format, date, time, timezone, location, address, cost, store_url, detail_url, latitude, longitude, source, status, notes, description, added_date, updated_date, owner_id, source_type, image_url, capacity, rsvp_enabled, visibility)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
     input.id,
     input.title,
@@ -328,6 +338,7 @@ export function createEvent(input: EventInput & { id: string; title: string; dat
     input.source,
     VALID_STATUSES.has(input.status ?? "") ? input.status : "active",
     input.notes ?? "",
+    input.description ?? "",
     now,
     now,
     input.owner_id ?? null,
@@ -350,14 +361,14 @@ export function updateEvent(id: string, patch: EventInput): EventRow | undefined
   db.prepare(`
     UPDATE events SET
       title=?, format=?, date=?, time=?, timezone=?, location=?, address=?, cost=?,
-      store_url=?, detail_url=?, latitude=?, longitude=?, status=?, notes=?, image_url=?,
+      store_url=?, detail_url=?, latitude=?, longitude=?, status=?, notes=?, description=?, image_url=?,
       capacity=?, rsvp_enabled=?, visibility=?, updated_date=?
     WHERE id=?
   `).run(
     merged.title, merged.format, merged.date, merged.time, merged.timezone, merged.location,
     merged.address, merged.cost, merged.store_url, merged.detail_url,
     merged.latitude ?? null, merged.longitude ?? null,
-    merged.status, merged.notes, merged.image_url ?? "",
+    merged.status, merged.notes, merged.description ?? "", merged.image_url ?? "",
     normalizeCapacity(merged.capacity), merged.rsvp_enabled ? 1 : 0,
     normalizeVisibility(merged.visibility),
     now, id,

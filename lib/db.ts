@@ -441,6 +441,12 @@ function initSchema(db: Database.Database) {
   // were silently deleted with zero feedback.
   try { db.exec("ALTER TABLE events ADD COLUMN rejected_at TEXT"); } catch {}
   try { db.exec("ALTER TABLE events ADD COLUMN rejection_reason TEXT DEFAULT ''"); } catch {}
+  // Source-provided description (e.g. WotC's GraphQL `description` field).
+  // Distinct from `notes`, which is host/admin-authored. Scrapers refresh this
+  // on every run; the upsert path leaves `notes` alone for scraper-owned rows
+  // so admin overrides on a scraped event survive. The detail page renders
+  // `notes` if set, else `description`.
+  try { db.exec("ALTER TABLE events ADD COLUMN description TEXT DEFAULT ''"); } catch {}
   // Waitlist→going promotion timestamp on event_rsvps. When capacity opens
   // up and lib/event-rsvps.ts promotes the next waitlister, we stamp
   // promoted_at so the event detail page can render a "🎉 You got off the

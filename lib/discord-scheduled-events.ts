@@ -87,12 +87,14 @@ function eventEndIso(event: EventRow): string {
  * Discord-side event always links back home.
  */
 export function buildScheduledEventPayload(event: EventRow): CreateGuildScheduledEventInput {
-  // Description: notes (truncated) + a link back to PlayIRL. Discord caps at
-  // 1000 chars; budget 800 for the user notes so we have room for the link.
+  // Description: prefer host-written `notes`, fall back to the scraper's
+  // `description` (same priority as the detail page). Truncated + a link
+  // back to PlayIRL. Discord caps at 1000 chars; budget 800 for the body so
+  // we have room for the link.
   const linkLine = `\n\nDetails: ${SITE_URL}/event/${encodeURIComponent(event.id)}`;
-  const notes = (event.notes ?? "").trim();
-  const trimmedNotes = notes.length > 800 ? notes.slice(0, 797) + "…" : notes;
-  const description = (trimmedNotes ? `${trimmedNotes}${linkLine}` : linkLine.trim()).slice(0, 1000);
+  const body = (event.notes || event.description || "").trim();
+  const trimmedBody = body.length > 800 ? body.slice(0, 797) + "…" : body;
+  const description = (trimmedBody ? `${trimmedBody}${linkLine}` : linkLine.trim()).slice(0, 1000);
 
   // Location field: prefer "Venue, Address" when both are present; fall back
   // to whichever we have. EXTERNAL events require non-empty location (max
