@@ -9,7 +9,7 @@ X-WR-CALDESC:MTG events near Philadelphia via PlayIRL.GG
 BEGIN:VEVENT
 UID:wotc-10650593
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260512T210000Z
 DTEND:20260513T000000Z
 SUMMARY:Cryptid Edition @ Cryptid Toys and Games
@@ -17,97 +17,111 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
  ryptidtoysandgames\nDetails: https://locator.wizards.com/events/10650593\n
- Source: wizards-locator
+ \nCome Play Commander\, Standard\, or learn how to play\nSource: wizards-l
+ ocator
 URL;VALUE=URI:https://locator.wizards.com/events/10650593
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710228
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260512T210000Z
 DTEND:20260513T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710228\nSource:
-  wizards-locator
+ online.com/\nDetails: https://locator.wizards.com/events/10710228\n\nBuy a
+  pack and play to win that pack in Fill and Fire Commander Pods all night!
+ \nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10710228
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10972547
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260512T220000Z
 DTEND:20260513T010000Z
 SUMMARY:Chaos Booster Draft @ Runehammer Games
 LOCATION:Runehammer Games\, 2401 Frankford Avenue\, Philadelphia\, Pennsyl
  vania\, 19125
 DESCRIPTION:Format: Draft\nCost: $25\nStore: http://www.runehammer.online\
- nDetails: https://locator.wizards.com/events/10972547\nSource: wizards-loc
- ator
+ nDetails: https://locator.wizards.com/events/10972547\n\nCome draft from a
+  random assortment of packs from different sets from throughout Magic hist
+ ory!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10972547
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518722
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260512T220000Z
 DTEND:20260513T010000Z
 SUMMARY:Standard Store Championship @ Queen and Rook Game Cafe
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Standard\nCost: $15\nStore: https://queenandrookcafe.c
- om/\nDetails: https://locator.wizards.com/events/10518722\nSource: wizards
- -locator
+ om/\nDetails: https://locator.wizards.com/events/10518722\n\nThis event wi
+ ll consist of a maximum of 5 rounds with no top cut\; Top 8 promos will be
+  distributed based on final position & tiebreakers due to limits of venue'
+ s hours of operation. Nevertheless\, this is still a cheap opportunity to 
+ try you luck at picking up one of the Season's Store Championship Promos!\
+ n\n$5 of this event's entry fee will be a Service Charge to facilitate our
+  Service staff & ensure we can continue to offer you the unique Game Taver
+ n experience that sets us apart from Traditional LGS'.\n\nJoin us on our D
+ iscord server for more details & to get connected to the broader Philadelp
+ hia gaming community: http://bit.ly/QNRDC\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10518722
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461069
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260512T223000Z
 DTEND:20260513T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10461069\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10461069\n\nJoin us at Philly G
+ ame Shop for our Tuesday night drafts! Join our discord to learn more abou
+ t our events and RSVP ahead of time by going to our website at www.phillyg
+ ameshop.com!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10461069
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650404
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260512T223000Z
 DTEND:20260513T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650404\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650404\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650404
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653652
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260512T223000Z
 DTEND:20260513T013000Z
 SUMMARY:Tuesday Modern @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Modern\nCost: $15\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10653652\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10653652\n\nTuesday i
+ s Modern's Home here at Top Deck Games!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653652
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518585
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260513T210000Z
 DTEND:20260514T000000Z
 SUMMARY:Commander Night @ Queen & Rook Game Tavern! @ Queen and Rook Game 
@@ -115,14 +129,21 @@ SUMMARY:Commander Night @ Queen & Rook Game Tavern! @ Queen and Rook Game
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://queenandrookcafe
- .com/\nDetails: https://locator.wizards.com/events/10518585\nSource: wizar
- ds-locator
+ .com/\nDetails: https://locator.wizards.com/events/10518585\n\nJoin us eve
+ ry Wednesday for what many players hail as "The Best Commander Night on th
+ e East Coast!" Attendance is typically in the 50-60 range\, with turnouts 
+ sometimes as high as 70! There's NO entry fee\, & NO assigned seating (but
+  plz consider getting something to eat/drink so we can stay alive <3)\n\nW
+ e have a wide range of players both new & old\, as well as regular cEDH po
+ ds if you've been looking to try it out. \n\nJoin us on our Discord at htt
+ p://bit.ly/QNRDC for more info & to connect with the wider Philadelphia Ga
+ ming Community!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10518585
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10814222
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260513T210000Z
 DTEND:20260514T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -130,153 +151,183 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.youtube.com/
  @Cryptidtoysandgames\nDetails: https://locator.wizards.com/events/10814222
- \nSource: wizards-locator
+ \n\nCasual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10814222
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599481
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260513T223000Z
 DTEND:20260514T013000Z
 SUMMARY:Wednesday Commander Night @ Kryptic Collections
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
- ions.com/\nDetails: https://locator.wizards.com/events/10599481\nSource: w
- izards-locator
+ ions.com/\nDetails: https://locator.wizards.com/events/10599481\n\nCome pl
+ ay commander with new or old friends. Spend Sunday Evening playing a casua
+ l game or learn how to play a new format. Each player will receive a stand
+ ard legal draft\, set booster or play booster of their choice. The winner 
+ will receive A Promo pack and a bonus booster pack. Promos while supplies 
+ last. Players will be split into 2-4 person pods.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599481
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653659
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260513T223000Z
 DTEND:20260514T013000Z
 SUMMARY:Wednesday Booster Draft @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Draft\nCost: $25\nStore: https://www.topdeckgamesonlin
- e.com/\nDetails: https://locator.wizards.com/events/10653659\nSource: wiza
- rds-locator
+ e.com/\nDetails: https://locator.wizards.com/events/10653659\n\nThis Draft
+  is voted on by you the players!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653659
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710229
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260514T210000Z
 DTEND:20260515T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710229\nSource:
-  wizards-locator
+ online.com/\nDetails: https://locator.wizards.com/events/10710229\n\nBuy a
+  pack and play to win that pack in Fill and Fire Commander Pods all night!
+ \nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10710229
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794454
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260514T223000Z
 DTEND:20260515T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10794454\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10794454\n\nCome by the Philly
+  Game Shop every Thursday to play the modern format! Entry is $10 with pri
+ zing in store credit depending on the number of attendees. More informatio
+ n on our store and events can be found on our discord server\, which you c
+ an find a link to on our website at www.phillygameshop.com.\nSource: wizar
+ ds-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10794454
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653665
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260514T223000Z
 DTEND:20260515T013000Z
 SUMMARY:Thursday Pioneer @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Pioneer\nCost: $15\nStore: https://www.topdeckgamesonl
- ine.com/\nDetails: https://locator.wizards.com/events/10653665\nSource: wi
- zards-locator
+ ine.com/\nDetails: https://locator.wizards.com/events/10653665\n\nJoin us 
+ at Top Deck Games for this exciting format\, weekly!\nSource: wizards-loca
+ tor
 URL;VALUE=URI:https://locator.wizards.com/events/10653665
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653685
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260515T210000Z
 DTEND:20260516T000000Z
 SUMMARY:Friday Night Magic Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
- nline.com/\nDetails: https://locator.wizards.com/events/10653685\nSource: 
- wizards-locator
+ nline.com/\nDetails: https://locator.wizards.com/events/10653685\n\nJoin u
+ s at Top Deck Games every Friday for our Friday Night Magic Commander at 5
+ :00pm!\n\nWHEN: Every Friday @ 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Commander - Fi
+ ll & Fire\n- Pods of 4\n\nPRIZES: Per Pod\n- All Players: $5 credit\n- Win
+ ner: Additional $15 credit\n\nCONTACT:\nPhone: 856-858-2700\nEmail: events
+ @topdeckgamesonline.com\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653685
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461084
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260515T223000Z
 DTEND:20260516T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10461084\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10461084\n\n*\nSource: wizards-
+ locator
 URL;VALUE=URI:https://locator.wizards.com/events/10461084
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599494
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260515T223000Z
 DTEND:20260516T013000Z
 SUMMARY:Friday Night Commander @ Kryptic Collections
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
- ions.com/\nDetails: https://locator.wizards.com/events/10599494\nSource: w
- izards-locator
+ ions.com/\nDetails: https://locator.wizards.com/events/10599494\n\nCome pl
+ ay commander with new or old friends. Spend Sunday Evening playing a casua
+ l game or learn how to play a new format. Each player will receive a stand
+ ard legal draft\, set booster or play booster of their choice. The winner 
+ will receive A Promo pack and a bonus booster pack. Promos while supplies 
+ last. Players will be split into 2-4 person pods.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599494
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650419
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260515T223000Z
 DTEND:20260516T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650419\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650419\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650419
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653673
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260515T223000Z
 DTEND:20260516T013000Z
 SUMMARY:Friday Night Magic Booster Draft @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Draft\nCost: $30\nStore: https://www.topdeckgamesonlin
- e.com/\nDetails: https://locator.wizards.com/events/10653673\nSource: wiza
- rds-locator
+ e.com/\nDetails: https://locator.wizards.com/events/10653673\n\nJoin us at
+  Top Deck Games every Friday for our Friday Night Magic Booster Draft at 6
+ :30pm! WHEN: Every Friday @ 6:30pm WHERE: Top Deck Games 1400 Haddonfield-
+ Berlin Rd\, Store #100 Cherry Hill\, NJ 08003 ENTRY: $30 - Players must ha
+ ve an active Wizards Account / MTG Companion App Account - Sign up at http
+ s://myaccounts.wizards.com/register FORMAT: Booster Draft - 3x Play Booste
+ r Draft\, 30-minute build - 3 Swiss Rounds - 50-minute Rounds PRIZES: Base
+ d on record (W/L/D) 3-0-0: $40 Credit 2-0-1: $30 Credit 2-1-0: $20 Credit 
+ 1-1-1: $10 Credit CONTACT: Phone: 856-858-2700 Email: events@topdeckgameso
+ nline.com\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653673
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653679
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260515T223000Z
 DTEND:20260516T013000Z
 SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
@@ -284,70 +335,72 @@ SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Standard\nCost: $15\nStore: https://www.topdeckgameson
- line.com/\nDetails: https://locator.wizards.com/events/10653679\nSource: w
- izards-locator
+ line.com/\nDetails: https://locator.wizards.com/events/10653679\n\nJoin us
+  for our Standard Showdown event!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653679
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10739376
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260515T230000Z
 DTEND:20260516T020000Z
 SUMMARY:FNM COMMANDER NIGHTS @ Play Another Game
 LOCATION:Play Another Game\, 7919 Barnes Street\, Philadelphia\, Pennsylva
  nia\, 19111
 DESCRIPTION:Format: Commander\nCost: Free\nStore: http://magic.wizards.com
- \nDetails: https://locator.wizards.com/events/10739376\nSource: wizards-lo
- cator
+ \nDetails: https://locator.wizards.com/events/10739376\n\nFnm Casual Comma
+ nder nights all welcome\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10739376
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599234
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260515T230000Z
 DTEND:20260516T020000Z
 SUMMARY:Friday Night Magic Commander @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Commander\nCost: $9\nStore: http://www.7thdimensiongam
- es.com\nDetails: https://locator.wizards.com/events/10599234\nSource: wiza
- rds-locator
+ es.com\nDetails: https://locator.wizards.com/events/10599234\n\nOur casual
+  Commander event. Everyone gets at least one booster pack and some promo c
+ ards.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599234
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599269
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260516T170000Z
 DTEND:20260516T200000Z
 SUMMARY:Saturday Draft @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Draft\nCost: $25\nStore: http://www.7thdimensiongames.
- com\nDetails: https://locator.wizards.com/events/10599269\nSource: wizards
- -locator
+ com\nDetails: https://locator.wizards.com/events/10599269\n\nOur Saturday 
+ draft will usually be the most recent set\, but we will change sets at the
+  last minute if the crowd demands it.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599269
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10721523
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260516T220000Z
 DTEND:20260517T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 636 - Port Richmond
 LOCATION:GameStop - 636 - Port Richmond\, East Cabot Street\, Philadelphia
  \, Pennsylvania\, 19125
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.gamestop.com
- /\nDetails: https://locator.wizards.com/events/10721523\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10721523\n\nJoin us at your
+  local GameStop for a casual commander event!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10721523
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10721597
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260516T220000Z
 DTEND:20260517T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 1735 - Philadelphia
@@ -355,14 +408,14 @@ SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 1735 - Philadelphia
 LOCATION:GameStop - 1735 - Philadelphia  \, 3745 Aramingo Avenue\, Philade
  lphia\, Pennsylvania\, 19137
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.gamestop.com
- /\nDetails: https://locator.wizards.com/events/10721597\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10721597\n\nJoin us at your
+  local GameStop for a casual commander event!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10721597
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10721528
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260516T220000Z
 DTEND:20260517T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 666 - Great Northea
@@ -370,70 +423,84 @@ SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 666 - Great Northea
 LOCATION:GameStop - 666 - Great Northeast Plaza\, 2231 Cottman Avenue\, Ph
  iladelphia\, Pennsylvania\, 19149
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.gamestop.com
- /\nDetails: https://locator.wizards.com/events/10721528\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10721528\n\nJoin us at your
+  local GameStop for a casual commander event!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10721528
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10926544
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260516T223000Z
 DTEND:20260517T013000Z
 SUMMARY:Commander CEDH Championship @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $20\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10926544\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10926544\n\nSTORE CHAMPION
+ SHIP PROMOS FOR REWARDS CALL STORE TO REGISTER FIRST 16 TO SIGN UP ONLY\nS
+ ource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10926544
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599469
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260517T190000Z
 DTEND:20260517T220000Z
 SUMMARY:Sunday Afternoon Commander @ Kryptic Collections
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
- ions.com/\nDetails: https://locator.wizards.com/events/10599469\nSource: w
- izards-locator
+ ions.com/\nDetails: https://locator.wizards.com/events/10599469\n\nCome pl
+ ay commander with new or old friends. Spend Sunday Evening playing a casua
+ l game or learn how to play a new format. Each player will receive a stand
+ ard legal draft\, set booster or play booster of their choice. The winner 
+ will receive A Promo pack and a bonus booster pack. Promos while supplies 
+ last. Players will be split into 2-4 person pods.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599469
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10570211
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260517T213000Z
 DTEND:20260518T003000Z
 SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Standard\nCost: $10\nStore: http://phillygameshop.com/
- \nDetails: https://locator.wizards.com/events/10570211\nSource: wizards-lo
- cator
+ \nDetails: https://locator.wizards.com/events/10570211\n\nWelcome to new a
+ nd improved Sunday Standard Showdown! Sundays at 5:30\, $10 entry\, and th
+ e event will be three rounds for 11 or less participants\, four rounds for
+  12+. Since this is an official magic event\, no proxied cards and only st
+ andard format legal cards will be allowed. All levels are welcome\, but ma
+ ny of our players run competitive Tier 1 and Tier 2 decks. Please arrive p
+ romptly at 5:30\, as lateness may result in an automatic round one loss!\n
+ Source: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10570211
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10949357
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260517T213000Z
 DTEND:20260518T003000Z
 SUMMARY:PGS SOS Standard Store Championship @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Standard\nCost: $10\nStore: http://phillygameshop.com/
- \nDetails: https://locator.wizards.com/events/10949357\nSource: wizards-lo
- cator
+ \nDetails: https://locator.wizards.com/events/10949357\n\nJoin us at the P
+ hilly Game Shop for our Standard Store Championship! Participants receive 
+ the Unearth promo card\, Top 8 players receive the Psychic Frog promo card
+ \, and the winner of the event receives the Abhorrent Oculus promo card.\n
+ Source: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10949357
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881707
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260518T210000Z
 DTEND:20260519T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -441,69 +508,75 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
  ryptidtoysandgames\nDetails: https://locator.wizards.com/events/10881707\n
- Source: wizards-locator
+ \nCryptid Casual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10881707
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653648
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260518T210000Z
 DTEND:20260519T000000Z
 SUMMARY:Monday Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
- nline.com/\nDetails: https://locator.wizards.com/events/10653648\nSource: 
- wizards-locator
+ nline.com/\nDetails: https://locator.wizards.com/events/10653648\n\nJoin u
+ s at Top Deck Games for our Commander events!\n\nWHEN: Every Monday\, 5:00
+ pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite #100\nCher
+ ry Hill\, NJ 08003\n\nENTRY: $10\n- Players must have an active Wizards Ac
+ count / MTG Companion App Account\n- Sign up at https://myaccounts.wizards
+ .com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPRIZES: P
+ er Pod\n- All Players: $5 credit\n- Winner: Additional $15 credit\nSource:
+  wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653648
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461058
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260518T223000Z
 DTEND:20260519T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10461058\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10461058\n\nJoin us at PGS for
+  our Monday night Pauper tournament!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10461058
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653625
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260518T223000Z
 DTEND:20260519T013000Z
 SUMMARY:Monday Legacy @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Legacy\nCost: $15\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10653625\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10653625\n\nMonday is
+  our Legacy Weekly at Top Deck Games!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653625
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653632
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260518T223000Z
 DTEND:20260519T013000Z
 SUMMARY:Monday Pauper @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Pauper\nCost: $15\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10653632\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10653632\n\nThe true 
+ format of kings\, here at Top Deck Games!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653632
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650594
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260519T210000Z
 DTEND:20260520T000000Z
 SUMMARY:Cryptid Edition @ Cryptid Toys and Games
@@ -511,27 +584,29 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
  ryptidtoysandgames\nDetails: https://locator.wizards.com/events/10650594\n
- Source: wizards-locator
+ \nCome Play Commander\, Standard\, or learn how to play\nSource: wizards-l
+ ocator
 URL;VALUE=URI:https://locator.wizards.com/events/10650594
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710230
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260519T210000Z
 DTEND:20260520T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710230\nSource:
-  wizards-locator
+ online.com/\nDetails: https://locator.wizards.com/events/10710230\n\nBuy a
+  pack and play to win that pack in Fill and Fire Commander Pods all night!
+ \nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10710230
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518759
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260519T220000Z
 DTEND:20260520T010000Z
 SUMMARY:Queen & Rook Game Tavern 1v1 / Standard Showdown @ Queen and Rook 
@@ -539,56 +614,66 @@ SUMMARY:Queen & Rook Game Tavern 1v1 / Standard Showdown @ Queen and Rook
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Standard\nCost: Free\nStore: https://queenandrookcafe.
- com/\nDetails: https://locator.wizards.com/events/10518759\nSource: wizard
- s-locator
+ com/\nDetails: https://locator.wizards.com/events/10518759\n\nJoin us ever
+ y Tuesday for what is growing into one of the strongest gamedays in Philad
+ elphia! We consistently pull 8+ players each Tuesday for a variety of 1v1 
+ formats including Standard\, Pauper\, & Draft!\n\nNo formal structure (unl
+ ess everyone wants a bracket to be ran in which case I'm happy to admin on
+ e)\, sit down & play with your new decks or test out someone elses!\n\nJoi
+ n us on our Discord for more details & to get connected to the broader Phi
+ ladelphia Gaming Community of over 1000 players: http://bit.ly/QNRDC\nSour
+ ce: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10518759
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461070
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260519T223000Z
 DTEND:20260520T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10461070\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10461070\n\nJoin us at Philly G
+ ame Shop for our Tuesday night drafts! Join our discord to learn more abou
+ t our events and RSVP ahead of time by going to our website at www.phillyg
+ ameshop.com!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10461070
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650405
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260519T223000Z
 DTEND:20260520T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650405\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650405\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650405
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653653
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260519T223000Z
 DTEND:20260520T013000Z
 SUMMARY:Tuesday Modern @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Modern\nCost: $15\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10653653\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10653653\n\nTuesday i
+ s Modern's Home here at Top Deck Games!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653653
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518586
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260520T210000Z
 DTEND:20260521T000000Z
 SUMMARY:Commander Night @ Queen & Rook Game Tavern! @ Queen and Rook Game 
@@ -596,14 +681,21 @@ SUMMARY:Commander Night @ Queen & Rook Game Tavern! @ Queen and Rook Game
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://queenandrookcafe
- .com/\nDetails: https://locator.wizards.com/events/10518586\nSource: wizar
- ds-locator
+ .com/\nDetails: https://locator.wizards.com/events/10518586\n\nJoin us eve
+ ry Wednesday for what many players hail as "The Best Commander Night on th
+ e East Coast!" Attendance is typically in the 50-60 range\, with turnouts 
+ sometimes as high as 70! There's NO entry fee\, & NO assigned seating (but
+  plz consider getting something to eat/drink so we can stay alive <3)\n\nW
+ e have a wide range of players both new & old\, as well as regular cEDH po
+ ds if you've been looking to try it out. \n\nJoin us on our Discord at htt
+ p://bit.ly/QNRDC for more info & to connect with the wider Philadelphia Ga
+ ming Community!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10518586
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10814223
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260520T210000Z
 DTEND:20260521T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -611,139 +703,161 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.youtube.com/
  @Cryptidtoysandgames\nDetails: https://locator.wizards.com/events/10814223
- \nSource: wizards-locator
+ \n\nCasual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10814223
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599482
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260520T223000Z
 DTEND:20260521T013000Z
 SUMMARY:Wednesday Commander Night @ Kryptic Collections
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
- ions.com/\nDetails: https://locator.wizards.com/events/10599482\nSource: w
- izards-locator
+ ions.com/\nDetails: https://locator.wizards.com/events/10599482\n\nCome pl
+ ay commander with new or old friends. Spend Sunday Evening playing a casua
+ l game or learn how to play a new format. Each player will receive a stand
+ ard legal draft\, set booster or play booster of their choice. The winner 
+ will receive A Promo pack and a bonus booster pack. Promos while supplies 
+ last. Players will be split into 2-4 person pods.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599482
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653660
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260520T223000Z
 DTEND:20260521T013000Z
 SUMMARY:Wednesday Booster Draft @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Draft\nCost: $25\nStore: https://www.topdeckgamesonlin
- e.com/\nDetails: https://locator.wizards.com/events/10653660\nSource: wiza
- rds-locator
+ e.com/\nDetails: https://locator.wizards.com/events/10653660\n\nThis Draft
+  is voted on by you the players!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653660
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710231
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260521T210000Z
 DTEND:20260522T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710231\nSource:
-  wizards-locator
+ online.com/\nDetails: https://locator.wizards.com/events/10710231\n\nBuy a
+  pack and play to win that pack in Fill and Fire Commander Pods all night!
+ \nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10710231
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794455
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260521T223000Z
 DTEND:20260522T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10794455\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10794455\n\nCome by the Philly
+  Game Shop every Thursday to play the modern format! Entry is $10 with pri
+ zing in store credit depending on the number of attendees. More informatio
+ n on our store and events can be found on our discord server\, which you c
+ an find a link to on our website at www.phillygameshop.com.\nSource: wizar
+ ds-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10794455
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653666
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260521T223000Z
 DTEND:20260522T013000Z
 SUMMARY:Thursday Pioneer @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Pioneer\nCost: $15\nStore: https://www.topdeckgamesonl
- ine.com/\nDetails: https://locator.wizards.com/events/10653666\nSource: wi
- zards-locator
+ ine.com/\nDetails: https://locator.wizards.com/events/10653666\n\nJoin us 
+ at Top Deck Games for this exciting format\, weekly!\nSource: wizards-loca
+ tor
 URL;VALUE=URI:https://locator.wizards.com/events/10653666
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653686
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260522T210000Z
 DTEND:20260523T000000Z
 SUMMARY:Friday Night Magic Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
- nline.com/\nDetails: https://locator.wizards.com/events/10653686\nSource: 
- wizards-locator
+ nline.com/\nDetails: https://locator.wizards.com/events/10653686\n\nJoin u
+ s at Top Deck Games every Friday for our Friday Night Magic Commander at 5
+ :00pm!\n\nWHEN: Every Friday @ 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Commander - Fi
+ ll & Fire\n- Pods of 4\n\nPRIZES: Per Pod\n- All Players: $5 credit\n- Win
+ ner: Additional $15 credit\n\nCONTACT:\nPhone: 856-858-2700\nEmail: events
+ @topdeckgamesonline.com\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653686
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461085
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260522T223000Z
 DTEND:20260523T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10461085\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10461085\n\n*\nSource: wizards-
+ locator
 URL;VALUE=URI:https://locator.wizards.com/events/10461085
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599495
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260522T223000Z
 DTEND:20260523T013000Z
 SUMMARY:Friday Night Commander @ Kryptic Collections
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
- ions.com/\nDetails: https://locator.wizards.com/events/10599495\nSource: w
- izards-locator
+ ions.com/\nDetails: https://locator.wizards.com/events/10599495\n\nCome pl
+ ay commander with new or old friends. Spend Sunday Evening playing a casua
+ l game or learn how to play a new format. Each player will receive a stand
+ ard legal draft\, set booster or play booster of their choice. The winner 
+ will receive A Promo pack and a bonus booster pack. Promos while supplies 
+ last. Players will be split into 2-4 person pods.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599495
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650420
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260522T223000Z
 DTEND:20260523T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650420\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650420\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650420
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653680
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260522T223000Z
 DTEND:20260523T013000Z
 SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
@@ -751,42 +865,43 @@ SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Standard\nCost: $15\nStore: https://www.topdeckgameson
- line.com/\nDetails: https://locator.wizards.com/events/10653680\nSource: w
- izards-locator
+ line.com/\nDetails: https://locator.wizards.com/events/10653680\n\nJoin us
+  for our Standard Showdown event!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653680
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10739377
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260522T230000Z
 DTEND:20260523T020000Z
 SUMMARY:FNM COMMANDER NIGHTS @ Play Another Game
 LOCATION:Play Another Game\, 7919 Barnes Street\, Philadelphia\, Pennsylva
  nia\, 19111
 DESCRIPTION:Format: Commander\nCost: Free\nStore: http://magic.wizards.com
- \nDetails: https://locator.wizards.com/events/10739377\nSource: wizards-lo
- cator
+ \nDetails: https://locator.wizards.com/events/10739377\n\nFnm Casual Comma
+ nder nights all welcome\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10739377
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599235
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260522T230000Z
 DTEND:20260523T020000Z
 SUMMARY:Friday Night Magic Commander @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Commander\nCost: $9\nStore: http://www.7thdimensiongam
- es.com\nDetails: https://locator.wizards.com/events/10599235\nSource: wiza
- rds-locator
+ es.com\nDetails: https://locator.wizards.com/events/10599235\n\nOur casual
+  Commander event. Everyone gets at least one booster pack and some promo c
+ ards.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599235
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10484119
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260523T170000Z
 DTEND:20260523T200000Z
 SUMMARY:Magic Presents: Open The Archive Special Draft @ 7th Dimension Gam
@@ -794,42 +909,53 @@ SUMMARY:Magic Presents: Open The Archive Special Draft @ 7th Dimension Gam
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Draft\nCost: $25\nStore: http://www.7thdimensiongames.
- com\nDetails: https://locator.wizards.com/events/10484119\nSource: wizards
- -locator
+ com\nDetails: https://locator.wizards.com/events/10484119\n\nA special dra
+ ft for Magic Presents: Open the Archive with modified rules.\nSource: wiza
+ rds-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10484119
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599470
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260524T190000Z
 DTEND:20260524T220000Z
 SUMMARY:Sunday Afternoon Commander @ Kryptic Collections
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
- ions.com/\nDetails: https://locator.wizards.com/events/10599470\nSource: w
- izards-locator
+ ions.com/\nDetails: https://locator.wizards.com/events/10599470\n\nCome pl
+ ay commander with new or old friends. Spend Sunday Evening playing a casua
+ l game or learn how to play a new format. Each player will receive a stand
+ ard legal draft\, set booster or play booster of their choice. The winner 
+ will receive A Promo pack and a bonus booster pack. Promos while supplies 
+ last. Players will be split into 2-4 person pods.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599470
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10570212
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260524T213000Z
 DTEND:20260525T003000Z
 SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Standard\nCost: $10\nStore: http://phillygameshop.com/
- \nDetails: https://locator.wizards.com/events/10570212\nSource: wizards-lo
- cator
+ \nDetails: https://locator.wizards.com/events/10570212\n\nWelcome to new a
+ nd improved Sunday Standard Showdown! Sundays at 5:30\, $10 entry\, and th
+ e event will be three rounds for 11 or less participants\, four rounds for
+  12+. Since this is an official magic event\, no proxied cards and only st
+ andard format legal cards will be allowed. All levels are welcome\, but ma
+ ny of our players run competitive Tier 1 and Tier 2 decks. Please arrive p
+ romptly at 5:30\, as lateness may result in an automatic round one loss!\n
+ Source: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10570212
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881708
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260525T210000Z
 DTEND:20260526T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -837,69 +963,75 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
  ryptidtoysandgames\nDetails: https://locator.wizards.com/events/10881708\n
- Source: wizards-locator
+ \nCryptid Casual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10881708
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653649
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260525T210000Z
 DTEND:20260526T000000Z
 SUMMARY:Monday Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
- nline.com/\nDetails: https://locator.wizards.com/events/10653649\nSource: 
- wizards-locator
+ nline.com/\nDetails: https://locator.wizards.com/events/10653649\n\nJoin u
+ s at Top Deck Games for our Commander events!\n\nWHEN: Every Monday\, 5:00
+ pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite #100\nCher
+ ry Hill\, NJ 08003\n\nENTRY: $10\n- Players must have an active Wizards Ac
+ count / MTG Companion App Account\n- Sign up at https://myaccounts.wizards
+ .com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPRIZES: P
+ er Pod\n- All Players: $5 credit\n- Winner: Additional $15 credit\nSource:
+  wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653649
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461060
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260525T223000Z
 DTEND:20260526T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10461060\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10461060\n\nJoin us at PGS for
+  our Monday night Pauper tournament!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10461060
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653626
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260525T223000Z
 DTEND:20260526T013000Z
 SUMMARY:Monday Legacy @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Legacy\nCost: $15\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10653626\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10653626\n\nMonday is
+  our Legacy Weekly at Top Deck Games!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653626
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653633
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260525T223000Z
 DTEND:20260526T013000Z
 SUMMARY:Monday Pauper @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Pauper\nCost: $15\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10653633\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10653633\n\nThe true 
+ format of kings\, here at Top Deck Games!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653633
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650595
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260526T210000Z
 DTEND:20260527T000000Z
 SUMMARY:Cryptid Edition @ Cryptid Toys and Games
@@ -907,27 +1039,29 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
  ryptidtoysandgames\nDetails: https://locator.wizards.com/events/10650595\n
- Source: wizards-locator
+ \nCome Play Commander\, Standard\, or learn how to play\nSource: wizards-l
+ ocator
 URL;VALUE=URI:https://locator.wizards.com/events/10650595
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710232
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260526T210000Z
 DTEND:20260527T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710232\nSource:
-  wizards-locator
+ online.com/\nDetails: https://locator.wizards.com/events/10710232\n\nBuy a
+  pack and play to win that pack in Fill and Fire Commander Pods all night!
+ \nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10710232
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518760
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260526T220000Z
 DTEND:20260527T010000Z
 SUMMARY:Queen & Rook Game Tavern 1v1 / Standard Showdown @ Queen and Rook 
@@ -935,56 +1069,66 @@ SUMMARY:Queen & Rook Game Tavern 1v1 / Standard Showdown @ Queen and Rook
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Standard\nCost: Free\nStore: https://queenandrookcafe.
- com/\nDetails: https://locator.wizards.com/events/10518760\nSource: wizard
- s-locator
+ com/\nDetails: https://locator.wizards.com/events/10518760\n\nJoin us ever
+ y Tuesday for what is growing into one of the strongest gamedays in Philad
+ elphia! We consistently pull 8+ players each Tuesday for a variety of 1v1 
+ formats including Standard\, Pauper\, & Draft!\n\nNo formal structure (unl
+ ess everyone wants a bracket to be ran in which case I'm happy to admin on
+ e)\, sit down & play with your new decks or test out someone elses!\n\nJoi
+ n us on our Discord for more details & to get connected to the broader Phi
+ ladelphia Gaming Community of over 1000 players: http://bit.ly/QNRDC\nSour
+ ce: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10518760
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461071
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260526T223000Z
 DTEND:20260527T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10461071\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10461071\n\nJoin us at Philly G
+ ame Shop for our Tuesday night drafts! Join our discord to learn more abou
+ t our events and RSVP ahead of time by going to our website at www.phillyg
+ ameshop.com!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10461071
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650406
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260526T223000Z
 DTEND:20260527T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650406\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650406\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650406
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653654
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260526T223000Z
 DTEND:20260527T013000Z
 SUMMARY:Tuesday Modern @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Modern\nCost: $15\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10653654\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10653654\n\nTuesday i
+ s Modern's Home here at Top Deck Games!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653654
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518587
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260527T210000Z
 DTEND:20260528T000000Z
 SUMMARY:Commander Night @ Queen & Rook Game Tavern! @ Queen and Rook Game 
@@ -992,14 +1136,21 @@ SUMMARY:Commander Night @ Queen & Rook Game Tavern! @ Queen and Rook Game
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://queenandrookcafe
- .com/\nDetails: https://locator.wizards.com/events/10518587\nSource: wizar
- ds-locator
+ .com/\nDetails: https://locator.wizards.com/events/10518587\n\nJoin us eve
+ ry Wednesday for what many players hail as "The Best Commander Night on th
+ e East Coast!" Attendance is typically in the 50-60 range\, with turnouts 
+ sometimes as high as 70! There's NO entry fee\, & NO assigned seating (but
+  plz consider getting something to eat/drink so we can stay alive <3)\n\nW
+ e have a wide range of players both new & old\, as well as regular cEDH po
+ ds if you've been looking to try it out. \n\nJoin us on our Discord at htt
+ p://bit.ly/QNRDC for more info & to connect with the wider Philadelphia Ga
+ ming Community!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10518587
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10814224
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260527T210000Z
 DTEND:20260528T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -1007,139 +1158,161 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.youtube.com/
  @Cryptidtoysandgames\nDetails: https://locator.wizards.com/events/10814224
- \nSource: wizards-locator
+ \n\nCasual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10814224
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599483
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260527T223000Z
 DTEND:20260528T013000Z
 SUMMARY:Wednesday Commander Night @ Kryptic Collections
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
- ions.com/\nDetails: https://locator.wizards.com/events/10599483\nSource: w
- izards-locator
+ ions.com/\nDetails: https://locator.wizards.com/events/10599483\n\nCome pl
+ ay commander with new or old friends. Spend Sunday Evening playing a casua
+ l game or learn how to play a new format. Each player will receive a stand
+ ard legal draft\, set booster or play booster of their choice. The winner 
+ will receive A Promo pack and a bonus booster pack. Promos while supplies 
+ last. Players will be split into 2-4 person pods.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599483
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653661
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260527T223000Z
 DTEND:20260528T013000Z
 SUMMARY:Wednesday Booster Draft @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Draft\nCost: $25\nStore: https://www.topdeckgamesonlin
- e.com/\nDetails: https://locator.wizards.com/events/10653661\nSource: wiza
- rds-locator
+ e.com/\nDetails: https://locator.wizards.com/events/10653661\n\nThis Draft
+  is voted on by you the players!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653661
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710233
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260528T210000Z
 DTEND:20260529T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710233\nSource:
-  wizards-locator
+ online.com/\nDetails: https://locator.wizards.com/events/10710233\n\nBuy a
+  pack and play to win that pack in Fill and Fire Commander Pods all night!
+ \nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10710233
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794456
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260528T223000Z
 DTEND:20260529T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10794456\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10794456\n\nCome by the Philly
+  Game Shop every Thursday to play the modern format! Entry is $10 with pri
+ zing in store credit depending on the number of attendees. More informatio
+ n on our store and events can be found on our discord server\, which you c
+ an find a link to on our website at www.phillygameshop.com.\nSource: wizar
+ ds-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10794456
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653667
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260528T223000Z
 DTEND:20260529T013000Z
 SUMMARY:Thursday Pioneer @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Pioneer\nCost: $15\nStore: https://www.topdeckgamesonl
- ine.com/\nDetails: https://locator.wizards.com/events/10653667\nSource: wi
- zards-locator
+ ine.com/\nDetails: https://locator.wizards.com/events/10653667\n\nJoin us 
+ at Top Deck Games for this exciting format\, weekly!\nSource: wizards-loca
+ tor
 URL;VALUE=URI:https://locator.wizards.com/events/10653667
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653687
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260529T210000Z
 DTEND:20260530T000000Z
 SUMMARY:Friday Night Magic Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
- nline.com/\nDetails: https://locator.wizards.com/events/10653687\nSource: 
- wizards-locator
+ nline.com/\nDetails: https://locator.wizards.com/events/10653687\n\nJoin u
+ s at Top Deck Games every Friday for our Friday Night Magic Commander at 5
+ :00pm!\n\nWHEN: Every Friday @ 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Commander - Fi
+ ll & Fire\n- Pods of 4\n\nPRIZES: Per Pod\n- All Players: $5 credit\n- Win
+ ner: Additional $15 credit\n\nCONTACT:\nPhone: 856-858-2700\nEmail: events
+ @topdeckgamesonline.com\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653687
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461086
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260529T223000Z
 DTEND:20260530T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10461086\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10461086\n\n*\nSource: wizards-
+ locator
 URL;VALUE=URI:https://locator.wizards.com/events/10461086
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599496
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260529T223000Z
 DTEND:20260530T013000Z
 SUMMARY:Friday Night Commander @ Kryptic Collections
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
- ions.com/\nDetails: https://locator.wizards.com/events/10599496\nSource: w
- izards-locator
+ ions.com/\nDetails: https://locator.wizards.com/events/10599496\n\nCome pl
+ ay commander with new or old friends. Spend Sunday Evening playing a casua
+ l game or learn how to play a new format. Each player will receive a stand
+ ard legal draft\, set booster or play booster of their choice. The winner 
+ will receive A Promo pack and a bonus booster pack. Promos while supplies 
+ last. Players will be split into 2-4 person pods.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599496
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650421
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260529T223000Z
 DTEND:20260530T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650421\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650421\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650421
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653681
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260529T223000Z
 DTEND:20260530T013000Z
 SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
@@ -1147,56 +1320,58 @@ SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Standard\nCost: $15\nStore: https://www.topdeckgameson
- line.com/\nDetails: https://locator.wizards.com/events/10653681\nSource: w
- izards-locator
+ line.com/\nDetails: https://locator.wizards.com/events/10653681\n\nJoin us
+  for our Standard Showdown event!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10653681
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10739378
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260529T230000Z
 DTEND:20260530T020000Z
 SUMMARY:FNM COMMANDER NIGHTS @ Play Another Game
 LOCATION:Play Another Game\, 7919 Barnes Street\, Philadelphia\, Pennsylva
  nia\, 19111
 DESCRIPTION:Format: Commander\nCost: Free\nStore: http://magic.wizards.com
- \nDetails: https://locator.wizards.com/events/10739378\nSource: wizards-lo
- cator
+ \nDetails: https://locator.wizards.com/events/10739378\n\nFnm Casual Comma
+ nder nights all welcome\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10739378
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599236
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260529T230000Z
 DTEND:20260530T020000Z
 SUMMARY:Friday Night Magic Commander @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Commander\nCost: $9\nStore: http://www.7thdimensiongam
- es.com\nDetails: https://locator.wizards.com/events/10599236\nSource: wiza
- rds-locator
+ es.com\nDetails: https://locator.wizards.com/events/10599236\n\nOur casual
+  Commander event. Everyone gets at least one booster pack and some promo c
+ ards.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599236
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599271
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260530T170000Z
 DTEND:20260530T200000Z
 SUMMARY:Saturday Draft @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Draft\nCost: $25\nStore: http://www.7thdimensiongames.
- com\nDetails: https://locator.wizards.com/events/10599271\nSource: wizards
- -locator
+ com\nDetails: https://locator.wizards.com/events/10599271\n\nOur Saturday 
+ draft will usually be the most recent set\, but we will change sets at the
+  last minute if the crowd demands it.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599271
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10926585
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260530T223000Z
 DTEND:20260531T013000Z
 SUMMARY:Magic Presents: Open The Archive MTG Open the Archive Event @ Hobb
@@ -1204,56 +1379,80 @@ SUMMARY:Magic Presents: Open The Archive MTG Open the Archive Event @ Hobb
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Pick 2 Draft\nCost: $25\nStore: http://www.hobby-vault
- .com/\nDetails: https://locator.wizards.com/events/10926585\nSource: wizar
- ds-locator
+ .com/\nDetails: https://locator.wizards.com/events/10926585\n\nOpen the Ar
+ chive Draft Event\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10926585
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10893386
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260531T170000Z
 DTEND:20260531T200000Z
 SUMMARY:Magic Academy: Learn to Play @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: New Player Event\nCost: $10\nStore: https://www.topdec
- kgamesonline.com/\nDetails: https://locator.wizards.com/events/10893386\nS
- ource: wizards-locator
+ kgamesonline.com/\nDetails: https://locator.wizards.com/events/10893386\n\
+ n🎓 Enroll & Learn the Arcane: New to Magic? Consider this your first da
+ y of class. Our knowledgeable “professors” will guide you through the 
+ fundamentals so you can start casting spells with confidence.\n✨ Find Yo
+ ur College\, Find Your Crew: Whether you’re a seasoned mage or a first-y
+ ear student\, there’s a place for you here. Forge friendships\, share st
+ rategies\, and discover where you belong.\nAll skill levels welcome\n\nENT
+ RY: $10\n- Pack of a recent Magic set\n\nFORMAT: Learn to Play\n- Introduc
+ tion to basics\, cards\, rules\, and terms\n- Guided Play. Players will re
+ ceive their own pre-built Welcome Deck or Beginner Boxes and paired with o
+ thers to play friendly practice games with guidance from staff and experie
+ nced players\n\n- Each participant will receive a promo card and a welcome
+  deck\n- Each Welcome Deck contains one randomly inserted reward that gran
+ ts either a physical reward or a digital MTG Arena reward\n- Please presen
+ t the reward insert to a store employee to redeem it\nSource: wizards-loca
+ tor
 URL;VALUE=URI:https://locator.wizards.com/events/10893386
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599471
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260531T190000Z
 DTEND:20260531T220000Z
 SUMMARY:Sunday Afternoon Commander @ Kryptic Collections
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
- ions.com/\nDetails: https://locator.wizards.com/events/10599471\nSource: w
- izards-locator
+ ions.com/\nDetails: https://locator.wizards.com/events/10599471\n\nCome pl
+ ay commander with new or old friends. Spend Sunday Evening playing a casua
+ l game or learn how to play a new format. Each player will receive a stand
+ ard legal draft\, set booster or play booster of their choice. The winner 
+ will receive A Promo pack and a bonus booster pack. Promos while supplies 
+ last. Players will be split into 2-4 person pods.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599471
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10570213
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260531T213000Z
 DTEND:20260601T003000Z
 SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Standard\nCost: $10\nStore: http://phillygameshop.com/
- \nDetails: https://locator.wizards.com/events/10570213\nSource: wizards-lo
- cator
+ \nDetails: https://locator.wizards.com/events/10570213\n\nWelcome to new a
+ nd improved Sunday Standard Showdown! Sundays at 5:30\, $10 entry\, and th
+ e event will be three rounds for 11 or less participants\, four rounds for
+  12+. Since this is an official magic event\, no proxied cards and only st
+ andard format legal cards will be allowed. All levels are welcome\, but ma
+ ny of our players run competitive Tier 1 and Tier 2 decks. Please arrive p
+ romptly at 5:30\, as lateness may result in an automatic round one loss!\n
+ Source: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10570213
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881709
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260601T210000Z
 DTEND:20260602T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -1261,27 +1460,27 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
  ryptidtoysandgames\nDetails: https://locator.wizards.com/events/10881709\n
- Source: wizards-locator
+ \nCryptid Casual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10881709
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968409
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260601T223000Z
 DTEND:20260602T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10968409\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10968409\n\nJoin us at PGS for
+  our Monday night Pauper tournament!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10968409
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650596
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260602T210000Z
 DTEND:20260603T000000Z
 SUMMARY:Cryptid Edition @ Cryptid Toys and Games
@@ -1289,55 +1488,60 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
  ryptidtoysandgames\nDetails: https://locator.wizards.com/events/10650596\n
- Source: wizards-locator
+ \nCome Play Commander\, Standard\, or learn how to play\nSource: wizards-l
+ ocator
 URL;VALUE=URI:https://locator.wizards.com/events/10650596
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710234
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260602T210000Z
 DTEND:20260603T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710234\nSource:
-  wizards-locator
+ online.com/\nDetails: https://locator.wizards.com/events/10710234\n\nBuy a
+  pack and play to win that pack in Fill and Fire Commander Pods all night!
+ \nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10710234
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461072
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260602T223000Z
 DTEND:20260603T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10461072\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10461072\n\nJoin us at Philly G
+ ame Shop for our Tuesday night drafts! Join our discord to learn more abou
+ t our events and RSVP ahead of time by going to our website at www.phillyg
+ ameshop.com!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10461072
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650407
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260602T223000Z
 DTEND:20260603T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650407\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650407\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650407
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518588
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260603T210000Z
 DTEND:20260604T000000Z
 SUMMARY:Commander Night @ Queen & Rook Game Tavern! @ Queen and Rook Game 
@@ -1345,14 +1549,21 @@ SUMMARY:Commander Night @ Queen & Rook Game Tavern! @ Queen and Rook Game
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://queenandrookcafe
- .com/\nDetails: https://locator.wizards.com/events/10518588\nSource: wizar
- ds-locator
+ .com/\nDetails: https://locator.wizards.com/events/10518588\n\nJoin us eve
+ ry Wednesday for what many players hail as "The Best Commander Night on th
+ e East Coast!" Attendance is typically in the 50-60 range\, with turnouts 
+ sometimes as high as 70! There's NO entry fee\, & NO assigned seating (but
+  plz consider getting something to eat/drink so we can stay alive <3)\n\nW
+ e have a wide range of players both new & old\, as well as regular cEDH po
+ ds if you've been looking to try it out. \n\nJoin us on our Discord at htt
+ p://bit.ly/QNRDC for more info & to connect with the wider Philadelphia Ga
+ ming Community!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10518588
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10814225
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260603T210000Z
 DTEND:20260604T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -1360,167 +1571,188 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.youtube.com/
  @Cryptidtoysandgames\nDetails: https://locator.wizards.com/events/10814225
- \nSource: wizards-locator
+ \n\nCasual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10814225
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599484
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260603T223000Z
 DTEND:20260604T013000Z
 SUMMARY:Wednesday Commander Night @ Kryptic Collections
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
- ions.com/\nDetails: https://locator.wizards.com/events/10599484\nSource: w
- izards-locator
+ ions.com/\nDetails: https://locator.wizards.com/events/10599484\n\nCome pl
+ ay commander with new or old friends. Spend Sunday Evening playing a casua
+ l game or learn how to play a new format. Each player will receive a stand
+ ard legal draft\, set booster or play booster of their choice. The winner 
+ will receive A Promo pack and a bonus booster pack. Promos while supplies 
+ last. Players will be split into 2-4 person pods.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599484
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710235
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260604T210000Z
 DTEND:20260605T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710235\nSource:
-  wizards-locator
+ online.com/\nDetails: https://locator.wizards.com/events/10710235\n\nBuy a
+  pack and play to win that pack in Fill and Fire Commander Pods all night!
+ \nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10710235
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794457
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260604T223000Z
 DTEND:20260605T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10794457\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10794457\n\nCome by the Philly
+  Game Shop every Thursday to play the modern format! Entry is $10 with pri
+ zing in store credit depending on the number of attendees. More informatio
+ n on our store and events can be found on our discord server\, which you c
+ an find a link to on our website at www.phillygameshop.com.\nSource: wizar
+ ds-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10794457
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10737683
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260605T190000Z
 DTEND:20260605T220000Z
 SUMMARY:PGS Presents: SOS Commander Party @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Commander\nCost: Free\nStore: http://phillygameshop.co
- m/\nDetails: https://locator.wizards.com/events/10737683\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10737683\n\nFind your plac
+ e among the five colleges as we put down the books and delve into the real
+  world! Uncover the Secrets of Strixhaven and prove your college is the be
+ st with every spell you cast. Commander Party is a casual event that intro
+ duces a new way to experience the fan favorite format with thematic and fl
+ avorful new rules. Each participant will receive a promo for playing. Part
+ icipation will be on a first come first serve basis. We can't wait to see 
+ you there!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10737683
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461087
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260605T223000Z
 DTEND:20260606T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10461087\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10461087\n\n*\nSource: wizards-
+ locator
 URL;VALUE=URI:https://locator.wizards.com/events/10461087
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599497
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260605T223000Z
 DTEND:20260606T013000Z
 SUMMARY:Friday Night Commander @ Kryptic Collections
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
- ions.com/\nDetails: https://locator.wizards.com/events/10599497\nSource: w
- izards-locator
+ ions.com/\nDetails: https://locator.wizards.com/events/10599497\n\nCome pl
+ ay commander with new or old friends. Spend Sunday Evening playing a casua
+ l game or learn how to play a new format. Each player will receive a stand
+ ard legal draft\, set booster or play booster of their choice. The winner 
+ will receive A Promo pack and a bonus booster pack. Promos while supplies 
+ last. Players will be split into 2-4 person pods.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599497
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650422
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260605T223000Z
 DTEND:20260606T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650422\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650422\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650422
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10739379
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260605T230000Z
 DTEND:20260606T020000Z
 SUMMARY:FNM COMMANDER NIGHTS @ Play Another Game
 LOCATION:Play Another Game\, 7919 Barnes Street\, Philadelphia\, Pennsylva
  nia\, 19111
 DESCRIPTION:Format: Commander\nCost: Free\nStore: http://magic.wizards.com
- \nDetails: https://locator.wizards.com/events/10739379\nSource: wizards-lo
- cator
+ \nDetails: https://locator.wizards.com/events/10739379\n\nFnm Casual Comma
+ nder nights all welcome\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10739379
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10423824
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260605T230000Z
 DTEND:20260606T020000Z
 SUMMARY:Magic: Presents Pride FNM Commander @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Commander\nCost: $9\nStore: http://www.7thdimensiongam
- es.com\nDetails: https://locator.wizards.com/events/10423824\nSource: wiza
- rds-locator
+ es.com\nDetails: https://locator.wizards.com/events/10423824\n\nOur regula
+ r FNM\, but with pride.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10423824
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599268
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260606T170000Z
 DTEND:20260606T200000Z
 SUMMARY:Saturday Draft @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Draft\nCost: $25\nStore: http://www.7thdimensiongames.
- com\nDetails: https://locator.wizards.com/events/10599268\nSource: wizards
- -locator
+ com\nDetails: https://locator.wizards.com/events/10599268\n\nOur Saturday 
+ draft will usually be the most recent set\, but we will change sets at the
+  last minute if the crowd demands it.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599268
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10722086
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260606T220000Z
 DTEND:20260607T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 636 - Port Richmond
 LOCATION:GameStop - 636 - Port Richmond\, East Cabot Street\, Philadelphia
  \, Pennsylvania\, 19125
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.gamestop.com
- /\nDetails: https://locator.wizards.com/events/10722086\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10722086\n\nJoin us at your
+  local GameStop for a casual commander event!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10722086
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10722161
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260606T220000Z
 DTEND:20260607T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 1735 - Philadelphia
@@ -1528,14 +1760,14 @@ SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 1735 - Philadelphia
 LOCATION:GameStop - 1735 - Philadelphia  \, 3745 Aramingo Avenue\, Philade
  lphia\, Pennsylvania\, 19137
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.gamestop.com
- /\nDetails: https://locator.wizards.com/events/10722161\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10722161\n\nJoin us at your
+  local GameStop for a casual commander event!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10722161
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10722091
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260606T220000Z
 DTEND:20260607T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 666 - Great Northea
@@ -1543,28 +1775,32 @@ SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 666 - Great Northea
 LOCATION:GameStop - 666 - Great Northeast Plaza\, 2231 Cottman Avenue\, Ph
  iladelphia\, Pennsylvania\, 19149
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.gamestop.com
- /\nDetails: https://locator.wizards.com/events/10722091\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10722091\n\nJoin us at your
+  local GameStop for a casual commander event!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10722091
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599472
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260607T190000Z
 DTEND:20260607T220000Z
 SUMMARY:Sunday Afternoon Commander @ Kryptic Collections
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
- ions.com/\nDetails: https://locator.wizards.com/events/10599472\nSource: w
- izards-locator
+ ions.com/\nDetails: https://locator.wizards.com/events/10599472\n\nCome pl
+ ay commander with new or old friends. Spend Sunday Evening playing a casua
+ l game or learn how to play a new format. Each player will receive a stand
+ ard legal draft\, set booster or play booster of their choice. The winner 
+ will receive A Promo pack and a bonus booster pack. Promos while supplies 
+ last. Players will be split into 2-4 person pods.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599472
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881710
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260608T210000Z
 DTEND:20260609T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -1572,27 +1808,27 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
  ryptidtoysandgames\nDetails: https://locator.wizards.com/events/10881710\n
- Source: wizards-locator
+ \nCryptid Casual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10881710
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968410
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260608T223000Z
 DTEND:20260609T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10968410\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10968410\n\nJoin us at PGS for
+  our Monday night Pauper tournament!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10968410
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650597
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260609T210000Z
 DTEND:20260610T000000Z
 SUMMARY:Cryptid Edition @ Cryptid Toys and Games
@@ -1600,83 +1836,95 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
  ryptidtoysandgames\nDetails: https://locator.wizards.com/events/10650597\n
- Source: wizards-locator
+ \nCome Play Commander\, Standard\, or learn how to play\nSource: wizards-l
+ ocator
 URL;VALUE=URI:https://locator.wizards.com/events/10650597
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710236
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260609T210000Z
 DTEND:20260610T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710236\nSource:
-  wizards-locator
+ online.com/\nDetails: https://locator.wizards.com/events/10710236\n\nBuy a
+  pack and play to win that pack in Fill and Fire Commander Pods all night!
+ \nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10710236
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461073
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260609T223000Z
 DTEND:20260610T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10461073\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10461073\n\nJoin us at Philly G
+ ame Shop for our Tuesday night drafts! Join our discord to learn more abou
+ t our events and RSVP ahead of time by going to our website at www.phillyg
+ ameshop.com!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10461073
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650408
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260609T223000Z
 DTEND:20260610T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650408\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650408\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650408
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10803856
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260609T223000Z
 DTEND:20260610T013000Z
 SUMMARY:Secrets of Strixhaven Commander Party @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Commander\nCost: $6\nStore: http://www.7thdimensiongam
- es.com\nDetails: https://locator.wizards.com/events/10803856\nSource: wiza
- rds-locator
+ es.com\nDetails: https://locator.wizards.com/events/10803856\n\nOur casual
+  Commander Party\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10803856
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518872
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260610T210000Z
 DTEND:20260611T000000Z
 SUMMARY:Queen & Rook Strixhaven Commander Party @ Queen and Rook Game Cafe
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://queenandrookcafe
- .com/\nDetails: https://locator.wizards.com/events/10518872\nSource: wizar
- ds-locator
+ .com/\nDetails: https://locator.wizards.com/events/10518872\n\nJoin us eve
+ ry Wednesday for what many players hail as "The Best Commander Night on th
+ e East Coast!" Attendance is typically in the 50-60 range\, with turnouts 
+ sometimes as high as 70! There's NO entry fee\, & NO assigned seating (but
+  plz consider getting something to eat/drink so we can stay alive <3) We h
+ ave a wide range of players both new & old\, as well as regular cEDH pods 
+ if you've been looking to try it out. Join us on our Discord at http://bit
+ .ly/QNRDC for more info & to connect with the wider Philadelphia Gaming Co
+ mmunity!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10518872
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10814226
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260610T210000Z
 DTEND:20260611T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -1684,125 +1932,140 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.youtube.com/
  @Cryptidtoysandgames\nDetails: https://locator.wizards.com/events/10814226
- \nSource: wizards-locator
+ \n\nCasual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10814226
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599485
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260610T223000Z
 DTEND:20260611T013000Z
 SUMMARY:Wednesday Commander Night @ Kryptic Collections
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
- ions.com/\nDetails: https://locator.wizards.com/events/10599485\nSource: w
- izards-locator
+ ions.com/\nDetails: https://locator.wizards.com/events/10599485\n\nCome pl
+ ay commander with new or old friends. Spend Sunday Evening playing a casua
+ l game or learn how to play a new format. Each player will receive a stand
+ ard legal draft\, set booster or play booster of their choice. The winner 
+ will receive A Promo pack and a bonus booster pack. Promos while supplies 
+ last. Players will be split into 2-4 person pods.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599485
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710237
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260611T210000Z
 DTEND:20260612T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710237\nSource:
-  wizards-locator
+ online.com/\nDetails: https://locator.wizards.com/events/10710237\n\nBuy a
+  pack and play to win that pack in Fill and Fire Commander Pods all night!
+ \nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10710237
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794458
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260611T223000Z
 DTEND:20260612T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10794458\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10794458\n\nCome by the Philly
+  Game Shop every Thursday to play the modern format! Entry is $10 with pri
+ zing in store credit depending on the number of attendees. More informatio
+ n on our store and events can be found on our discord server\, which you c
+ an find a link to on our website at www.phillygameshop.com.\nSource: wizar
+ ds-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10794458
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461088
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260612T223000Z
 DTEND:20260613T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10461088\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10461088\n\n*\nSource: wizards-
+ locator
 URL;VALUE=URI:https://locator.wizards.com/events/10461088
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599498
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260612T223000Z
 DTEND:20260613T013000Z
 SUMMARY:Friday Night Commander @ Kryptic Collections
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
- ions.com/\nDetails: https://locator.wizards.com/events/10599498\nSource: w
- izards-locator
+ ions.com/\nDetails: https://locator.wizards.com/events/10599498\n\nCome pl
+ ay commander with new or old friends. Spend Sunday Evening playing a casua
+ l game or learn how to play a new format. Each player will receive a stand
+ ard legal draft\, set booster or play booster of their choice. The winner 
+ will receive A Promo pack and a bonus booster pack. Promos while supplies 
+ last. Players will be split into 2-4 person pods.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599498
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650423
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260612T223000Z
 DTEND:20260613T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650423\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650423\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650423
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10739380
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260612T230000Z
 DTEND:20260613T020000Z
 SUMMARY:FNM COMMANDER NIGHTS @ Play Another Game
 LOCATION:Play Another Game\, 7919 Barnes Street\, Philadelphia\, Pennsylva
  nia\, 19111
 DESCRIPTION:Format: Commander\nCost: Free\nStore: http://magic.wizards.com
- \nDetails: https://locator.wizards.com/events/10739380\nSource: wizards-lo
- cator
+ \nDetails: https://locator.wizards.com/events/10739380\n\nFnm Casual Comma
+ nder nights all welcome\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10739380
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599270
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260613T170000Z
 DTEND:20260613T200000Z
 SUMMARY:Saturday Draft @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Draft\nCost: $25\nStore: http://www.7thdimensiongames.
- com\nDetails: https://locator.wizards.com/events/10599270\nSource: wizards
- -locator
+ com\nDetails: https://locator.wizards.com/events/10599270\n\nOur Saturday 
+ draft will usually be the most recent set\, but we will change sets at the
+  last minute if the crowd demands it.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10599270
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10902362
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260613T190000Z
 DTEND:20260613T220000Z
 SUMMARY:Avengers Academy Magic Presents: Avengers Academy @ Top Deck Games
@@ -1811,13 +2074,13 @@ LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: New Player Event\nCost: Free\nStore: https://www.topde
  ckgamesonline.com/\nDetails: https://locator.wizards.com/events/10902362\n
- Source: wizards-locator
+ \nPlaceholder\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10902362
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518781
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260614T163000Z
 DTEND:20260614T193000Z
 SUMMARY:Magic: Presents Pride @ Queen & Rook Game Tavern! @ Queen and Rook
@@ -1825,14 +2088,18 @@ SUMMARY:Magic: Presents Pride @ Queen & Rook Game Tavern! @ Queen and Rook
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://queenandrookcafe.c
- om/\nDetails: https://locator.wizards.com/events/10518781\nSource: wizards
- -locator
+ om/\nDetails: https://locator.wizards.com/events/10518781\n\nJoin us this 
+ June 14th for our Annual Pride Magic celebration! For this event\, any two
+  commanders may be used together in the Command Zone to celebrate everyone
+ 's right to be together no matter your identity. Create a super unique dec
+ k with your favourite magic characters & come show off your passion & crea
+ tivity.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10518781
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881711
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260615T210000Z
 DTEND:20260616T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -1840,27 +2107,27 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
  ryptidtoysandgames\nDetails: https://locator.wizards.com/events/10881711\n
- Source: wizards-locator
+ \nCryptid Casual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10881711
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968411
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260615T223000Z
 DTEND:20260616T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10968411\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10968411\n\nJoin us at PGS for
+  our Monday night Pauper tournament!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10968411
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650598
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260616T210000Z
 DTEND:20260617T000000Z
 SUMMARY:Cryptid Edition @ Cryptid Toys and Games
@@ -1868,55 +2135,60 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
  ryptidtoysandgames\nDetails: https://locator.wizards.com/events/10650598\n
- Source: wizards-locator
+ \nCome Play Commander\, Standard\, or learn how to play\nSource: wizards-l
+ ocator
 URL;VALUE=URI:https://locator.wizards.com/events/10650598
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710238
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260616T210000Z
 DTEND:20260617T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710238\nSource:
-  wizards-locator
+ online.com/\nDetails: https://locator.wizards.com/events/10710238\n\nBuy a
+  pack and play to win that pack in Fill and Fire Commander Pods all night!
+ \nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10710238
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461074
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260616T223000Z
 DTEND:20260617T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10461074\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10461074\n\nJoin us at Philly G
+ ame Shop for our Tuesday night drafts! Join our discord to learn more abou
+ t our events and RSVP ahead of time by going to our website at www.phillyg
+ ameshop.com!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10461074
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650409
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260616T223000Z
 DTEND:20260617T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650409\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650409\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650409
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518590
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260617T210000Z
 DTEND:20260618T000000Z
 SUMMARY:Commander Night @ Queen & Rook Game Tavern! @ Queen and Rook Game 
@@ -1924,14 +2196,21 @@ SUMMARY:Commander Night @ Queen & Rook Game Tavern! @ Queen and Rook Game
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://queenandrookcafe
- .com/\nDetails: https://locator.wizards.com/events/10518590\nSource: wizar
- ds-locator
+ .com/\nDetails: https://locator.wizards.com/events/10518590\n\nJoin us eve
+ ry Wednesday for what many players hail as "The Best Commander Night on th
+ e East Coast!" Attendance is typically in the 50-60 range\, with turnouts 
+ sometimes as high as 70! There's NO entry fee\, & NO assigned seating (but
+  plz consider getting something to eat/drink so we can stay alive <3)\n\nW
+ e have a wide range of players both new & old\, as well as regular cEDH po
+ ds if you've been looking to try it out. \n\nJoin us on our Discord at htt
+ p://bit.ly/QNRDC for more info & to connect with the wider Philadelphia Ga
+ ming Community!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10518590
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10814227
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260617T210000Z
 DTEND:20260618T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -1939,41 +2218,46 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.youtube.com/
  @Cryptidtoysandgames\nDetails: https://locator.wizards.com/events/10814227
- \nSource: wizards-locator
+ \n\nCasual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10814227
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710239
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260618T210000Z
 DTEND:20260619T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710239\nSource:
-  wizards-locator
+ online.com/\nDetails: https://locator.wizards.com/events/10710239\n\nBuy a
+  pack and play to win that pack in Fill and Fire Commander Pods all night!
+ \nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10710239
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794459
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260618T223000Z
 DTEND:20260619T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10794459\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10794459\n\nCome by the Philly
+  Game Shop every Thursday to play the modern format! Entry is $10 with pri
+ zing in store credit depending on the number of attendees. More informatio
+ n on our store and events can be found on our discord server\, which you c
+ an find a link to on our website at www.phillygameshop.com.\nSource: wizar
+ ds-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10794459
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10862490
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
@@ -1981,42 +2265,49 @@ SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: https://queenandrookcafe.com
- /\nDetails: https://locator.wizards.com/events/10862490\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10862490\n\nJoin us at Quee
+ n & Rook Game Tavern for our trademark unique Prerelease experience! Enjoy
+  Wood-fired Pizza & full Bar options  with plenty of tasty Draft Beers & C
+ ocktails while you crack packs & celebrate Magic: The Gatherings second Ma
+ rvel Set!\n\nTickets & Details: https://www.queenrookkeep.com/product/magi
+ c-the-gathering-marvel-superheroes-prerelease-ticket-friday-june-19th-6-30
+ pm/MRO5W6RD576R5ZA4QCDOX65T?cp=true&sa=true&sbp=false&q=false\nSource: wiz
+ ards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10862490
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461089
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10461089\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10461089\n\n*\nSource: wizards-
+ locator
 URL;VALUE=URI:https://locator.wizards.com/events/10461089
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650424
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650424\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650424\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650424
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10925310
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:MTG Marvel: Super Heroes #1 Prerelease @ Top Deck Games - Cherry H
@@ -2024,14 +2315,25 @@ SUMMARY:MTG Marvel: Super Heroes #1 Prerelease @ Top Deck Games - Cherry H
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10925310\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10925310\n\nMultiple 
+ Sealed Event Discounts:\nPurchase any multi-event bundle and get a free pa
+ ck of UltraPro Apex sleeves while supplies last!\n3 Events: $165\n5 Events
+ : $250\n\nWHEN: Friday\, June 19th\, 6:30pm\n\nWHERE: Top Deck Games\n1400
+  Haddonfield-Berlin Rd\, Suite 100\nCherry Hill\, NJ 08003\n856-858-2700\n
+ \nENTRY: $60\n- Please call or come into the store to preregister for this
+  event!\n- Each player will receive a Prerelease Kit\n- Players must have 
+ an active Wizards Account / MTG Companion App Account\n- Sign up for an ac
+ count: https://myaccounts.wizards.com/register\n\nFORMAT: Limited - Sealed
+ \n- 45 Minute Build\n- 3 Swiss Rounds\, 50-minutes\, Best-of-3\n- 40+ card
+  decks constructed from the Prerelease Kits\n\nPRIZES:\n- 2 boosters per m
+ atch win and 1 booster for a draw\n- Players that go 0-3 will receive one 
+ booster\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10925310
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10819527
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260619T230000Z
 DTEND:20260620T020000Z
 SUMMARY:Kryptic Collections Marvel Super Heroes Prerelease @ Kryptic Colle
@@ -2039,56 +2341,58 @@ SUMMARY:Kryptic Collections Marvel Super Heroes Prerelease @ Kryptic Colle
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: http://www.krypticcollection
- s.com/\nDetails: https://locator.wizards.com/events/10819527\nSource: wiza
- rds-locator
+ s.com/\nDetails: https://locator.wizards.com/events/10819527\n\n1\nSource:
+  wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10819527
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10739381
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260619T230000Z
 DTEND:20260620T020000Z
 SUMMARY:FNM COMMANDER NIGHTS @ Play Another Game
 LOCATION:Play Another Game\, 7919 Barnes Street\, Philadelphia\, Pennsylva
  nia\, 19111
 DESCRIPTION:Format: Commander\nCost: Free\nStore: http://magic.wizards.com
- \nDetails: https://locator.wizards.com/events/10739381\nSource: wizards-lo
- cator
+ \nDetails: https://locator.wizards.com/events/10739381\n\nFnm Casual Comma
+ nder nights all welcome\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10739381
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10702521
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260619T230000Z
 DTEND:20260620T020000Z
 SUMMARY:Marvel Super Heroes Prerelease @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Sealed\nCost: $35\nStore: http://www.7thdimensiongames
- .com\nDetails: https://locator.wizards.com/events/10702521\nSource: wizard
- s-locator
+ .com\nDetails: https://locator.wizards.com/events/10702521\n\nOur friendly
+  casual prerelease. Prizing is 1 pack per round won.\nSource: wizards-loca
+ tor
 URL;VALUE=URI:https://locator.wizards.com/events/10702521
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10702522
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260620T130000Z
 DTEND:20260620T160000Z
 SUMMARY:Marvel Super Heroes Prerelease @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Sealed\nCost: $35\nStore: http://www.7thdimensiongames
- .com\nDetails: https://locator.wizards.com/events/10702522\nSource: wizard
- s-locator
+ .com\nDetails: https://locator.wizards.com/events/10702522\n\nOur friendly
+  casual prerelease. Prizing is 1 pack per round won.\nSource: wizards-loca
+ tor
 URL;VALUE=URI:https://locator.wizards.com/events/10702522
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952141
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260620T150000Z
 DTEND:20260620T180000Z
 SUMMARY:MTG Marvel: Super Heroes #2 Prerelease @ Top Deck Games - Cherry H
@@ -2096,14 +2400,23 @@ SUMMARY:MTG Marvel: Super Heroes #2 Prerelease @ Top Deck Games - Cherry H
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10952141\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10952141\n\nWHEN: Sat
+ urday\, June 20th\, 11:00am\n\nWHERE: Top Deck Games\n1400 Haddonfield-Ber
+ lin Rd\, Suite 100\nCherry Hill\, NJ 08003\n856-858-2700\n\nENTRY: $60\n- 
+ Please call or come into the store to preregister for this event!\n- Each 
+ player will receive a Prerelease Kit\n- Players must have an active Wizard
+ s Account / MTG Companion App Account\n- Sign up for an account: https://m
+ yaccounts.wizards.com/register\n\nFORMAT: Limited - Sealed\n- 45 Minute Bu
+ ild\n- 3 Swiss Rounds\, 50-minutes\, Best-of-3\n- 40+ card decks construct
+ ed from the Prerelease Kits\n\nPRIZES:\n- 2 boosters per match win and 1 b
+ ooster for a draw\n- Players that go 0-3 will receive one booster\nSource:
+  wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10952141
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10862492
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260620T163000Z
 DTEND:20260620T193000Z
 SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
@@ -2111,14 +2424,20 @@ SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: https://queenandrookcafe.com
- /\nDetails: https://locator.wizards.com/events/10862492\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10862492\n\nJoin us at Quee
+ n & Rook Game Tavern for our trademark unique Prerelease experience! Enjoy
+  Wood-fired Pizza & full Bar options  with plenty of tasty Draft Beers & C
+ ocktails while you crack packs & celebrate Magic: The Gatherings second Ma
+ rvel Set!\n\nTickets & Details: https://www.queenrookkeep.com/product/magi
+ c-the-gathering-marvel-superheroes-prerelease-ticket-saturday-june-20th-12
+ -30pm/UGOYLPRS2ZWLWNHEW4O7YRMW?cp=true&sa=true&sbp=false&q=false\nSource: 
+ wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10862492
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10819530
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260620T170000Z
 DTEND:20260620T200000Z
 SUMMARY:Kryptic Collections Marvel Super Heroes Prerelease @ Kryptic Colle
@@ -2126,14 +2445,14 @@ SUMMARY:Kryptic Collections Marvel Super Heroes Prerelease @ Kryptic Colle
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: http://www.krypticcollection
- s.com/\nDetails: https://locator.wizards.com/events/10819530\nSource: wiza
- rds-locator
+ s.com/\nDetails: https://locator.wizards.com/events/10819530\n\n1\nSource:
+  wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10819530
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10902252
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260620T190000Z
 DTEND:20260620T220000Z
 SUMMARY:Marvel Super-Heroes 2HG #3 Prerelease @ Top Deck Games - Cherry Hi
@@ -2141,14 +2460,22 @@ SUMMARY:Marvel Super-Heroes 2HG #3 Prerelease @ Top Deck Games - Cherry Hi
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10902252\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10902252\n\nWHEN: Sat
+ urday\, June 20th\, 3:00pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berl
+ in Rd\, Suite 100\nCherry Hill\, NJ 08003\n856-858-2700\n\nENTRY: $60 per 
+ person\n- Each team will receive two random Prerelease Kits\n- Players mus
+ t have an active Wizards Account / MTG Companion App Account\n- Sign up fo
+ r an account: https://myaccounts.wizards.com/register\n\nFORMAT: Limited -
+  2HG Sealed\n- 60 Minute Build\n- 3 Swiss Rounds\, 50-minutes\, Best-of-1\
+ n- Two 40-card decks should constructed from the combined 2 kits\n\nPRIZES
+ :\n- Teams will receive 4 boosters per match win and 2 boosters for a draw
+ \n- Teams that go 0-3 will receive two boosters\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10902252
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952164
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260620T230000Z
 DTEND:20260621T020000Z
 SUMMARY:MTG Marvel: Super Heroes #4 Prerelease @ Top Deck Games - Cherry H
@@ -2156,14 +2483,23 @@ SUMMARY:MTG Marvel: Super Heroes #4 Prerelease @ Top Deck Games - Cherry H
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10952164\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10952164\n\nWHEN: Sat
+ urday\, June 20th\, 7:00pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berl
+ in Rd\, Suite 100\nCherry Hill\, NJ 08003\n856-858-2700\n\nENTRY: $60\n- P
+ lease call or come into the store to preregister for this event!\n- Each p
+ layer will receive a Prerelease Kit\n- Players must have an active Wizards
+  Account / MTG Companion App Account\n- Sign up for an account: https://my
+ accounts.wizards.com/register\n\nFORMAT: Limited - Sealed\n- 45 Minute Bui
+ ld\n- 3 Swiss Rounds\, 50-minutes\, Best-of-3\n- 40+ card decks constructe
+ d from the Prerelease Kits\n\nPRIZES:\n- 2 boosters per match win and 1 bo
+ oster for a draw\n- Players that go 0-3 will receive one booster\nSource: 
+ wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10952164
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952167
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260621T150000Z
 DTEND:20260621T180000Z
 SUMMARY:MTG Marvel: Super Heroes #5 Prerelease @ Top Deck Games - Cherry H
@@ -2171,14 +2507,23 @@ SUMMARY:MTG Marvel: Super Heroes #5 Prerelease @ Top Deck Games - Cherry H
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10952167\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10952167\n\nWHEN: Sun
+ day\, June 21st\, 11:00am\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berli
+ n Rd\, Suite 100\nCherry Hill\, NJ 08003\n856-858-2700\n\nENTRY: $60\n- Pl
+ ease call or come into the store to preregister for this event!\n- Each pl
+ ayer will receive a Prerelease Kit\n- Players must have an active Wizards 
+ Account / MTG Companion App Account\n- Sign up for an account: https://mya
+ ccounts.wizards.com/register\n\nFORMAT: Limited - Sealed\n- 45 Minute Buil
+ d\n- 3 Swiss Rounds\, 50-minutes\, Best-of-3\n- 40+ card decks constructed
+  from the Prerelease Kits\n\nPRIZES:\n- 2 boosters per match win and 1 boo
+ ster for a draw\n- Players that go 0-3 will receive one booster\nSource: w
+ izards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10952167
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10862493
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260621T163000Z
 DTEND:20260621T193000Z
 SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
@@ -2186,42 +2531,62 @@ SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: https://queenandrookcafe.com
- /\nDetails: https://locator.wizards.com/events/10862493\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10862493\n\nJoin us at Quee
+ n & Rook Game Tavern for our trademark unique Prerelease experience! Enjoy
+  Wood-fired Pizza & full Bar options  with plenty of tasty Draft Beers & C
+ ocktails while you crack packs & celebrate Magic: The Gatherings second Ma
+ rvel Set!\n\nTickets & Details: https://www.queenrookkeep.com/product/magi
+ c-the-gathering-marvel-superheroes-prerelease-ticket-sunday-june-21st-12-3
+ 0pm/CX3Q4Q42P3V2L45VVONMYD7L?cp=true&sa=true&sbp=false&q=false\nSource: wi
+ zards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10862493
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10702524
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260621T170000Z
 DTEND:20260621T200000Z
 SUMMARY:Marvel Super Heroes Prerelease @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Sealed\nCost: $35\nStore: http://www.7thdimensiongames
- .com\nDetails: https://locator.wizards.com/events/10702524\nSource: wizard
- s-locator
+ .com\nDetails: https://locator.wizards.com/events/10702524\n\nOur friendly
+  casual prerelease. Prizing is 1 pack per round won.\nSource: wizards-loca
+ tor
 URL;VALUE=URI:https://locator.wizards.com/events/10702524
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952190
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260621T190000Z
 DTEND:20260621T220000Z
 SUMMARY:MTG Marvel: Super Heroes Draft @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Draft\nCost: $30\nStore: https://www.topdeckgamesonlin
- e.com/\nDetails: https://locator.wizards.com/events/10952190\nSource: wiza
- rds-locator
+ e.com/\nDetails: https://locator.wizards.com/events/10952190\n\nThe multiv
+ erse is under threat—and this time\, it’s calling in the heroes.\nStep
+  into the action with Magic: The Gathering – Marvel: Super Heroes and un
+ leash powers beyond imagination at our prerelease event! Suit up alongside
+  legendary icons\, clash with unstoppable villains\, and forge your own he
+ roic legacy with every draw. Whether you’re assembling your dream team o
+ r going solo to save the day\, this is your moment to rise.\nThe battle st
+ arts now—are you ready to answer the call?\n\nWHEN: Sunday\, June 21st\,
+  3:00pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 100\n
+ Cherry Hill\, NJ 08003\n856-858-2700\n\nENTRY: $30\n- Players must have an
+  active Wizards Account / MTG Companion App Account\n- Sign up for an acco
+ unt at https://myaccounts.wizards.com/register\n\nFORMAT: Booster Draft\n-
+  3x Play Boosters\n- 3 Swiss Rounds\, Best of 3\n- 50 minute Rounds\n\nPRI
+ ZES: Store Credit based on final record\n3-0-0: $40\n2-0-1: $30\n2-1-0: $2
+ 0\n1-1-1: $10\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10952190
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881712
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260622T210000Z
 DTEND:20260623T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -2229,41 +2594,42 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
  ryptidtoysandgames\nDetails: https://locator.wizards.com/events/10881712\n
- Source: wizards-locator
+ \nCryptid Casual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10881712
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968412
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260622T223000Z
 DTEND:20260623T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10968412\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10968412\n\nJoin us at PGS for
+  our Monday night Pauper tournament!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10968412
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710240
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260623T210000Z
 DTEND:20260624T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710240\nSource:
-  wizards-locator
+ online.com/\nDetails: https://locator.wizards.com/events/10710240\n\nBuy a
+  pack and play to win that pack in Fill and Fire Commander Pods all night!
+ \nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10710240
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10862491
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260623T223000Z
 DTEND:20260624T013000Z
 SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
@@ -2271,42 +2637,51 @@ SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: https://queenandrookcafe.com
- /\nDetails: https://locator.wizards.com/events/10862491\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10862491\n\nJoin us at Quee
+ n & Rook Game Tavern for our trademark unique Prerelease experience! Enjoy
+  Wood-fired Pizza & full Bar options  with plenty of tasty Draft Beers & C
+ ocktails while you crack packs & celebrate Magic: The Gatherings second Ma
+ rvel Set!\n\nTickets & Details: https://www.queenrookkeep.com/product/magi
+ c-the-gathering-marvel-superheroes-prerelease-ticket-tuesday-june-23rd-6-3
+ 0pm/N3RHYU4VXISL5SJW6YFNNZ7U?cp=true&sa=true&sbp=false&q=false\nSource: wi
+ zards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10862491
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968422
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260623T223000Z
 DTEND:20260624T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10968422\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10968422\n\nJoin us at Philly G
+ ame Shop for our Tuesday night drafts! Join our discord to learn more abou
+ t our events and RSVP ahead of time by going to our website at www.phillyg
+ ameshop.com!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10968422
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650410
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260623T223000Z
 DTEND:20260624T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650410\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650410\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650410
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10814228
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260624T210000Z
 DTEND:20260625T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -2314,55 +2689,62 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.youtube.com/
  @Cryptidtoysandgames\nDetails: https://locator.wizards.com/events/10814228
- \nSource: wizards-locator
+ \n\nCasual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10814228
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710241
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260625T210000Z
 DTEND:20260626T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710241\nSource:
-  wizards-locator
+ online.com/\nDetails: https://locator.wizards.com/events/10710241\n\nBuy a
+  pack and play to win that pack in Fill and Fire Commander Pods all night!
+ \nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10710241
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794460
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260625T223000Z
 DTEND:20260626T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10794460\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10794460\n\nCome by the Philly
+  Game Shop every Thursday to play the modern format! Entry is $10 with pri
+ zing in store credit depending on the number of attendees. More informatio
+ n on our store and events can be found on our discord server\, which you c
+ an find a link to on our website at www.phillygameshop.com.\nSource: wizar
+ ds-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10794460
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10722668
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260626T220000Z
 DTEND:20260627T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 636 - Port Richmond
 LOCATION:GameStop - 636 - Port Richmond\, East Cabot Street\, Philadelphia
  \, Pennsylvania\, 19125
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.gamestop.com
- /\nDetails: https://locator.wizards.com/events/10722668\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10722668\n\nJoin us at your
+  local GameStop for a casual commander event to celebrate the launch of Ma
+ gic: The Gathering's newest set\, Marvel Super Heros!\nSource: wizards-loc
+ ator
 URL;VALUE=URI:https://locator.wizards.com/events/10722668
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10722747
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260626T220000Z
 DTEND:20260627T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 1735 - Philadelphia
@@ -2370,14 +2752,16 @@ SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 1735 - Philadelphia
 LOCATION:GameStop - 1735 - Philadelphia  \, 3745 Aramingo Avenue\, Philade
  lphia\, Pennsylvania\, 19137
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.gamestop.com
- /\nDetails: https://locator.wizards.com/events/10722747\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10722747\n\nJoin us at your
+  local GameStop for a casual commander event to celebrate the launch of Ma
+ gic: The Gathering's newest set\, Marvel Super Heros!\nSource: wizards-loc
+ ator
 URL;VALUE=URI:https://locator.wizards.com/events/10722747
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10722675
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260626T220000Z
 DTEND:20260627T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 666 - Great Northea
@@ -2385,56 +2769,59 @@ SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 666 - Great Northea
 LOCATION:GameStop - 666 - Great Northeast Plaza\, 2231 Cottman Avenue\, Ph
  iladelphia\, Pennsylvania\, 19149
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.gamestop.com
- /\nDetails: https://locator.wizards.com/events/10722675\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10722675\n\nJoin us at your
+  local GameStop for a casual commander event to celebrate the launch of Ma
+ gic: The Gathering's newest set\, Marvel Super Heros!\nSource: wizards-loc
+ ator
 URL;VALUE=URI:https://locator.wizards.com/events/10722675
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968435
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260626T223000Z
 DTEND:20260627T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10968435\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10968435\n\n*\nSource: wizards-
+ locator
 URL;VALUE=URI:https://locator.wizards.com/events/10968435
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650425
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260626T223000Z
 DTEND:20260627T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650425\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650425\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650425
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10739382
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260626T230000Z
 DTEND:20260627T020000Z
 SUMMARY:FNM COMMANDER NIGHTS @ Play Another Game
 LOCATION:Play Another Game\, 7919 Barnes Street\, Philadelphia\, Pennsylva
  nia\, 19111
 DESCRIPTION:Format: Commander\nCost: Free\nStore: http://magic.wizards.com
- \nDetails: https://locator.wizards.com/events/10739382\nSource: wizards-lo
- cator
+ \nDetails: https://locator.wizards.com/events/10739382\n\nFnm Casual Comma
+ nder nights all welcome\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10739382
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881713
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260629T210000Z
 DTEND:20260630T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -2442,69 +2829,72 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
  ryptidtoysandgames\nDetails: https://locator.wizards.com/events/10881713\n
- Source: wizards-locator
+ \nCryptid Casual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10881713
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968413
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260629T223000Z
 DTEND:20260630T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10968413\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10968413\n\nJoin us at PGS for
+  our Monday night Pauper tournament!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10968413
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968423
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260630T223000Z
 DTEND:20260701T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10968423\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10968423\n\nJoin us at Philly G
+ ame Shop for our Tuesday night drafts! Join our discord to learn more abou
+ t our events and RSVP ahead of time by going to our website at www.phillyg
+ ameshop.com!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10968423
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650411
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260630T223000Z
 DTEND:20260701T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650411\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650411\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650411
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10767929
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260630T223000Z
 DTEND:20260701T013000Z
 SUMMARY:Two Headed Giant Commander Tuesday Event @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Commander\nCost: $8\nStore: http://www.7thdimensiongam
- es.com\nDetails: https://locator.wizards.com/events/10767929\nSource: wiza
- rds-locator
+ es.com\nDetails: https://locator.wizards.com/events/10767929\n\nCasual 2 H
+ eaded Event\, everyone gets a pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10767929
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10814229
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260701T210000Z
 DTEND:20260702T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -2512,55 +2902,60 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.youtube.com/
  @Cryptidtoysandgames\nDetails: https://locator.wizards.com/events/10814229
- \nSource: wizards-locator
+ \n\nCasual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10814229
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794461
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260702T223000Z
 DTEND:20260703T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10794461\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10794461\n\nCome by the Philly
+  Game Shop every Thursday to play the modern format! Entry is $10 with pri
+ zing in store credit depending on the number of attendees. More informatio
+ n on our store and events can be found on our discord server\, which you c
+ an find a link to on our website at www.phillygameshop.com.\nSource: wizar
+ ds-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10794461
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968436
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260703T223000Z
 DTEND:20260704T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10968436\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10968436\n\n*\nSource: wizards-
+ locator
 URL;VALUE=URI:https://locator.wizards.com/events/10968436
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650426
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260703T223000Z
 DTEND:20260704T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650426\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650426\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650426
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881714
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260706T210000Z
 DTEND:20260707T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -2568,69 +2963,72 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
  ryptidtoysandgames\nDetails: https://locator.wizards.com/events/10881714\n
- Source: wizards-locator
+ \nCryptid Casual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10881714
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968414
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260706T223000Z
 DTEND:20260707T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10968414\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10968414\n\nJoin us at PGS for
+  our Monday night Pauper tournament!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10968414
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968424
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260707T223000Z
 DTEND:20260708T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $30\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10968424\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10968424\n\nJoin us at Philly G
+ ame Shop for our Tuesday night drafts! Join our discord to learn more abou
+ t our events and RSVP ahead of time by going to our website at www.phillyg
+ ameshop.com!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10968424
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650412
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260707T223000Z
 DTEND:20260708T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650412\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650412\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650412
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10767932
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260707T223000Z
 DTEND:20260708T013000Z
 SUMMARY:Tuesday Commander Party @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Commander\nCost: $8\nStore: http://www.7thdimensiongam
- es.com\nDetails: https://locator.wizards.com/events/10767932\nSource: wiza
- rds-locator
+ es.com\nDetails: https://locator.wizards.com/events/10767932\n\nCasual eve
+ nt\, everyone gets a pack and promo card\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10767932
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10814230
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260708T210000Z
 DTEND:20260709T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -2638,49 +3036,54 @@ LOCATION:Cryptid Toys and Games\, North Forklanding Road\, Maple Shade Tow
  nship\, New Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.youtube.com/
  @Cryptidtoysandgames\nDetails: https://locator.wizards.com/events/10814230
- \nSource: wizards-locator
+ \n\nCasual Commander\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10814230
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794462
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260709T223000Z
 DTEND:20260710T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
- Details: https://locator.wizards.com/events/10794462\nSource: wizards-loca
- tor
+ Details: https://locator.wizards.com/events/10794462\n\nCome by the Philly
+  Game Shop every Thursday to play the modern format! Entry is $10 with pri
+ zing in store credit depending on the number of attendees. More informatio
+ n on our store and events can be found on our discord server\, which you c
+ an find a link to on our website at www.phillygameshop.com.\nSource: wizar
+ ds-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10794462
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968437
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260710T223000Z
 DTEND:20260711T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
 LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
  Pennsylvania\, 19147
 DESCRIPTION:Format: Draft\nCost: $22\nStore: http://phillygameshop.com/\nD
- etails: https://locator.wizards.com/events/10968437\nSource: wizards-locat
- or
+ etails: https://locator.wizards.com/events/10968437\n\n*\nSource: wizards-
+ locator
 URL;VALUE=URI:https://locator.wizards.com/events/10968437
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650427
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260710T223000Z
 DTEND:20260711T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
 LOCATION:Hobby Vault\, 300 South Lenola Road\, Maple Shade Township\, New 
  Jersey\, 08052
 DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
- m/\nDetails: https://locator.wizards.com/events/10650427\nSource: wizards-
- locator
+ m/\nDetails: https://locator.wizards.com/events/10650427\n\nCommander 4 pl
+ ayer pods $10 entry. First game winner gets $20. Everyone gets a pack and 
+ 2nd game winner gets an extra pack.\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10650427
 END:VEVENT
 END:VCALENDAR

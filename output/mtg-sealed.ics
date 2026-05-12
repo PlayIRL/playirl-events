@@ -9,7 +9,7 @@ X-WR-CALDESC:Sealed events in Philadelphia area
 BEGIN:VEVENT
 UID:wotc-10862490
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
@@ -17,14 +17,20 @@ SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: https://queenandrookcafe.com
- /\nDetails: https://locator.wizards.com/events/10862490\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10862490\n\nJoin us at Quee
+ n & Rook Game Tavern for our trademark unique Prerelease experience! Enjoy
+  Wood-fired Pizza & full Bar options  with plenty of tasty Draft Beers & C
+ ocktails while you crack packs & celebrate Magic: The Gatherings second Ma
+ rvel Set!\n\nTickets & Details: https://www.queenrookkeep.com/product/magi
+ c-the-gathering-marvel-superheroes-prerelease-ticket-friday-june-19th-6-30
+ pm/MRO5W6RD576R5ZA4QCDOX65T?cp=true&sa=true&sbp=false&q=false\nSource: wiz
+ ards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10862490
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10925310
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:MTG Marvel: Super Heroes #1 Prerelease @ Top Deck Games - Cherry H
@@ -32,14 +38,25 @@ SUMMARY:MTG Marvel: Super Heroes #1 Prerelease @ Top Deck Games - Cherry H
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10925310\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10925310\n\nMultiple 
+ Sealed Event Discounts:\nPurchase any multi-event bundle and get a free pa
+ ck of UltraPro Apex sleeves while supplies last!\n3 Events: $165\n5 Events
+ : $250\n\nWHEN: Friday\, June 19th\, 6:30pm\n\nWHERE: Top Deck Games\n1400
+  Haddonfield-Berlin Rd\, Suite 100\nCherry Hill\, NJ 08003\n856-858-2700\n
+ \nENTRY: $60\n- Please call or come into the store to preregister for this
+  event!\n- Each player will receive a Prerelease Kit\n- Players must have 
+ an active Wizards Account / MTG Companion App Account\n- Sign up for an ac
+ count: https://myaccounts.wizards.com/register\n\nFORMAT: Limited - Sealed
+ \n- 45 Minute Build\n- 3 Swiss Rounds\, 50-minutes\, Best-of-3\n- 40+ card
+  decks constructed from the Prerelease Kits\n\nPRIZES:\n- 2 boosters per m
+ atch win and 1 booster for a draw\n- Players that go 0-3 will receive one 
+ booster\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10925310
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10819527
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260619T230000Z
 DTEND:20260620T020000Z
 SUMMARY:Kryptic Collections Marvel Super Heroes Prerelease @ Kryptic Colle
@@ -47,42 +64,44 @@ SUMMARY:Kryptic Collections Marvel Super Heroes Prerelease @ Kryptic Colle
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: http://www.krypticcollection
- s.com/\nDetails: https://locator.wizards.com/events/10819527\nSource: wiza
- rds-locator
+ s.com/\nDetails: https://locator.wizards.com/events/10819527\n\n1\nSource:
+  wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10819527
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10702521
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260619T230000Z
 DTEND:20260620T020000Z
 SUMMARY:Marvel Super Heroes Prerelease @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Sealed\nCost: $35\nStore: http://www.7thdimensiongames
- .com\nDetails: https://locator.wizards.com/events/10702521\nSource: wizard
- s-locator
+ .com\nDetails: https://locator.wizards.com/events/10702521\n\nOur friendly
+  casual prerelease. Prizing is 1 pack per round won.\nSource: wizards-loca
+ tor
 URL;VALUE=URI:https://locator.wizards.com/events/10702521
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10702522
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260620T130000Z
 DTEND:20260620T160000Z
 SUMMARY:Marvel Super Heroes Prerelease @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Sealed\nCost: $35\nStore: http://www.7thdimensiongames
- .com\nDetails: https://locator.wizards.com/events/10702522\nSource: wizard
- s-locator
+ .com\nDetails: https://locator.wizards.com/events/10702522\n\nOur friendly
+  casual prerelease. Prizing is 1 pack per round won.\nSource: wizards-loca
+ tor
 URL;VALUE=URI:https://locator.wizards.com/events/10702522
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952141
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260620T150000Z
 DTEND:20260620T180000Z
 SUMMARY:MTG Marvel: Super Heroes #2 Prerelease @ Top Deck Games - Cherry H
@@ -90,14 +109,23 @@ SUMMARY:MTG Marvel: Super Heroes #2 Prerelease @ Top Deck Games - Cherry H
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10952141\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10952141\n\nWHEN: Sat
+ urday\, June 20th\, 11:00am\n\nWHERE: Top Deck Games\n1400 Haddonfield-Ber
+ lin Rd\, Suite 100\nCherry Hill\, NJ 08003\n856-858-2700\n\nENTRY: $60\n- 
+ Please call or come into the store to preregister for this event!\n- Each 
+ player will receive a Prerelease Kit\n- Players must have an active Wizard
+ s Account / MTG Companion App Account\n- Sign up for an account: https://m
+ yaccounts.wizards.com/register\n\nFORMAT: Limited - Sealed\n- 45 Minute Bu
+ ild\n- 3 Swiss Rounds\, 50-minutes\, Best-of-3\n- 40+ card decks construct
+ ed from the Prerelease Kits\n\nPRIZES:\n- 2 boosters per match win and 1 b
+ ooster for a draw\n- Players that go 0-3 will receive one booster\nSource:
+  wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10952141
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10862492
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260620T163000Z
 DTEND:20260620T193000Z
 SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
@@ -105,14 +133,20 @@ SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: https://queenandrookcafe.com
- /\nDetails: https://locator.wizards.com/events/10862492\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10862492\n\nJoin us at Quee
+ n & Rook Game Tavern for our trademark unique Prerelease experience! Enjoy
+  Wood-fired Pizza & full Bar options  with plenty of tasty Draft Beers & C
+ ocktails while you crack packs & celebrate Magic: The Gatherings second Ma
+ rvel Set!\n\nTickets & Details: https://www.queenrookkeep.com/product/magi
+ c-the-gathering-marvel-superheroes-prerelease-ticket-saturday-june-20th-12
+ -30pm/UGOYLPRS2ZWLWNHEW4O7YRMW?cp=true&sa=true&sbp=false&q=false\nSource: 
+ wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10862492
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10819530
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260620T170000Z
 DTEND:20260620T200000Z
 SUMMARY:Kryptic Collections Marvel Super Heroes Prerelease @ Kryptic Colle
@@ -120,14 +154,14 @@ SUMMARY:Kryptic Collections Marvel Super Heroes Prerelease @ Kryptic Colle
 LOCATION:Kryptic Collections\, 235 Lilac Lane\, Cinnaminson Township\, New
   Jersey\, 08077
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: http://www.krypticcollection
- s.com/\nDetails: https://locator.wizards.com/events/10819530\nSource: wiza
- rds-locator
+ s.com/\nDetails: https://locator.wizards.com/events/10819530\n\n1\nSource:
+  wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10819530
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10902252
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260620T190000Z
 DTEND:20260620T220000Z
 SUMMARY:Marvel Super-Heroes 2HG #3 Prerelease @ Top Deck Games - Cherry Hi
@@ -135,14 +169,22 @@ SUMMARY:Marvel Super-Heroes 2HG #3 Prerelease @ Top Deck Games - Cherry Hi
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10902252\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10902252\n\nWHEN: Sat
+ urday\, June 20th\, 3:00pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berl
+ in Rd\, Suite 100\nCherry Hill\, NJ 08003\n856-858-2700\n\nENTRY: $60 per 
+ person\n- Each team will receive two random Prerelease Kits\n- Players mus
+ t have an active Wizards Account / MTG Companion App Account\n- Sign up fo
+ r an account: https://myaccounts.wizards.com/register\n\nFORMAT: Limited -
+  2HG Sealed\n- 60 Minute Build\n- 3 Swiss Rounds\, 50-minutes\, Best-of-1\
+ n- Two 40-card decks should constructed from the combined 2 kits\n\nPRIZES
+ :\n- Teams will receive 4 boosters per match win and 2 boosters for a draw
+ \n- Teams that go 0-3 will receive two boosters\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10902252
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952164
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260620T230000Z
 DTEND:20260621T020000Z
 SUMMARY:MTG Marvel: Super Heroes #4 Prerelease @ Top Deck Games - Cherry H
@@ -150,14 +192,23 @@ SUMMARY:MTG Marvel: Super Heroes #4 Prerelease @ Top Deck Games - Cherry H
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10952164\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10952164\n\nWHEN: Sat
+ urday\, June 20th\, 7:00pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berl
+ in Rd\, Suite 100\nCherry Hill\, NJ 08003\n856-858-2700\n\nENTRY: $60\n- P
+ lease call or come into the store to preregister for this event!\n- Each p
+ layer will receive a Prerelease Kit\n- Players must have an active Wizards
+  Account / MTG Companion App Account\n- Sign up for an account: https://my
+ accounts.wizards.com/register\n\nFORMAT: Limited - Sealed\n- 45 Minute Bui
+ ld\n- 3 Swiss Rounds\, 50-minutes\, Best-of-3\n- 40+ card decks constructe
+ d from the Prerelease Kits\n\nPRIZES:\n- 2 boosters per match win and 1 bo
+ oster for a draw\n- Players that go 0-3 will receive one booster\nSource: 
+ wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10952164
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952167
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260621T150000Z
 DTEND:20260621T180000Z
 SUMMARY:MTG Marvel: Super Heroes #5 Prerelease @ Top Deck Games - Cherry H
@@ -165,14 +216,23 @@ SUMMARY:MTG Marvel: Super Heroes #5 Prerelease @ Top Deck Games - Cherry H
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
 DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
- ne.com/\nDetails: https://locator.wizards.com/events/10952167\nSource: wiz
- ards-locator
+ ne.com/\nDetails: https://locator.wizards.com/events/10952167\n\nWHEN: Sun
+ day\, June 21st\, 11:00am\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berli
+ n Rd\, Suite 100\nCherry Hill\, NJ 08003\n856-858-2700\n\nENTRY: $60\n- Pl
+ ease call or come into the store to preregister for this event!\n- Each pl
+ ayer will receive a Prerelease Kit\n- Players must have an active Wizards 
+ Account / MTG Companion App Account\n- Sign up for an account: https://mya
+ ccounts.wizards.com/register\n\nFORMAT: Limited - Sealed\n- 45 Minute Buil
+ d\n- 3 Swiss Rounds\, 50-minutes\, Best-of-3\n- 40+ card decks constructed
+  from the Prerelease Kits\n\nPRIZES:\n- 2 boosters per match win and 1 boo
+ ster for a draw\n- Players that go 0-3 will receive one booster\nSource: w
+ izards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10952167
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10862493
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260621T163000Z
 DTEND:20260621T193000Z
 SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
@@ -180,28 +240,35 @@ SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: https://queenandrookcafe.com
- /\nDetails: https://locator.wizards.com/events/10862493\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10862493\n\nJoin us at Quee
+ n & Rook Game Tavern for our trademark unique Prerelease experience! Enjoy
+  Wood-fired Pizza & full Bar options  with plenty of tasty Draft Beers & C
+ ocktails while you crack packs & celebrate Magic: The Gatherings second Ma
+ rvel Set!\n\nTickets & Details: https://www.queenrookkeep.com/product/magi
+ c-the-gathering-marvel-superheroes-prerelease-ticket-sunday-june-21st-12-3
+ 0pm/CX3Q4Q42P3V2L45VVONMYD7L?cp=true&sa=true&sbp=false&q=false\nSource: wi
+ zards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10862493
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10702524
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260621T170000Z
 DTEND:20260621T200000Z
 SUMMARY:Marvel Super Heroes Prerelease @ 7th Dimension Games
 LOCATION:7th Dimension Games\, Johnson Street\, Jenkintown\, Pennsylvania\
  , 19046
 DESCRIPTION:Format: Sealed\nCost: $35\nStore: http://www.7thdimensiongames
- .com\nDetails: https://locator.wizards.com/events/10702524\nSource: wizard
- s-locator
+ .com\nDetails: https://locator.wizards.com/events/10702524\n\nOur friendly
+  casual prerelease. Prizing is 1 pack per round won.\nSource: wizards-loca
+ tor
 URL;VALUE=URI:https://locator.wizards.com/events/10702524
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10862491
 SEQUENCE:0
-DTSTAMP:20260512T115608Z
+DTSTAMP:20260512T232334Z
 DTSTART:20260623T223000Z
 DTEND:20260624T013000Z
 SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
@@ -209,8 +276,14 @@ SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
 LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
  nsylvania\, 19106
 DESCRIPTION:Format: Sealed\nCost: $50\nStore: https://queenandrookcafe.com
- /\nDetails: https://locator.wizards.com/events/10862491\nSource: wizards-l
- ocator
+ /\nDetails: https://locator.wizards.com/events/10862491\n\nJoin us at Quee
+ n & Rook Game Tavern for our trademark unique Prerelease experience! Enjoy
+  Wood-fired Pizza & full Bar options  with plenty of tasty Draft Beers & C
+ ocktails while you crack packs & celebrate Magic: The Gatherings second Ma
+ rvel Set!\n\nTickets & Details: https://www.queenrookkeep.com/product/magi
+ c-the-gathering-marvel-superheroes-prerelease-ticket-tuesday-june-23rd-6-3
+ 0pm/N3RHYU4VXISL5SJW6YFNNZ7U?cp=true&sa=true&sbp=false&q=false\nSource: wi
+ zards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10862491
 END:VEVENT
 END:VCALENDAR
