@@ -18,7 +18,7 @@ function useClickOutside(refs: React.RefObject<HTMLElement | null>[], onClose: (
 export default function ShareButton({ title, url }: { title: string; url: string }) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [pos, setPos] = useState<{ top: number; right: number } | null>(null);
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   useClickOutside([triggerRef, menuRef], () => setOpen(false));
@@ -27,11 +27,33 @@ export default function ShareButton({ title, url }: { title: string; url: string
   // each time it opens. Using viewport coords (`fixed` positioning) means
   // the menu is unaffected by ancestor stacking contexts (e.g. the event
   // card's transform-induced stacking context) which `absolute + z-50`
-  // can't escape.
+  // can't escape. After mount we measure the menu and clamp its left
+  // coord so it stays inside the viewport — on narrow mobile widths the
+  // legacy right-anchored placement could push the dropdown off-screen
+  // when the trigger sat far from the right edge.
   useEffect(() => {
-    if (!open || !triggerRef.current) return;
-    const rect = triggerRef.current.getBoundingClientRect();
-    setPos({ top: rect.bottom + 8, right: window.innerWidth - rect.right });
+    if (!open) { setPos(null); return; }
+    const raf = requestAnimationFrame(() => {
+      if (!triggerRef.current || !menuRef.current) return;
+      const trigger = triggerRef.current.getBoundingClientRect();
+      const menu = menuRef.current.getBoundingClientRect();
+      const MARGIN = 8;
+      let left = trigger.right - menu.width;
+      left = Math.max(MARGIN, Math.min(window.innerWidth - menu.width - MARGIN, left));
+      setPos({ top: trigger.bottom + 8, left });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onChange = () => setOpen(false);
+    window.addEventListener("scroll", onChange, { passive: true });
+    window.addEventListener("resize", onChange);
+    return () => {
+      window.removeEventListener("scroll", onChange);
+      window.removeEventListener("resize", onChange);
+    };
   }, [open]);
 
   const canNativeShare = typeof navigator !== "undefined" && !!navigator.share;
@@ -76,11 +98,17 @@ export default function ShareButton({ title, url }: { title: string; url: string
         {copied ? "Copied!" : "Share"}
       </Button>
 
-      {open && pos && typeof document !== "undefined" && createPortal(
+      {open && typeof document !== "undefined" && createPortal(
         <div
           ref={menuRef}
           className="fixed z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-hidden min-w-[160px] anim-scale-in"
-          style={{ top: `${pos.top}px`, right: `${pos.right}px`, transformOrigin: "top right" }}
+          style={{
+            top: pos ? `${pos.top}px` : -9999,
+            left: pos ? `${pos.left}px` : -9999,
+            maxWidth: "calc(100vw - 16px)",
+            visibility: pos ? "visible" : "hidden",
+            transformOrigin: "top right",
+          }}
         >
           <button
             onClick={copyLink}
