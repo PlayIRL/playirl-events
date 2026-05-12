@@ -2,13 +2,17 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/session";
 
 // Pill container + inner-button styles mirror the theme toggle in
-// `app/floating-toolbar.tsx`. On mobile we sit at bottom-6 left-4 to mirror
-// that toggle's bottom-6 right-4 placement; on sm and up we read --chip-top
-// (published by StickyBar): 1rem at the top of the page (classic top-right
-// corner), then sliding down to sit just below the sticky filter bar once
-// the user scrolls and the bar pins. transition-[top] smooths the swap.
+// `app/floating-toolbar.tsx`. On mobile we sit bottom-left to mirror
+// that toggle's bottom-right placement; the mobile `bottom` value uses
+// the same `env(safe-area-inset-bottom)` offset as the theme toggle so
+// both pills sit at the same Y position above the iOS home indicator
+// (without it, this chip would land lower than the toggle in mobile
+// Safari/Chrome). On sm and up we read --chip-top (published by
+// StickyBar): 1rem at the top of the page (classic top-right corner),
+// then sliding down to sit just below the sticky filter bar once the
+// user scrolls and the bar pins. transition-[top] smooths the swap.
 // 1rem fallback handles the moment before StickyBar's effect runs.
-const PILL = "fixed bottom-6 left-4 sm:bottom-auto sm:left-auto sm:top-[var(--chip-top,1rem)] sm:right-4 sm:transition-[top] sm:duration-300 z-40 flex bg-white dark:bg-neutral-800 rounded-md p-0.5 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/15 dark:shadow-black/50";
+const PILL = "fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] left-4 sm:bottom-auto sm:left-auto sm:top-[var(--chip-top,1rem)] sm:right-4 sm:transition-[top] sm:duration-300 z-40 flex bg-white dark:bg-neutral-800 rounded-md p-0.5 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/15 dark:shadow-black/50";
 
 export default async function AccountChip() {
   const user = await getCurrentUser();

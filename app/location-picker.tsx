@@ -11,14 +11,22 @@
 // persistence; that lives server-side in app/page.tsx.
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const PROMPTED_KEY = "playirl-loc-prompted";
 
+// Kept in sync with the ChipSelect trigger in `app/radius-selector.tsx`
+// — outline chip + caret to read clearly as a clickable filter on mobile.
 const CHIP_TRIGGER =
-  "inline-block underline decoration-dotted underline-offset-4 decoration-neutral-400 dark:decoration-neutral-500 text-neutral-900 dark:text-white font-[family-name:var(--font-ultra)] focus:outline-none cursor-pointer bg-transparent hover:decoration-solid hover:decoration-neutral-900 dark:hover:decoration-white hover:text-neutral-600 dark:hover:text-neutral-300 active:opacity-60 transition-all duration-150 px-1";
+  "inline-flex items-center gap-1 px-2 py-0.5 rounded-md border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white font-[family-name:var(--font-ultra)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 cursor-pointer bg-transparent hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-500 active:opacity-80 transition-colors duration-150";
+// Portal-rendered popover (see positioning logic below). `fixed` so it
+// escapes ancestor stacking contexts and the StickyBar's `position:
+// sticky` scroller; width caps at `calc(100vw - 16px)` to keep the
+// popover inside the viewport on narrow phones where the trigger sits
+// far from the right edge.
 const POPOVER =
-  "absolute top-full right-0 mt-2 z-50 w-72 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-hidden";
+  "fixed z-50 w-72 max-w-[calc(100vw-16px)] bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-hidden";
 const PRIMARY_BTN =
   "w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-md bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-100 transition disabled:opacity-50 cursor-pointer";
 const INPUT =
@@ -42,13 +50,20 @@ export default function LocationPicker({ currentLabel, isCustom, defaultLabel }:
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
 
-  // Click-outside-to-close
+  // Click-outside-to-close. Both the trigger wrapper AND the portal-
+  // rendered menu count as "inside" — the menu lives in document.body so
+  // clicks inside it would otherwise look like outside-clicks.
   useEffect(() => {
     if (!open) return;
     function onDown(e: MouseEvent) {
-      if (!wrapperRef.current?.contains(e.target as Node)) setOpen(false);
+      const target = e.target as Node;
+      if (wrapperRef.current?.contains(target)) return;
+      if (menuRef.current?.contains(target)) return;
+      setOpen(false);
     }
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") setOpen(false);
@@ -58,6 +73,36 @@ export default function LocationPicker({ currentLabel, isCustom, defaultLabel }:
     return () => {
       document.removeEventListener("mousedown", onDown);
       document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  // Anchor the portal-rendered popover under the trigger and clamp it to
+  // the viewport. Matches the pattern used by the Subscribe / Create
+  // event dropdowns in `app/radius-selector.tsx`.
+  useEffect(() => {
+    if (!open) { setPos(null); return; }
+    const raf = requestAnimationFrame(() => {
+      if (!wrapperRef.current || !menuRef.current) return;
+      const trigger = wrapperRef.current.getBoundingClientRect();
+      const menu = menuRef.current.getBoundingClientRect();
+      const MARGIN = 8;
+      let left = trigger.right - menu.width;
+      left = Math.max(MARGIN, Math.min(window.innerWidth - menu.width - MARGIN, left));
+      setPos({ top: trigger.bottom + 8, left });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [open]);
+
+  // Close on scroll/resize so the popover doesn't get stranded when its
+  // anchor scrolls away under fixed positioning.
+  useEffect(() => {
+    if (!open) return;
+    const onChange = () => setOpen(false);
+    window.addEventListener("scroll", onChange, { passive: true });
+    window.addEventListener("resize", onChange);
+    return () => {
+      window.removeEventListener("scroll", onChange);
+      window.removeEventListener("resize", onChange);
     };
   }, [open]);
 
@@ -183,11 +228,22 @@ export default function LocationPicker({ currentLabel, isCustom, defaultLabel }:
         className={CHIP_TRIGGER}
         title={isCustom ? `Showing events near ${currentLabel}. Click to change.` : "Click to change location"}
       >
-        {currentLabel}
+        <span>{currentLabel}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 shrink-0 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
       </button>
 
-      {open && (
-        <div className={POPOVER}>
+      {open && typeof document !== "undefined" && createPortal(
+        <div
+          ref={menuRef}
+          className={POPOVER}
+          style={{
+            top: pos ? `${pos.top}px` : -9999,
+            left: pos ? `${pos.left}px` : -9999,
+            visibility: pos ? "visible" : "hidden",
+          }}
+        >
           <div className="px-3 py-2.5 border-b border-neutral-100 dark:border-white/8">
             <p className="text-[10px] font-semibold text-neutral-500 dark:text-neutral-400">
               Choose location
@@ -252,7 +308,8 @@ export default function LocationPicker({ currentLabel, isCustom, defaultLabel }:
               </button>
             </div>
           )}
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { FORMAT_DOT } from "@/lib/format-style";
 import LocationPicker from "./location-picker";
@@ -45,21 +46,87 @@ function getTimeOptions() {
 
 const TIME_OPTIONS = getTimeOptions();
 
-const CHIP_TRIGGER = "inline-block underline decoration-dotted underline-offset-4 decoration-neutral-400 dark:decoration-neutral-500 text-neutral-900 dark:text-white font-[family-name:var(--font-ultra)] focus:outline-none cursor-pointer bg-transparent hover:decoration-solid hover:decoration-neutral-900 dark:hover:decoration-white hover:text-neutral-600 dark:hover:text-neutral-300 active:opacity-60 transition-all duration-150 px-1";
+// Outline-chip style for the madlib filter triggers. Previously these
+// were dotted-underline text — readable but easy to miss as interactive,
+// especially on mobile where there's no hover state to discover. The
+// border + rounded background reads as a button at a glance; a small
+// caret on the right reinforces "click to open a menu."
+const CHIP_TRIGGER = "inline-flex items-center gap-1 px-2 py-0.5 rounded-md border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white font-[family-name:var(--font-ultra)] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 cursor-pointer bg-transparent hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-500 active:opacity-80 transition-colors duration-150";
+
+function ChevronDown() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 shrink-0 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+  );
+}
 // Connector words ("events within", "miles of", "in") — Inter, body-text size, neutral weight, normal tracking. Matches the tagline rather than the slab madlib elements.
 const CONNECTOR = "font-[family-name:var(--font-inter)] font-normal text-base tracking-normal";
 const DROPDOWN_BASE = "absolute top-full mt-2 z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-hidden min-w-max";
 const DROPDOWN_ALIGN = { start: "left-0", center: "left-1/2 -translate-x-1/2", end: "right-0" };
 const OPTION = "w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-left hover:bg-neutral-50 dark:hover:bg-white/5 transition-colors";
 
-function useClickOutside(ref: React.RefObject<HTMLElement | null>, onClose: () => void) {
+function useClickOutside(refs: React.RefObject<HTMLElement | null>[], onClose: () => void) {
   useEffect(() => {
     function handler(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) onClose();
+      const target = e.target as Node;
+      if (refs.some((r) => r.current && r.current.contains(target))) return;
+      onClose();
     }
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
-  }, [ref, onClose]);
+    // refs are stable across renders; depending only on onClose avoids
+    // re-binding the listener every render (the array literal would
+    // otherwise be a new reference each pass).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [onClose]);
+}
+
+// Position a portal-rendered dropdown anchored under a trigger, clamped
+// to the viewport. Default alignment matches the legacy `right-0`
+// behavior (dropdown's right edge aligns to the trigger's right edge),
+// but shifts the dropdown rightward if it would overflow the left edge —
+// the failure mode on narrow mobile viewports where the trigger sits
+// near the center but `min-w-max` content needs ~280px of width.
+function useAnchoredDropdown(
+  status: "closed" | "open" | "closing",
+  triggerRef: React.RefObject<HTMLElement | null>,
+  menuRef: React.RefObject<HTMLElement | null>,
+  close: () => void,
+) {
+  const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
+
+  useEffect(() => {
+    if (status === "closed") setPos(null);
+  }, [status]);
+
+  useEffect(() => {
+    if (status !== "open") return;
+    const tick = () => {
+      if (!triggerRef.current || !menuRef.current) return;
+      const trigger = triggerRef.current.getBoundingClientRect();
+      const menu = menuRef.current.getBoundingClientRect();
+      const MARGIN = 8;
+      let left = trigger.right - menu.width;
+      left = Math.max(MARGIN, Math.min(window.innerWidth - menu.width - MARGIN, left));
+      setPos({ top: trigger.bottom + 8, left });
+    };
+    const raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [status, triggerRef, menuRef]);
+
+  useEffect(() => {
+    if (status !== "open") return;
+    const onChange = () => close();
+    window.addEventListener("scroll", onChange, { passive: true });
+    window.addEventListener("resize", onChange);
+    return () => {
+      window.removeEventListener("scroll", onChange);
+      window.removeEventListener("resize", onChange);
+    };
+  }, [status, close]);
+
+  return pos;
 }
 
 function ChipSelect({
@@ -113,12 +180,13 @@ function ChipSelect({
     setStatus("open");
   }, []);
 
-  useClickOutside(ref, close);
+  useClickOutside([ref], close);
 
   return (
     <div ref={ref} className="relative inline-block">
       <button onClick={() => status === "open" ? close() : open()} className={CHIP_TRIGGER}>
-        {label}
+        <span>{label}</span>
+        <ChevronDown />
       </button>
       {status !== "closed" && (
         <div className={`${DROPDOWN_BASE} ${DROPDOWN_ALIGN[align]} ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}>
@@ -189,7 +257,8 @@ export function SubscribeDropdown({
 }) {
   const [status, setStatus] = useState<"closed" | "open" | "closing">("closed");
   const statusRef = useRef<"closed" | "open" | "closing">("closed");
-  const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
 
   const close = useCallback(() => {
@@ -207,7 +276,8 @@ export function SubscribeDropdown({
     setStatus("open");
   }, []);
 
-  useClickOutside(ref, close);
+  useClickOutside([triggerRef, menuRef], close);
+  const pos = useAnchoredDropdown(status, triggerRef, menuRef, close);
 
   // Filter-aware feed URLs. Anchored to the user's current filter state so
   // a subscribed calendar shows exactly the slice they're looking at.
@@ -241,7 +311,7 @@ export function SubscribeDropdown({
   }
 
   return (
-    <div ref={ref} className="relative ml-1 inline-block">
+    <div ref={triggerRef} className="relative ml-1 inline-block">
       <button
         onClick={() => status === "open" ? close() : open()}
         title="Subscribe to calendar"
@@ -252,8 +322,18 @@ export function SubscribeDropdown({
         </svg>
         Subscribe
       </button>
-      {status !== "closed" && (
-        <div className={`${DROPDOWN_BASE} right-0 ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}>
+      {status !== "closed" && typeof document !== "undefined" && createPortal(
+        <div
+          ref={menuRef}
+          className={`fixed z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-hidden min-w-max ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}
+          style={{
+            top: pos ? `${pos.top}px` : -9999,
+            left: pos ? `${pos.left}px` : -9999,
+            maxWidth: "calc(100vw - 16px)",
+            visibility: pos ? "visible" : "hidden",
+            transformOrigin: "top right",
+          }}
+        >
           <a
             href={webcalUrl}
             onClick={close}
@@ -317,7 +397,8 @@ export function SubscribeDropdown({
               </svg>
             </Link>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );
@@ -326,7 +407,8 @@ export function SubscribeDropdown({
 function CreateEventDropdown() {
   const [status, setStatus] = useState<"closed" | "open" | "closing">("closed");
   const statusRef = useRef<"closed" | "open" | "closing">("closed");
-  const ref = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const close = useCallback(() => {
     if (statusRef.current !== "open") return;
@@ -343,10 +425,11 @@ function CreateEventDropdown() {
     setStatus("open");
   }, []);
 
-  useClickOutside(ref, close);
+  useClickOutside([triggerRef, menuRef], close);
+  const pos = useAnchoredDropdown(status, triggerRef, menuRef, close);
 
   return (
-    <div ref={ref} className="relative ml-1 inline-block">
+    <div ref={triggerRef} className="relative ml-1 inline-block">
       <button
         onClick={() => status === "open" ? close() : open()}
         title="Create a new event"
@@ -357,8 +440,18 @@ function CreateEventDropdown() {
         </svg>
         Create event
       </button>
-      {status !== "closed" && (
-        <div className={`${DROPDOWN_BASE} right-0 ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}>
+      {status !== "closed" && typeof document !== "undefined" && createPortal(
+        <div
+          ref={menuRef}
+          className={`fixed z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-hidden min-w-max ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}
+          style={{
+            top: pos ? `${pos.top}px` : -9999,
+            left: pos ? `${pos.left}px` : -9999,
+            maxWidth: "calc(100vw - 16px)",
+            visibility: pos ? "visible" : "hidden",
+            transformOrigin: "top right",
+          }}
+        >
           <Link
             href="/account/events/new"
             onClick={close}
@@ -383,7 +476,8 @@ function CreateEventDropdown() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </Link>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );
