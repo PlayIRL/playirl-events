@@ -7,31 +7,9 @@ NAME:MTG Standard — Philadelphia
 X-WR-CALNAME:MTG Standard — Philadelphia
 X-WR-CALDESC:Standard events in Philadelphia area
 BEGIN:VEVENT
-UID:wotc-10518722
-SEQUENCE:0
-DTSTAMP:20260512T233319Z
-DTSTART:20260512T220000Z
-DTEND:20260513T010000Z
-SUMMARY:Standard Store Championship @ Queen and Rook Game Cafe
-LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
- nsylvania\, 19106
-DESCRIPTION:Format: Standard\nCost: $15\nStore: https://queenandrookcafe.c
- om/\nDetails: https://locator.wizards.com/events/10518722\n\nThis event wi
- ll consist of a maximum of 5 rounds with no top cut\; Top 8 promos will be
-  distributed based on final position & tiebreakers due to limits of venue'
- s hours of operation. Nevertheless\, this is still a cheap opportunity to 
- try you luck at picking up one of the Season's Store Championship Promos!\
- n\n$5 of this event's entry fee will be a Service Charge to facilitate our
-  Service staff & ensure we can continue to offer you the unique Game Taver
- n experience that sets us apart from Traditional LGS'.\n\nJoin us on our D
- iscord server for more details & to get connected to the broader Philadelp
- hia gaming community: http://bit.ly/QNRDC\nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/events/10518722
-END:VEVENT
-BEGIN:VEVENT
 UID:wotc-10653679
 SEQUENCE:0
-DTSTAMP:20260512T233319Z
+DTSTAMP:20260513T001604Z
 DTSTART:20260515T223000Z
 DTEND:20260516T013000Z
 SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
@@ -46,7 +24,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10570211
 SEQUENCE:0
-DTSTAMP:20260512T233319Z
+DTSTAMP:20260513T001604Z
 DTSTART:20260517T213000Z
 DTEND:20260518T003000Z
 SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
@@ -66,7 +44,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10949357
 SEQUENCE:0
-DTSTAMP:20260512T233319Z
+DTSTAMP:20260513T001604Z
 DTSTART:20260517T213000Z
 DTEND:20260518T003000Z
 SUMMARY:PGS SOS Standard Store Championship @ The Philly Game Shop
@@ -83,7 +61,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518759
 SEQUENCE:0
-DTSTAMP:20260512T233319Z
+DTSTAMP:20260513T001604Z
 DTSTART:20260519T220000Z
 DTEND:20260520T010000Z
 SUMMARY:Queen & Rook Game Tavern 1v1 / Standard Showdown @ Queen and Rook 
@@ -105,7 +83,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653680
 SEQUENCE:0
-DTSTAMP:20260512T233319Z
+DTSTAMP:20260513T001604Z
 DTSTART:20260522T223000Z
 DTEND:20260523T013000Z
 SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
@@ -120,7 +98,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10570212
 SEQUENCE:0
-DTSTAMP:20260512T233319Z
+DTSTAMP:20260513T001604Z
 DTSTART:20260524T213000Z
 DTEND:20260525T003000Z
 SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
@@ -140,7 +118,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518760
 SEQUENCE:0
-DTSTAMP:20260512T233319Z
+DTSTAMP:20260513T001604Z
 DTSTART:20260526T220000Z
 DTEND:20260527T010000Z
 SUMMARY:Queen & Rook Game Tavern 1v1 / Standard Showdown @ Queen and Rook 
@@ -162,7 +140,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653681
 SEQUENCE:0
-DTSTAMP:20260512T233319Z
+DTSTAMP:20260513T001604Z
 DTSTART:20260529T223000Z
 DTEND:20260530T013000Z
 SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
@@ -177,7 +155,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10570213
 SEQUENCE:0
-DTSTAMP:20260512T233319Z
+DTSTAMP:20260513T001604Z
 DTSTART:20260531T213000Z
 DTEND:20260601T003000Z
 SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
