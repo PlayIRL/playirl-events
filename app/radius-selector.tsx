@@ -416,16 +416,15 @@ export function SubscribeDropdown({
 function CreateEventButton() {
   return (
     <div
-      className="fixed right-4 z-40 bg-neutral-900 dark:bg-white rounded-md p-1 border border-neutral-900 dark:border-white shadow-xl shadow-black/25 dark:shadow-black/50"
-      style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
+      className="fixed right-4 z-40 bg-neutral-900 dark:bg-white rounded-md p-1 border border-neutral-900 dark:border-white shadow-xl shadow-black/25 dark:shadow-black/50 bottom-[calc(1.5rem+env(safe-area-inset-bottom)+8px)] sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom)+10px)]"
     >
       <Link
         href="/account/events/new"
         title="Create a new event"
         aria-label="Create a new event"
-        className="flex items-center justify-center gap-1.5 w-12 h-12 sm:w-auto sm:px-4 rounded-md text-white dark:text-neutral-900 text-sm font-medium hover:bg-white/10 dark:hover:bg-neutral-900/10 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 dark:focus-visible:ring-neutral-900/30"
+        className="flex items-center justify-center gap-1.5 w-10 h-10 sm:w-auto sm:h-11 sm:px-4 rounded-md text-white dark:text-neutral-900 text-sm font-semibold hover:bg-white/10 dark:hover:bg-neutral-900/10 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 dark:focus-visible:ring-neutral-900/30"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 sm:w-[18px] sm:h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
         </svg>
         <span className="hidden sm:inline">Create event</span>
