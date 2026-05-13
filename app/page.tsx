@@ -183,7 +183,7 @@ export default async function HomePage({
   }
 
   return (
-    <main className="w-full max-w-3xl mx-auto px-4 py-8">
+    <main className="w-full max-w-3xl mx-auto px-4 pt-8 pb-32">
       <AccountChip />
       <FloatingToolbar currentView={currentView} />
 
@@ -199,11 +199,6 @@ export default async function HomePage({
         </p>
       </header>
 
-      {/* First-visit nudge for users still on the default location. Renders
-          a dismissable banner with a "Change location" CTA so users who
-          declined the silent geolocation prompt have a clear path forward. */}
-      <LocationBanner isDefault={!isLocationCustom} defaultLabel={DEFAULT_LOCATION_LABEL} />
-
       {/* Sticky filter bar */}
       <StickyBar>
         <RadiusSelector
@@ -218,6 +213,11 @@ export default async function HomePage({
           isLocationCustom={isLocationCustom}
         />
       </StickyBar>
+
+      {/* First-visit nudge for users still on the default location. Renders
+          a dismissable banner with a "Change location" CTA so users who
+          declined the silent geolocation prompt have a clear path forward. */}
+      <LocationBanner isDefault={!isLocationCustom} defaultLabel={DEFAULT_LOCATION_LABEL} />
 
       {currentView === "calendar" ? (
         <div

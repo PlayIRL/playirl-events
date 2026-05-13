@@ -63,52 +63,37 @@ export default function LocationBanner({ isDefault, defaultLabel }: Props) {
   if (!show) return null;
 
   return (
-    <div className="mb-4 mx-auto max-w-2xl rounded-md bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 px-4 py-3 anim-fade-in">
-      <div className="flex items-start gap-3">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 shrink-0 mt-0.5 text-neutral-300 dark:text-neutral-600"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-          aria-hidden="true"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    <div className="mb-4 rounded-md bg-blue-600 dark:bg-blue-500 text-white px-3 py-2 anim-fade-in flex items-center gap-3">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-4 h-4 shrink-0 text-blue-200"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth={2}
+        aria-hidden="true"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+      <p className="flex-1 min-w-0 truncate text-sm">
+        Showing events in <span className="font-medium">{defaultLabel}</span>
+      </p>
+      <button
+        onClick={openPicker}
+        className="shrink-0 px-2.5 py-1 rounded-md bg-white text-blue-700 text-xs font-medium hover:bg-blue-50 transition cursor-pointer"
+      >
+        Change
+      </button>
+      <button
+        onClick={dismiss}
+        aria-label="Dismiss"
+        className="shrink-0 -mr-1 p-1 text-blue-200 hover:text-white transition cursor-pointer"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium">
-            Showing events in {defaultLabel}
-          </p>
-          <p className="text-xs text-neutral-300 dark:text-neutral-600 mt-0.5">
-            Not where you are? Pick your city to find events near you.
-          </p>
-          <div className="flex items-center gap-2 mt-2">
-            <button
-              onClick={openPicker}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white text-xs font-medium hover:bg-neutral-100 dark:hover:bg-neutral-800 transition cursor-pointer"
-            >
-              Change location
-            </button>
-            <button
-              onClick={dismiss}
-              className="px-2 py-1.5 text-xs text-neutral-300 dark:text-neutral-600 hover:text-white dark:hover:text-neutral-900 transition"
-            >
-              Dismiss
-            </button>
-          </div>
-        </div>
-        <button
-          onClick={dismiss}
-          aria-label="Dismiss"
-          className="shrink-0 -mr-1 -mt-1 p-1 text-neutral-400 dark:text-neutral-500 hover:text-white dark:hover:text-neutral-900 transition"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
+      </button>
     </div>
   );
 }

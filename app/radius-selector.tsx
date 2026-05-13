@@ -93,6 +93,7 @@ function useAnchoredDropdown(
   triggerRef: React.RefObject<HTMLElement | null>,
   menuRef: React.RefObject<HTMLElement | null>,
   close: () => void,
+  placement: "bottom-end" | "top-center" = "bottom-end",
 ) {
   const [pos, setPos] = useState<{ top: number; left: number } | null>(null);
 
@@ -107,13 +108,20 @@ function useAnchoredDropdown(
       const trigger = triggerRef.current.getBoundingClientRect();
       const menu = menuRef.current.getBoundingClientRect();
       const MARGIN = 8;
-      let left = trigger.right - menu.width;
+      let top: number, left: number;
+      if (placement === "top-center") {
+        top = trigger.top - menu.height - 8;
+        left = trigger.left + trigger.width / 2 - menu.width / 2;
+      } else {
+        top = trigger.bottom + 8;
+        left = trigger.right - menu.width;
+      }
       left = Math.max(MARGIN, Math.min(window.innerWidth - menu.width - MARGIN, left));
-      setPos({ top: trigger.bottom + 8, left });
+      setPos({ top, left });
     };
     const raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [status, triggerRef, menuRef]);
+  }, [status, triggerRef, menuRef, placement]);
 
   useEffect(() => {
     if (status !== "open") return;
@@ -315,12 +323,13 @@ export function SubscribeDropdown({
       <button
         onClick={() => status === "open" ? close() : open()}
         title="Subscribe to calendar"
-        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white text-xs font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800 transition cursor-pointer focus:outline-none"
+        aria-label="Subscribe to calendar"
+        className="inline-flex items-center justify-center h-[1.925em] w-[1.925em] rounded-md border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white bg-transparent hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-500 active:opacity-80 transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 cursor-pointer"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M8 3v3m8-3v3M4 9h16M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 13v5m2.5-2.5h-5" />
         </svg>
-        Subscribe
       </button>
       {status !== "closed" && typeof document !== "undefined" && createPortal(
         <div
@@ -404,81 +413,23 @@ export function SubscribeDropdown({
   );
 }
 
-function CreateEventDropdown() {
-  const [status, setStatus] = useState<"closed" | "open" | "closing">("closed");
-  const statusRef = useRef<"closed" | "open" | "closing">("closed");
-  const triggerRef = useRef<HTMLDivElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  const close = useCallback(() => {
-    if (statusRef.current !== "open") return;
-    statusRef.current = "closing";
-    setStatus("closing");
-    setTimeout(() => {
-      statusRef.current = "closed";
-      setStatus("closed");
-    }, 140);
-  }, []);
-
-  const open = useCallback(() => {
-    statusRef.current = "open";
-    setStatus("open");
-  }, []);
-
-  useClickOutside([triggerRef, menuRef], close);
-  const pos = useAnchoredDropdown(status, triggerRef, menuRef, close);
-
+function CreateEventButton() {
   return (
-    <div ref={triggerRef} className="relative ml-1 inline-block">
-      <button
-        onClick={() => status === "open" ? close() : open()}
+    <div
+      className="fixed right-4 z-40 bg-neutral-900 dark:bg-white rounded-md p-1 border border-neutral-900 dark:border-white shadow-xl shadow-black/25 dark:shadow-black/50"
+      style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
+    >
+      <Link
+        href="/account/events/new"
         title="Create a new event"
-        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white text-xs font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800 transition cursor-pointer focus:outline-none"
+        aria-label="Create a new event"
+        className="flex items-center justify-center gap-1.5 w-12 h-12 sm:w-auto sm:px-4 rounded-md text-white dark:text-neutral-900 text-sm font-medium hover:bg-white/10 dark:hover:bg-neutral-900/10 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 dark:focus-visible:ring-neutral-900/30"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
         </svg>
-        Create event
-      </button>
-      {status !== "closed" && typeof document !== "undefined" && createPortal(
-        <div
-          ref={menuRef}
-          className={`fixed z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-hidden min-w-max ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}
-          style={{
-            top: pos ? `${pos.top}px` : -9999,
-            left: pos ? `${pos.left}px` : -9999,
-            maxWidth: "calc(100vw - 16px)",
-            visibility: pos ? "visible" : "hidden",
-            transformOrigin: "top right",
-          }}
-        >
-          <Link
-            href="/account/events/new"
-            onClick={close}
-            className={`${OPTION} text-neutral-700 dark:text-neutral-200`}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-            </svg>
-            <span className="flex-1">Create new event</span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-          <Link
-            href="/account/sources"
-            onClick={close}
-            className={`${OPTION} text-neutral-700 dark:text-neutral-200`}
-          >
-            <DiscordIcon className="w-4 h-4 shrink-0 text-neutral-400" />
-            <span className="flex-1">Sync from Discord</span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-        </div>,
-        document.body,
-      )}
+        <span className="hidden sm:inline">Create event</span>
+      </Link>
     </div>
   );
 }
@@ -642,21 +593,14 @@ export default function RadiusSelector({
         {/* <span className={CONNECTOR}>=</span>
         <span className="inline-flex items-center justify-center min-w-[1.75rem] px-1.5 py-0.5 rounded-md bg-neutral-100 dark:bg-white/10 text-neutral-900 dark:text-white text-xs sm:text-sm font-semibold tabular-nums leading-none">{eventCount}</span> */}
 
-        {/* Subscribe + Create event share a flex row so they always wrap
-            as a unit. Without the wrapper, the parent chip bar's
-            `flex-wrap` can split them onto separate lines on narrow
-            viewports — the chip bar carries both directions ("get events
-            out" + "put events in") and they read as one control pair. */}
-        <span className="inline-flex items-center">
-          <SubscribeDropdown
-            currentFormat={currentFormat}
-            currentRadius={currentRadius}
-            currentDays={currentDays}
-            onToast={showToast}
-          />
-          <CreateEventDropdown />
-        </span>
+        <SubscribeDropdown
+          currentFormat={currentFormat}
+          currentRadius={currentRadius}
+          currentDays={currentDays}
+          onToast={showToast}
+        />
       </div>
+      <CreateEventButton />
     </>
   );
 }
