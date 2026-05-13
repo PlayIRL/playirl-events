@@ -106,7 +106,7 @@ export default function AccountMenu({
         aria-haspopup="menu"
         aria-expanded={open}
         title={signedIn ? user?.name ?? "Account" : "Sign in"}
-        className="inline-flex items-center justify-center gap-2 w-10 h-10 px-0.5 sm:w-auto sm:pl-1 sm:pr-3 rounded-md cursor-pointer transition-colors text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20"
+        className="inline-flex items-center justify-center gap-2 w-10 h-10 px-0.5 sm:w-auto sm:pl-1 sm:pr-3 rounded-full cursor-pointer transition-colors text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20"
       >
         {trigger}
       </button>
@@ -201,7 +201,7 @@ function SignedInTrigger({ user }: { user: User }) {
   const showImage = !!user.image;
   return (
     <>
-      <span className="flex items-center justify-center w-9 h-9 rounded-md overflow-hidden shrink-0">
+      <span className="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden shrink-0">
         {showImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -215,7 +215,7 @@ function SignedInTrigger({ user }: { user: User }) {
             decoding="async"
           />
         ) : (
-          <span className="w-full h-full rounded-md bg-neutral-800 dark:bg-neutral-100 text-white dark:text-neutral-900 text-[11px] font-bold flex items-center justify-center tracking-wide">
+          <span className="w-full h-full rounded-full bg-neutral-800 dark:bg-neutral-100 text-white dark:text-neutral-900 text-[11px] font-bold flex items-center justify-center tracking-wide">
             {initials}
           </span>
         )}
