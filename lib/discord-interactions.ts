@@ -10,15 +10,11 @@ import { createPublicKey, verify as verifySignatureRaw } from "node:crypto";
 import { getActiveEvents } from "./events";
 import { geocodeAddress } from "./geocode";
 import {
-  type DiscordSubscription,
-  createSubscription,
   getSubscription,
   listSubscriptionsForGuild,
-  parseLeadArgument,
   setSubscriptionEnabled,
-  updateSubscription,
 } from "./discord-subscriptions";
-import { renderDigestSummary, renderReminderMessage } from "./discord-post";
+import { renderDigestSummary } from "./discord-post";
 
 const DISCORD_API = "https://discord.com/api/v10";
 
@@ -175,98 +171,7 @@ function immediateText(content: string): InteractionHandlerResult {
   };
 }
 
-
-function describeSubscription(sub: DiscordSubscription): string {
-  const parts: string[] = [];
-  parts.push(`**${sub.mode}**`);
-  if (sub.format) parts.push(`format: ${sub.format}`);
-  if (sub.source) parts.push(`source: ${sub.source}`);
-  if (sub.near_label) parts.push(`near: ${sub.near_label}${sub.radius_miles ? ` (${sub.radius_miles}mi)` : ""}`);
-  if (sub.mode === "weekly") parts.push(`day: ${["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][sub.dow ?? 0]}`);
-  if (sub.mode === "weekly" || sub.mode === "daily") parts.push(`hour_utc: ${sub.hour_utc}`);
-  if (sub.mode === "reminder") parts.push(`lead: ${sub.lead_preset ?? `${sub.lead_minutes}min`}`);
-  parts.push(`<#${sub.channel_id}>`);
-  return `\`${sub.id}\` — ${parts.join(" · ")}`;
-}
-
 // --- Command handlers -------------------------------------------------------
-
-function handleSubscribe(_interaction: DiscordInteraction, sub: InteractionOption): InteractionHandlerResult {
-  const opts = sub.options;
-  const mode = optString(opts, "mode") as "weekly" | "daily" | "reminder" | undefined;
-  if (!mode) return immediateText("Missing `mode` argument.");
-
-  const leadRaw = optString(opts, "lead");
-  const lead = mode === "reminder" ? parseLeadArgument(leadRaw) : null;
-  if (mode === "reminder" && leadRaw && !lead) {
-    return immediateText(`Invalid \`lead\`: \`${leadRaw}\`. Try \`1h\`, \`2h\`, \`morning_of\`, \`day_before\`, or a number of minutes.`);
-  }
-
-  // Defer: geocoding `near` may take several seconds — well past Discord's
-  // 3-second response window. Acknowledge immediately, do the work in the
-  // background, then PATCH the placeholder via webhook follow-up.
-  return {
-    kind: "deferred",
-    work: async (interaction) => {
-      const guildId = interaction.guild_id!;
-      const channelId = interaction.channel_id!;
-      const format = optString(opts, "format")?.trim() || null;
-      const source = optString(opts, "source")?.trim() || null;
-      const radiusMiles = optInt(opts, "radius_miles") ?? null;
-      const near = optString(opts, "near")?.trim();
-      const hourUtc = optInt(opts, "hour_utc");
-      const dow = optInt(opts, "dow");
-      const daysAhead = optInt(opts, "days_ahead");
-
-      let centerLat: number | null = null;
-      let centerLng: number | null = null;
-      let nearLabel = "";
-      if (near) {
-        const hit = await geocodeAddress(near);
-        if (!hit) {
-          return { content: `Could not geocode "${near}". Try a more specific address or zip.` };
-        }
-        centerLat = hit.latitude;
-        centerLng = hit.longitude;
-        nearLabel = near;
-      }
-
-      const created = createSubscription({
-        guild_id: guildId,
-        channel_id: channelId,
-        mode,
-        format,
-        source,
-        radius_miles: radiusMiles,
-        center_lat: centerLat,
-        center_lng: centerLng,
-        near_label: nearLabel,
-        hour_utc: hourUtc ?? 14,
-        dow: mode === "weekly" ? (dow ?? 1) : null,
-        lead_preset: lead?.preset ?? null,
-        lead_minutes: lead?.minutes ?? 60,
-        days_ahead: daysAhead ?? 7,
-        created_by: interaction.member?.user?.id ?? null,
-      });
-
-      return {
-        content:
-          `Subscription created.\n${describeSubscription(created)}\n\n` +
-          `Use \`/playirl preview ${created.id}\` to see what would post right now, or \`/playirl unsubscribe ${created.id}\` to remove it.`,
-      };
-    },
-  };
-}
-
-function handleList(interaction: DiscordInteraction): InteractionHandlerResult {
-  const subs = listSubscriptionsForGuild(interaction.guild_id!);
-  if (subs.length === 0) {
-    return immediateText("No subscriptions in this server yet. Try `/playirl subscribe`.");
-  }
-  const lines = subs.slice(0, 25).map(describeSubscription);
-  const more = subs.length > 25 ? `\n…and ${subs.length - 25} more.` : "";
-  return immediateText(lines.join("\n") + more);
-}
 
 function handleUnsubscribe(interaction: DiscordInteraction, sub: InteractionOption): InteractionHandlerResult {
   const id = optString(sub.options, "id");
@@ -277,116 +182,6 @@ function handleUnsubscribe(interaction: DiscordInteraction, sub: InteractionOpti
   }
   setSubscriptionEnabled(id, false);
   return immediateText(`Unsubscribed \`${id}\`. (Subscription disabled — re-enable it from the database if needed.)`);
-}
-
-function handlePreview(_interaction: DiscordInteraction, sub: InteractionOption): InteractionHandlerResult {
-  const id = optString(sub.options, "id");
-  if (!id) return immediateText("Missing `id` argument.");
-
-  // Defer: getActiveEvents is fast in the common case but does in-memory
-  // distance filtering when radius is set, and a future Discord upload of
-  // event images could push past the 3s window. Cheaper to always defer.
-  return {
-    kind: "deferred",
-    work: async (interaction) => {
-      const subscription = getSubscription(id);
-      if (!subscription || subscription.guild_id !== interaction.guild_id) {
-        return { content: `No subscription \`${id}\` in this server.` };
-      }
-      const today = new Date();
-      const from = today.toISOString().slice(0, 10);
-      const to = new Date(today.getTime() + subscription.days_ahead * 86400_000).toISOString().slice(0, 10);
-
-      const events = getActiveEvents({
-        format: subscription.format ?? undefined,
-        from,
-        to,
-        radiusMiles: subscription.radius_miles ?? undefined,
-        centerLat: subscription.center_lat ?? undefined,
-        centerLng: subscription.center_lng ?? undefined,
-      }).filter(ev => !subscription.source || ev.source === subscription.source);
-
-      if (subscription.mode === "reminder") {
-        if (events.length === 0) return { content: "No upcoming events match this subscription's filters." };
-        const msg = renderReminderMessage(events[0]);
-        return { content: msg.content, embeds: msg.embeds ?? [] };
-      }
-      const windowLabel = subscription.mode === "weekly" ? "this week" : "today";
-      const msg = renderDigestSummary(events, { windowLabel });
-      return { content: msg.content, embeds: msg.embeds ?? [] };
-    },
-  };
-}
-
-function handleEdit(_interaction: DiscordInteraction, sub: InteractionOption): InteractionHandlerResult {
-  const opts = sub.options;
-  const id = optString(opts, "id");
-  if (!id) return immediateText("Missing `id` argument.");
-
-  const leadRaw = optString(opts, "lead");
-  const lead = leadRaw ? parseLeadArgument(leadRaw) : null;
-  if (leadRaw && !lead) {
-    return immediateText(`Invalid \`lead\`: \`${leadRaw}\`.`);
-  }
-
-  // Defer: same shape as subscribe — `near` may geocode, plus we want to read
-  // the existing row before writing for a tidy "what changed" reply.
-  return {
-    kind: "deferred",
-    work: async (interaction) => {
-      const existing = getSubscription(id);
-      if (!existing || existing.guild_id !== interaction.guild_id) {
-        return { content: `No subscription \`${id}\` in this server.` };
-      }
-
-      const patch: Parameters<typeof updateSubscription>[1] = {};
-
-      const format = optString(opts, "format");
-      if (format !== undefined) patch.format = format.trim() || null;
-
-      const source = optString(opts, "source");
-      if (source !== undefined) patch.source = source.trim() || null;
-
-      const radiusMiles = optInt(opts, "radius_miles");
-      if (radiusMiles !== undefined) patch.radius_miles = radiusMiles;
-
-      const near = optString(opts, "near");
-      if (near !== undefined) {
-        if (near.trim() === "") {
-          patch.center_lat = null;
-          patch.center_lng = null;
-          patch.near_label = "";
-        } else {
-          const hit = await geocodeAddress(near.trim());
-          if (!hit) return { content: `Could not geocode "${near}". Try a more specific address or zip.` };
-          patch.center_lat = hit.latitude;
-          patch.center_lng = hit.longitude;
-          patch.near_label = near.trim();
-        }
-      }
-
-      const hourUtc = optInt(opts, "hour_utc");
-      if (hourUtc !== undefined) patch.hour_utc = hourUtc;
-
-      const dow = optInt(opts, "dow");
-      if (dow !== undefined) patch.dow = dow;
-
-      const daysAhead = optInt(opts, "days_ahead");
-      if (daysAhead !== undefined) patch.days_ahead = daysAhead;
-
-      if (lead) {
-        patch.lead_preset = lead.preset;
-        patch.lead_minutes = lead.minutes;
-      }
-
-      const updated = updateSubscription(id, patch);
-      if (!updated) return { content: `Subscription \`${id}\` could not be updated.` };
-
-      return {
-        content: `Subscription updated.\n${describeSubscription(updated)}`,
-      };
-    },
-  };
 }
 
 /**
@@ -403,9 +198,15 @@ function handleLookup(
 ): InteractionHandlerResult {
   const opts = sub.options;
   const format = optString(opts, "format")?.trim() || undefined;
-  const near = optString(opts, "near")?.trim();
+  const location = optString(opts, "location")?.trim();
   const radiusMiles = optInt(opts, "radius_miles");
-  const source = optString(opts, "source")?.trim() || undefined;
+
+  // Discord enforces `required: true` client-side, but a malformed payload
+  // could still arrive without these — fail loud rather than returning the
+  // unscoped global event list.
+  if (!location || !radiusMiles) {
+    return immediateText("Both `location` and `radius_miles` are required.");
+  }
 
   return {
     kind: "deferred",
@@ -424,31 +225,23 @@ function handleLookup(
       toDate.setUTCDate(toDate.getUTCDate() + Math.max(0, windowDays - 1));
       const to = toDate.toISOString().slice(0, 10);
 
-      let centerLat: number | undefined;
-      let centerLng: number | undefined;
-      if (near && radiusMiles) {
-        const hit = await geocodeAddress(near);
-        if (!hit) {
-          return { content: `Couldn't geocode "${near}". Try a more specific address.` };
-        }
-        centerLat = hit.latitude;
-        centerLng = hit.longitude;
+      const hit = await geocodeAddress(location);
+      if (!hit) {
+        return { content: `Couldn't find "${location}". Try a ZIP code or a more specific city/address.` };
       }
 
       const events = getActiveEvents({
         format,
         from,
         to,
-        radiusMiles: radiusMiles ?? undefined,
-        centerLat,
-        centerLng,
-      }).filter(ev => !source || ev.source === source);
+        radiusMiles,
+        centerLat: hit.latitude,
+        centerLng: hit.longitude,
+      });
 
-      const filterParts: string[] = [];
-      if (format) filterParts.push(format);
-      if (source) filterParts.push(source);
-      if (near && radiusMiles) filterParts.push(`within ${radiusMiles}mi of ${near}`);
-      const filterSuffix = filterParts.length > 0 ? ` matching ${filterParts.join(" · ")}` : "";
+      const filterParts: string[] = [`within ${radiusMiles}mi of ${location}`];
+      if (format) filterParts.unshift(format);
+      const filterSuffix = ` matching ${filterParts.join(" · ")}`;
 
       const msg = renderDigestSummary(events, { windowLabel: `${windowLabel}${filterSuffix}` });
       // Lookups are public by design — the whole point is to surface events
@@ -461,20 +254,27 @@ function handleLookup(
 function handleHelp(): InteractionHandlerResult {
   const lines = [
     "**PlayIRL.GG Discord bot — quick reference**",
+    "Find MTG events near you, or manage recurring event posts for this server.",
     "",
-    "_Anyone can run these:_",
-    "**`/playirl today`** — show events happening today. All filters are dropdowns: pick a format, a venue/area, and a radius.",
-    "**`/playirl week`** — show events in the next 7 days. Same dropdowns.",
-    "**`/playirl help`** — this menu.",
+    "_Find events (anyone can run):_",
+    "**`/playirl today`** — events happening today.",
+    "**`/playirl week`** — events in the next 7 days.",
     "",
-    "_Manage Server only:_",
-    "**`/playirl subscribe`** — schedule recurring event posts in this channel. Easier on the website → <https://playirl.gg/account/discord>",
-    "**`/playirl list`** — list this server's subscriptions.",
-    "**`/playirl preview <id>`** — show what a subscription would post right now.",
-    "**`/playirl edit <id>`** — change one or more options on an existing subscription.",
-    "**`/playirl unsubscribe <id>`** — disable a subscription.",
+    "Both commands take three inputs:",
+    "• **format** _(optional)_ — Commander, Modern, Standard, Pioneer, Legacy, Pauper, Draft, or Sealed. Leave blank for any.",
+    "• **location** _(required)_ — your ZIP code, city, or address. Examples: `19103`, `Philadelphia, PA`, `123 Main St, Wilmington, DE`.",
+    "• **radius_miles** _(required)_ — 5, 10, 25, 50, or 100 miles from your location.",
     "",
-    `Browse the full event calendar at <https://playirl.gg>.`,
+    "Example: `/playirl week format:Commander location:19103 radius_miles:25`",
+    "",
+    "_Server admin (needs Manage Server):_",
+    "**`/playirl unsubscribe <id>`** — disable a recurring event post. Start typing in the `id` field — Discord will autocomplete from this server's subscriptions.",
+    "Set up new subscriptions on the website → <https://playirl.gg/account/discord>",
+    "",
+    "_Other:_",
+    "**`/playirl help`** — show this menu.",
+    "",
+    "Browse the full event calendar at <https://playirl.gg>.",
   ];
   return immediateText(lines.join("\n"));
 }
@@ -611,11 +411,7 @@ export function handleInteraction(interaction: DiscordInteraction): InteractionH
   }
 
   switch (sub.name) {
-    case "subscribe":   return handleSubscribe(interaction, sub);
-    case "list":        return handleList(interaction);
     case "unsubscribe": return handleUnsubscribe(interaction, sub);
-    case "preview":     return handlePreview(interaction, sub);
-    case "edit":        return handleEdit(interaction, sub);
     default: return immediateText(`Unknown subcommand: ${sub.name}`);
   }
 }
