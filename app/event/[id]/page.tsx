@@ -351,6 +351,21 @@ export default async function EventPage({
           ) : heroInner;
         })()}
 
+        {/* Description: prefer host/admin-authored `notes` (override) over
+            scraper-supplied `description`. Both render with the same
+            "Description" label so the viewer sees a single section.
+            Positioned directly below the hero so the human-readable
+            blurb lands in the reader's eye before the structured
+            Host/Date/Time/Cost rows. */}
+        {(ev.notes || ev.description) && (
+          <Reveal>
+            <div className="mx-6 my-4 bg-neutral-50 dark:bg-neutral-800 rounded-md p-4">
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Description</p>
+              <p className="text-sm text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap break-words">{ev.notes || ev.description}</p>
+            </div>
+          </Reveal>
+        )}
+
         {/* Details table */}
         <Reveal delay={120}>
           <div className="px-6 pb-2 border-t border-neutral-100 dark:border-white/8">
@@ -421,18 +436,6 @@ export default async function EventPage({
             </dl>
           </div>
         </Reveal>
-
-        {/* Description: prefer host/admin-authored `notes` (override) over
-            scraper-supplied `description`. Both render with the same
-            "Description" label so the viewer sees a single section. */}
-        {(ev.notes || ev.description) && (
-          <Reveal>
-            <div className="mx-6 mb-4 bg-neutral-50 dark:bg-neutral-800 rounded-md p-4">
-              <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Description</p>
-              <p className="text-sm text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap break-words">{ev.notes || ev.description}</p>
-            </div>
-          </Reveal>
-        )}
 
         {/* Meta footer */}
         <Reveal>
