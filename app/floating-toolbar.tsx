@@ -1,9 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
-
-const BTN = "flex items-center justify-center w-10 h-10 rounded-md transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20";
-const BTN_ACTIVE = "bg-white dark:bg-white/15 shadow-sm text-neutral-900 dark:text-white";
-const BTN_INACTIVE = "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300";
+import { useState } from "react";
 
 function ListIcon() {
   return (
@@ -37,29 +33,8 @@ function MapIcon() {
   );
 }
 
-function SunIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-    </svg>
-  );
-}
-
-function MoonIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-    </svg>
-  );
-}
-
 export default function FloatingToolbar({ currentView }: { currentView: string }) {
-  const [isDark, setIsDark] = useState(false);
   const [activeView, setActiveView] = useState(currentView);
-
-  useEffect(() => {
-    setIsDark(document.documentElement.classList.contains("dark"));
-  }, []);
 
   function setView(view: string) {
     if (view === activeView) return;
@@ -69,76 +44,44 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
     setTimeout(() => { window.location.href = url.toString(); }, 220);
   }
 
-  function toggleTheme() {
-    const html = document.documentElement;
-    const goingDark = !html.classList.contains("dark");
-    const value = goingDark ? "dark" : "light";
-    html.classList.toggle("dark", goingDark);
-    html.style.colorScheme = value;
-    localStorage.setItem("theme", value);
-    // Mirror to a cookie so RootLayout's SSR sees it on the next request.
-    document.cookie = `theme=${value}; max-age=${60 * 60 * 24 * 365}; path=/; samesite=lax`;
-    setIsDark(goingDark);
-  }
-
-  const PILL = "fixed right-4 z-40 flex flex-col gap-0.5 bg-white dark:bg-neutral-800 rounded-md p-0.5 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/15 dark:shadow-black/50";
-
   return (
-    <>
-      {/* View toggle — vertically centered with sliding indicator. Always
-          visible across breakpoints, including mobile in calendar view —
-          users explicitly want quick access to switch views from any
-          screen size. */}
-      <div className="fixed right-4 top-1/2 -translate-y-1/2 z-40 flex">
-        <div className="relative flex flex-col bg-neutral-100/80 dark:bg-neutral-900 rounded-md p-1 border border-neutral-200/60 dark:border-white/10 shadow-lg shadow-black/10 dark:shadow-black/40 backdrop-blur-sm">
-          {/* sliding pill — each step is 44px (h-10 button + 4px gap) */}
-          <div
-            className="absolute left-1 right-1 h-10 rounded-md bg-white dark:bg-white/12 shadow-sm transition-transform duration-200 ease-out"
-            style={{
-              top: "4px",
-              transform: `translateY(${activeView === "calendar" ? 44 : activeView === "map" ? 88 : 0}px)`,
-            }}
-          />
-          <button
-            onClick={() => setView("list")}
-            title="List view"
-            className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ${activeView === "list" ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-400"}`}
-          >
-            <ListIcon />
-          </button>
-          <button
-            onClick={() => setView("calendar")}
-            title="Calendar view"
-            className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 mt-1 ${activeView === "calendar" ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-400"}`}
-          >
-            <CalendarIcon />
-          </button>
-          <button
-            onClick={() => setView("map")}
-            title="Map view"
-            className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 mt-1 ${activeView === "map" ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-400"}`}
-          >
-            <MapIcon />
-          </button>
-        </div>
-      </div>
-
-      {/* Theme toggle — bottom-right corner. Bottom inset uses
-          env(safe-area-inset-bottom) so the pill clears iPhone home bars
-          and Android gesture bars instead of disappearing under them. */}
-      <div
-        className={`${PILL}`}
-        style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
-      >
+    <div
+      className="fixed left-1/2 -translate-x-1/2 z-40 flex"
+      style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
+    >
+      <div className="relative flex flex-row bg-neutral-100/80 dark:bg-neutral-900 rounded-md p-1 border border-neutral-200/60 dark:border-white/10 shadow-lg shadow-black/10 dark:shadow-black/40 backdrop-blur-sm">
+        <div
+          className="absolute top-1 bottom-1 w-16 rounded-md bg-white dark:bg-white/12 shadow-sm transition-transform duration-200 ease-out"
+          style={{
+            left: "4px",
+            transform: `translateX(${activeView === "calendar" ? 68 : activeView === "map" ? 136 : 0}px)`,
+          }}
+        />
         <button
-          onClick={toggleTheme}
-          title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          className={`${BTN} ${BTN_INACTIVE}`}
+          onClick={() => setView("list")}
+          title="List view"
+          className={`relative z-10 flex flex-col items-center justify-center gap-0.5 w-16 h-12 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ${activeView === "list" ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-400"}`}
         >
-          {isDark ? <SunIcon /> : <MoonIcon />}
+          <ListIcon />
+          <span className="text-[10px] font-medium leading-none">List</span>
+        </button>
+        <button
+          onClick={() => setView("calendar")}
+          title="Calendar view"
+          className={`relative z-10 flex flex-col items-center justify-center gap-0.5 w-16 h-12 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ml-1 ${activeView === "calendar" ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-400"}`}
+        >
+          <CalendarIcon />
+          <span className="text-[10px] font-medium leading-none">Calendar</span>
+        </button>
+        <button
+          onClick={() => setView("map")}
+          title="Map view"
+          className={`relative z-10 flex flex-col items-center justify-center gap-0.5 w-16 h-12 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ml-1 ${activeView === "map" ? "text-neutral-900 dark:text-white" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-400"}`}
+        >
+          <MapIcon />
+          <span className="text-[10px] font-medium leading-none">Map</span>
         </button>
       </div>
-    </>
+    </div>
   );
 }

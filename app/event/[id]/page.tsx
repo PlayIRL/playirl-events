@@ -359,7 +359,7 @@ export default async function EventPage({
             Host/Date/Time/Cost rows. */}
         {(ev.notes || ev.description) && (
           <Reveal>
-            <div className="mx-6 my-4 bg-neutral-50 dark:bg-neutral-800 rounded-md p-4">
+            <div className="px-6 py-4">
               <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Description</p>
               <p className="text-sm text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap break-words">{ev.notes || ev.description}</p>
             </div>
