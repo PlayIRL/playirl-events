@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/app/button";
 import OAuthButton from "@/app/oauth-button";
 import AuthErrorBanner from "@/app/auth-error-banner";
@@ -12,7 +12,16 @@ export default function LoginForm({ providers }: { providers: Provider[] }) {
   const [email, setEmail] = useState("");
   const [csrfToken, setCsrfToken] = useState("");
   const searchParams = useSearchParams();
+  const router = useRouter();
   const from = searchParams.get("from") || "/admin";
+
+  // Credentials (email + password) form state. Hits /api/auth/credentials,
+  // which writes the same session cookie shape Auth.js uses so subsequent
+  // auth() calls see the user transparently.
+  const [pwEmail, setPwEmail] = useState("");
+  const [pwPassword, setPwPassword] = useState("");
+  const [pwBusy, setPwBusy] = useState(false);
+  const [pwError, setPwError] = useState<string | null>(null);
 
   // Auth.js v5 requires a CSRF token on every signin POST.
   useEffect(() => {
@@ -23,6 +32,27 @@ export default function LoginForm({ providers }: { providers: Provider[] }) {
   const hasEmail = providers.some((p) => p.id === "resend");
   const noProviders = providers.length === 0;
   const oauthAction = (id: string) => `/api/auth/signin/${id}`;
+
+  async function signInWithPassword(e: React.FormEvent) {
+    e.preventDefault();
+    setPwBusy(true);
+    setPwError(null);
+    try {
+      const res = await fetch("/api/auth/credentials", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: pwEmail, password: pwPassword }),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
+      router.push(from);
+      router.refresh();
+    } catch (err) {
+      setPwError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setPwBusy(false);
+    }
+  }
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-neutral-50 dark:bg-neutral-950 p-4 relative">
@@ -86,6 +116,45 @@ export default function LoginForm({ providers }: { providers: Provider[] }) {
             </form>
           </>
         )}
+
+        {(hasOAuth || hasEmail) && (
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-px bg-neutral-200 dark:bg-neutral-700" />
+            <span className="text-xs text-neutral-500 dark:text-neutral-400">or</span>
+            <div className="flex-1 h-px bg-neutral-200 dark:bg-neutral-700" />
+          </div>
+        )}
+
+        <form onSubmit={signInWithPassword} className="space-y-2">
+          <input
+            type="email"
+            name="email"
+            value={pwEmail}
+            onChange={(e) => setPwEmail(e.target.value)}
+            placeholder="you@example.com"
+            autoComplete="email"
+            required
+            className="w-full px-4 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20"
+          />
+          <input
+            type="password"
+            name="password"
+            value={pwPassword}
+            onChange={(e) => setPwPassword(e.target.value)}
+            placeholder="Password"
+            autoComplete="current-password"
+            required
+            className="w-full px-4 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20"
+          />
+          {pwError && (
+            <p className="text-xs text-red-600 dark:text-red-400" role="alert">
+              {pwError}
+            </p>
+          )}
+          <Button type="submit" variant="primary" disabled={pwBusy || !pwEmail || !pwPassword} className="w-full">
+            {pwBusy ? "Signing in…" : "Sign in with password"}
+          </Button>
+        </form>
       </div>
     </main>
   );
