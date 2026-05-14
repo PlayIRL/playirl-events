@@ -194,7 +194,8 @@ async function fireDigest(
 
   // Skip empty digests entirely — quiet weeks shouldn't spam the channel
   // with "no events" boilerplate. The next bucket fires whenever there's
-  // actual content, and /playirl preview lets admins sanity-check filters.
+  // actual content; admins can sanity-check filters via the preview panel
+  // in /account?tab=discord.
   if (events.length === 0) return;
 
   // Fan out one message per date so a long window (e.g. a 7-day weekly

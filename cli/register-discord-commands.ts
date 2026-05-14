@@ -58,12 +58,7 @@ const RADIUS_CHOICES: Choice[] = [
 ];
 
 const lookupOptions: Option[] = [
-  {
-    type: OPT_STRING,
-    name: "format",
-    description: "Optional — only show events for this format (e.g. Commander, Modern). Leave blank for any.",
-    choices: FORMAT_CHOICES,
-  },
+  // Discord requires required options before optional ones.
   {
     type: OPT_STRING,
     name: "location",
@@ -76,6 +71,12 @@ const lookupOptions: Option[] = [
     description: "Required — how far from your location to search.",
     required: true,
     choices: RADIUS_CHOICES,
+  },
+  {
+    type: OPT_STRING,
+    name: "format",
+    description: "Optional — only show events for this format (e.g. Commander, Modern). Leave blank for any.",
+    choices: FORMAT_CHOICES,
   },
 ];
 
