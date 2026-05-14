@@ -41,10 +41,7 @@ export default function SubpageShell({
 
       <header className="flex items-end justify-between gap-4 flex-wrap">
         <div>
-          <h1
-            className="text-2xl sm:text-3xl font-[family-name:var(--font-ultra)] font-light text-neutral-900 dark:text-neutral-100 leading-none"
-            style={{ letterSpacing: "0.02em" }}
-          >
+          <h1 className="text-2xl sm:text-3xl font-[family-name:var(--font-ultra)] font-black tracking-tight text-neutral-900 dark:text-neutral-100 leading-none">
             {title}
           </h1>
           {description && (

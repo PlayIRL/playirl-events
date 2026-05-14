@@ -16,7 +16,7 @@ export default async function AccountChip() {
         signedIn={signedIn}
         user={
           signedIn && user
-            ? { name: user.name, email: user.email, image: user.image }
+            ? { name: user.name, email: user.email, image: user.image, role: user.role }
             : null
         }
       />

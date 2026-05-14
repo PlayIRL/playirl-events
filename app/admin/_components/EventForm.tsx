@@ -388,7 +388,7 @@ export default function EventForm({
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <section className="space-y-4 pt-6 border-t border-neutral-200/70 dark:border-white/8 first:pt-0 first:border-t-0">
-      <h2 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
+      <h2 className="text-base font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">
         {label}
       </h2>
       {children}

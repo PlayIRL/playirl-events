@@ -59,7 +59,7 @@ export default function InvitesManager({
     <div className="space-y-6">
       {/* Generator */}
       <section className="rounded-md border border-neutral-200 dark:border-white/10 bg-white dark:bg-neutral-900 p-4 space-y-3">
-        <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">Generate invite link</h2>
+        <h2 className="text-base font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">Generate invite link</h2>
         <p className="text-xs text-neutral-500 dark:text-neutral-400">
           Each link grants read access to this event without needing to be on the
           attendee list. The link is multi-use — anyone you share it with can open
