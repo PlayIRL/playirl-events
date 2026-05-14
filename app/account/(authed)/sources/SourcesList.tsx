@@ -31,7 +31,7 @@ export default function SourcesList({ sources }: { sources: UserSource[] }) {
 
   return (
     <div className="space-y-3">
-      <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+      <h2 className="text-base font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">
         Your connected Discords
       </h2>
       <ul className="space-y-3">

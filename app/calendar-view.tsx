@@ -151,7 +151,9 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                       {day.weekday}
                     </span>
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-[family-name:var(--font-ultra)] font-bold shrink-0 ${
-                      isToday ? "" : "text-neutral-900 dark:text-neutral-200"
+                      isToday
+                        ? "bg-white text-neutral-900 dark:bg-neutral-900 dark:text-white"
+                        : "text-neutral-900 dark:text-neutral-200"
                     }`}>
                       {day.dayNum}
                     </span>

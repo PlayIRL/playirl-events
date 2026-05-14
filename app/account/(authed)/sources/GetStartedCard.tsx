@@ -20,7 +20,7 @@ export default function GetStartedCard({
     <div className={`bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md ${compact ? "p-4" : "p-6"} space-y-5`}>
       {!compact && (
         <div>
-          <h2 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">Connect in two steps</h2>
+          <h2 className="text-base font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">Connect in two steps</h2>
           <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
             A curated set of events is exchanged — nothing gets shared without matching your community&apos;s style. You&apos;ll need to be an admin on your Discord to add the helper.
           </p>

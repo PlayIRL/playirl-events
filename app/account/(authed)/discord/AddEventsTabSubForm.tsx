@@ -204,7 +204,7 @@ function FormModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
       <div className="w-full max-w-xl bg-white dark:bg-neutral-900 rounded-md shadow-xl border border-neutral-200 dark:border-neutral-800 max-h-[90vh] overflow-y-auto">
         <div className="px-5 py-4 border-b border-neutral-100 dark:border-neutral-800 flex items-center justify-between sticky top-0 bg-white dark:bg-neutral-900 z-10">
-          <h2 className="text-base font-semibold text-neutral-900 dark:text-white">Add events to a server&rsquo;s Events tab</h2>
+          <h2 className="text-base font-extrabold tracking-tight text-neutral-900 dark:text-white">Add events to a server&rsquo;s Events tab</h2>
           <button
             onClick={onClose}
             className="text-neutral-400 hover:text-neutral-700 dark:hover:text-white text-xl leading-none px-2"

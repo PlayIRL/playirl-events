@@ -60,7 +60,7 @@ export default async function SavedEventsPage() {
         <div className="space-y-8">
           {upcoming.length > 0 && (
             <section className="space-y-2">
-              <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">
+              <h2 className="text-base font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 mb-3">
                 Upcoming ({upcoming.length})
               </h2>
               {Object.entries(groupedUpcoming).map(([date, dayEvents], i) => {
@@ -86,7 +86,7 @@ export default async function SavedEventsPage() {
 
           {past.length > 0 && (
             <section className="space-y-2">
-              <h2 className="text-sm font-semibold text-neutral-500 dark:text-neutral-400 mb-2">
+              <h2 className="text-base font-extrabold tracking-tight text-neutral-500 dark:text-neutral-400 mb-2">
                 Past ({past.length})
               </h2>
               <ul className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md divide-y divide-neutral-100 dark:divide-neutral-800">

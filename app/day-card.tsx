@@ -119,7 +119,7 @@ export default function DayCard({
               : "bg-white dark:bg-neutral-900"
           }`}
         >
-          <span className={`text-base ${isToday ? "font-bold" : "font-medium text-neutral-700 dark:text-neutral-300"}`}>
+          <span className={`text-base font-extrabold tracking-tight ${isToday ? "" : "text-neutral-900 dark:text-neutral-100"}`}>
             {headingLabel || weekday}
           </span>
           <span className={`ml-auto text-sm ${isToday ? "text-neutral-300 dark:text-neutral-600" : "text-neutral-500 dark:text-neutral-400"}`}>

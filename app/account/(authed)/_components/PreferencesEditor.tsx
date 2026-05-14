@@ -79,7 +79,7 @@ export default function PreferencesEditor({ initial, fallbackLocationLabel }: Pr
   return (
     <div className="rounded-lg border border-neutral-200 dark:border-white/15 bg-white dark:bg-neutral-900 p-5 space-y-5">
       <div>
-        <h2 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
+        <h2 className="text-base font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">
           Default browse settings
         </h2>
         <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1">
@@ -141,6 +141,21 @@ export default function PreferencesEditor({ initial, fallbackLocationLabel }: Pr
           Default formats
         </span>
         <div className="flex flex-wrap gap-1.5">
+          {/* "All" represents the empty-set state: no specific format
+              filter applied, so every format shows. Picking a specific
+              format clears it; clicking "All" again clears all picks. */}
+          <button
+            type="button"
+            onClick={() => setFormats(new Set())}
+            aria-pressed={formats.size === 0}
+            className={`text-xs px-2.5 py-1 rounded-full border transition cursor-pointer ${
+              formats.size === 0
+                ? "bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 border-neutral-900 dark:border-neutral-100"
+                : "bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800"
+            }`}
+          >
+            All
+          </button>
           {FORMAT_SUGGESTIONS.map((name) => {
             const active = formats.has(name);
             return (
@@ -161,7 +176,7 @@ export default function PreferencesEditor({ initial, fallbackLocationLabel }: Pr
           })}
         </div>
         <span className="block text-[11px] text-neutral-500 dark:text-neutral-400 mt-2 leading-snug">
-          Select none to see all formats by default.
+          &ldquo;All&rdquo; shows every format. Pick specific ones to narrow.
         </span>
       </div>
 
