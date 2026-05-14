@@ -217,8 +217,8 @@ export default function UserGuide() {
               installed before May 2026, re-invite to grant it.
             </Step>
             <Step>
-              Try <Pill mono>/playirl events</Pill> in any channel to confirm
-              the bot is reachable. The full slash-command reference is on the
+              Try <Pill mono>/playirl help</Pill> in any channel to confirm
+              the bot is reachable. The full slash-command reference is on the{" "}
               <Link href="/bot" className={LINK}>bot page</Link>.
             </Step>
           </Steps>

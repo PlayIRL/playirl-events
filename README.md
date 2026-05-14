@@ -154,7 +154,7 @@ Net effect: address-text and lat/lng always agree, regardless of which the rende
 
 ## Discord subscription bot
 
-Server admins can add the PlayIRL.GG bot to their Discord, then subscribe channels to event digests and reminders via slash commands. The user-facing landing page is at `/bot`.
+Server admins can add the PlayIRL.GG bot to their Discord, then configure channel auto-posts (weekly/daily digests or per-event reminders) from the website at `/account?tab=discord`. Slash commands (`/playirl today`, `/playirl week`, `/playirl unsubscribe`, `/playirl help`) handle in-channel lookups and disabling subs. The user-facing landing page is at `/bot`.
 
 ### One-time setup (deployer)
 
@@ -180,15 +180,9 @@ Server admins can add the PlayIRL.GG bot to their Discord, then subscribe channe
    ```
    Discord PINGs the URL immediately to validate signature handling — the call is rejected unless `DISCORD_BOT_PUBLIC_KEY` is set correctly.
 
-5. **Configure Railway Cron** to fire the dispatcher every 5 minutes:
-   ```
-   Schedule: */5 * * * *
-   Command:  curl -X POST https://playirl.gg/api/discord/dispatch \
-                  -H "x-dispatch-secret: $DISPATCH_SECRET"
-   ```
-   The dispatcher self-gates: only weekly subs whose `(dow, hour_utc)` matches the current tick fire, only daily subs at the right hour, and reminders only fire when an event start sits inside the [now+lead, now+lead+5min) window. Missed ticks are picked up by the next tick within the same window thanks to the idempotency ledger.
+5. **Dispatcher cron is wired via GitHub Actions** (`.github/workflows/discord-dispatch.yml`), firing `*/5 * * * *` against `/api/discord/dispatch` with `x-dispatch-secret: $DISPATCH_SECRET`. The repo secret `DISPATCH_SECRET` must match the Railway env var. The dispatcher self-gates: only weekly subs whose `(dow, hour_utc)` matches the current tick fire, only daily subs at the right hour, and reminders only fire when an event start sits inside the [now+lead, now+lead+5min) window. Missed ticks are picked up by the next tick within the same window thanks to the idempotency ledger.
 
-6. **Verify** by inviting the bot to a test guild via `/bot`, running `/playirl subscribe mode:weekly format:Commander`, then `/playirl preview <id>`.
+6. **Verify** by inviting the bot to a test guild via `/bot`, then running `/playirl today location:19103 radius_miles:25` in any channel. To exercise the subscription path, set up an auto-post from `/account?tab=discord` and use the per-card **Send now** button to fire immediately.
 
 ### How users add it
 

@@ -78,9 +78,9 @@ export default function BotPage() {
           <h2 className="text-xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white mb-3">How it works</h2>
           <ol className="list-decimal list-inside space-y-2 text-sm text-neutral-700 dark:text-neutral-300">
             <li>Click <strong>Add to your Discord server</strong> above and pick a server.</li>
-            <li>In the channel where you want events to post, run <code className="px-1 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800">/playirl subscribe</code>.</li>
-            <li>Pick a <strong>mode</strong> — weekly digest, daily digest, or per-event reminder — and any filters (format, location, source).</li>
-            <li>That&apos;s it. The bot posts on the schedule you set. Repeat to add more channels or formats.</li>
+            <li>Open <Link href="/account?tab=discord" className="underline hover:text-neutral-900 dark:hover:text-white">Account → Discord</Link> on PlayIRL.GG and click <strong>+ New auto-post</strong>.</li>
+            <li>Pick the channel, a <strong>mode</strong> — weekly digest, daily digest, or per-event reminder — and any filters (format, venue, location, radius).</li>
+            <li>That&apos;s it. The bot posts on the schedule you set. Anyone in the server can run <code className="px-1 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800">/playirl today</code> or <code className="px-1 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800">/playirl week</code> to look up events on demand.</li>
           </ol>
         </section>
       </Reveal>
@@ -89,43 +89,26 @@ export default function BotPage() {
         <section className="mb-10">
           <h2 className="text-xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white mb-3">Commands</h2>
           <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
-            Lookup commands (<code>/today</code>, <code>/week</code>, <code>/help</code>) work for anyone in the channel. Subscription commands require the <strong>Manage Server</strong> permission.
+            <code>/playirl today</code>, <code>/playirl week</code>, and <code>/playirl help</code> work for anyone in the channel. <code>/playirl unsubscribe</code> requires the <strong>Manage Server</strong> permission. To create or edit recurring posts, use the <Link href="/account?tab=discord" className="underline hover:text-neutral-900 dark:hover:text-white">website</Link>.
           </p>
           <div className="space-y-3">
             <CommandCard
               name="/playirl today"
-              summary="Show events happening today, optionally filtered by format and location."
-              example="/playirl today format:Commander near:Philadelphia radius_miles:25"
+              summary="Show MTG events happening today near you. Requires location + radius; format is optional."
+              example="/playirl today location:19103 radius_miles:25 format:Commander"
             />
             <CommandCard
               name="/playirl week"
-              summary="Show events in the next 7 days. Same filters as /today."
-              example="/playirl week format:Modern radius_miles:50"
-            />
-            <CommandCard
-              name="/playirl subscribe"
-              summary="Add a new event subscription to this channel (Manage Server)."
-              example="/playirl subscribe mode:weekly format:Commander near:Philadelphia radius_miles:25"
-            />
-            <CommandCard
-              name="/playirl list"
-              summary="List subscriptions in this server."
-            />
-            <CommandCard
-              name="/playirl edit <id>"
-              summary="Tweak a subscription's filters or schedule without deleting and recreating."
-            />
-            <CommandCard
-              name="/playirl preview <id>"
-              summary="See what a subscription would post right now (only you see it)."
+              summary="Show MTG events in the next 7 days near you. Same options as /playirl today."
+              example="/playirl week location:Philadelphia, PA radius_miles:50"
             />
             <CommandCard
               name="/playirl unsubscribe <id>"
-              summary="Disable a subscription."
+              summary="Disable a recurring auto-post in this server (Manage Server). Start typing in the id field — Discord autocompletes from your server's subscriptions."
             />
             <CommandCard
               name="/playirl help"
-              summary="Show every command with its options."
+              summary="Show the in-channel quick reference for every command and its options."
             />
           </div>
         </section>
@@ -134,6 +117,9 @@ export default function BotPage() {
       <Reveal delay={260}>
         <section className="mb-10">
           <h2 className="text-xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white mb-3">Subscription modes</h2>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
+            Configured from the <Link href="/account?tab=discord" className="underline hover:text-neutral-900 dark:hover:text-white">Discord tab</Link> of your account.
+          </p>
           <dl className="space-y-3 text-sm text-neutral-700 dark:text-neutral-300">
             <div>
               <dt className="font-semibold text-neutral-900 dark:text-white">Weekly digest</dt>
