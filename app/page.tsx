@@ -325,6 +325,13 @@ export default async function HomePage({
           <a href="/account/events/new" className="hover:text-neutral-900 dark:hover:text-white">Create event</a>
           <a href="/account" className="hover:text-neutral-900 dark:hover:text-white">Sign in</a>
         </div>
+        <p className="text-xs mt-6 text-neutral-400 dark:text-neutral-600">
+          Made by{" "}
+          <span style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", fontWeight: 700, letterSpacing: "-0.04em" }}>
+            CardSlinger
+          </span>
+          ™ · © 2026
+        </p>
       </footer>
     </main>
   );
