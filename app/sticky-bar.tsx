@@ -31,12 +31,26 @@ export default function StickyBar({ children }: { children: React.ReactNode }) {
   // Publish the chip-top offset that account-chip / account-menu read for
   // their `sm:top-[var(--chip-top)]` rule. Page at top → 1rem (the classic
   // top-4 corner placement). Page scrolled past the bar's natural position
-  // → 1rem below the now-pinned bar so the chip and bar don't collide.
+  // → below the now-pinned bar so the chip and bar don't collide. On mobile
+  // the day-card heading strip is also pinned right under the bar, so the
+  // chip needs to clear that too (~3rem tall) — otherwise the chip floats
+  // over the "Today · N events" line. Desktop keeps the tight 1rem gap
+  // since the chip sits in the page's right margin, not over content.
   useEffect(() => {
-    document.documentElement.style.setProperty(
-      "--chip-top",
-      isStuck ? "calc(var(--sticky-bar-h, 3rem) + 1rem)" : "1rem",
-    );
+    if (!isStuck) {
+      document.documentElement.style.setProperty("--chip-top", "1rem");
+      return;
+    }
+    const update = () => {
+      const isMobile = window.matchMedia("(max-width: 639px)").matches;
+      document.documentElement.style.setProperty(
+        "--chip-top",
+        `calc(var(--sticky-bar-h, 3rem) + ${isMobile ? "4rem" : "1rem"})`,
+      );
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, [isStuck]);
 
   return (

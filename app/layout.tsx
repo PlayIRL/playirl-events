@@ -108,11 +108,11 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${figtree.variable} ${spaceGrotesk.variable} ${spaceMono.variable} ${cardTitleFont.variable} h-full antialiased${isDark ? " dark" : ""}`}
+      className={`${figtree.variable} ${spaceGrotesk.variable} ${spaceMono.variable} ${cardTitleFont.variable} antialiased${isDark ? " dark" : ""}`}
       style={{ colorScheme: isDark ? "dark" : "light" }}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col font-[family-name:var(--font-inter)] text-neutral-900 dark:text-neutral-100">
+      <body className="min-h-[100dvh] flex flex-col font-[family-name:var(--font-inter)] text-neutral-900 dark:text-neutral-100">
         <ThemeSync />
         {children}
       </body>
