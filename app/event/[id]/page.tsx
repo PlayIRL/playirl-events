@@ -27,12 +27,12 @@ function formatDate(dateStr: string): string {
 }
 
 
-function DetailRow({ label, value, href }: { label: string; value: string; href?: string }) {
+function DetailRow({ label, value, href, mono = false }: { label: string; value: string; href?: string; mono?: boolean }) {
   if (!value) return null;
   return (
     <div className="py-3 border-b border-neutral-100 dark:border-white/8 last:border-0">
       <dt className="text-xs text-neutral-500 dark:text-neutral-400 mb-0.5">{label}</dt>
-      <dd className="text-sm font-medium text-neutral-900 dark:text-neutral-200 break-words">
+      <dd className={`text-sm font-medium text-neutral-900 dark:text-neutral-200 break-words${mono ? " font-mono tabular-nums" : ""}`}>
         {href ? (
           <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-neutral-900 dark:text-white hover:underline break-all">
             {value}
@@ -399,9 +399,9 @@ export default async function EventPage({
                   </dd>
                 </div>
               ) : null}
-              <DetailRow label="Date" value={formatDate(ev.date)} />
-              <DetailRow label="Time" value={formatEventTimeRange(ev.date, ev.time, ev.timezone)} />
-              <DetailRow label="Cost" value={ev.cost || "Not listed"} />
+              <DetailRow label="Date" value={formatDate(ev.date)} mono />
+              <DetailRow label="Time" value={formatEventTimeRange(ev.date, ev.time, ev.timezone)} mono />
+              <DetailRow label="Cost" value={ev.cost || "Not listed"} mono />
               {ev.address && (
                 <div className="py-3 border-b border-neutral-100 dark:border-white/8 last:border-0">
                   <dt className="text-xs text-neutral-500 dark:text-neutral-400 mb-0.5">Address</dt>

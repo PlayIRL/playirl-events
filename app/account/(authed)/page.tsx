@@ -177,7 +177,7 @@ function StatRow({ label, count, href }: { label: string; count: number; href: s
         className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-white/[0.03] transition"
       >
         <span className="text-sm text-neutral-700 dark:text-neutral-300">{label}</span>
-        <span className="flex items-center gap-2 text-sm font-semibold text-neutral-900 dark:text-neutral-100 tabular-nums">
+        <span className="flex items-center gap-2 text-sm font-semibold font-mono text-neutral-900 dark:text-neutral-100 tabular-nums">
           {count}
           <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 text-neutral-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -314,7 +314,7 @@ function EventListSection({
                 href={`/event/${encodeURIComponent(ev.id)}`}
                 className="flex items-center gap-3 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-white/[0.03] transition"
               >
-                <span className="text-xs text-neutral-500 dark:text-neutral-400 w-20 shrink-0 tabular-nums">
+                <span className="text-xs text-neutral-500 dark:text-neutral-400 w-20 shrink-0 font-mono tabular-nums">
                   {formatShortDate(ev.date)}
                   {ev.time && <span className="block text-[11px] opacity-70">{ev.time}</span>}
                 </span>

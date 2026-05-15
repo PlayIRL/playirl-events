@@ -185,6 +185,7 @@ function CountBadge({ count }: { count: number }) {
   const size = Math.min(28 + Math.log2(count) * 6, 48);
   return (
     <div
+      className="font-mono tabular-nums"
       style={{
         width: size,
         height: size,
@@ -195,7 +196,7 @@ function CountBadge({ count }: { count: number }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontWeight: 600,
+        fontWeight: 700,
         fontSize: count > 99 ? 11 : 13,
         boxShadow: "0 1px 3px rgba(0,0,0,0.3)",
         cursor: "pointer",
@@ -219,12 +220,12 @@ function VenuePopup({ venue }: { venue: VenueGroup }) {
               href={`/event/${encodeURIComponent(ev.id)}`}
               className="block text-xs leading-snug hover:underline"
             >
-              <div className="text-neutral-500">
+              <div className="text-neutral-500 font-mono tabular-nums">
                 {formatShortDate(ev.date)} · {formatEventTime(ev.date, ev.time, ev.timezone)}
               </div>
               <div className="text-neutral-900 font-medium">{ev.title}</div>
               {ev.format && (
-                <span className={`inline-block mt-0.5 px-1.5 py-0.5 rounded-sm text-[9px] font-bold ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                <span className={`inline-block mt-0.5 px-1.5 py-0.5 rounded-sm text-[9px] font-bold tracking-[0.0875em] uppercase font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
                   {ev.format}
                 </span>
               )}

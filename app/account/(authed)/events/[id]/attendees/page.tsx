@@ -80,7 +80,7 @@ function Section({
                 </p>
                 <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate">{r.email}</p>
               </div>
-              <time className="text-[11px] text-neutral-500 dark:text-neutral-400 tabular-nums shrink-0">
+              <time className="text-[11px] text-neutral-500 dark:text-neutral-400 font-mono tabular-nums shrink-0">
                 {r.created_at.replace(" ", " · ")}
               </time>
             </li>

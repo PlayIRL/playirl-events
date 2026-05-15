@@ -735,7 +735,7 @@ function ActivityRow({ entry }: { entry: ActivityEntry }) {
         <div className="flex items-baseline gap-2 flex-wrap">
           <time
             dateTime={firedAt.toISOString()}
-            className="text-neutral-700 dark:text-neutral-200 font-medium tabular-nums"
+            className="text-neutral-700 dark:text-neutral-200 font-medium font-mono tabular-nums"
             title={firedAt.toISOString()}
           >
             {ts}

@@ -146,6 +146,7 @@ function ChipSelect({
   dot,
   align = "center",
   custom,
+  mono = false,
 }: {
   label: string;
   heading: string;
@@ -157,6 +158,9 @@ function ChipSelect({
   /** Optional freeform numeric input at the bottom of the dropdown — used by
    *  the Range chip so users can pick e.g. "3 mi" without a preset for it. */
   custom?: { unit: string; placeholder: string; min: number; max: number };
+  /** Render the chip label in Space Mono — for numeric-data chips like the
+   *  radius value. */
+  mono?: boolean;
 }) {
   const [status, setStatus] = useState<"closed" | "open" | "closing">("closed");
   const statusRef = useRef<"closed" | "open" | "closing">("closed");
@@ -193,7 +197,7 @@ function ChipSelect({
   return (
     <div ref={ref} className="relative inline-block">
       <button onClick={() => status === "open" ? close() : open()} className={CHIP_TRIGGER}>
-        <span>{label}</span>
+        <span className={mono ? "font-mono tabular-nums" : ""}>{label}</span>
         <ChevronDown />
       </button>
       {status !== "closed" && (
@@ -561,6 +565,7 @@ export default function RadiusSelector({
           value={String(currentRadius)}
           onChange={(v) => updateParam("radius", v)}
           custom={{ unit: "miles", placeholder: String(currentRadius), min: 1, max: 500 }}
+          mono
         />
 
         <span className={CONNECTOR}>miles of</span>

@@ -175,7 +175,7 @@ function CountPill({
       ? `${counts.going} / ${capacity}${suffix}`
       : `${counts.going}${suffix}`;
   return (
-    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-white/10 text-neutral-700 dark:text-neutral-300 text-xs font-medium tabular-nums">
+    <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-neutral-100 dark:bg-white/10 text-neutral-700 dark:text-neutral-300 text-xs font-medium font-mono tabular-nums">
       {text}
     </span>
   );

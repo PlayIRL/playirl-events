@@ -31,7 +31,7 @@ export default function AboutPage() {
       </Reveal>
 
       <Reveal delay={100}>
-        <h1 className="text-4xl md:text-5xl font-[family-name:var(--font-ultra)] font-extrabold text-neutral-900 dark:text-white tracking-wider mb-3 flex items-baseline gap-3 flex-wrap">
+        <h1 className="text-4xl md:text-5xl font-[family-name:var(--font-ultra)] font-black text-neutral-900 dark:text-white tracking-tight mb-3 flex items-baseline gap-3 flex-wrap">
           About
           <PlayIrlLogo className="text-3xl md:text-4xl" />
           <span className="sr-only">PlayIRL.GG</span>

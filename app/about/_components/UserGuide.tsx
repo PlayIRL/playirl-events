@@ -33,7 +33,7 @@ export default function UserGuide() {
   return (
     <section id="guide" className="mt-16 scroll-mt-8">
       <header className="mb-8 space-y-2">
-        <h2 className="text-3xl md:text-4xl font-[family-name:var(--font-ultra)] font-extrabold text-neutral-900 dark:text-white tracking-wider">
+        <h2 className="text-3xl md:text-4xl font-[family-name:var(--font-ultra)] font-black text-neutral-900 dark:text-white tracking-tight">
           User guide
         </h2>
         <p className="text-base text-neutral-700 dark:text-neutral-300">
@@ -397,14 +397,14 @@ function Section({
   return (
     <article id={id} className="scroll-mt-8 grid md:grid-cols-[3rem_1fr] gap-x-4 gap-y-3">
       <div className="md:row-span-3 hidden md:flex md:flex-col md:items-center md:gap-2 pt-1">
-        <div className="font-[family-name:var(--font-ultra)] font-extrabold text-3xl text-neutral-300 dark:text-neutral-700 tabular-nums leading-none">
+        <div className="font-mono font-bold text-3xl text-neutral-300 dark:text-neutral-700 tabular-nums leading-none">
           {String(n).padStart(2, "0")}
         </div>
       </div>
       <div className="space-y-1">
         <div className="flex items-center gap-2 flex-wrap">
           <h3
-            className="text-2xl font-[family-name:var(--font-ultra)] font-extrabold text-neutral-900 dark:text-white tracking-wider"
+            className="text-2xl font-[family-name:var(--font-ultra)] font-black text-neutral-900 dark:text-white tracking-tight"
             dangerouslySetInnerHTML={{ __html: title }}
           />
           {isNew && (
