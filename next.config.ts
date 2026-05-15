@@ -40,10 +40,12 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // /play was the original info-page URL for the life-tracker companion
-      // app. Renamed to /life since the app is a life-counter; keep the old
-      // path as a permanent redirect so any shared links still resolve.
-      { source: "/play", destination: "/life", permanent: true },
+      // The companion life-tracker app's info page has been renamed twice:
+      // /play (original) → /life (when we settled on "life tracker") → /track
+      // (current brand name). Keep both old paths as 301s so shared links and
+      // Discord-bot embed URLs continue to resolve.
+      { source: "/play", destination: "/track", permanent: true },
+      { source: "/life", destination: "/track", permanent: true },
     ];
   },
 };

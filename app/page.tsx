@@ -311,14 +311,14 @@ export default async function HomePage({
         </p>
         <p className="text-xs leading-relaxed mb-4 max-w-md mx-auto">
           Companion app:{" "}
-          <Link href="/life" className="text-neutral-900 dark:text-white underline underline-offset-2 hover:no-underline">
-            PlayIRL.gg<span className="font-light">/</span><span className="font-bold">life</span>
+          <Link href="/track" className="text-neutral-900 dark:text-white underline underline-offset-2 hover:no-underline">
+            PlayIRL.gg<span className="font-light">/</span><span className="font-bold">Track</span>
           </Link>
           {" "}— a simple, no-fuss MTG life tracker, currently in closed beta.
         </p>
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs">
           <a href="/about" className="hover:text-neutral-900 dark:hover:text-white">About</a>
-          <a href="/life" className="hover:text-neutral-900 dark:hover:text-white">Life tracker</a>
+          <a href="/track" className="hover:text-neutral-900 dark:hover:text-white">Track</a>
           <a href="/bot" className="hover:text-neutral-900 dark:hover:text-white">Discord bot</a>
           <a href="https://github.com/i1986o/mtg-cal" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-white">GitHub</a>
           <a href="https://discord.gg/nM2Ea4NSSh" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-white">Discord</a>

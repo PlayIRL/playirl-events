@@ -3,13 +3,13 @@ import Reveal from "@/app/reveal";
 import { PlayIrlLogo } from "@/app/playirl-logo";
 
 export const metadata = {
-  title: "PlayIRL.gg/life — life tracker for MTG",
+  title: "PlayIRL.gg/Track — life tracker for MTG",
   description:
     "A simple, no-fuss, high-quality life tracker for Magic: The Gathering — 1 to 8 players, Commander, Standard, Two-Headed Giant, and custom formats. Currently in beta.",
 };
 
 const WAITLIST_MAILTO =
-  "mailto:CardSlingerTCG@gmail.com?subject=PlayIRL%20Life%20waitlist&body=Add%20me%20to%20the%20PlayIRL%20Life%20beta%20waitlist.";
+  "mailto:CardSlingerTCG@gmail.com?subject=PlayIRL%20Track%20waitlist&body=Add%20me%20to%20the%20PlayIRL%20Track%20beta%20waitlist.";
 
 function Feature({ title, body }: { title: string; body: React.ReactNode }) {
   return (
@@ -37,10 +37,10 @@ export default function LifePage() {
         <h1 className="text-4xl md:text-5xl font-[family-name:var(--font-ultra)] text-neutral-900 dark:text-white mb-3 flex items-start gap-2 flex-wrap">
           <span className="leading-none whitespace-nowrap">
             <PlayIrlLogo className="text-4xl md:text-5xl" />
-            <span className="tracking-tight"><span className="font-light">/</span><span className="font-black">life</span></span>
+            <span className="tracking-tight"><span className="font-light">/</span><span className="font-black">Track</span></span>
           </span>
           <span className="inline-block bg-[hsl(120,100%,50%)] text-black font-mono font-bold uppercase text-[10px] tracking-[0.15em] px-2 py-1 rounded leading-none mt-1 -ml-2">Beta</span>
-          <span className="sr-only">PlayIRL.gg/life (beta)</span>
+          <span className="sr-only">PlayIRL.gg/Track (beta)</span>
         </h1>
       </Reveal>
 
