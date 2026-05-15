@@ -107,7 +107,7 @@ export default function AccountMenu({
         aria-haspopup="menu"
         aria-expanded={open}
         title={signedIn ? user?.name ?? "Account" : "Sign in"}
-        className="inline-flex items-center justify-center gap-2 w-10 h-10 px-0.5 sm:w-auto sm:pl-1 sm:pr-3 rounded-full cursor-pointer transition-colors text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20"
+        className="inline-flex items-center justify-center gap-2 w-10 h-10 px-0.5 sm:w-auto sm:pl-3 sm:pr-4 rounded-full cursor-pointer transition-colors text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20"
       >
         {trigger}
       </button>

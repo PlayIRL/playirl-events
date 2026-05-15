@@ -307,10 +307,10 @@ export default async function EventPage({
         <div className="p-6 pb-4 space-y-3 rounded-t-md border-b border-neutral-100 dark:border-white/8">
           {/* Format chip + title stand on their own — the "Format" /
               "Event" eyebrow labels were redundant scaffolding once the
-              chip got the Beleren + uppercase treatment that already
-              communicates "this is the format". */}
+              chip got the Beleren treatment that already communicates
+              "this is the format". */}
           {showFormatBadge(ev.format) && (
-            <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold tracking-[0.0875em] uppercase font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+            <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
               {ev.format}
             </span>
           )}
