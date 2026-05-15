@@ -142,13 +142,6 @@ export default function MediaPage() {
         </p>
       </Section>
 
-      <Section title="Product Screenshots — PlayIRL/life">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <ScreenshotSlot label="Life tracker · home (iOS)" />
-          <ScreenshotSlot label="4-player game in progress" />
-          <ScreenshotSlot label="Commander format screen" />
-        </div>
-      </Section>
 
       <Section title="Boilerplate Copy">
         <div className="space-y-4">
