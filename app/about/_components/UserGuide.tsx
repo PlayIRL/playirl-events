@@ -330,7 +330,7 @@ export default function UserGuide() {
       <footer className="mt-16 pt-8 border-t border-neutral-200 dark:border-white/10 text-sm text-neutral-600 dark:text-neutral-400 space-y-2">
         <p>
           Something missing or unclear?{" "}
-          <a href="https://discord.gg/axDSujPTfj" target="_blank" rel="noopener noreferrer" className={LINK}>
+          <a href="https://discord.gg/nM2Ea4NSSh" target="_blank" rel="noopener noreferrer" className={LINK}>
             Ask in our Discord
           </a>{" "}
           or{" "}
