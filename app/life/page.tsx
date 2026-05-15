@@ -37,7 +37,7 @@ export default function LifePage() {
         <h1 className="text-4xl md:text-5xl font-[family-name:var(--font-ultra)] text-neutral-900 dark:text-white mb-3 flex items-start gap-2 flex-wrap">
           <span className="leading-none whitespace-nowrap">
             <PlayIrlLogo className="text-4xl md:text-5xl" />
-            <span className="font-black tracking-tight">/life</span>
+            <span className="tracking-tight"><span className="font-light">/</span><span className="font-black">life</span></span>
           </span>
           <span className="inline-block bg-[hsl(120,100%,50%)] text-black font-mono font-bold uppercase text-[10px] tracking-[0.15em] px-2 py-1 rounded leading-none mt-1">Beta</span>
           <span className="sr-only">PlayIRL.gg/life (beta)</span>
