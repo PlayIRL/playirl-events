@@ -25,7 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/`,      lastModified: now, changeFrequency: "hourly",  priority: 1.0 },
     { url: `${SITE_URL}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${SITE_URL}/bot`,   lastModified: now, changeFrequency: "monthly", priority: 0.4 },
-    { url: `${SITE_URL}/life`,  lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${SITE_URL}/track`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
   ];
 
   // Public events only. Lean projection (id + updated_date) capped at the
