@@ -107,7 +107,7 @@ export default function MediaPage() {
             <div className="flex items-start">
               <PlayIrlLogo className="text-3xl" />
               <span className="tracking-tight font-[family-name:var(--font-ultra)] text-3xl leading-none text-neutral-900"><span className="font-light">/</span><span className="font-black">life</span></span>
-              <span className="inline-block bg-[hsl(120,100%,50%)] text-black font-mono font-bold uppercase text-[10px] tracking-[0.15em] px-2 py-1 rounded leading-none mt-0.5 -ml-2">Beta</span>
+              <span className="inline-block bg-[hsl(120,100%,50%)] text-black font-mono font-bold uppercase text-[10px] tracking-[0.15em] px-2 py-1 rounded leading-none -mt-1 -ml-2">Beta</span>
             </div>
             <span className="text-xs text-neutral-400">Light background</span>
           </div>
@@ -115,7 +115,7 @@ export default function MediaPage() {
             <div className="flex items-start">
               <PlayIrlLogo className="text-3xl text-white" />
               <span className="tracking-tight font-[family-name:var(--font-ultra)] text-3xl leading-none text-white"><span className="font-light">/</span><span className="font-black">life</span></span>
-              <span className="inline-block bg-[hsl(120,100%,50%)] text-black font-mono font-bold uppercase text-[10px] tracking-[0.15em] px-2 py-1 rounded leading-none mt-0.5 -ml-2">Beta</span>
+              <span className="inline-block bg-[hsl(120,100%,50%)] text-black font-mono font-bold uppercase text-[10px] tracking-[0.15em] px-2 py-1 rounded leading-none -mt-1 -ml-2">Beta</span>
             </div>
             <span className="text-xs text-neutral-600">Dark background</span>
           </div>
