@@ -325,6 +325,16 @@ export default async function HomePage({
           <a href="/account/events/new" className="hover:text-neutral-900 dark:hover:text-white">Create event</a>
           <a href="/account" className="hover:text-neutral-900 dark:hover:text-white">Sign in</a>
         </div>
+        <div className="mt-8 pt-6 border-t border-neutral-100 dark:border-neutral-800">
+          <p className="text-[10px] uppercase tracking-widest text-neutral-400 dark:text-neutral-600 mb-1">Made by</p>
+          <a href="https://cardslinger.shop" target="_blank" rel="noopener noreferrer" className="inline-block text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors">
+            <span style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", fontWeight: 700, letterSpacing: "-0.05em", fontSize: "1.5rem", lineHeight: 1 }}>
+              CardSlinger
+            </span>
+            <span className="text-xs align-super ml-0.5">™</span>
+          </a>
+          <p className="text-[10px] text-neutral-400 dark:text-neutral-600 mt-1">© 2026</p>
+        </div>
       </footer>
     </main>
   );
