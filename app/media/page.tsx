@@ -3,7 +3,7 @@ import { PlayIrlLogo } from "@/app/playirl-logo";
 
 export const metadata: Metadata = {
   title: "PlayIRL.GG — Media Kit",
-  description: "Logos, brand colors, and assets for PlayIRL.GG and PlayIRL/life.",
+  description: "Logos, brand colors, and assets for PlayIRL.GG.",
   robots: { index: false, follow: false },
 };
 
@@ -101,27 +101,6 @@ export default function MediaPage() {
         </div>
       </Section>
 
-      <Section title="Logo — PlayIRL/life">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="rounded-lg p-6 flex flex-col items-center gap-3 border bg-white border-neutral-200">
-            <div className="flex items-start">
-              <PlayIrlLogo className="text-3xl" />
-              <span className="tracking-tight font-[family-name:var(--font-ultra)] text-3xl leading-none text-neutral-900"><span className="font-light">/</span><span className="font-black">life</span></span>
-              <span className="inline-block bg-[hsl(120,100%,50%)] text-black font-mono font-bold uppercase text-[10px] tracking-[0.15em] px-2 py-1 rounded leading-none -mt-1 -ml-2">Beta</span>
-            </div>
-            <span className="text-xs text-neutral-400">Light background</span>
-          </div>
-          <div className="rounded-lg p-6 flex flex-col items-center gap-3 border bg-neutral-950 border-white/10">
-            <div className="flex items-start">
-              <PlayIrlLogo className="text-3xl text-white" />
-              <span className="tracking-tight font-[family-name:var(--font-ultra)] text-3xl leading-none text-white"><span className="font-light">/</span><span className="font-black">life</span></span>
-              <span className="inline-block bg-[hsl(120,100%,50%)] text-black font-mono font-bold uppercase text-[10px] tracking-[0.15em] px-2 py-1 rounded leading-none -mt-1 -ml-2">Beta</span>
-            </div>
-            <span className="text-xs text-neutral-600">Dark background</span>
-          </div>
-        </div>
-      </Section>
-
       <Section title="Brand Colors">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {BRAND_COLORS.map((c) => <Swatch key={c.name} {...c} />)}
@@ -152,7 +131,7 @@ export default function MediaPage() {
             },
             {
               label: "Two sentences",
-              copy: "PlayIRL.GG is a free, open-source event locator for Magic: The Gathering — built to be faster and simpler than the official tools. PlayIRL/life is its companion app: a no-fuss life tracker for 1–8 players, currently in closed beta on iOS and Android.",
+              copy: "PlayIRL.GG is a free, open-source event locator for Magic: The Gathering — built to be faster and simpler than the official tools. Find local events by format, distance, and date without the friction of the official Wizards locator.",
             },
             {
               label: "Tagline",
