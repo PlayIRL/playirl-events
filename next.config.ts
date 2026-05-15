@@ -9,9 +9,12 @@ import type { NextConfig } from "next";
 const securityHeaders = [
   // Block MIME sniffing so a polymorphic upload can't be reinterpreted as HTML.
   { key: "X-Content-Type-Options", value: "nosniff" },
-  // Disallow embedding the site in iframes. Defense against clickjacking.
-  // We don't intentionally embed our own UI in a frame anywhere.
-  { key: "X-Frame-Options", value: "DENY" },
+  // Allow embedding only from cardslinger.shop (and its subdomains like www.).
+  // frame-ancestors is the modern replacement for X-Frame-Options — it lets us
+  // whitelist specific origins rather than the all-or-nothing DENY/SAMEORIGIN.
+  // X-Frame-Options is omitted because browsers that support frame-ancestors
+  // ignore X-Frame-Options anyway, and legacy browsers don't support ALLOW-FROM.
+  { key: "Content-Security-Policy", value: "frame-ancestors 'self' https://cardslinger.shop https://*.cardslinger.shop" },
   // Send origin only on cross-origin navigations; full URL stays on same-origin.
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   // 2-year HSTS with subdomains + preload eligibility. Only set for HTTPS;
