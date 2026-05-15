@@ -100,7 +100,7 @@ export default function AccountMenu({
   const trigger = signedIn ? <SignedInTrigger user={user!} /> : <SignedOutTrigger />;
 
   return (
-    <div ref={wrapperRef} className="relative">
+    <div ref={wrapperRef} className="relative flex">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -223,14 +223,14 @@ function SignedInTrigger({ user }: { user: User }) {
   const showImage = !!user.image;
   return (
     <>
-      <span className="flex items-center justify-center w-9 h-9 rounded-full overflow-hidden shrink-0">
+      <span className="flex items-center justify-center w-8 h-8 rounded-full overflow-hidden shrink-0">
         {showImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={user.image!}
             alt=""
-            width={36}
-            height={36}
+            width={32}
+            height={32}
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"
             loading="lazy"
