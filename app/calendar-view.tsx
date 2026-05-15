@@ -114,7 +114,7 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
               </svg>
             </button>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white tracking-wider">{viewLabel}</span>
+              <span className="text-sm font-[family-name:var(--font-ultra)] font-black text-neutral-900 dark:text-white tracking-tight">{viewLabel}</span>
               <button
                 onClick={() => setViewStart(viewSize === 3 ? startOfDay(today) : startOfWeek(today))}
                 className="text-xs font-medium px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white transition cursor-pointer"
@@ -150,7 +150,7 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                     <span className={`text-[10px] ${isToday ? "font-bold" : "font-medium text-neutral-500 dark:text-neutral-400"}`}>
                       {day.weekday}
                     </span>
-                    <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-[family-name:var(--font-ultra)] font-bold shrink-0 ${
+                    <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-mono tabular-nums font-bold shrink-0 ${
                       isToday
                         ? "bg-white text-neutral-900 dark:bg-neutral-900 dark:text-white"
                         : "text-neutral-900 dark:text-neutral-200"
@@ -206,12 +206,12 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                               treatment as the day-card row, scaled down
                               for the calendar cell. */}
                           {status === "in_progress" ? (
-                            <div className="inline-flex items-center gap-1 leading-none text-[10px] font-medium text-sky-600 dark:text-sky-400 ring-1 ring-inset ring-sky-400/60 dark:ring-sky-400/40 rounded px-1 py-0.5 self-start whitespace-nowrap">
+                            <div className="inline-flex items-center gap-1 leading-none text-[10px] font-mono tabular-nums font-medium text-sky-600 dark:text-sky-400 ring-1 ring-inset ring-sky-400/60 dark:ring-sky-400/40 rounded px-1 py-0.5 self-start whitespace-nowrap">
                               <span aria-hidden="true" className="w-1 h-1 rounded-full bg-sky-500 dark:bg-sky-400 anim-live-pulse shrink-0" />
                               <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
                             </div>
                           ) : (
-                            <div className="text-[10px] text-neutral-500 dark:text-neutral-400 leading-none">{formatEventTime(ev.date, ev.time, ev.timezone)}</div>
+                            <div className="text-[10px] font-mono tabular-nums text-neutral-500 dark:text-neutral-400 leading-none">{formatEventTime(ev.date, ev.time, ev.timezone)}</div>
                           )}
                           {showFormatBadge(ev.format) && (
                             <div>

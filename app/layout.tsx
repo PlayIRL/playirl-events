@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Figtree } from "next/font/google";
+import { Figtree, Space_Grotesk, Space_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { cookies } from "next/headers";
 import { SITE_URL } from "@/lib/config";
@@ -24,14 +24,28 @@ export const viewport: Viewport = {
   ],
 };
 
-// One font for the whole site. Both --font-inter and --font-ultra resolve
-// to Figtree (see globals.css), so existing callsites continue to work
-// without touching every className. We load the full weight range so the
-// type system can use 400 for body, 600 for labels, 900 for display.
+// Type system:
+//   --font-figtree     → Figtree, used for headings/display (alias: --font-ultra)
+//   --font-space-grotesk → Space Grotesk, used for body copy (alias: --font-inter)
+//   --font-space-mono    → Space Mono, used for numbers/data (alias: --font-mono)
+//   --font-card-title    → Beleren-Bold, used only for MTG format badges
+// Aliases live in globals.css so existing callsites continue to resolve.
 const figtree = Figtree({
   variable: "--font-figtree",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800", "900"],
+});
+
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
+  subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 // Card-title font: the actual Beleren-Bold ttf used on MTG cards, self-
@@ -94,7 +108,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${figtree.variable} ${cardTitleFont.variable} h-full antialiased${isDark ? " dark" : ""}`}
+      className={`${figtree.variable} ${spaceGrotesk.variable} ${spaceMono.variable} ${cardTitleFont.variable} h-full antialiased${isDark ? " dark" : ""}`}
       style={{ colorScheme: isDark ? "dark" : "light" }}
       suppressHydrationWarning
     >

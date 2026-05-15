@@ -18,20 +18,25 @@
   color-scheme: dark;
 }
 
-/* Both semantic font variables resolve to Figtree. Existing components
- * use either var(--font-inter) (body) or var(--font-ultra) (display) via
- * Tailwind arbitrary values; pointing both at Figtree keeps every
- * callsite working without touching className strings. */
+/* Font system — four typefaces, semantic aliases so callsites read cleanly:
+ *   --font-ultra (headings/display)     → Figtree
+ *   --font-inter (body/copy)            → Space Grotesk
+ *   --font-mono  (numbers/data)         → Space Mono
+ *   --font-card-title (MTG format tags) → Beleren-Bold (loaded in layout.tsx)
+ * Variable names retain their historical (--font-inter / --font-ultra) form
+ * so existing classNames don't need to be rewritten. */
 :root {
-  --font-inter: var(--font-figtree);
+  --font-inter: var(--font-space-grotesk);
   --font-ultra: var(--font-figtree);
+  --font-mono: var(--font-space-mono);
 }
 
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--fg);
-  --font-sans: var(--font-figtree);
+  --font-sans: var(--font-space-grotesk);
   --font-display: var(--font-figtree);
+  --font-mono: var(--font-space-mono);
 }
 
 html {
@@ -46,7 +51,7 @@ html {
 body {
   background-color: var(--bg) !important;
   color: var(--fg);
-  font-family: var(--font-figtree), system-ui, sans-serif;
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
   overflow-x: clip;
   letter-spacing: -0.01em;
   /* Damp the blue tap-flash that iOS Safari overlays on every <a>/<button>.
@@ -74,12 +79,11 @@ button, [role="button"] {
   -webkit-touch-callout: none;
 }
 
-/* Default browser styling renders code/pre/kbd/samp/tt in monospace.
- * Force them to inherit Figtree so the site is fully unified — the
- * "this is code" affordance on those tags can be carried by bg/box
- * styling at the callsite (see /bot page). */
+/* Monospace tags use Space Mono — the same family numeric data uses, so
+ * code blocks, env vars, slash commands, and IDs all share one monospace
+ * voice with the rest of the data on the site. */
 code, pre, kbd, samp, tt {
-  font-family: inherit;
+  font-family: var(--font-space-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 /* `--font-ultra` is just an alias for Figtree (see :root above). We

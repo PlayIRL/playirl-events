@@ -37,7 +37,7 @@ export default function BotPage() {
       </Link>
 
       <Reveal delay={40}>
-        <h1 className="text-4xl md:text-5xl font-[family-name:var(--font-ultra)] font-extrabold text-neutral-900 dark:text-white tracking-wider mb-3">
+        <h1 className="text-4xl md:text-5xl font-[family-name:var(--font-ultra)] font-black text-neutral-900 dark:text-white tracking-tight mb-3">
           PlayIRL.GG Discord bot
         </h1>
       </Reveal>

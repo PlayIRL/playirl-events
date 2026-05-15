@@ -189,9 +189,10 @@ export default async function HomePage({
 
       {/* Hero header */}
       <header className="mb-6 flex flex-col items-center text-center gap-1 w-full">
-        <h1 className="text-neutral-900 dark:text-white">
+        <h1 className="text-neutral-900 dark:text-white flex items-start">
           <PlayIrlLogo className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl" />
-          <span className="sr-only">PlayIRL.GG</span>
+          <span className="inline-block bg-[hsl(120,100%,50%)] text-black font-mono font-bold uppercase text-[10px] tracking-[0.15em] px-2 py-1 rounded leading-none -mt-1 -ml-1">Beta</span>
+          <span className="sr-only">PlayIRL.GG (beta)</span>
         </h1>
         <p className="text-base leading-tight text-neutral-500 dark:text-neutral-400 mt-2">
           An independent, alternative way to find and schedule MTG events near you.
@@ -301,8 +302,9 @@ export default async function HomePage({
       )}
 
       <footer className="mt-16 pt-6 text-sm text-neutral-500 dark:text-neutral-400 text-center">
-        <div className="text-neutral-900 dark:text-white mb-4 flex justify-center">
+        <div className="text-neutral-900 dark:text-white mb-4 flex justify-center items-start">
           <PlayIrlLogo className="text-4xl" />
+          <span className="inline-block bg-[hsl(120,100%,50%)] text-black font-mono font-bold uppercase text-[10px] tracking-[0.15em] px-2 py-1 rounded leading-none -mt-1.5 -ml-1">Beta</span>
         </div>
         <p className="text-xs leading-relaxed mb-4 max-w-md mx-auto">
           An open-source, community-run alternative to the official Wizards of the Coast event locator. Not affiliated with WotC.

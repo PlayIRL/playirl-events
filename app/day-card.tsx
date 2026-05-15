@@ -122,7 +122,7 @@ export default function DayCard({
           <span className={`text-base font-extrabold tracking-tight ${isToday ? "" : "text-neutral-900 dark:text-neutral-100"}`}>
             {headingLabel || weekday}
           </span>
-          <span className={`ml-auto text-sm ${isToday ? "text-neutral-300 dark:text-neutral-600" : "text-neutral-500 dark:text-neutral-400"}`}>
+          <span className={`ml-auto text-sm font-mono tabular-nums ${isToday ? "text-neutral-300 dark:text-neutral-600" : "text-neutral-500 dark:text-neutral-400"}`}>
             {events.length === 0 ? "No events" : `${events.length} event${events.length === 1 ? "" : "s"}`}
           </span>
         </div>
@@ -158,12 +158,12 @@ export default function DayCard({
                   without the ring clipping or the text wrapping. */}
               <div className="hidden sm:block shrink-0 w-24">
                 {status === "in_progress" ? (
-                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-sky-600 dark:text-sky-400 ring-1 ring-inset ring-sky-400/60 dark:ring-sky-400/40 rounded-md px-1.5 py-0.5 whitespace-nowrap">
+                  <span className="inline-flex items-center gap-1.5 text-sm font-mono tabular-nums font-medium text-sky-600 dark:text-sky-400 ring-1 ring-inset ring-sky-400/60 dark:ring-sky-400/40 rounded-md px-1.5 py-0.5 whitespace-nowrap">
                     <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-sky-500 dark:bg-sky-400 anim-live-pulse shrink-0" />
                     <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
                   </span>
                 ) : (
-                  <span className="text-sm text-neutral-500 dark:text-neutral-400 transition-colors duration-200 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">
+                  <span className="text-sm font-mono tabular-nums text-neutral-500 dark:text-neutral-400 transition-colors duration-200 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">
                     {formatEventTime(ev.date, ev.time, ev.timezone)}
                   </span>
                 )}
@@ -193,12 +193,12 @@ export default function DayCard({
                     color shift, otherwise renders flat neutral. */}
                 <div className="block sm:hidden mb-1">
                   {status === "in_progress" ? (
-                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-sky-600 dark:text-sky-400 ring-1 ring-inset ring-sky-400/60 dark:ring-sky-400/40 rounded-md px-1.5 py-0.5 whitespace-nowrap">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-mono tabular-nums font-medium text-sky-600 dark:text-sky-400 ring-1 ring-inset ring-sky-400/60 dark:ring-sky-400/40 rounded-md px-1.5 py-0.5 whitespace-nowrap">
                       <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-sky-500 dark:bg-sky-400 anim-live-pulse shrink-0" />
                       <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
                     </span>
                   ) : (
-                    <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                    <span className="text-xs font-mono tabular-nums text-neutral-500 dark:text-neutral-400">
                       {formatEventTime(ev.date, ev.time, ev.timezone)}
                     </span>
                   )}
@@ -235,7 +235,7 @@ export default function DayCard({
                     de-saturated. Forcing those back to neutral + regular
                     weight stops the "Free" label from competing with
                     upcoming free events further up the list. */}
-                <span className={`text-sm font-[family-name:var(--font-ultra)] ${status !== "completed" && ev.cost === "Free" ? "font-bold text-emerald-600 dark:text-emerald-400" : "font-normal text-neutral-700 dark:text-neutral-300"}`}>
+                <span className={`text-sm font-mono tabular-nums ${status !== "completed" && ev.cost === "Free" ? "font-bold text-emerald-600 dark:text-emerald-400" : "font-normal text-neutral-700 dark:text-neutral-300"}`}>
                   {ev.cost === "Free" ? "Free" : ev.cost || "\u2014"}
                 </span>
               </div>
