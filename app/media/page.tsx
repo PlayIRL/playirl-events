@@ -128,25 +128,6 @@ export default function MediaPage() {
         </div>
       </Section>
 
-      <Section title="Typography">
-        <div className="space-y-4">
-          {[
-            { name: "Figtree",       role: "Logo / Display headings",  specimen: "PlayIRL.GG",          className: "font-[family-name:var(--font-ultra)] font-black text-3xl" },
-            { name: "Space Grotesk", role: "Body / UI copy",           specimen: "Find MTG events near you.", className: "font-[family-name:var(--font-inter)] text-xl" },
-            { name: "Space Mono",    role: "Numbers / Data / Badges",  specimen: "6:30 PM · $10 · 10 mi", className: "font-mono text-xl tabular-nums" },
-            { name: "Beleren Bold",  role: "MTG format labels",        specimen: "COMMANDER  DRAFT  STANDARD", className: "font-[family-name:var(--font-beleren)] text-base tracking-wider" },
-          ].map(({ name, role, specimen, className }) => (
-            <div key={name} className="rounded-lg border border-neutral-200 dark:border-white/10 bg-white dark:bg-white/[0.04] p-4 flex flex-col sm:flex-row sm:items-center gap-3">
-              <div className="sm:w-40 shrink-0">
-                <p className="text-sm font-semibold text-neutral-900 dark:text-white">{name}</p>
-                <p className="text-xs text-neutral-400 mt-0.5">{role}</p>
-              </div>
-              <div className={`${className} text-neutral-900 dark:text-white overflow-hidden text-ellipsis whitespace-nowrap`}>{specimen}</div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
       <Section title="Product Screenshots — PlayIRL.GG">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <ScreenshotSlot label="Home · event list (light mode)" />
