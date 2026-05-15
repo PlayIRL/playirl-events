@@ -568,6 +568,13 @@ export default function RadiusSelector({
           mono
         />
 
+        {/* Force the mobile wrap to break between "[N]" and "miles of" so the
+            sentence splits as "All MTG events within 10" / "miles of Philly"
+            instead of dumping "Philly" alone on line 2. Zero-height full-basis
+            flex item is the standard flex line-break trick; hidden at sm+ where
+            the sentence fits on one line. */}
+        <span aria-hidden="true" className="basis-full h-0 sm:hidden" />
+
         <span className={CONNECTOR}>miles of</span>
 
         <LocationPicker

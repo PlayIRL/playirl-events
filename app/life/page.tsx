@@ -3,13 +3,13 @@ import Reveal from "@/app/reveal";
 import { PlayIrlLogo } from "@/app/playirl-logo";
 
 export const metadata = {
-  title: "PlayIRL App — life tracker for MTG",
+  title: "PlayIRL.gg/life — life tracker for MTG",
   description:
     "A simple, no-fuss, high-quality life tracker for Magic: The Gathering — 1 to 8 players, Commander, Standard, Two-Headed Giant, and custom formats. Currently in beta.",
 };
 
 const WAITLIST_MAILTO =
-  "mailto:CardSlingerTCG@gmail.com?subject=PlayIRL%20App%20waitlist&body=Add%20me%20to%20the%20PlayIRL%20app%20beta%20waitlist.";
+  "mailto:CardSlingerTCG@gmail.com?subject=PlayIRL%20Life%20waitlist&body=Add%20me%20to%20the%20PlayIRL%20Life%20beta%20waitlist.";
 
 function Feature({ title, body }: { title: string; body: React.ReactNode }) {
   return (
@@ -20,7 +20,7 @@ function Feature({ title, body }: { title: string; body: React.ReactNode }) {
   );
 }
 
-export default function PlayPage() {
+export default function LifePage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-10 text-left">
       <Link
@@ -37,10 +37,10 @@ export default function PlayPage() {
         <h1 className="text-4xl md:text-5xl font-[family-name:var(--font-ultra)] text-neutral-900 dark:text-white mb-3 flex items-start gap-2 flex-wrap">
           <span className="leading-none whitespace-nowrap">
             <PlayIrlLogo className="text-4xl md:text-5xl" />
-            <span className="font-black tracking-tight">/play</span>
+            <span className="font-black tracking-tight">/life</span>
           </span>
           <span className="inline-block bg-[hsl(120,100%,50%)] text-black font-mono font-bold uppercase text-[10px] tracking-[0.15em] px-2 py-1 rounded leading-none mt-1">Beta</span>
-          <span className="sr-only">PlayIRL.gg/play (beta)</span>
+          <span className="sr-only">PlayIRL.gg/life (beta)</span>
         </h1>
       </Reveal>
 

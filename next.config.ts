@@ -35,6 +35,14 @@ const nextConfig: NextConfig = {
       { source: "/:path*", headers: securityHeaders },
     ];
   },
+  async redirects() {
+    return [
+      // /play was the original info-page URL for the life-tracker companion
+      // app. Renamed to /life since the app is a life-counter; keep the old
+      // path as a permanent redirect so any shared links still resolve.
+      { source: "/play", destination: "/life", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;
