@@ -125,7 +125,7 @@ export default function AboutPage() {
                 {"\u270F\uFE0F"} Create an event
               </Link>
               <a
-                href="https://discord.gg/axDSujPTfj"
+                href="https://discord.gg/nM2Ea4NSSh"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 text-sm font-medium rounded-md border border-neutral-200 dark:border-white/10 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-black/20 active:translate-y-0 transition-all duration-200"

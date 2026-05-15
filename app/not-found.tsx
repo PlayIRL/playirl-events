@@ -32,7 +32,7 @@ export default function NotFound() {
           ← Back
         </Link>
         <a
-          href="https://discord.gg/axDSujPTfj"
+          href="https://discord.gg/nM2Ea4NSSh"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-4 h-10 rounded-md border border-neutral-200 dark:border-white/15 text-sm font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-white/5 transition"
