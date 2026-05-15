@@ -225,7 +225,7 @@ function VenuePopup({ venue }: { venue: VenueGroup }) {
               </div>
               <div className="text-neutral-900 font-medium">{ev.title}</div>
               {ev.format && (
-                <span className={`inline-block mt-0.5 px-1.5 py-0.5 rounded-sm text-[9px] font-bold tracking-[0.0875em] uppercase font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                <span className={`inline-block mt-0.5 px-1.5 py-0.5 rounded-sm text-[9px] font-bold font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
                   {ev.format}
                 </span>
               )}
