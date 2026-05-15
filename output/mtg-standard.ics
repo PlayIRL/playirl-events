@@ -9,7 +9,7 @@ X-WR-CALDESC:Standard events in Philadelphia area
 BEGIN:VEVENT
 UID:wotc-10653679
 SEQUENCE:0
-DTSTAMP:20260514T201754Z
+DTSTAMP:20260515T043657Z
 DTSTART:20260515T223000Z
 DTEND:20260516T013000Z
 SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
@@ -24,7 +24,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10570211
 SEQUENCE:0
-DTSTAMP:20260514T201754Z
+DTSTAMP:20260515T043657Z
 DTSTART:20260517T213000Z
 DTEND:20260518T003000Z
 SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
@@ -44,7 +44,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10949357
 SEQUENCE:0
-DTSTAMP:20260514T201754Z
+DTSTAMP:20260515T043657Z
 DTSTART:20260517T213000Z
 DTEND:20260518T003000Z
 SUMMARY:PGS SOS Standard Store Championship @ The Philly Game Shop
@@ -61,7 +61,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518759
 SEQUENCE:0
-DTSTAMP:20260514T201754Z
+DTSTAMP:20260515T043657Z
 DTSTART:20260519T220000Z
 DTEND:20260520T010000Z
 SUMMARY:Queen & Rook Game Tavern 1v1 / Standard Showdown @ Queen and Rook 
@@ -83,7 +83,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653680
 SEQUENCE:0
-DTSTAMP:20260514T201754Z
+DTSTAMP:20260515T043657Z
 DTSTART:20260522T223000Z
 DTEND:20260523T013000Z
 SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
@@ -98,7 +98,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10570212
 SEQUENCE:0
-DTSTAMP:20260514T201754Z
+DTSTAMP:20260515T043657Z
 DTSTART:20260524T213000Z
 DTEND:20260525T003000Z
 SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
@@ -118,7 +118,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518760
 SEQUENCE:0
-DTSTAMP:20260514T201754Z
+DTSTAMP:20260515T043657Z
 DTSTART:20260526T220000Z
 DTEND:20260527T010000Z
 SUMMARY:Queen & Rook Game Tavern 1v1 / Standard Showdown @ Queen and Rook 
@@ -140,7 +140,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653681
 SEQUENCE:0
-DTSTAMP:20260514T201754Z
+DTSTAMP:20260515T043657Z
 DTSTART:20260529T223000Z
 DTEND:20260530T013000Z
 SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
@@ -153,9 +153,33 @@ DESCRIPTION:Format: Standard\nCost: $15\nStore: https://www.topdeckgameson
 URL;VALUE=URI:https://locator.wizards.com/events/10653681
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11008186
+SEQUENCE:0
+DTSTAMP:20260515T043657Z
+DTSTART:20260530T150000Z
+DTEND:20260530T180000Z
+SUMMARY:Secrets of Strixhaven - Store Championship Store Championship @ To
+ p Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Standard\nCost: $25\nStore: https://www.topdeckgameson
+ line.com/\nDetails: https://locator.wizards.com/events/11008186\n\nJoin us
+  at Top Deck Games for our Secrets of Strixhaven Store Championship!\n\nWH
+ EN: Saturday\, May 30th\, 11:00am\n\nWHERE: Top Deck Games\n1400 Haddonfie
+ ld-Berlin Rd\, Suite 100\nCherry Hill\, NJ 08003\n856-858-2700\n\nENTRY: $
+ 25\n- Players must have an active Wizards Account / MTG Companion App Acco
+ unt\n- Sign up at https://myaccounts.wizards.com/register\n\nFORMAT: Stand
+ ard\n- Best of 3\, 50 minute Swiss rounds\, with a top cut based on attend
+ ance\n\nPRIZES: Store credit & promos\n- Additional Store Credit based on 
+ attendance\n- Each participant receives an "Unearth" promo card\n- Top 8 r
+ eceived a foil "Psychic Frog" promo card\n- Winner receives a textless foi
+ l "Abhorrent Oculus" promo card\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11008186
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10570213
 SEQUENCE:0
-DTSTAMP:20260514T201754Z
+DTSTAMP:20260515T043657Z
 DTSTART:20260531T213000Z
 DTEND:20260601T003000Z
 SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
