@@ -124,7 +124,7 @@ export default function DayCard({
           </span>
           {events.length > 0 && (
             <span
-              className={`inline-flex items-center px-2 py-0.5 rounded-sm text-[10px] font-bold tabular-nums font-[family-name:var(--font-card-title)] ${
+              className={`inline-flex items-center px-2 py-0.5 rounded-sm text-[10px] font-bold font-mono tabular-nums ${
                 isToday
                   ? "bg-white/15 text-white dark:bg-neutral-900/15 dark:text-neutral-900"
                   : "bg-neutral-100 text-neutral-700 dark:bg-white/10 dark:text-neutral-300"
