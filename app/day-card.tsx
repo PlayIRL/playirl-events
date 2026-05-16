@@ -217,7 +217,7 @@ export default function DayCard({
                     Suppressed entirely for "Other" / empty formats so
                     the row doesn't carry a meaningless chip. */}
                 {status !== "completed" && showFormatBadge(ev.format) && (
-                  <span className={`inline-block px-2 py-0.5 rounded-sm text-[11px] font-bold mb-1 font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                  <span className={`inline-block px-2 py-0.5 rounded-sm text-[11px] font-bold mb-1 tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
                     {ev.format}
                   </span>
                 )}

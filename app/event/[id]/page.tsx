@@ -310,7 +310,7 @@ export default async function EventPage({
               chip got the Beleren treatment that already communicates
               "this is the format". */}
           {showFormatBadge(ev.format) && (
-            <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+            <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
               {ev.format}
             </span>
           )}

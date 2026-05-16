@@ -215,7 +215,7 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                           )}
                           {showFormatBadge(ev.format) && (
                             <div>
-                              <span className={`px-1.5 py-0.5 rounded-sm text-[11px] font-bold font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                              <span className={`px-1.5 py-0.5 rounded-sm text-[11px] font-bold tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
                                 {ev.format}
                               </span>
                             </div>
