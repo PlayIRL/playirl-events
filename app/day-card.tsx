@@ -122,9 +122,18 @@ export default function DayCard({
           <span className={`text-base font-[family-name:var(--font-ultra)] font-black tracking-tight ${isToday ? "" : "text-neutral-900 dark:text-neutral-100"}`}>
             {headingLabel || weekday}
           </span>
-          <span className={`ml-auto text-sm font-mono tabular-nums ${isToday ? "text-neutral-300 dark:text-neutral-600" : "text-neutral-500 dark:text-neutral-400"}`}>
-            {events.length === 0 ? "No events" : `${events.length} event${events.length === 1 ? "" : "s"}`}
-          </span>
+          {events.length > 0 && (
+            <span
+              aria-label={`${events.length} event${events.length === 1 ? "" : "s"}`}
+              className={`inline-flex items-center px-2 py-0.5 rounded-sm text-[10px] font-bold font-mono tabular-nums ${
+                isToday
+                  ? "bg-white/15 text-white dark:bg-neutral-900/15 dark:text-neutral-900"
+                  : "bg-neutral-100 text-neutral-700 dark:bg-white/10 dark:text-neutral-300"
+              }`}
+            >
+              {events.length}
+            </span>
+          )}
         </div>
 
         {events.map((ev, i) => {
