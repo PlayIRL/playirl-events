@@ -124,13 +124,14 @@ export default function DayCard({
           </span>
           {events.length > 0 && (
             <span
+              aria-label={`${events.length} event${events.length === 1 ? "" : "s"}`}
               className={`inline-flex items-center px-2 py-0.5 rounded-sm text-[10px] font-bold font-mono tabular-nums ${
                 isToday
                   ? "bg-white/15 text-white dark:bg-neutral-900/15 dark:text-neutral-900"
                   : "bg-neutral-100 text-neutral-700 dark:bg-white/10 dark:text-neutral-300"
               }`}
             >
-              {events.length} event{events.length === 1 ? "" : "s"}
+              {events.length}
             </span>
           )}
         </div>
