@@ -315,7 +315,7 @@ export default async function HomePage({
           <Link href="/track" className="text-neutral-900 dark:text-white underline underline-offset-2 hover:no-underline">
             PlayIRL.gg<span className="font-light">/</span><span className="font-bold">Track</span>
           </Link>
-          {" "}— a simple, no-fuss MTG life tracker, currently in closed beta.
+          {" "}— a simple, no-fuss MTG life tracker, currently in open beta.
         </p>
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs">
           <a href="/about" className="hover:text-neutral-900 dark:hover:text-white">About</a>

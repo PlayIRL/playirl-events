@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Reveal from "@/app/reveal";
 import { PlayIrlLogo } from "@/app/playirl-logo";
+import { TestFlightBadge } from "@/app/testflight-badge";
 import UserGuide from "./_components/UserGuide";
 
 export const metadata = {
@@ -141,6 +142,21 @@ export default function AboutPage() {
               >
                 {"\u2709\uFE0F"} Email us
               </a>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal>
+          <div className="bg-neutral-50 dark:bg-white/[0.04] border border-neutral-200 dark:border-white/10 rounded-md p-5 space-y-3">
+            <p className="text-base font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white">{"\uD83D\uDCF1"} Companion app {"\u2014"} PlayIRL.gg/Track</p>
+            <p className="text-sm text-neutral-700 dark:text-neutral-300">
+              A simple, no-fuss MTG life tracker for the table. Now in open beta on iOS via TestFlight {"\u2014"} {" "}
+              <Link href="/track" className="text-neutral-900 dark:text-white underline underline-offset-2 hover:no-underline">
+                learn more
+              </Link>.
+            </p>
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <TestFlightBadge />
             </div>
           </div>
         </Reveal>
