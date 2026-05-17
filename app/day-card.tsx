@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, showFormatBadge } from "@/lib/format-style";
 import { eventDisplayStatus, formatEventTime } from "@/lib/format-time";
+import { formatDistanceMiles, haversineMiles } from "@/lib/distance";
 import SaveEventButton from "./save-event-button";
 import AdminEventActions from "./admin-event-actions";
 
@@ -16,6 +17,8 @@ interface EventRow {
   location: string;
   cost: string;
   store_url: string;
+  latitude: number | null;
+  longitude: number | null;
   /** Pre-resolved image URL (uploaded photo, scraped cover, venue default, or placeholder). */
   imageUrl: string;
   /** Suggested object-fit for this image — "cover" crops photos to fill;
@@ -34,6 +37,8 @@ export default function DayCard({
   signedIn = false,
   isAdmin = false,
   savedEventIds,
+  userLat = null,
+  userLng = null,
 }: {
   date: string;
   weekday: string;
@@ -45,6 +50,11 @@ export default function DayCard({
   signedIn?: boolean;
   isAdmin?: boolean;
   savedEventIds?: Set<string>;
+  /** Viewer's "from" coordinates. Null when no user signal exists (default
+   *  Philly center) — distance is hidden in that case to avoid showing a
+   *  meaningless number. */
+  userLat?: number | null;
+  userLng?: number | null;
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   // Tracking reveal state in React (instead of mutating element.style
@@ -142,6 +152,10 @@ export default function DayCard({
             // events stay full-color but pick up a LIVE pill so users can
             // spot what's happening right now at a glance.
             const status = eventDisplayStatus(ev.date, ev.time);
+            const distanceLabel =
+              userLat != null && userLng != null && ev.latitude != null && ev.longitude != null
+                ? formatDistanceMiles(haversineMiles(userLat, userLng, ev.latitude, ev.longitude))
+                : "";
             return (
             <Link
               key={ev.id}
@@ -223,7 +237,10 @@ export default function DayCard({
                 )}
                 <p className={`${status === "completed" ? "text-sm" : "text-base sm:text-lg"} font-[family-name:var(--font-ultra)] font-bold tracking-tight text-neutral-900 dark:text-white ${status === "completed" ? "truncate" : "line-clamp-2 sm:line-clamp-none sm:truncate"}`}>{ev.title}</p>
                 {ev.location && (
-                  <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate mt-0.5">{ev.location}</p>
+                  <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate mt-0.5">
+                    {ev.location}
+                    {distanceLabel && <span className="ml-1.5">· {distanceLabel}</span>}
+                  </p>
                 )}
               </div>
               <div className="flex items-center gap-2 shrink-0">

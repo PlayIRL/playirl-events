@@ -1,13 +1,13 @@
 export const dynamic = "force-dynamic";
 
+import { headers } from "next/headers";
 import { getActiveEvents, getFormats, getSetting, setSetting } from "@/lib/events";
 import { getSavedEventIds } from "@/lib/event-saves";
 import { getPreferences, setPreferences } from "@/lib/user-preferences";
 import { getCurrentUser } from "@/lib/session";
 import { resolveEventImage } from "@/lib/event-image";
 import { dateStrInTz } from "@/lib/format-time";
-import { getLabelForCoords } from "@/lib/geocode";
-import { config } from "@/lib/config";
+import { DEFAULT_LOCATION_LABEL, resolveUserLocation } from "@/lib/user-location";
 import DateJumper from "./date-jumper";
 import RadiusSelector from "./radius-selector";
 import CalendarView from "./calendar-view";
@@ -67,35 +67,30 @@ export default async function HomePage({
   const currentFormat = params.format ?? defaultFormat;
   const currentOffset = params.offset ? Math.max(0, parseInt(params.offset, 10)) : 0;
 
-  // Location resolution: URL params > user_preferences > config.location default.
-  // Default label is "Philly" — the brand-friendly short form rather than the
-  // formal "Philadelphia, PA" so the chip stays compact on small viewports.
-  const DEFAULT_LOCATION_LABEL = "Philly";
-  const urlLat = params.lat ? parseFloat(params.lat) : NaN;
-  const urlLng = params.lng ? parseFloat(params.lng) : NaN;
-  const hasUrlLocation = Number.isFinite(urlLat) && Number.isFinite(urlLng) && urlLat >= -90 && urlLat <= 90 && urlLng >= -180 && urlLng <= 180;
-  const hasPrefsLocation = prefs?.location_lat != null && prefs?.location_lng != null;
-  const currentLocationLat = hasUrlLocation ? urlLat : (hasPrefsLocation ? prefs!.location_lat! : config.location.lat);
-  const currentLocationLng = hasUrlLocation ? urlLng : (hasPrefsLocation ? prefs!.location_lng! : config.location.lng);
-  // Label resolution: explicit `loc` param wins. Otherwise, when the URL
-  // carries lat/lng but no label, reverse-geocode (cached by ~1km grid) so
-  // the chip reflects the actual filter location instead of stale "Philly".
-  // Falls back to the default label if Nominatim is unavailable.
-  let currentLocationLabel: string;
-  if (hasUrlLocation) {
-    const explicit = params.loc?.trim();
-    if (explicit) {
-      currentLocationLabel = explicit;
-    } else {
-      const resolved = await getLabelForCoords(urlLat, urlLng);
-      currentLocationLabel = resolved ?? DEFAULT_LOCATION_LABEL;
-    }
-  } else if (hasPrefsLocation && prefs!.location_label) {
-    currentLocationLabel = prefs!.location_label;
-  } else {
-    currentLocationLabel = DEFAULT_LOCATION_LABEL;
-  }
-  const isLocationCustom = hasUrlLocation || hasPrefsLocation;
+  // Location resolution: URL > prefs > IP geolocation > Philly default.
+  // See lib/user-location.ts for the full hierarchy + flag semantics.
+  // `isFromUser` covers URL/prefs/IP (drives distance display); `isCustom`
+  // is URL/prefs only (drives the LocationBanner nudge).
+  const resolvedLocation = await resolveUserLocation({
+    urlLat: params.lat,
+    urlLng: params.lng,
+    urlLabel: params.loc,
+    prefs,
+    requestHeaders: await headers(),
+  });
+  const currentLocationLat = resolvedLocation.lat;
+  const currentLocationLng = resolvedLocation.lng;
+  const currentLocationLabel = resolvedLocation.label;
+  const isLocationCustom = resolvedLocation.isCustom;
+  const hasUserLocation = resolvedLocation.isFromUser;
+  // Persistence below keys on whether the *URL* carried valid coords (vs.
+  // resolved location, which may have fallen through to prefs/IP/default).
+  // Same range checks the resolver applies — keep these in sync.
+  const _urlLat = params.lat ? parseFloat(params.lat) : NaN;
+  const _urlLng = params.lng ? parseFloat(params.lng) : NaN;
+  const hasUrlLocation =
+    Number.isFinite(_urlLat) && Number.isFinite(_urlLng) &&
+    _urlLat >= -90 && _urlLat <= 90 && _urlLng >= -180 && _urlLng <= 180;
 
   // Persist any filter change so the next visit restores it.
   if (signedIn && user) {
@@ -229,7 +224,11 @@ export default async function HomePage({
             paddingRight: "1rem",
           }}
         >
-          <CalendarView events={events} />
+          <CalendarView
+            events={events}
+            userLat={hasUserLocation ? currentLocationLat : null}
+            userLng={hasUserLocation ? currentLocationLng : null}
+          />
         </div>
       ) : currentView === "map" ? (
         <div
@@ -276,6 +275,8 @@ export default async function HomePage({
                     signedIn={signedIn}
                     isAdmin={isAdmin}
                     savedEventIds={savedEventIds}
+                    userLat={hasUserLocation ? currentLocationLat : null}
+                    userLng={hasUserLocation ? currentLocationLng : null}
                   />
                 );
               })}

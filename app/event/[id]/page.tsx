@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { getEvent } from "@/lib/events";
 import { getRsvpSummary, isPastEvent } from "@/lib/event-rsvps";
 import { findInviteByToken, redeemInvite } from "@/lib/event-invites";
+import { getPreferences } from "@/lib/user-preferences";
 import { getCurrentUser } from "@/lib/session";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -9,6 +11,8 @@ import { eventDisplayStatus, formatEventTimeRange } from "@/lib/format-time";
 import { resolveEventImage, hasRealEventImage } from "@/lib/event-image";
 import { venueSlug } from "@/lib/venues";
 import { SITE_URL } from "@/lib/config";
+import { formatDistanceMiles, haversineMiles } from "@/lib/distance";
+import { resolveUserLocation } from "@/lib/user-location";
 import {
   FORMAT_BADGE,
   FORMAT_BADGE_DEFAULT,
@@ -18,6 +22,7 @@ import {
 import ShareButton from "./share-button";
 import RsvpButton from "./rsvp-button";
 import HostActions from "./host-actions";
+import SetLocationButton from "./set-location-button";
 import WaitlistPromotedBanner from "./waitlist-promoted-banner";
 import Reveal from "@/app/reveal";
 
@@ -129,7 +134,11 @@ export default async function EventPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ token?: string }>;
+  // `lat`/`lng`/`loc` mirror the homepage's location params so a viewer
+  // following a deep link with explicit coords still sees the "X mi away"
+  // row — and the homepage → detail navigation stays self-consistent if
+  // those params are forwarded.
+  searchParams: Promise<{ token?: string; lat?: string; lng?: string; loc?: string }>;
 }) {
   const { id } = await params;
   const sp = await searchParams;
@@ -193,6 +202,25 @@ export default async function EventPage({
     mapEmbedSrc = `https://www.google.com/maps/embed/v1/place?key=${googleEmbedKey}&q=${encodeURIComponent(q)}&zoom=15`;
   }
   const showInlineMap = !heroIsMap && Boolean(mapEmbedSrc);
+
+  // Viewer distance from the event. Mirrors the homepage resolution (URL >
+  // prefs > IP > default) but with no URL params on this route, so it
+  // effectively resolves to prefs > IP > default. Distance renders only when
+  // both the viewer signal exists (isFromUser) and the event has coords.
+  const prefs = signedIn && viewer ? getPreferences(viewer.id) : null;
+  const viewerLocation = await resolveUserLocation({
+    urlLat: sp.lat,
+    urlLng: sp.lng,
+    urlLabel: sp.loc,
+    prefs,
+    requestHeaders: await headers(),
+  });
+  const distanceLabel =
+    viewerLocation.isFromUser && ev.latitude != null && ev.longitude != null
+      ? formatDistanceMiles(
+          haversineMiles(viewerLocation.lat, viewerLocation.lng, ev.latitude, ev.longitude),
+        )
+      : "";
 
   // RSVP + host state. Cancellation locks RSVP changes (banner takes over
   // the action zone). Hosts get extra controls — cancel, manage invites.
@@ -304,7 +332,7 @@ export default async function EventPage({
             element. Border-b separates the header from the photo;
             rounded-t-md sits on the header now (used to be on the
             hero) since the header is the top-most child of the card. */}
-        <div className="p-6 pb-4 space-y-3 rounded-t-md border-b border-neutral-100 dark:border-white/8">
+        <div className="p-6 pb-4 space-y-1 rounded-t-md border-b border-neutral-100 dark:border-white/8">
           {/* Format chip + title stand on their own — the "Format" /
               "Event" eyebrow labels were redundant scaffolding once the
               chip got the Beleren treatment that already communicates
@@ -315,6 +343,38 @@ export default async function EventPage({
             </span>
           )}
           <h1 className="text-3xl sm:text-4xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white break-words leading-tight tracking-[0.01em]">{ev.title}</h1>
+          {ev.location && (
+            <p className="text-base text-neutral-600 dark:text-neutral-400 break-words flex items-center gap-2 flex-wrap">
+              <Link
+                href={`/venue/${encodeURIComponent(venueSlug(ev.location))}`}
+                className="font-medium text-neutral-800 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white hover:underline"
+              >
+                {ev.location}
+              </Link>
+              {/* Distance trails the venue when the viewer's location is
+                  known (URL/prefs/IP); otherwise a small "Set location"
+                  CTA takes the same slot so users can opt in without
+                  bouncing back to the homepage. Only one or the other —
+                  never both. Events without coords can't render either. */}
+              {distanceLabel ? (
+                <span className="text-sm">· {distanceLabel}</span>
+              ) : ev.latitude != null && ev.longitude != null ? (
+                <SetLocationButton />
+              ) : null}
+              {ev.store_url && (
+                <a
+                  href={ev.store_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-0.5 text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 hover:underline"
+                  title="Visit store website"
+                >
+                  website
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                </a>
+              )}
+            </p>
+          )}
         </div>
 
         {(() => {
@@ -370,38 +430,12 @@ export default async function EventPage({
         <Reveal delay={120}>
           <div className="px-6 pb-2 border-t border-neutral-100 dark:border-white/8">
             <dl>
-              {/* Host row — primary link is the internal venue page (lists
-                  all upcoming events here). The external store website
-                  appears as a secondary link icon when present. Falls
-                  back to the plain DetailRow when there's no location. */}
-              {ev.location ? (
-                <div className="py-3 border-b border-neutral-100 dark:border-white/8 last:border-0">
-                  <dt className="text-xs text-neutral-500 dark:text-neutral-400 mb-0.5">Host</dt>
-                  <dd className="text-sm font-medium text-neutral-900 dark:text-neutral-200 break-words flex items-center gap-2 flex-wrap">
-                    <Link
-                      href={`/venue/${encodeURIComponent(venueSlug(ev.location))}`}
-                      className="text-neutral-900 dark:text-white hover:underline"
-                    >
-                      {ev.location}
-                    </Link>
-                    {ev.store_url && (
-                      <a
-                        href={ev.store_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-0.5 text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 hover:underline"
-                        title="Visit store website"
-                      >
-                        website
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                      </a>
-                    )}
-                  </dd>
-                </div>
-              ) : null}
               <DetailRow label="Date" value={formatDate(ev.date)} mono />
               <DetailRow label="Time" value={formatEventTimeRange(ev.date, ev.time, ev.timezone)} mono />
               <DetailRow label="Cost" value={ev.cost || "Not listed"} mono />
+              {distanceLabel && (
+                <DetailRow label="Distance" value={distanceLabel} mono />
+              )}
               {ev.address && (
                 <div className="py-3 border-b border-neutral-100 dark:border-white/8 last:border-0">
                   <dt className="text-xs text-neutral-500 dark:text-neutral-400 mb-0.5">Address</dt>
