@@ -319,7 +319,7 @@ export default async function EventPage({
         </div>
       )}
 
-      <div className="bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/8 rounded-md anim-fade-in-up" style={{ "--delay": "60ms" } as React.CSSProperties}>
+      <div className="anim-fade-in-up" style={{ "--delay": "60ms" } as React.CSSProperties}>
         {/* Hero image — uploaded photo, scraped cover, venue default, or placeholder. */}
         {/* When the hero is a real photo or map (`object-cover`), no padding
             and no visible bg — the image fills edge-to-edge. When it's a
@@ -329,10 +329,8 @@ export default async function EventPage({
             white-on-near-black halo. */}
         {/* Header — title + format pill above the hero photo so the
             event identity reads first and the visual is a supporting
-            element. Border-b separates the header from the photo;
-            rounded-t-md sits on the header now (used to be on the
-            hero) since the header is the top-most child of the card. */}
-        <div className="p-6 pb-4 space-y-1 rounded-t-md border-b border-neutral-100 dark:border-white/8">
+            element. */}
+        <div className="pb-4 space-y-1">
           {/* Format chip + title stand on their own — the "Format" /
               "Event" eyebrow labels were redundant scaffolding once the
               chip got the Beleren treatment that already communicates
@@ -352,15 +350,11 @@ export default async function EventPage({
                 {ev.location}
               </Link>
               {/* Distance trails the venue when the viewer's location is
-                  known (URL/prefs/IP); otherwise a small "Set location"
-                  CTA takes the same slot so users can opt in without
-                  bouncing back to the homepage. Only one or the other —
-                  never both. Events without coords can't render either. */}
-              {distanceLabel ? (
+                  known (URL/prefs/IP). The "Set location" CTA renders on
+                  its own line below — see <SetLocationButton /> below. */}
+              {distanceLabel && (
                 <span className="text-sm">· {distanceLabel}</span>
-              ) : ev.latitude != null && ev.longitude != null ? (
-                <SetLocationButton />
-              ) : null}
+              )}
               {ev.store_url && (
                 <a
                   href={ev.store_url}
@@ -375,6 +369,9 @@ export default async function EventPage({
               )}
             </p>
           )}
+          {!distanceLabel && ev.latitude != null && ev.longitude != null && (
+            <SetLocationButton />
+          )}
         </div>
 
         {(() => {
@@ -387,7 +384,7 @@ export default async function EventPage({
           // top-corner rounding of the card now. The image sits flush
           // edge-to-edge between the header and the details table.
           const heroInner = (
-            <div className={`relative aspect-video overflow-hidden ${heroIsPhoto ? "" : "bg-neutral-50"}`}>
+            <div className={`relative aspect-video overflow-hidden rounded-md mt-4 ${heroIsPhoto ? "" : "bg-neutral-50 dark:bg-white/5"}`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={hero.url}
@@ -419,16 +416,16 @@ export default async function EventPage({
             Host/Date/Time/Cost rows. */}
         {(ev.notes || ev.description) && (
           <Reveal>
-            <div className="px-6 py-4">
+            <div className="py-4">
               <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">Description</p>
-              <p className="text-sm text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap break-words">{ev.notes || ev.description}</p>
+              <p className="text-sm font-medium text-neutral-900 dark:text-neutral-200 whitespace-pre-wrap break-words">{ev.notes || ev.description}</p>
             </div>
           </Reveal>
         )}
 
         {/* Details table */}
         <Reveal delay={120}>
-          <div className="px-6 pb-2 border-t border-neutral-100 dark:border-white/8">
+          <div className="pb-2 border-t border-neutral-100 dark:border-white/8">
             <dl>
               <DetailRow label="Date" value={formatDate(ev.date)} mono />
               <DetailRow label="Time" value={formatEventTimeRange(ev.date, ev.time, ev.timezone)} mono />
@@ -473,7 +470,7 @@ export default async function EventPage({
 
         {/* Meta footer */}
         <Reveal>
-          <div className="bg-neutral-50 dark:bg-neutral-950 rounded-b-md px-6 py-3 text-xs text-neutral-400 dark:text-neutral-600 flex justify-between">
+          <div className="py-3 text-xs text-neutral-400 dark:text-neutral-600 flex justify-between">
             <span>ID: {ev.id}</span>
             <span>Added {ev.added_date} · Updated {ev.updated_date}</span>
           </div>
