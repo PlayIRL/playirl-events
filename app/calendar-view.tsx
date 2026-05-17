@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, showFormatBadge } from "@/lib/format-style";
 import { dateStrInTz, eventDisplayStatus, formatEventTime } from "@/lib/format-time";
+import { formatDistanceMiles, haversineMiles } from "@/lib/distance";
 import { useStickySentinel } from "@/lib/use-sticky-sentinel";
 
 interface EventRow {
@@ -15,6 +16,8 @@ interface EventRow {
   location: string;
   cost: string;
   store_url: string;
+  latitude: number | null;
+  longitude: number | null;
 }
 
 function startOfWeek(date: Date): Date {
@@ -46,7 +49,17 @@ function isoDate(date: Date): string {
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export default function CalendarView({ events }: { events: EventRow[] }) {
+export default function CalendarView({
+  events,
+  userLat = null,
+  userLng = null,
+}: {
+  events: EventRow[];
+  /** Viewer's "from" coordinates. Null when no user signal is available
+   *  (default Philly center) — distance is hidden so the cell stays compact. */
+  userLat?: number | null;
+  userLng?: number | null;
+}) {
   const today = new Date();
   const todayStr = isoDate(today);
   // Mobile shows 3 days at a time; desktop shows the full 7-day week. Initial
@@ -193,11 +206,15 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                       // = LIVE indicator, upcoming = default. See
                       // lib/format-time.ts:eventDisplayStatus.
                       const status = eventDisplayStatus(ev.date, ev.time);
+                      const distanceLabel =
+                        userLat != null && userLng != null && ev.latitude != null && ev.longitude != null
+                          ? formatDistanceMiles(haversineMiles(userLat, userLng, ev.latitude, ev.longitude))
+                          : "";
                       return (
                       <Link
                         key={ev.id}
                         href={`/event/${encodeURIComponent(ev.id)}`}
-                        title={`${ev.title}${ev.location ? ` · ${ev.location}` : ""}${ev.cost ? ` · ${ev.cost}` : ""} · ${formatEventTime(ev.date, ev.time, ev.timezone)}`}
+                        title={`${ev.title}${ev.location ? ` · ${ev.location}` : ""}${distanceLabel ? ` · ${distanceLabel}` : ""}${ev.cost ? ` · ${ev.cost}` : ""} · ${formatEventTime(ev.date, ev.time, ev.timezone)}`}
                         className={`group block rounded-md p-2 transition-all duration-150 hover:-translate-y-px hover:shadow-sm ${status === "completed" ? "opacity-50 saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.06]" : "hover:bg-black/[0.04] dark:hover:bg-white/10"}`}
                       >
                         <div className="flex flex-col gap-px">
@@ -226,6 +243,11 @@ export default function CalendarView({ events }: { events: EventRow[] }) {
                         </div>
                         {ev.location && (
                           <div className="text-[10px] text-neutral-500 dark:text-neutral-400 truncate mt-0.5">{ev.location}</div>
+                        )}
+                        {distanceLabel && (
+                          <div className="text-[10px] text-neutral-500 dark:text-neutral-400 truncate leading-tight">
+                            {distanceLabel}
+                          </div>
                         )}
                       </Link>
                       );
