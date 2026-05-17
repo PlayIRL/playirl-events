@@ -170,7 +170,7 @@ export default function DayCard({
                   ? ({ animationDelay: `${80 + i * 45}ms`, "--row-opacity": status === "completed" ? 0.5 : 1 } as React.CSSProperties)
                   : ({ opacity: 0, "--row-opacity": status === "completed" ? 0.5 : 1 } as React.CSSProperties)
               }
-              className={`${revealed ? "anim-row-in" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 ${status === "completed" ? "py-2 sm:py-2.5 saturate-50" : "py-4 sm:py-5"} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
+              className={`${revealed ? "anim-row-in" : ""} ${status === "in_progress" ? "anim-live-row" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 ${status === "completed" ? "py-2 sm:py-2.5 saturate-50" : "py-4 sm:py-5"} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
             >
               {/* Desktop: time as a fixed left column. When the event is
                   in progress the time itself shifts to a high-energy sky
@@ -181,7 +181,7 @@ export default function DayCard({
                   without the ring clipping or the text wrapping. */}
               <div className="hidden sm:block shrink-0 w-24">
                 {status === "in_progress" ? (
-                  <span className="inline-flex items-center gap-1.5 text-sm font-mono tabular-nums font-medium text-sky-600 dark:text-sky-400 ring-1 ring-inset ring-sky-400/60 dark:ring-sky-400/40 rounded-md px-1.5 py-0.5 whitespace-nowrap">
+                  <span className="inline-flex items-center gap-1.5 text-sm font-mono tabular-nums font-medium text-sky-600 dark:text-sky-400 anim-live-ring rounded-md px-1.5 py-0.5 whitespace-nowrap">
                     <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-sky-500 dark:bg-sky-400 anim-live-pulse shrink-0" />
                     <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
                   </span>
@@ -216,7 +216,7 @@ export default function DayCard({
                     color shift, otherwise renders flat neutral. */}
                 <div className="block sm:hidden mb-1">
                   {status === "in_progress" ? (
-                    <span className="inline-flex items-center gap-1.5 text-xs font-mono tabular-nums font-medium text-sky-600 dark:text-sky-400 ring-1 ring-inset ring-sky-400/60 dark:ring-sky-400/40 rounded-md px-1.5 py-0.5 whitespace-nowrap">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-mono tabular-nums font-medium text-sky-600 dark:text-sky-400 anim-live-ring rounded-md px-1.5 py-0.5 whitespace-nowrap">
                       <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-sky-500 dark:bg-sky-400 anim-live-pulse shrink-0" />
                       <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
                     </span>

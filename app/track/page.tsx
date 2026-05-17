@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Reveal from "@/app/reveal";
 import { PlayIrlLogo } from "@/app/playirl-logo";
+import { TestFlightBadge } from "@/app/testflight-badge";
 
 export const metadata = {
   title: "PlayIRL.gg/Track — life tracker for MTG",
@@ -49,7 +50,7 @@ export default function LifePage() {
           A simple, no-fuss, high-quality life tracker for Magic: The Gathering — built for the table, not the menu. Drop it on the table, start a game in two taps, focus on the cards.
         </p>
         <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-6 leading-relaxed">
-          Not downloadable yet — we&apos;re polishing a closed beta on iOS and Android. Join the waitlist below and we&apos;ll email when TestFlight and Play Store invites open up.
+          Now in open beta on iOS via TestFlight — install with the badge below. Android is still in development; join the waitlist and we&apos;ll email when Play Store invites open up.
         </p>
       </Reveal>
 
@@ -57,9 +58,10 @@ export default function LifePage() {
         <div className="bg-neutral-50 dark:bg-white/[0.04] border border-neutral-200 dark:border-white/10 rounded-md p-5 space-y-3 mb-10">
           <p className="text-base font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white">Want in?</p>
           <p className="text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed">
-            We&apos;re inviting testers in batches as TestFlight and Play Store slots open. Drop us a note and we&apos;ll add you to the next round.
+            iOS is open via TestFlight — tap the badge to install. Android is still in development; the waitlist gets first crack at Play Store invites when they open.
           </p>
           <div className="flex flex-wrap items-center gap-2 pt-1">
+            <TestFlightBadge />
             <a
               href={WAITLIST_MAILTO}
               className="inline-flex items-center gap-2 px-4 py-2 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-100 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/20 active:translate-y-0 transition-all duration-200"
