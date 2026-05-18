@@ -7,46 +7,9 @@ NAME:MTG Standard — Philadelphia
 X-WR-CALNAME:MTG Standard — Philadelphia
 X-WR-CALDESC:Standard events in Philadelphia area
 BEGIN:VEVENT
-UID:wotc-10570211
-SEQUENCE:0
-DTSTAMP:20260517T162828Z
-DTSTART:20260517T213000Z
-DTEND:20260518T003000Z
-SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
-LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
- Pennsylvania\, 19147
-DESCRIPTION:Format: Standard\nCost: $10\nStore: http://phillygameshop.com/
- \nDetails: https://locator.wizards.com/events/10570211\n\nWelcome to new a
- nd improved Sunday Standard Showdown! Sundays at 5:30\, $10 entry\, and th
- e event will be three rounds for 11 or less participants\, four rounds for
-  12+. Since this is an official magic event\, no proxied cards and only st
- andard format legal cards will be allowed. All levels are welcome\, but ma
- ny of our players run competitive Tier 1 and Tier 2 decks. Please arrive p
- romptly at 5:30\, as lateness may result in an automatic round one loss!\n
- Source: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/events/10570211
-END:VEVENT
-BEGIN:VEVENT
-UID:wotc-10949357
-SEQUENCE:0
-DTSTAMP:20260517T162828Z
-DTSTART:20260517T213000Z
-DTEND:20260518T003000Z
-SUMMARY:PGS SOS Standard Store Championship @ The Philly Game Shop
-LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
- Pennsylvania\, 19147
-DESCRIPTION:Format: Standard\nCost: $10\nStore: http://phillygameshop.com/
- \nDetails: https://locator.wizards.com/events/10949357\n\nJoin us at the P
- hilly Game Shop for our Standard Store Championship! Participants receive 
- the Unearth promo card\, Top 8 players receive the Psychic Frog promo card
- \, and the winner of the event receives the Abhorrent Oculus promo card.\n
- Source: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/events/10949357
-END:VEVENT
-BEGIN:VEVENT
 UID:wotc-10518759
 SEQUENCE:0
-DTSTAMP:20260517T162828Z
+DTSTAMP:20260518T134522Z
 DTSTART:20260519T220000Z
 DTEND:20260520T010000Z
 SUMMARY:Queen & Rook Game Tavern 1v1 / Standard Showdown @ Queen and Rook 
@@ -68,7 +31,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653680
 SEQUENCE:0
-DTSTAMP:20260517T162828Z
+DTSTAMP:20260518T134522Z
 DTSTART:20260522T223000Z
 DTEND:20260523T013000Z
 SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
@@ -83,7 +46,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10570212
 SEQUENCE:0
-DTSTAMP:20260517T162828Z
+DTSTAMP:20260518T134522Z
 DTSTART:20260524T213000Z
 DTEND:20260525T003000Z
 SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
@@ -103,7 +66,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518760
 SEQUENCE:0
-DTSTAMP:20260517T162828Z
+DTSTAMP:20260518T134522Z
 DTSTART:20260526T220000Z
 DTEND:20260527T010000Z
 SUMMARY:Queen & Rook Game Tavern 1v1 / Standard Showdown @ Queen and Rook 
@@ -125,7 +88,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653681
 SEQUENCE:0
-DTSTAMP:20260517T162828Z
+DTSTAMP:20260518T134522Z
 DTSTART:20260529T223000Z
 DTEND:20260530T013000Z
 SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
@@ -140,7 +103,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11008186
 SEQUENCE:0
-DTSTAMP:20260517T162828Z
+DTSTAMP:20260518T134522Z
 DTSTART:20260530T150000Z
 DTEND:20260530T180000Z
 SUMMARY:Secrets of Strixhaven - Store Championship Store Championship @ To
@@ -164,7 +127,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10570213
 SEQUENCE:0
-DTSTAMP:20260517T162828Z
+DTSTAMP:20260518T134522Z
 DTSTART:20260531T213000Z
 DTEND:20260601T003000Z
 SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
