@@ -7,31 +7,9 @@ NAME:MTG Standard — Philadelphia
 X-WR-CALNAME:MTG Standard — Philadelphia
 X-WR-CALDESC:Standard events in Philadelphia area
 BEGIN:VEVENT
-UID:wotc-10518759
-SEQUENCE:0
-DTSTAMP:20260519T123859Z
-DTSTART:20260519T220000Z
-DTEND:20260520T010000Z
-SUMMARY:Queen & Rook Game Tavern 1v1 / Standard Showdown @ Queen and Rook 
- Game Cafe
-LOCATION:Queen and Rook Game Cafe\, 117A South Street\, Philadelphia\, Pen
- nsylvania\, 19106
-DESCRIPTION:Format: Standard\nCost: Free\nStore: https://queenandrookcafe.
- com/\nDetails: https://locator.wizards.com/events/10518759\n\nJoin us ever
- y Tuesday for what is growing into one of the strongest gamedays in Philad
- elphia! We consistently pull 8+ players each Tuesday for a variety of 1v1 
- formats including Standard\, Pauper\, & Draft!\n\nNo formal structure (unl
- ess everyone wants a bracket to be ran in which case I'm happy to admin on
- e)\, sit down & play with your new decks or test out someone elses!\n\nJoi
- n us on our Discord for more details & to get connected to the broader Phi
- ladelphia Gaming Community of over 1000 players: http://bit.ly/QNRDC\nSour
- ce: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/events/10518759
-END:VEVENT
-BEGIN:VEVENT
 UID:wotc-10653680
 SEQUENCE:0
-DTSTAMP:20260519T123859Z
+DTSTAMP:20260520T122513Z
 DTSTART:20260522T223000Z
 DTEND:20260523T013000Z
 SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
@@ -46,7 +24,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10570212
 SEQUENCE:0
-DTSTAMP:20260519T123859Z
+DTSTAMP:20260520T122513Z
 DTSTART:20260524T213000Z
 DTEND:20260525T003000Z
 SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
@@ -66,7 +44,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518760
 SEQUENCE:0
-DTSTAMP:20260519T123859Z
+DTSTAMP:20260520T122513Z
 DTSTART:20260526T220000Z
 DTEND:20260527T010000Z
 SUMMARY:Queen & Rook Game Tavern 1v1 / Standard Showdown @ Queen and Rook 
@@ -88,7 +66,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653681
 SEQUENCE:0
-DTSTAMP:20260519T123859Z
+DTSTAMP:20260520T122513Z
 DTSTART:20260529T223000Z
 DTEND:20260530T013000Z
 SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
@@ -103,7 +81,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11008186
 SEQUENCE:0
-DTSTAMP:20260519T123859Z
+DTSTAMP:20260520T122513Z
 DTSTART:20260530T150000Z
 DTEND:20260530T180000Z
 SUMMARY:Secrets of Strixhaven - Store Championship Store Championship @ To
@@ -127,7 +105,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10570213
 SEQUENCE:0
-DTSTAMP:20260519T123859Z
+DTSTAMP:20260520T122513Z
 DTSTART:20260531T213000Z
 DTEND:20260601T003000Z
 SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
