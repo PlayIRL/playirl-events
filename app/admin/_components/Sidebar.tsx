@@ -11,6 +11,7 @@ const NAV = [
   { href: "/admin/flags", label: "Feature flags" },
   { href: "/admin/config", label: "Site config" },
   { href: "/admin/scrapers", label: "Scrapers" },
+  { href: "/admin/discord-servers", label: "Discord servers" },
 ];
 
 export default function Sidebar({ pendingCount = 0 }: { pendingCount?: number }) {
