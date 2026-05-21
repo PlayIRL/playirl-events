@@ -137,26 +137,33 @@ export default function VenuesTable({ venues }: { venues: VenueRowData[] }) {
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap items-center gap-3">
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search by name or address…"
-          className="flex-1 min-w-[200px] px-3 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20"
-        />
-        <select
-          value={filter}
-          onChange={(e) => setFilter(e.target.value as Filter)}
-          className="px-3 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
-        >
-          {FILTERS.map((f) => (
-            <option key={f} value={f}>
-              {f === "all" ? "All venues" : f}
-            </option>
-          ))}
-        </select>
-        <span className="text-xs text-neutral-500 dark:text-neutral-400 ml-auto">
+      {/* Filter bar — two-row layout on narrow viewports, single-row on wide.
+       * The inner flex group (input + select) takes whatever width is left
+       * after the count chip. shrink-0 on the count + select makes sure the
+       * input is the only flexible element, so it shrinks to fit instead of
+       * pushing the count off-screen. */}
+      <div className="flex flex-wrap items-center gap-3 justify-between">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search by name or address…"
+            className="flex-1 min-w-0 px-3 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20"
+          />
+          <select
+            value={filter}
+            onChange={(e) => setFilter(e.target.value as Filter)}
+            className="shrink-0 px-3 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
+          >
+            {FILTERS.map((f) => (
+              <option key={f} value={f}>
+                {f === "all" ? "All venues" : f}
+              </option>
+            ))}
+          </select>
+        </div>
+        <span className="shrink-0 whitespace-nowrap text-xs text-neutral-500 dark:text-neutral-400">
           {filtered.length === venues.length
             ? `${venues.length.toLocaleString()} venues`
             : `${filtered.length.toLocaleString()} of ${venues.length.toLocaleString()}`}
