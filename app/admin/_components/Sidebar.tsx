@@ -14,7 +14,13 @@ const NAV = [
   { href: "/admin/discord-servers", label: "Discord servers" },
 ];
 
-export default function Sidebar({ pendingCount = 0 }: { pendingCount?: number }) {
+export default function Sidebar({
+  pendingCount = 0,
+  unseenActivity = 0,
+}: {
+  pendingCount?: number;
+  unseenActivity?: number;
+}) {
   const pathname = usePathname();
   return (
     <nav className="flex flex-col gap-1 p-3" aria-label="Admin">
@@ -25,7 +31,18 @@ export default function Sidebar({ pendingCount = 0 }: { pendingCount?: number })
             : item.href === "/admin/events"
               ? pathname === "/admin/events" || (pathname.startsWith("/admin/events/") && !pathname.startsWith("/admin/events/pending"))
               : pathname.startsWith(item.href);
-        const showBadge = item.href === "/admin/events/pending" && pendingCount > 0;
+        // Two badge slots:
+        //   - Pending review: count of pending events (admin-action queue)
+        //   - Dashboard: count of unseen admin activity (signups, connects, ...)
+        // Each link can show at most one badge; the active/inactive coloring
+        // matches whichever slot fires.
+        const badgeCount =
+          item.href === "/admin/events/pending" && pendingCount > 0
+            ? pendingCount
+            : item.href === "/admin" && unseenActivity > 0
+              ? unseenActivity
+              : 0;
+        const badgeIsActivity = item.href === "/admin" && unseenActivity > 0;
         return (
           <Link
             key={item.href}
@@ -37,15 +54,17 @@ export default function Sidebar({ pendingCount = 0 }: { pendingCount?: number })
             }`}
           >
             <span>{item.label}</span>
-            {showBadge && (
+            {badgeCount > 0 && (
               <span
                 className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${
                   active
                     ? "bg-white/20 text-current"
-                    : "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+                    : badgeIsActivity
+                      ? "bg-emerald-600 text-white dark:bg-emerald-500"
+                      : "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
                 }`}
               >
-                {pendingCount}
+                {badgeCount > 9 ? "9+" : badgeCount}
               </span>
             )}
           </Link>

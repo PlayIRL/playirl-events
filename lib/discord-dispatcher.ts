@@ -54,6 +54,7 @@ import {
 } from "@/lib/discord-events-tab-subs";
 import { getDb } from "@/lib/db";
 import type { DiscordEventsTabSub } from "@/lib/discord-events-tab-subs";
+import { drainAdminNotifications } from "@/lib/discord-admin-push";
 
 const REMINDER_WINDOW_MINUTES = 5;
 // Inter-message gap for CROSS-channel fan-out (reminders + retry queue).
@@ -544,6 +545,21 @@ export async function dispatchAllSubs(
   // The (event_id, guild_id) ledger guarantees no double-posts even if two
   // subs overlap in filter+guild.
   await dispatchEventsTabSubsForAll(now, summary);
+
+  // Admin notification drain: catch up any rows that the fire-and-forget
+  // push missed (Discord transient 5xx, race conditions during boot, etc.).
+  // pushed_to_discord_at is the idempotency ledger; this is a no-op when
+  // every notification was already pushed on first try.
+  try {
+    const drained = await drainAdminNotifications();
+    if (drained.pushed > 0 || drained.failed > 0) {
+      console.log(
+        `[discord-dispatch] admin notifications drained: pushed=${drained.pushed} failed=${drained.failed} skipped=${drained.skipped}`,
+      );
+    }
+  } catch (err) {
+    console.error("[discord-dispatch] admin notification drain failed:", err);
+  }
 
   return summary;
 }

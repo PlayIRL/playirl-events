@@ -4,6 +4,7 @@ import { getSetting } from "@/lib/events";
 import { getGeocodeCacheStats } from "@/lib/store-geocode-cache";
 import { requireRole } from "@/lib/session";
 import StatCard from "../_components/StatCard";
+import RecentActivity from "../_components/RecentActivity";
 
 interface CountRow { count: number }
 
@@ -87,6 +88,8 @@ export default async function AdminDashboard() {
             : "empty — first scrape will warm it"}
         />
       </section>
+
+      <RecentActivity />
 
       <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
         <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Active events by source</h2>

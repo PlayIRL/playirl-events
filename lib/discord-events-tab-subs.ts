@@ -84,6 +84,30 @@ export function createEventsTabSub(input: CreateEventsTabSubInput): DiscordEvent
     input.linked_user_id ?? null,
     input.created_by ?? null,
   );
+  // Admin notification: someone set up an Events-tab subscription for a guild.
+  try {
+    const labelBits = [
+      input.format,
+      input.name?.trim(),
+      input.venue_name?.trim(),
+    ].filter(Boolean) as string[];
+    const creator = input.linked_user_id
+      ? db
+          .prepare("SELECT email FROM users WHERE id = ?")
+          .get(input.linked_user_id) as { email: string } | undefined
+      : undefined;
+    void import("@/lib/admin-notifications").then((m) =>
+      m.recordAdminNotification({
+        type: "events_tab_sub_created",
+        title: `New Events-tab sub: ${labelBits.join(" · ") || "matching events"}`,
+        subtitle: `Guild ${input.guild_id}${creator?.email ? ` · ${creator.email}` : ""}`,
+        href: `/admin/discord-servers`,
+        userId: input.linked_user_id ?? null,
+      }),
+    );
+  } catch (err) {
+    console.error("[admin-notif] createEventsTabSub notification failed:", err);
+  }
   return getEventsTabSub(id)!;
 }
 
@@ -175,6 +199,29 @@ export function recordEventsTabSubFailure(
     db.prepare(
       "UPDATE discord_scheduled_event_subs SET enabled = 0, disabled_reason = ?, updated_at = datetime('now') WHERE id = ?",
     ).run(reason.slice(0, 500), id);
+    // Admin notification: Events-tab sub auto-disabled. Mirror of the
+    // channel-sub disable path.
+    try {
+      const sub = db
+        .prepare(
+          "SELECT guild_id, name, linked_user_id FROM discord_scheduled_event_subs WHERE id = ?",
+        )
+        .get(id) as { guild_id: string; name: string | null; linked_user_id: string | null } | undefined;
+      if (sub) {
+        void import("@/lib/admin-notifications").then((m) =>
+          m.recordAdminNotification({
+            type: "sub_disabled",
+            severity: "warn",
+            title: `Events-tab sub auto-disabled${sub.name ? `: ${sub.name}` : ""}`,
+            subtitle: `Guild ${sub.guild_id} · ${reason.slice(0, 200)}`,
+            href: `/admin/discord-servers`,
+            userId: sub.linked_user_id,
+          }),
+        );
+      }
+    } catch (err) {
+      console.error("[admin-notif] events-tab sub_disabled notification failed:", err);
+    }
   }
   return { disabled: shouldDisable, consecutiveFailures: cf };
 }

@@ -540,6 +540,31 @@ function initSchema(db: Database.Database) {
       auto_approve INTEGER NOT NULL DEFAULT 0,
       updated_at   TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    -- Admin activity ledger. One row per user-initiated action we want the
+    -- admin to know about (signup, OAuth link, Discord guild connect, sub
+    -- create, sub auto-disable, event submission). Two surfaces read from
+    -- this one table: the /admin dashboard "Recent activity" card uses
+    -- created_at + seen_in_admin_at for the unread badge, and the Discord
+    -- push path uses pushed_to_discord_at as an idempotency ledger so the
+    -- retry drain in /api/discord/dispatch won't double-post a notification
+    -- that landed on first try.
+    CREATE TABLE IF NOT EXISTS admin_notifications (
+      id                   INTEGER PRIMARY KEY AUTOINCREMENT,
+      type                 TEXT NOT NULL,
+      severity             TEXT NOT NULL DEFAULT 'info' CHECK(severity IN ('info','warn')),
+      title                TEXT NOT NULL,
+      subtitle             TEXT,
+      href                 TEXT,
+      user_id              TEXT REFERENCES users(id) ON DELETE SET NULL,
+      created_at           TEXT NOT NULL DEFAULT (datetime('now')),
+      seen_in_admin_at     TEXT,
+      pushed_to_discord_at TEXT,
+      push_error           TEXT
+    );
+    CREATE INDEX IF NOT EXISTS idx_admin_notif_created ON admin_notifications(created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_admin_notif_unseen ON admin_notifications(seen_in_admin_at) WHERE seen_in_admin_at IS NULL;
+    CREATE INDEX IF NOT EXISTS idx_admin_notif_unpushed ON admin_notifications(pushed_to_discord_at) WHERE pushed_to_discord_at IS NULL;
   `);
 
   // Default settings

@@ -348,6 +348,29 @@ export function createEvent(input: EventInput & { id: string; title: string; dat
     input.rsvp_enabled ? 1 : 0,
     normalizeVisibility(input.visibility),
   );
+  // Admin notification: a user or organizer just submitted an event. Skip
+  // scraper-created or manual-admin rows — those aren't user activity.
+  const sourceType = input.source_type ?? "manual";
+  if (sourceType === "user" || sourceType === "organizer") {
+    try {
+      const owner = input.owner_id
+        ? db
+            .prepare("SELECT email FROM users WHERE id = ?")
+            .get(input.owner_id) as { email: string } | undefined
+        : undefined;
+      void import("@/lib/admin-notifications").then((m) =>
+        m.recordAdminNotification({
+          type: "event_submitted",
+          title: `New ${sourceType} event: ${input.title}`,
+          subtitle: `${input.date}${input.time ? ` ${input.time}` : ""}${input.location ? ` · ${input.location}` : ""}${owner?.email ? ` · ${owner.email}` : ""}`,
+          href: `/event/${input.id}`,
+          userId: input.owner_id ?? null,
+        }),
+      );
+    } catch (err) {
+      console.error("[admin-notif] createEvent notification failed:", err);
+    }
+  }
   return getEvent(input.id)!;
 }
 

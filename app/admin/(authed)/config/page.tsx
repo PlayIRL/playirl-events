@@ -12,6 +12,7 @@ interface ConfigShape {
     topdeck: boolean;
     discord: { guildIds: string[] };
   };
+  adminNotificationsChannelId: string;
 }
 
 const FIELD = "w-full px-3 py-2 text-sm border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20";
@@ -62,6 +63,7 @@ export default function ConfigPage() {
         sourceWizardsLocator: config.sources.wizardsLocator,
         sourceTopdeck: config.sources.topdeck,
         sourceDiscordGuilds: guildIds,
+        adminNotificationsChannelId: config.adminNotificationsChannelId,
       }),
     });
     setSaving(false);
@@ -163,6 +165,29 @@ export default function ConfigPage() {
               placeholder="1451305700322967794"
             />
           </Field>
+        </Section>
+
+        <Section title="Admin notifications">
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 -mt-1">
+            When set, admin activity (signups, Discord connects, sub creates,
+            auto-disables, event submissions) gets posted to this Discord
+            channel in addition to appearing on the dashboard. Leave empty to
+            disable the Discord push — the dashboard feed still works.
+          </p>
+          <Field label="Discord channel ID">
+            <input
+              className={FIELD}
+              value={config.adminNotificationsChannelId}
+              onChange={(e) => update("adminNotificationsChannelId", e.target.value)}
+              placeholder="123456789012345678"
+            />
+          </Field>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400">
+            Find the channel ID by right-clicking a channel in Discord with
+            developer mode enabled (User Settings → Advanced → Developer Mode).
+            The PlayIRL bot must already be a member of the guild with permission
+            to post.
+          </p>
         </Section>
 
         <div className="flex items-center gap-3">

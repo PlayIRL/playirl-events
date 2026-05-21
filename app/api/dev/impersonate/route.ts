@@ -54,6 +54,17 @@ export async function GET(request: Request) {
       "INSERT INTO users (id, email, name, role, email_verified) VALUES (?, ?, ?, ?, ?)",
     ).run(id, email, nameGuess, role, Date.now());
     user = { id, role };
+    // Fire the same admin notification a real signup would, so dev testing
+    // exercises the full notification path (DB insert + Discord push).
+    void import("@/lib/admin-notifications").then((m) =>
+      m.recordAdminNotification({
+        type: "signup",
+        title: `New user signed up`,
+        subtitle: `${email}${nameGuess ? ` · ${nameGuess}` : ""} · dev impersonate`,
+        href: `/admin/users/${id}`,
+        userId: id,
+      }),
+    );
   } else if (user.role !== role) {
     db.prepare("UPDATE users SET role = ?, updated_at = datetime('now') WHERE id = ?").run(role, user.id);
     user.role = role;
