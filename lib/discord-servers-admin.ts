@@ -23,6 +23,7 @@
 
 import { getDb } from "@/lib/db";
 import { getConfig } from "@/lib/runtime-config";
+import { listGuildSettings } from "@/lib/discord-guild-settings";
 import type { DiscordGuildSpec } from "@/scrapers/discord";
 import type { UserSource } from "@/lib/user-sources";
 
@@ -69,6 +70,9 @@ export interface DiscordServerSummary {
   eventsTabSubs: DiscordServerSubAgg;
   eventsPostedCount: number;
   lastActivity: DiscordServerActivity | null;
+  /** Per-guild admin setting: when true, Discord events from this guild
+   *  skip the pending review queue on ingest and land as 'active'. */
+  autoApprove: boolean;
 }
 
 interface EventCountsRow {
@@ -141,6 +145,7 @@ function blankSummary(guildId: string): DiscordServerSummary {
     eventsTabSubs: emptySubAgg(),
     eventsPostedCount: 0,
     lastActivity: null,
+    autoApprove: false,
   };
 }
 
@@ -341,6 +346,14 @@ export function listDiscordServerRows(): DiscordServerSummary[] {
         error: row.error,
       };
     }
+  }
+
+  // Per-guild admin settings (auto-approve). Only existing rows show up
+  // here; guilds without a settings row default to autoApprove=false
+  // (manual review), set by blankSummary above.
+  for (const s of listGuildSettings()) {
+    const r = byGuild.get(s.guildId);
+    if (r) r.autoApprove = s.autoApprove;
   }
 
   return Array.from(byGuild.values()).sort((a, b) => {

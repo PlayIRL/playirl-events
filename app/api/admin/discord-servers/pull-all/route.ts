@@ -9,7 +9,7 @@ import { hasAdminAccess } from "@/lib/session";
 import { buildGuildSpec, listDiscordServerRows } from "@/lib/discord-servers-admin";
 import { markSynced } from "@/lib/user-sources";
 import { validateEvents } from "@/scrapers/schema";
-import { classifyEvent } from "@/lib/curation-rules";
+import { applyDiscordAutoApprove, classifyEvent } from "@/lib/curation-rules";
 import { upsertEvents } from "@/lib/events";
 import fetchDiscordEvents from "@/scrapers/discord";
 
@@ -26,6 +26,7 @@ interface PerGuildResult {
   added?: number;
   updated?: number;
   skipped?: number;
+  autoApproved?: number;
   error?: string;
 }
 
@@ -44,6 +45,7 @@ async function pullOne(guildId: string): Promise<PerGuildResult> {
       const decision = classifyEvent(ev);
       ev.status = decision.status;
     }
+    const autoApproved = applyDiscordAutoApprove(validated);
     const result = upsertEvents(validated);
     for (const us of resolved.userSources) markSynced(us.id);
     return {
@@ -53,6 +55,7 @@ async function pullOne(guildId: string): Promise<PerGuildResult> {
       added: result.added,
       updated: result.updated,
       skipped: result.skipped,
+      autoApproved,
     };
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
@@ -94,12 +97,13 @@ export async function POST() {
         acc.added += r.added ?? 0;
         acc.updated += r.updated ?? 0;
         acc.skipped += r.skipped ?? 0;
+        acc.autoApproved += r.autoApproved ?? 0;
       } else {
         acc.failed++;
       }
       return acc;
     },
-    { guilds: 0, failed: 0, fetched: 0, added: 0, updated: 0, skipped: 0 },
+    { guilds: 0, failed: 0, fetched: 0, added: 0, updated: 0, skipped: 0, autoApproved: 0 },
   );
 
   // Sort results back into the page's display order for the UI to render.

@@ -23,7 +23,13 @@ export default async function AdminDiscordServersPage() {
           single guild's scheduled events without waiting for the nightly
           scrape; use "Dispatch now" to fire that guild's subs out of band.
           Dispatch honors the idempotency ledger — buckets already posted
-          for the current week won't double-post.
+          for the current week won't double-post. Flip a guild's
+          "Auto-approve" toggle to publish its events directly, or leave
+          it off to keep them queued in{" "}
+          <a href="/admin/events/pending" className="underline">
+            /admin/events/pending
+          </a>{" "}
+          for manual review.
         </p>
       </header>
 
