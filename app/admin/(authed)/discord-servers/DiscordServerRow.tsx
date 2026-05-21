@@ -174,36 +174,57 @@ export default function DiscordServerRow({ row }: { row: DiscordServerSummary })
           )}
         </div>
 
-        {/* Auto-approve toggle ------------------------------------- */}
-        <div className="flex flex-wrap items-center gap-2">
-          <label
-            className="inline-flex items-center gap-2 text-xs text-neutral-700 dark:text-neutral-300 cursor-pointer select-none"
-            title="When ON, events scraped from this guild bypass /admin/events/pending and go straight to the public site. When OFF, events stay in pending until you manually approve them."
+        {/* Approval mode segmented control --------------------------
+         * Two mutually-exclusive options, always both visible, active
+         * one highlighted. Replaces the earlier single-state toggle —
+         * a toggle whose label flipped between "Auto-approve" and
+         * "Manual review" made the active state ambiguous at a glance.
+         */}
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
+            Approval mode:
+          </span>
+          <div
+            role="radiogroup"
+            aria-label="Event approval mode for this guild"
+            className="inline-flex rounded-md border border-neutral-300 dark:border-neutral-700 overflow-hidden text-xs"
           >
-            <span
-              className={`inline-flex items-center h-5 w-9 rounded-full transition ${
-                autoApprove
-                  ? "bg-emerald-600 dark:bg-emerald-500"
-                  : "bg-neutral-300 dark:bg-neutral-700"
-              } ${busySettings ? "opacity-50" : ""}`}
+            <button
+              type="button"
+              role="radio"
+              aria-checked={!autoApprove}
+              disabled={busySettings || !autoApprove}
+              onClick={() => onToggleAutoApprove(false)}
+              title="Events from this guild land in /admin/events/pending. You manually approve each one before it publishes."
+              className={`px-3 py-1.5 transition ${
+                !autoApprove
+                  ? "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 font-medium"
+                  : "bg-white text-neutral-600 hover:bg-neutral-50 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800"
+              } disabled:cursor-default`}
             >
-              <span
-                className={`inline-block h-4 w-4 rounded-full bg-white shadow transition-transform ${
-                  autoApprove ? "translate-x-4" : "translate-x-0.5"
-                }`}
-              />
-            </span>
-            <input
-              type="checkbox"
-              className="sr-only"
-              checked={autoApprove}
-              disabled={busySettings}
-              onChange={(e) => onToggleAutoApprove(e.target.checked)}
-            />
-            <span className="font-medium">
-              {autoApprove ? "Auto-approve events" : "Manual review (default)"}
-            </span>
-          </label>
+              Manual review
+            </button>
+            <button
+              type="button"
+              role="radio"
+              aria-checked={autoApprove}
+              disabled={busySettings || autoApprove}
+              onClick={() => onToggleAutoApprove(true)}
+              title="Events from this guild skip /admin/events/pending and publish immediately as 'active'."
+              className={`px-3 py-1.5 border-l border-neutral-300 dark:border-neutral-700 transition ${
+                autoApprove
+                  ? "bg-emerald-600 text-white dark:bg-emerald-500 font-medium"
+                  : "bg-white text-neutral-600 hover:bg-neutral-50 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800"
+              } disabled:cursor-default`}
+            >
+              Auto-approve
+            </button>
+          </div>
+          <span className="text-[11px] text-neutral-500 dark:text-neutral-400">
+            {autoApprove
+              ? "New events from this guild publish immediately."
+              : "New events queue for review at /admin/events/pending."}
+          </span>
           {settingsMsg && (
             <span
               className={`text-xs ${
