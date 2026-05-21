@@ -36,6 +36,18 @@ export function SqliteAdapter(): Adapter {
         INSERT INTO users (id, email, email_verified, name, image, role)
         VALUES (?, ?, ?, ?, ?, 'user')
       `).run(id, user.email, toMs(user.emailVerified), user.name ?? null, user.image ?? null);
+      // Admin notification: new user signup via OAuth. Fire-and-forget;
+      // never blocks the auth flow. Dynamic import so this adapter doesn't
+      // drag the notification → Discord-push tree into the auth cold path.
+      void import("@/lib/admin-notifications").then((m) =>
+        m.recordAdminNotification({
+          type: "signup",
+          title: `New user signed up`,
+          subtitle: `${user.email ?? "(no email)"}${user.name ? ` · ${user.name}` : ""}`,
+          href: `/admin/users/${id}`,
+          userId: id,
+        }),
+      );
       return rowToUser(db.prepare("SELECT * FROM users WHERE id = ?").get(id) as UserRow);
     },
 
@@ -85,7 +97,8 @@ export function SqliteAdapter(): Adapter {
     },
 
     async linkAccount(account) {
-      getDb().prepare(`
+      const db = getDb();
+      db.prepare(`
         INSERT INTO accounts (id, user_id, type, provider, provider_account_id, refresh_token, access_token, expires_at, token_type, scope, id_token, session_state)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).run(
@@ -102,6 +115,36 @@ export function SqliteAdapter(): Adapter {
         account.id_token ?? null,
         (account.session_state as string | undefined) ?? null,
       );
+      // Admin notification: existing user linked an additional OAuth account.
+      // Auth.js fires linkAccount on both first signin (right after createUser)
+      // and subsequent links. We filter out the first-signin case below so
+      // we don't double-notify (signup + account_linked) for the same event.
+      try {
+        const row = db
+          .prepare("SELECT email, name, created_at FROM users WHERE id = ?")
+          .get(account.userId) as { email: string; name: string | null; created_at: string } | undefined;
+        if (row) {
+          const createdMs = new Date(
+            row.created_at.includes("T") ? row.created_at : row.created_at + " UTC",
+          ).getTime();
+          const ageSec = (Date.now() - createdMs) / 1000;
+          // First-signin link arrives within seconds of createUser. Anything
+          // older than 60s is genuinely an additional link.
+          if (ageSec > 60) {
+            void import("@/lib/admin-notifications").then((m) =>
+              m.recordAdminNotification({
+                type: "account_linked",
+                title: `${row.email} linked ${account.provider}`,
+                subtitle: row.name ? `${row.name}` : null,
+                href: `/admin/users/${account.userId}`,
+                userId: account.userId,
+              }),
+            );
+          }
+        }
+      } catch (err) {
+        console.error("[admin-notif] linkAccount notification failed:", err);
+      }
       return account as AdapterAccount;
     },
 

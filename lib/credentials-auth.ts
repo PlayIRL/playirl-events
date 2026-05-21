@@ -144,6 +144,17 @@ export async function signupWithPassword(
       INSERT INTO users (id, email, email_verified, name, password_hash)
       VALUES (?, ?, ?, ?, ?)
     `).run(userId, lower, Date.now(), name?.trim() || null, password_hash);
+    // Admin notification: brand-new credentials-based signup. Existing-user
+    // password-add is intentionally silent (not interesting to admin).
+    void import("@/lib/admin-notifications").then((m) =>
+      m.recordAdminNotification({
+        type: "signup",
+        title: `New user signed up`,
+        subtitle: `${lower}${name?.trim() ? ` · ${name.trim()}` : ""} · email/password`,
+        href: `/admin/users/${userId}`,
+        userId,
+      }),
+    );
   }
 
   const session = await createSessionForUser(userId);

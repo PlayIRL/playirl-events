@@ -4,6 +4,7 @@ import RoleBadge from "../_components/RoleBadge";
 import LogoutButton from "../_components/LogoutButton";
 import { getCurrentUser } from "@/lib/session";
 import { countPendingEvents } from "@/lib/events";
+import { countUnseenNotifications } from "@/lib/admin-notifications";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   // Middleware ensures only sessioned requests reach this layout.
   const user = await getCurrentUser();
   const pendingCount = countPendingEvents();
+  const unseenActivity = countUnseenNotifications();
 
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex">
@@ -33,7 +35,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
         </div>
         <div className="flex-1 overflow-y-auto">
-          <Sidebar pendingCount={pendingCount} />
+          <Sidebar pendingCount={pendingCount} unseenActivity={unseenActivity} />
         </div>
         <div className="p-3 border-t border-neutral-200 dark:border-neutral-800">
           <LogoutButton />

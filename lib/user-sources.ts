@@ -39,22 +39,39 @@ export function getSource(id: string): UserSource | undefined {
 
 export function createUserSource(input: CreateUserSourceInput): UserSource {
   const id = randomUUID();
-  getDb()
-    .prepare(`
+  const db = getDb();
+  db.prepare(`
       INSERT INTO user_sources (id, user_id, kind, external_id, label, venue_name, venue_address, latitude, longitude)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `)
-    .run(
-      id,
-      input.user_id,
-      input.kind,
-      input.external_id,
-      input.label,
-      input.venue_name ?? "",
-      input.venue_address ?? "",
-      input.latitude ?? null,
-      input.longitude ?? null,
+    `).run(
+    id,
+    input.user_id,
+    input.kind,
+    input.external_id,
+    input.label,
+    input.venue_name ?? "",
+    input.venue_address ?? "",
+    input.latitude ?? null,
+    input.longitude ?? null,
+  );
+  // Admin notification: a user has connected their Discord guild as an event
+  // source — high-signal activity. Only fires for Discord sources today;
+  // generalize if other kinds get added.
+  if (input.kind === "discord") {
+    const userRow = db
+      .prepare("SELECT email FROM users WHERE id = ?")
+      .get(input.user_id) as { email: string } | undefined;
+    const label = input.label || input.external_id;
+    void import("@/lib/admin-notifications").then((m) =>
+      m.recordAdminNotification({
+        type: "discord_guild_connected",
+        title: `${userRow?.email ?? "User"} connected ${label}`,
+        subtitle: `Guild ${input.external_id}${input.venue_name ? ` · ${input.venue_name}` : ""}`,
+        href: `/admin/discord-servers`,
+        userId: input.user_id,
+      }),
     );
+  }
   return getSource(id)!;
 }
 

@@ -101,6 +101,34 @@ export function createSubscription(input: CreateSubscriptionInput): DiscordSubsc
     input.days_ahead ?? 7,
     input.created_by ?? null,
   );
+  // Admin notification: someone wired a Discord channel up for digests or
+  // reminders — engagement signal. Resolve the creator's email via accounts
+  // (linked_user_id may not be set yet on a fresh sub) for context.
+  try {
+    const creator = input.created_by
+      ? db
+          .prepare(
+            "SELECT u.email, u.id AS user_id FROM accounts a LEFT JOIN users u ON u.id = a.user_id WHERE a.provider = 'discord' AND a.provider_account_id = ? LIMIT 1",
+          )
+          .get(input.created_by) as { email: string; user_id: string } | undefined
+      : undefined;
+    const labelBits = [
+      input.mode,
+      input.format,
+      input.name?.trim(),
+    ].filter(Boolean) as string[];
+    void import("@/lib/admin-notifications").then((m) =>
+      m.recordAdminNotification({
+        type: "discord_sub_created",
+        title: `New channel sub: ${labelBits.join(" · ") || input.mode}`,
+        subtitle: `Guild ${input.guild_id} · channel ${input.channel_id}${creator?.email ? ` · ${creator.email}` : ""}`,
+        href: `/admin/discord-servers`,
+        userId: creator?.user_id ?? null,
+      }),
+    );
+  } catch (err) {
+    console.error("[admin-notif] createSubscription notification failed:", err);
+  }
   return getSubscription(id)!;
 }
 
@@ -281,6 +309,29 @@ export function recordSubscriptionFailure(
     db.prepare(
       "UPDATE discord_subscriptions SET enabled = 0, disabled_reason = ?, updated_at = datetime('now') WHERE id = ?",
     ).run(reason.slice(0, 500), id);
+    // Admin notification: dead-channel cleanup just disabled this sub.
+    // High-signal warning — usually means a bot was kicked or a channel
+    // was deleted. Fire-and-forget, dispatcher is the caller and shouldn't
+    // get blocked on a logging side-effect.
+    try {
+      const sub = db
+        .prepare("SELECT guild_id, channel_id, mode, linked_user_id FROM discord_subscriptions WHERE id = ?")
+        .get(id) as { guild_id: string; channel_id: string; mode: string; linked_user_id: string | null } | undefined;
+      if (sub) {
+        void import("@/lib/admin-notifications").then((m) =>
+          m.recordAdminNotification({
+            type: "sub_disabled",
+            severity: "warn",
+            title: `Channel sub auto-disabled (${sub.mode})`,
+            subtitle: `Guild ${sub.guild_id} · channel ${sub.channel_id} · ${reason.slice(0, 200)}`,
+            href: `/admin/discord-servers`,
+            userId: sub.linked_user_id,
+          }),
+        );
+      }
+    } catch (err) {
+      console.error("[admin-notif] sub_disabled notification failed:", err);
+    }
   }
   return { disabled: shouldDisable, consecutiveFailures: cf };
 }

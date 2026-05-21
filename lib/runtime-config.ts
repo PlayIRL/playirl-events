@@ -14,6 +14,10 @@ export interface RuntimeConfig {
     discord: { guildIds: string[] };
   };
   output: typeof defaults.output;
+  /** Discord channel ID where admin activity notifications (signups, guild
+   *  connects, sub creates, auto-disables, event submissions) get posted.
+   *  Empty = push disabled (notifications still land in the dashboard feed). */
+  adminNotificationsChannelId: string;
 }
 
 function safeParse<T>(raw: string, fallback: T): T {
@@ -55,6 +59,7 @@ export function getConfig(): RuntimeConfig {
       },
     },
     output: defaults.output,
+    adminNotificationsChannelId: getSetting("config_admin_notifications_channel_id") || "",
   };
 }
 
@@ -67,6 +72,7 @@ export function updateConfig(patch: Partial<{
   sourceWizardsLocator: boolean;
   sourceTopdeck: boolean;
   sourceDiscordGuilds: string[];
+  adminNotificationsChannelId: string;
 }>): RuntimeConfig {
   if (patch.location) setSetting("config_location", JSON.stringify(patch.location));
   if (patch.searchRadiusMiles != null) setSetting("config_radius_miles", String(patch.searchRadiusMiles));
@@ -76,5 +82,8 @@ export function updateConfig(patch: Partial<{
   if (patch.sourceWizardsLocator != null) setSetting("config_source_wizardslocator", patch.sourceWizardsLocator ? "1" : "0");
   if (patch.sourceTopdeck != null) setSetting("config_source_topdeck", patch.sourceTopdeck ? "1" : "0");
   if (patch.sourceDiscordGuilds) setSetting("config_source_discord_guilds", JSON.stringify(patch.sourceDiscordGuilds));
+  if (patch.adminNotificationsChannelId !== undefined) {
+    setSetting("config_admin_notifications_channel_id", patch.adminNotificationsChannelId.trim());
+  }
   return getConfig();
 }
