@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { DiscordServerSummary } from "@/lib/discord-servers-admin";
 
@@ -8,6 +9,14 @@ interface PullResponse {
   added?: number;
   updated?: number;
   skipped?: number;
+  autoApproved?: number;
+  error?: string;
+}
+
+interface SettingsResponse {
+  ok?: boolean;
+  settings?: { guildId: string; autoApprove: boolean; updatedAt: string };
+  promotedFromPending?: number;
   error?: string;
 }
 
@@ -31,10 +40,14 @@ function formatTimestamp(ts: string | null): string {
 }
 
 export default function DiscordServerRow({ row }: { row: DiscordServerSummary }) {
+  const router = useRouter();
   const [busyPull, setBusyPull] = useState(false);
   const [busyDispatch, setBusyDispatch] = useState(false);
+  const [busySettings, setBusySettings] = useState(false);
+  const [autoApprove, setAutoApprove] = useState(row.autoApprove);
   const [pullMsg, setPullMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
   const [dispatchMsg, setDispatchMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
+  const [settingsMsg, setSettingsMsg] = useState<{ kind: "ok" | "err"; text: string } | null>(null);
 
   const totalSubs = row.channelSubs.total + row.eventsTabSubs.total;
   const enabledSubs = row.channelSubs.enabled + row.eventsTabSubs.enabled;
@@ -60,8 +73,37 @@ export default function DiscordServerRow({ row }: { row: DiscordServerSummary })
     }
     setPullMsg({
       kind: "ok",
-      text: `Fetched ${data.fetched ?? 0} · added ${data.added ?? 0} · updated ${data.updated ?? 0} · skipped ${data.skipped ?? 0}`,
+      text: `Fetched ${data.fetched ?? 0} · added ${data.added ?? 0} · updated ${data.updated ?? 0} · skipped ${data.skipped ?? 0}${(data.autoApproved ?? 0) > 0 ? ` · ${data.autoApproved} auto-approved` : ""}`,
     });
+    router.refresh();
+  }
+
+  async function onToggleAutoApprove(next: boolean) {
+    setBusySettings(true);
+    setSettingsMsg(null);
+    const res = await fetch(
+      `/api/admin/discord-servers/${encodeURIComponent(row.guildId)}/settings`,
+      {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ autoApprove: next }),
+      },
+    );
+    setBusySettings(false);
+    const data = (await res.json().catch(() => ({}))) as SettingsResponse;
+    if (!res.ok || !data.ok) {
+      setSettingsMsg({ kind: "err", text: data.error ?? "Toggle failed" });
+      return;
+    }
+    setAutoApprove(next);
+    const promoted = data.promotedFromPending ?? 0;
+    setSettingsMsg({
+      kind: "ok",
+      text: next
+        ? `Auto-approve ON${promoted > 0 ? ` · promoted ${promoted} pending event(s)` : ""}`
+        : "Auto-approve OFF — future events go to /admin/events/pending",
+    });
+    router.refresh();
   }
 
   async function onDispatch() {
@@ -92,7 +134,7 @@ export default function DiscordServerRow({ row }: { row: DiscordServerSummary })
   return (
     <li className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md overflow-hidden">
       {/* Header band ------------------------------------------------ */}
-      <div className="p-4 border-b border-neutral-200 dark:border-neutral-800">
+      <div className="p-4 border-b border-neutral-200 dark:border-neutral-800 space-y-2">
         <div className="flex flex-wrap items-baseline gap-2">
           <span className="font-medium text-neutral-900 dark:text-neutral-100 truncate">
             {primaryLabel}
@@ -128,6 +170,49 @@ export default function DiscordServerRow({ row }: { row: DiscordServerSummary })
               }
             >
               failing
+            </span>
+          )}
+        </div>
+
+        {/* Auto-approve toggle ------------------------------------- */}
+        <div className="flex flex-wrap items-center gap-2">
+          <label
+            className="inline-flex items-center gap-2 text-xs text-neutral-700 dark:text-neutral-300 cursor-pointer select-none"
+            title="When ON, events scraped from this guild bypass /admin/events/pending and go straight to the public site. When OFF, events stay in pending until you manually approve them."
+          >
+            <span
+              className={`inline-flex items-center h-5 w-9 rounded-full transition ${
+                autoApprove
+                  ? "bg-emerald-600 dark:bg-emerald-500"
+                  : "bg-neutral-300 dark:bg-neutral-700"
+              } ${busySettings ? "opacity-50" : ""}`}
+            >
+              <span
+                className={`inline-block h-4 w-4 rounded-full bg-white shadow transition-transform ${
+                  autoApprove ? "translate-x-4" : "translate-x-0.5"
+                }`}
+              />
+            </span>
+            <input
+              type="checkbox"
+              className="sr-only"
+              checked={autoApprove}
+              disabled={busySettings}
+              onChange={(e) => onToggleAutoApprove(e.target.checked)}
+            />
+            <span className="font-medium">
+              {autoApprove ? "Auto-approve events" : "Manual review (default)"}
+            </span>
+          </label>
+          {settingsMsg && (
+            <span
+              className={`text-xs ${
+                settingsMsg.kind === "ok"
+                  ? "text-emerald-700 dark:text-emerald-300"
+                  : "text-red-600 dark:text-red-400"
+              }`}
+            >
+              {settingsMsg.text}
             </span>
           )}
         </div>

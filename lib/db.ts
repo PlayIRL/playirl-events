@@ -526,6 +526,20 @@ function initSchema(db: Database.Database) {
       channel_id      TEXT NOT NULL
     );
     CREATE INDEX IF NOT EXISTS idx_dsa_sub_fired ON discord_subscription_activity(subscription_id, fired_at DESC);
+
+    -- Per-Discord-guild admin settings, keyed on guild_id. Used by the
+    -- /admin/discord-servers page so each guild can be flipped between
+    -- "auto-approve" (Discord events from this guild skip the pending
+    -- review queue and land as 'active') and the default "manual review"
+    -- (events go to status='pending', admin promotes from /admin/events/pending).
+    -- Decoupled from user_sources / discord_subscriptions / config so a guild
+    -- can carry this setting whether it's admin-configured, user-connected,
+    -- a push target, or some combination.
+    CREATE TABLE IF NOT EXISTS discord_guild_settings (
+      guild_id     TEXT PRIMARY KEY,
+      auto_approve INTEGER NOT NULL DEFAULT 0,
+      updated_at   TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `);
 
   // Default settings

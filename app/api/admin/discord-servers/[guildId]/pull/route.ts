@@ -20,7 +20,7 @@ import { hasAdminAccess } from "@/lib/session";
 import { buildGuildSpec } from "@/lib/discord-servers-admin";
 import { markSynced } from "@/lib/user-sources";
 import { validateEvents } from "@/scrapers/schema";
-import { classifyEvent } from "@/lib/curation-rules";
+import { applyDiscordAutoApprove, classifyEvent } from "@/lib/curation-rules";
 import { upsertEvents } from "@/lib/events";
 import fetchDiscordEvents from "@/scrapers/discord";
 
@@ -52,6 +52,9 @@ export async function POST(
       const decision = classifyEvent(ev);
       ev.status = decision.status;
     }
+    // Honor the per-guild auto-approve flag: trusted guilds skip the
+    // pending review queue and land as 'active' immediately.
+    const autoApproved = applyDiscordAutoApprove(validated);
     const result = upsertEvents(validated);
 
     for (const us of resolved.userSources) {
@@ -65,6 +68,7 @@ export async function POST(
       added: result.added,
       updated: result.updated,
       skipped: result.skipped,
+      autoApproved,
     });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);

@@ -4,7 +4,7 @@ import { fetchVenueImage } from "./venue-image-fetcher";
 import { getVenueDefault, venueKey } from "./venues";
 import { geocodeFirstMatch } from "./geocode";
 import { uploadFileExists } from "./upload-storage";
-import { classifyEvent } from "./curation-rules";
+import { applyDiscordAutoApprove, classifyEvent } from "./curation-rules";
 import { getConfig } from "./runtime-config";
 
 function normalize(s: string): string {
@@ -239,6 +239,18 @@ export async function runScraper(): Promise<ScrapeResult> {
     if (decision.status === "skip") {
       console.log(`[curation] SKIP "${ev.title}" — ${decision.reason}`);
     }
+  }
+  // Post-classification override: bump Discord events from auto-approved
+  // guilds (discord_guild_settings.auto_approve=1) from 'pending' → 'active'
+  // so trusted guilds skip the manual review queue. classifyEvent stays a
+  // pure function; the per-guild trust flag is applied here as a separate
+  // step. We retally curation.active / curation.pending to reflect the
+  // override in the admin scraper-history view.
+  const autoApproved = applyDiscordAutoApprove(deduped);
+  if (autoApproved > 0) {
+    curation.active += autoApproved;
+    curation.pending -= autoApproved;
+    console.log(`[curation] auto-approved ${autoApproved} discord event(s) from trusted guilds`);
   }
   console.log(`[curation] active=${curation.active} skip=${curation.skip} pending=${curation.pending}`);
 
