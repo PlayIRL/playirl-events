@@ -565,6 +565,29 @@ function initSchema(db: Database.Database) {
     CREATE INDEX IF NOT EXISTS idx_admin_notif_created ON admin_notifications(created_at DESC);
     CREATE INDEX IF NOT EXISTS idx_admin_notif_unseen ON admin_notifications(seen_in_admin_at) WHERE seen_in_admin_at IS NULL;
     CREATE INDEX IF NOT EXISTS idx_admin_notif_unpushed ON admin_notifications(pushed_to_discord_at) WHERE pushed_to_discord_at IS NULL;
+
+    -- Audit + undo ledger for /admin/venues merge tool. Every merge writes
+    -- one row that captures enough before-state to reverse every UPDATE
+    -- exactly. Nothing in this app deletes rows; the merge is text-only
+    -- (events.location, *.venue_name) plus a venue_defaults image-key
+    -- re-write. undoVenueMerge() replays the snapshot to restore each
+    -- field to its pre-merge value.
+    CREATE TABLE IF NOT EXISTS venue_merges (
+      id              INTEGER PRIMARY KEY AUTOINCREMENT,
+      canonical_name  TEXT NOT NULL,
+      source_names    TEXT NOT NULL,   -- JSON array of original venue names
+      affected_events TEXT NOT NULL,   -- JSON: [{ id, original_location }]
+      affected_sources TEXT NOT NULL,  -- JSON: [{ id, original_venue_name }]
+      affected_channel_subs TEXT NOT NULL, -- JSON: same shape for discord_subscriptions
+      affected_events_tab_subs TEXT NOT NULL, -- JSON: same for discord_scheduled_event_subs
+      defaults_change TEXT,            -- JSON: { from_key, to_key, prior_canonical_row } or null
+      merged_by       TEXT REFERENCES users(id) ON DELETE SET NULL,
+      merged_at       TEXT NOT NULL DEFAULT (datetime('now')),
+      reversed_at     TEXT,
+      reversed_by     TEXT REFERENCES users(id) ON DELETE SET NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_venue_merges_merged_at ON venue_merges(merged_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_venue_merges_active ON venue_merges(reversed_at) WHERE reversed_at IS NULL;
   `);
 
   // Default settings
