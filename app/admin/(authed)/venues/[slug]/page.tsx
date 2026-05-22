@@ -6,7 +6,7 @@ import {
   getVenueDefault,
   type VenueImageSource,
 } from "@/lib/venues";
-import { getEventsForVenue } from "@/lib/events";
+import { getAllEventsForVenue } from "@/lib/events";
 import VenueImagePanel from "./VenueImagePanel";
 import VenueEventsTable from "./VenueEventsTable";
 
@@ -42,7 +42,10 @@ export default async function AdminVenueDetailPage({
   if (!venue) notFound();
 
   const def = getVenueDefault(venue.name);
-  const events = getEventsForVenue(venue.name, 500);
+  // Admin view: show ALL events at the venue (past, pending, skipped,
+  // cancelled, private) — moderators need the full picture, not the
+  // public-site-filtered subset.
+  const events = getAllEventsForVenue(venue.name, 1000);
 
   // EventTable expects a narrower shape than EventRow — strip down so the
   // component is happy and we don't ship extra columns over the network.

@@ -258,6 +258,28 @@ export function getEventsForVenue(name: string, limit = 200): EventRow[] {
     .all(name, today, limit) as EventRow[];
 }
 
+/**
+ * Admin-only variant of getEventsForVenue: returns EVERY event whose
+ * location matches the name, regardless of status, visibility, cancellation,
+ * or date. Used on /admin/venues/[slug] where moderators need to see the
+ * full picture (past events, pending/skipped events, cancelled events,
+ * private events) — not the filtered subset that the public site renders.
+ *
+ * Most-recent-first ordering so the admin sees the freshest activity at the
+ * top, opposite of the chronological asc order the public page uses.
+ */
+export function getAllEventsForVenue(name: string, limit = 500): EventRow[] {
+  if (!name) return [];
+  return getDb()
+    .prepare(
+      `SELECT * FROM events
+       WHERE LOWER(TRIM(location)) = LOWER(TRIM(?))
+       ORDER BY date DESC, time DESC
+       LIMIT ?`,
+    )
+    .all(name, limit) as EventRow[];
+}
+
 export function getEvent(id: string): EventRow | undefined {
   const db = getDb();
   return db.prepare("SELECT * FROM events WHERE id = ?").get(id) as EventRow | undefined;
