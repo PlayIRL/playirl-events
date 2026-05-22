@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import VenueQuickRetryButton from "./VenueQuickRetryButton";
+import MergeVenuesModal from "./MergeVenuesModal";
 import type { VenueImageSource } from "@/lib/venues";
 
 // Client-side filterable + sortable + paginated table. The full venue list
@@ -68,6 +69,10 @@ export default function VenuesTable({ venues }: { venues: VenueRowData[] }) {
   const [sortKey, setSortKey] = useState<SortKey>("events");
   const [sortDir, setSortDir] = useState<SortDir>("desc");
   const [visibleCount, setVisibleCount] = useState<number>(PAGE_SIZE);
+  // Multi-select for the merge tool. Keyed by venue name (the canonical
+  // string we'll send to /api/admin/venues/merge as a source).
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [mergeOpen, setMergeOpen] = useState(false);
 
   // Reset the visible window whenever filters or sort change, so the user
   // doesn't end up scrolling through a stale slice of a different ordering.
@@ -135,8 +140,62 @@ export default function VenuesTable({ venues }: { venues: VenueRowData[] }) {
     );
   }
 
+  const selectedVenues = useMemo(
+    () =>
+      Array.from(selected)
+        .map((name) => venues.find((v) => v.name === name))
+        .filter((v): v is VenueRowData => !!v)
+        .map((v) => ({ name: v.name, usageCount: v.usageCount })),
+    [selected, venues],
+  );
+
+  function toggleOne(name: string) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
+  }
+
+  function clearSelected() {
+    setSelected(new Set());
+  }
+
   return (
     <div className="space-y-3">
+      {/* Selection toolbar — only renders when ≥ 1 row is checked. Anchored
+       * above the filter bar so it doesn't shift the table on toggle. */}
+      {selected.size > 0 && (
+        <div className="flex flex-wrap items-center gap-3 px-4 py-2 rounded-md bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+          <span className="text-sm text-blue-900 dark:text-blue-200">
+            <span className="font-medium">{selected.size}</span> selected
+          </span>
+          <div className="flex items-center gap-2 ml-auto">
+            <button
+              type="button"
+              onClick={clearSelected}
+              className="text-xs px-2.5 py-1 rounded-md text-blue-900 dark:text-blue-200 hover:bg-blue-100 dark:hover:bg-blue-900/40"
+            >
+              Clear
+            </button>
+            <button
+              type="button"
+              onClick={() => setMergeOpen(true)}
+              disabled={selected.size < 2}
+              title={
+                selected.size < 2
+                  ? "Pick at least 2 venues to merge"
+                  : "Open the merge dialog"
+              }
+              className="text-xs px-3 py-1.5 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50"
+            >
+              Merge {selected.size} selected →
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Filter bar — two-row layout on narrow viewports, single-row on wide.
        * The inner flex group (input + select) takes whatever width is left
        * after the count chip. shrink-0 on the count + select makes sure the
@@ -174,9 +233,12 @@ export default function VenuesTable({ venues }: { venues: VenueRowData[] }) {
         {/* Horizontal scroll wrapper — at narrow widths the right-most
            "actions" column would otherwise be clipped by the page max-w. */}
         <div className="overflow-x-auto">
-          <table className="w-full text-sm min-w-[760px]">
+          <table className="w-full text-sm min-w-[800px]">
             <thead className="text-xs text-neutral-500 dark:text-neutral-400 bg-neutral-50 dark:bg-neutral-950/40">
               <tr>
+                <th className="text-left font-medium px-3 py-2 w-10">
+                  <span className="sr-only">Select</span>
+                </th>
                 <th className="text-left font-medium px-3 py-2 w-20">Image</th>
                 <th className="text-left font-medium px-3 py-2 min-w-[180px]">
                   <button
@@ -224,11 +286,27 @@ export default function VenuesTable({ venues }: { venues: VenueRowData[] }) {
             <tbody className="divide-y divide-neutral-200 dark:divide-neutral-800">
               {visible.map((v) => {
                 const sourceMeta = v.imageSource ? SOURCE_LABELS[v.imageSource] : null;
+                const isSelected = selected.has(v.name);
                 return (
                   <tr
                     key={v.slug + v.name}
-                    className="hover:bg-neutral-50 dark:hover:bg-neutral-800/40 transition"
+                    className={`transition ${
+                      isSelected
+                        ? "bg-blue-50/50 dark:bg-blue-900/10"
+                        : "hover:bg-neutral-50 dark:hover:bg-neutral-800/40"
+                    }`}
                   >
+                    <td className="px-3 py-2 align-middle">
+                      <label className="block cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => toggleOne(v.name)}
+                          aria-label={`Select ${v.name}`}
+                          className="cursor-pointer"
+                        />
+                      </label>
+                    </td>
                     <td className="px-3 py-2">
                       <Link
                         href={`/admin/venues/${v.slug}`}
@@ -324,6 +402,18 @@ export default function VenuesTable({ venues }: { venues: VenueRowData[] }) {
           </div>
         )}
       </div>
+
+      <MergeVenuesModal
+        open={mergeOpen}
+        selected={selectedVenues}
+        onClose={() => {
+          setMergeOpen(false);
+          // After a successful merge the page refreshes via router.refresh()
+          // inside the modal; clear our local selection so the toolbar
+          // disappears for the freshly-canonicalized list.
+          setSelected(new Set());
+        }}
+      />
     </div>
   );
 }

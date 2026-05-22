@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { requireRole } from "@/lib/session";
 import {
   listKnownVenues,
@@ -33,16 +34,23 @@ export default async function AdminVenuesPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-6xl space-y-6">
-      <header>
-        <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-neutral-100">
-          Venues
-        </h1>
-        <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1 max-w-2xl">
-          Every venue we have events for, plus connected Discord sources. Click
-          a row to manage the default image and review events at that venue.
-          The image is used as a fallback on event cards when an event from the
-          venue doesn't have its own photo.
-        </p>
+      <header className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-neutral-100">
+            Venues
+          </h1>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400 mt-1 max-w-2xl">
+            Every venue we have events for, plus connected Discord sources.
+            Click a row to manage the default image and review events at that
+            venue. Check 2+ rows to merge duplicate venue names (reversible).
+          </p>
+        </div>
+        <Link
+          href="/admin/venues/merges"
+          className="text-xs text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 whitespace-nowrap shrink-0"
+        >
+          Merge log →
+        </Link>
       </header>
 
       {rows.length > 0 && <RetryAllButton />}
