@@ -7,24 +7,9 @@ NAME:MTG Pioneer — Philadelphia
 X-WR-CALNAME:MTG Pioneer — Philadelphia
 X-WR-CALDESC:Pioneer events in Philadelphia area
 BEGIN:VEVENT
-UID:wotc-10653666
-SEQUENCE:0
-DTSTAMP:20260521T214058Z
-DTSTART:20260521T223000Z
-DTEND:20260522T013000Z
-SUMMARY:Thursday Pioneer @ Top Deck Games - Cherry Hill
-LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
- rry Hill Township\, New Jersey\, 08003
-DESCRIPTION:Format: Pioneer\nCost: $15\nStore: https://www.topdeckgamesonl
- ine.com/\nDetails: https://locator.wizards.com/events/10653666\n\nJoin us 
- at Top Deck Games for this exciting format\, weekly!\nSource: wizards-loca
- tor
-URL;VALUE=URI:https://locator.wizards.com/events/10653666
-END:VEVENT
-BEGIN:VEVENT
 UID:wotc-10653667
 SEQUENCE:0
-DTSTAMP:20260521T214058Z
+DTSTAMP:20260522T012723Z
 DTSTART:20260528T223000Z
 DTEND:20260529T013000Z
 SUMMARY:Thursday Pioneer @ Top Deck Games - Cherry Hill
