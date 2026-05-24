@@ -9,11 +9,11 @@
 }
 
 .dark {
-  /* True-neutral dark — same value as Tailwind's neutral-900 so the body,
-     sticky bar, and card surfaces (which all use dark:bg-neutral-900) share
-     one shade. Visual separation between body and cards comes from borders,
-     not from a body/card brightness difference. */
-  --bg: #171717;
+  /* Deep neutral — Tailwind's neutral-950. Sits one shade DARKER than the
+     card/sticky-bar surfaces (which use dark:bg-neutral-900 = #171717) so
+     cards visibly lift off the page. Also matches the `themeColor` meta
+     advertised in layout.tsx so the browser chrome blends with the body. */
+  --bg: #0a0a0a;
   --fg: #ededed;
   color-scheme: dark;
 }
