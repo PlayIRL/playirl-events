@@ -401,3 +401,150 @@ export function buildGuildSpec(guildId: string): GuildSpecResolution | null {
 
   return { adminConfigured, userSources, userSpecs };
 }
+
+// --- Shared single-guild + all-guilds pull helpers ------------------------
+//
+// Used by:
+//   - /api/admin/discord-servers/pull-all  (admin "Dispatch all" button)
+//   - /api/scrape-discord                  (Railway Cron, frequent Discord-only pull)
+//
+// Both paths want the SAME per-guild work — fetch Discord events, validate,
+// classify, auto-approve trusted guilds, upsert, stamp markSynced — with a
+// bounded concurrency pool so we don't hammer Discord's per-bot rate limit.
+// Lives in this module (not lib/scraper.ts) because it's a thin Discord-only
+// path that intentionally skips the heavy reconcile-coords / venue-image
+// steps that the nightly full scrape handles.
+
+export interface DiscordPullPerGuildResult {
+  guildId: string;
+  ok: boolean;
+  fetched?: number;
+  added?: number;
+  updated?: number;
+  skipped?: number;
+  autoApproved?: number;
+  error?: string;
+}
+
+export interface DiscordPullSummary {
+  totals: {
+    guilds: number;
+    failed: number;
+    fetched: number;
+    added: number;
+    updated: number;
+    skipped: number;
+    autoApproved: number;
+  };
+  results: DiscordPullPerGuildResult[];
+  durationMs: number;
+}
+
+/**
+ * Pull one guild end-to-end: fetch → validate → classify → auto-approve →
+ * upsert → stamp markSynced. Returns a structured result row instead of
+ * throwing so the worker pool can keep going past a single guild's failure.
+ */
+export async function pullOneDiscordGuild(
+  guildId: string,
+): Promise<DiscordPullPerGuildResult> {
+  // Lazy-imported so the cron route doesn't pull these into its cold-start
+  // bundle until the actual pull runs.
+  const [
+    { validateEvents },
+    { applyDiscordAutoApprove, classifyEvent },
+    { upsertEvents },
+    { markSynced },
+    fetchDiscordEvents,
+  ] = await Promise.all([
+    import("@/scrapers/schema"),
+    import("@/lib/curation-rules"),
+    import("@/lib/events"),
+    import("@/lib/user-sources"),
+    import("@/scrapers/discord").then((m) => m.default),
+  ]);
+
+  const resolved = buildGuildSpec(guildId);
+  if (!resolved) {
+    return { guildId, ok: false, error: "Guild not configured" };
+  }
+  try {
+    const raw = await fetchDiscordEvents({
+      guilds: resolved.userSpecs,
+      guildIds: resolved.adminConfigured ? [guildId] : [],
+    });
+    const validated = validateEvents(raw, `discord:${guildId}`);
+    for (const ev of validated) {
+      const decision = classifyEvent(ev);
+      ev.status = decision.status;
+    }
+    const autoApproved = applyDiscordAutoApprove(validated);
+    const result = upsertEvents(validated);
+    for (const us of resolved.userSources) markSynced(us.id);
+    return {
+      guildId,
+      ok: true,
+      fetched: validated.length,
+      added: result.added,
+      updated: result.updated,
+      skipped: result.skipped,
+      autoApproved,
+    };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`[discord-pull] guild=${guildId} failed:`, msg);
+    return { guildId, ok: false, error: msg };
+  }
+}
+
+/**
+ * Pull every known Discord guild (admin-configured + user-connected) with a
+ * bounded concurrency pool. Each pull is 1-2 Discord API calls, so concurrency
+ * 3 stays well under the 50 req/s global bot limit even with many guilds.
+ */
+export async function pullAllDiscordGuilds(
+  concurrency = 3,
+): Promise<DiscordPullSummary> {
+  const startedAt = Date.now();
+  const rows = listDiscordServerRows();
+  const guildIds = rows.map((r) => r.guildId);
+
+  const results: DiscordPullPerGuildResult[] = [];
+  let next = 0;
+  async function worker() {
+    while (true) {
+      const i = next++;
+      if (i >= guildIds.length) return;
+      results.push(await pullOneDiscordGuild(guildIds[i]));
+    }
+  }
+  const workers = Array.from(
+    { length: Math.min(concurrency, guildIds.length) },
+    () => worker(),
+  );
+  await Promise.all(workers);
+
+  // Sort results back into the listing order for stable UI rendering.
+  results.sort(
+    (a, b) => guildIds.indexOf(a.guildId) - guildIds.indexOf(b.guildId),
+  );
+
+  const totals = results.reduce(
+    (acc, r) => {
+      if (r.ok) {
+        acc.guilds++;
+        acc.fetched += r.fetched ?? 0;
+        acc.added += r.added ?? 0;
+        acc.updated += r.updated ?? 0;
+        acc.skipped += r.skipped ?? 0;
+        acc.autoApproved += r.autoApproved ?? 0;
+      } else {
+        acc.failed++;
+      }
+      return acc;
+    },
+    { guilds: 0, failed: 0, fetched: 0, added: 0, updated: 0, skipped: 0, autoApproved: 0 },
+  );
+
+  return { totals, results, durationMs: Date.now() - startedAt };
+}

@@ -159,6 +159,19 @@ curl -s https://playirl.gg/api/health | jq '.lastScrape'
 # Should show today's 9am UTC timestamp (or close to it)
 ```
 
+### Also add a Discord-only frequent pull
+
+The full scrape above only runs once a day. Connected Discord servers can create new scheduled events at any time, and users (rightly) expect those to show up in PlayIRL much faster than "tomorrow morning." Add a second Railway Cron entry pointing at `/api/scrape-discord`:
+
+```
+Schedule: */15 * * * *
+Command:  curl -fsS -X POST https://playirl.gg/api/scrape-discord -H "x-scrape-secret: $SCRAPE_SECRET" -w "HTTP %{http_code}\n"
+```
+
+Every 15 minutes, Discord-only (1-2 API calls per guild, completes in seconds). Same `SCRAPE_SECRET` as the main scrape. Uses a separate lock so it never 409s itself against the daily heavy scrape.
+
+If a guild's events still look stale after the cron tick, the admin "Pull now" button on `/admin/discord-servers` runs the exact same code path on demand.
+
 ---
 
 ## Step 7 — Verify the daily backup is working
@@ -182,6 +195,9 @@ Retention is 30 days, GitHub auto-prunes older.
 ---
 
 ## Steady state — what you should see
+
+**Every 15 minutes:**
+- Railway Cron POSTs `/api/scrape-discord`. The fire-and-forget endpoint returns `202` immediately. Touches Discord guilds only (1-2 API calls per guild, ~seconds total) so newly-created scheduled events in connected Discords land in PlayIRL within minutes instead of waiting for the daily heavy scrape. Auths via the same `SCRAPE_SECRET`. Uses a separate in-process lock from the full scrape, so the two paths never block each other.
 
 **Daily, in ascending UTC order:**
 - `09:00` Railway Cron POSTs `/api/scrape`. The fire-and-forget endpoint returns `202` immediately. Scrape runs ~2–3 min on a warm geocode cache.
