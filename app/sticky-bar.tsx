@@ -58,7 +58,7 @@ export default function StickyBar({ children }: { children: React.ReactNode }) {
       <div ref={sentinelRef} className="h-0 w-0" />
       <div
         ref={barRef}
-        className={`sticky top-0 z-10 py-3 mb-6 bg-white dark:bg-neutral-900 border-b transition-[border-color,box-shadow] duration-300 ${
+        className={`sticky top-0 z-10 py-3 mb-6 bg-white dark:bg-neutral-950 border-b transition-[border-color,box-shadow] duration-300 ${
           isStuck
             ? "border-neutral-200 dark:border-neutral-800 shadow-[0_8px_24px_-10px_rgba(0,0,0,0.05)] dark:shadow-[0_8px_24px_-10px_rgba(0,0,0,0.18)]"
             : "border-transparent"
