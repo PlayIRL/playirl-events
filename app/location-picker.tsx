@@ -28,7 +28,7 @@ const CHIP_TRIGGER =
 const POPOVER =
   "fixed z-50 w-72 max-w-[calc(100vw-16px)] bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-hidden";
 const PRIMARY_BTN =
-  "w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-md bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-100 transition disabled:opacity-50 cursor-pointer";
+  "w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-700 transition disabled:opacity-50 cursor-pointer";
 const INPUT =
   "w-full px-2.5 py-2 rounded-md border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-sm text-neutral-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-neutral-400/40 dark:focus:ring-white/20";
 

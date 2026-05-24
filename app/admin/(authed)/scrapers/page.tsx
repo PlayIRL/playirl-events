@@ -125,7 +125,7 @@ export default function ScrapersPage() {
         <button
           onClick={runScrape}
           disabled={refreshing || !!running}
-          className="bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 px-4 py-2 rounded-md text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50 transition"
+          className="bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 disabled:opacity-50 transition"
         >
           {running ? "Scraping…" : refreshing ? "Starting…" : "Refresh now"}
         </button>

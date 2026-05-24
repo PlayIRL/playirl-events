@@ -53,7 +53,7 @@ export default function RouteError({
         <button
           type="button"
           onClick={reset}
-          className="inline-flex items-center gap-2 px-4 h-10 rounded-md bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-100 transition cursor-pointer"
+          className="inline-flex items-center gap-2 px-4 h-10 rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-sm font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 transition cursor-pointer"
         >
           Try again
         </button>

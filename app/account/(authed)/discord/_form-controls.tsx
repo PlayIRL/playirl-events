@@ -124,7 +124,7 @@ export function ChipButton({
       onClick={onClick}
       className={`px-3 py-1.5 rounded-full text-xs border transition ${
         active
-          ? "border-neutral-900 bg-neutral-900 text-white dark:border-white dark:bg-white dark:text-neutral-900"
+          ? "border-neutral-400 dark:border-neutral-700 bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white"
           : "border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800"
       }`}
     >
@@ -153,7 +153,7 @@ export function ModeButton({
       onClick={() => onClick(value)}
       className={`text-left px-3 py-2.5 rounded-md border text-sm transition ${
         active
-          ? "border-neutral-900 dark:border-white ring-1 ring-neutral-900 dark:ring-white"
+          ? "border-neutral-400 dark:border-neutral-700 ring-1 ring-neutral-400 dark:ring-neutral-700"
           : "border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800"
       }`}
     >

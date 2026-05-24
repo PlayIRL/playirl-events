@@ -449,7 +449,7 @@ function StepDot() {
   return (
     <span
       aria-hidden="true"
-      className="step-dot mt-0.5 shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-[11px] font-bold tabular-nums"
+      className="step-dot mt-0.5 shrink-0 inline-flex items-center justify-center w-5 h-5 rounded-full bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-[11px] font-bold tabular-nums"
     >
       &bull;
     </span>
@@ -879,7 +879,7 @@ function ChoiceCard({
     <div
       className={`px-3 py-2.5 rounded-md border text-left ${
         recommended
-          ? "border-neutral-900 dark:border-white"
+          ? "border-neutral-400 dark:border-neutral-700"
           : "border-neutral-200 dark:border-neutral-700"
       }`}
     >

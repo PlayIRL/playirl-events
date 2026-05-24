@@ -58,7 +58,7 @@ export default function GetStartedCard({
               </p>
               <Link
                 href="/account/sources/pick-guild"
-                className="inline-flex items-center bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 px-4 py-2 rounded-md text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 transition"
+                className="inline-flex items-center bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 transition"
               >
                 I added it — set it up
               </Link>
@@ -73,7 +73,7 @@ export default function GetStartedCard({
 function Step({ n, title, body }: { n: number; title: string; body: React.ReactNode }) {
   return (
     <li className="flex gap-3">
-      <span className="shrink-0 w-7 h-7 rounded-full bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-xs font-semibold flex items-center justify-center">
+      <span className="shrink-0 w-7 h-7 rounded-full bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-xs font-semibold flex items-center justify-center">
         {n}
       </span>
       <div className="flex-1">

@@ -79,7 +79,7 @@ export default function SaveEventButton({ eventId, initiallySaved, compact = fal
       aria-pressed={saved}
       className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition border ${
         saved
-          ? "bg-neutral-900 text-white border-neutral-900 hover:bg-neutral-800 dark:bg-white dark:text-neutral-900 dark:border-white dark:hover:bg-neutral-100"
+          ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white border-neutral-400 dark:border-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-700"
           : "bg-white text-neutral-700 border-neutral-300 hover:bg-neutral-50 dark:bg-neutral-900 dark:text-neutral-200 dark:border-neutral-700 dark:hover:bg-neutral-800"
       } ${busy ? "opacity-50" : ""} ${className}`}
     >

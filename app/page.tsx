@@ -183,13 +183,13 @@ export default async function HomePage({
       <FloatingToolbar currentView={currentView} />
 
       {/* Hero header */}
-      <header className="mb-6 flex flex-col items-center text-center gap-1 w-full">
+      <header className="mb-6 flex flex-col items-center text-center gap-6 w-full">
         <h1 className="text-neutral-900 dark:text-white flex items-start">
           <PlayIrlLogo className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl" />
           <span className="inline-block bg-[hsl(120,100%,50%)] text-black font-mono font-bold uppercase text-[10px] tracking-[0.15em] px-2 py-1 rounded leading-none -mt-1 -ml-2">Beta</span>
           <span className="sr-only">PlayIRL.GG (beta)</span>
         </h1>
-        <p className="text-base leading-tight text-neutral-500 dark:text-neutral-400 mt-2">
+        <p className="text-sm leading-tight text-neutral-500 dark:text-neutral-400">
           An independent, alternative way to find and schedule MTG events near you.
           <AboutInfoButton />
         </p>
@@ -319,7 +319,7 @@ export default async function HomePage({
         </p>
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs">
           <a href="/about" className="hover:text-neutral-900 dark:hover:text-white">About</a>
-          <a href="/track" className="hover:text-neutral-900 dark:hover:text-white">Track</a>
+          <a href="/track" className="hover:text-neutral-900 dark:hover:text-white">Life Tracking App</a>
           <a href="/bot" className="hover:text-neutral-900 dark:hover:text-white">Discord bot</a>
           <a href="https://github.com/i1986o/mtg-cal" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-white">GitHub</a>
           <a href="https://discord.gg/nM2Ea4NSSh" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-white">Discord</a>

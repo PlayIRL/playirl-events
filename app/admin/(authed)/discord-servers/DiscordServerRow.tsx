@@ -198,7 +198,7 @@ export default function DiscordServerRow({ row }: { row: DiscordServerSummary })
               title="Events from this guild land in /admin/events/pending. You manually approve each one before it publishes."
               className={`px-3 py-1.5 transition ${
                 !autoApprove
-                  ? "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900 font-medium"
+                  ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white font-medium"
                   : "bg-white text-neutral-600 hover:bg-neutral-50 dark:bg-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800"
               } disabled:cursor-default`}
             >

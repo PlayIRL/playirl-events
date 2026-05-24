@@ -188,7 +188,7 @@ export default function VenuesTable({ venues }: { venues: VenueRowData[] }) {
                   ? "Pick at least 2 venues to merge"
                   : "Open the merge dialog"
               }
-              className="text-xs px-3 py-1.5 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50"
+              className="text-xs px-3 py-1.5 rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-700 disabled:opacity-50"
             >
               Merge {selected.size} selected →
             </button>

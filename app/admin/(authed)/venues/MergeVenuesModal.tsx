@@ -152,7 +152,7 @@ export default function MergeVenuesModal({ open, selected, onClose }: Props) {
             type="button"
             onClick={onSubmit}
             disabled={busy || !canonicalIsClean}
-            className="text-sm px-4 py-1.5 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50"
+            className="text-sm px-4 py-1.5 rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-700 disabled:opacity-50"
           >
             {busy ? "Merging…" : `Merge into "${canonical.trim() || "…"}"`}
           </button>

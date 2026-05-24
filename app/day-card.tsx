@@ -99,7 +99,7 @@ export default function DayCard({
   // "Today" pops via a thicker high-contrast frame; bg matches other day
   // cards so the page bg flows behind a single bordered shape.
   const frameBorder = isToday
-    ? "border-2 border-neutral-900 dark:border-white"
+    ? "border-2 border-neutral-200 dark:border-white/10"
     : "border border-neutral-300 dark:border-white/15";
 
   // Past day cards land at 70% opacity (subtle "this is history" treatment);
@@ -125,7 +125,7 @@ export default function DayCard({
         <div
           className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 py-4 ${
             isToday
-              ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+              ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white"
               : "bg-white dark:bg-neutral-900"
           }`}
         >
@@ -137,7 +137,7 @@ export default function DayCard({
               aria-label={`${events.length} event${events.length === 1 ? "" : "s"}`}
               className={`inline-flex items-center px-2 py-0.5 rounded-sm text-[10px] font-bold font-mono tabular-nums ${
                 isToday
-                  ? "bg-white/15 text-white dark:bg-neutral-900/15 dark:text-neutral-900"
+                  ? "bg-black/10 text-neutral-900 dark:bg-white/15 dark:text-white"
                   : "bg-neutral-100 text-neutral-700 dark:bg-white/10 dark:text-neutral-300"
               }`}
             >

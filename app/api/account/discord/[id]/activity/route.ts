@@ -6,9 +6,11 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
 import {
+  getSubscription,
   listSubscriptionActivity,
   userCanManageSubscription,
 } from "@/lib/discord-subscriptions";
+import { computeNextScheduledFire } from "@/lib/discord-dispatcher";
 
 export const dynamic = "force-dynamic";
 
@@ -23,5 +25,9 @@ export async function GET(_request: Request, ctx: { params: Promise<{ id: string
   }
 
   const activity = listSubscriptionActivity(id, 25);
-  return NextResponse.json({ activity });
+  const sub = getSubscription(id);
+  const nextFireAt = sub && sub.enabled
+    ? computeNextScheduledFire(sub, new Date())?.toISOString() ?? null
+    : null;
+  return NextResponse.json({ activity, next_fire_at: nextFireAt });
 }

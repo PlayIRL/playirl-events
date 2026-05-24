@@ -240,7 +240,7 @@ function ChipSelect({
               <button
                 onClick={applyCustom}
                 disabled={!customDraft.trim()}
-                className="text-xs px-2.5 py-1.5 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
+                className="text-xs px-2.5 py-1.5 rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
               >
                 Set
               </button>
@@ -420,13 +420,13 @@ export function SubscribeDropdown({
 function CreateEventButton() {
   return (
     <div
-      className="fixed right-4 z-40 bg-neutral-900 dark:bg-white rounded-md p-1 border border-neutral-900 dark:border-white shadow-xl shadow-black/25 dark:shadow-black/50 bottom-[calc(1.5rem+env(safe-area-inset-bottom)+8px)] sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom)+10px)]"
+      className="fixed right-4 z-40 bg-white dark:bg-neutral-900 rounded-md p-1 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/25 dark:shadow-black/50 bottom-[calc(1.5rem+env(safe-area-inset-bottom)+8px)] sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom)+10px)]"
     >
       <Link
         href="/account/events/new"
         title="Create a new event"
         aria-label="Create a new event"
-        className="flex items-center justify-center gap-1.5 w-10 h-10 sm:w-auto sm:h-11 sm:px-4 rounded-md text-white dark:text-neutral-900 text-sm font-semibold hover:bg-white/10 dark:hover:bg-neutral-900/10 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white/40 dark:focus-visible:ring-neutral-900/30"
+        className="flex items-center justify-center gap-1.5 w-10 h-10 sm:w-auto sm:h-11 sm:px-4 rounded-md text-neutral-900 dark:text-white text-sm font-semibold hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/40"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 sm:w-[18px] sm:h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -465,7 +465,7 @@ export function VenueSubscribeButton({ venueName, days = 30 }: { venueName: stri
       {toast && (
         <div
           style={{ position: "fixed", top: toast.top, left: toast.left, transform: "translateX(-50%)" }}
-          className="z-50 px-3 py-1.5 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-xs font-medium shadow-lg pointer-events-none"
+          className="z-50 px-3 py-1.5 rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-xs font-medium shadow-lg pointer-events-none"
         >
           {toast.text}
         </div>
