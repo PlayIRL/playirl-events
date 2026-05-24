@@ -49,7 +49,7 @@ export default function Sidebar({
             href={item.href}
             className={`px-3 py-2 rounded-md text-sm transition flex items-center justify-between gap-2 ${
               active
-                ? "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900"
+                ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white"
                 : "text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
             }`}
           >
@@ -61,7 +61,7 @@ export default function Sidebar({
                     ? "bg-white/20 text-current"
                     : badgeIsActivity
                       ? "bg-emerald-600 text-white dark:bg-emerald-500"
-                      : "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+                      : "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white"
                 }`}
               >
                 {badgeCount > 9 ? "9+" : badgeCount}

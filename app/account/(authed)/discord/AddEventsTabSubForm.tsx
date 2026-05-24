@@ -61,7 +61,7 @@ export default function AddEventsTabSubForm({
     <div>
       <button
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-2 h-9 px-4 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 transition cursor-pointer"
+        className="inline-flex items-center gap-2 h-9 px-4 rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-sm font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 transition cursor-pointer"
       >
         + Add server&rsquo;s Events tab
       </button>
@@ -384,7 +384,7 @@ function FormModal({
               <button
                 onClick={submit}
                 disabled={!canSubmit}
-                className="inline-flex items-center justify-center h-9 px-4 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50 transition cursor-pointer"
+                className="inline-flex items-center justify-center h-9 px-4 rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-sm font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 disabled:opacity-50 transition cursor-pointer"
               >
                 {submitting ? (subscribe ? "Subscribing…" : "Pushing…") : (subscribe ? "Subscribe + push now" : "Push events now")}
               </button>
@@ -413,7 +413,7 @@ function ChoiceCard({
       onClick={onClick}
       className={`text-left px-3 py-2.5 rounded-md border text-sm transition ${
         active
-          ? "border-neutral-900 dark:border-white ring-1 ring-neutral-900 dark:ring-white"
+          ? "border-neutral-400 dark:border-neutral-700 ring-1 ring-neutral-400 dark:ring-neutral-700"
           : "border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800"
       }`}
     >
@@ -454,7 +454,7 @@ function ReauthCard() {
       </p>
       <button
         onClick={() => signIn("discord")}
-        className="px-3 py-1.5 rounded-md bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-neutral-900 text-sm font-medium transition"
+        className="px-3 py-1.5 rounded-md bg-neutral-100 hover:bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:hover:bg-neutral-700 dark:text-white text-sm font-medium transition"
       >
         Sign in with Discord
       </button>

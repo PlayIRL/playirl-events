@@ -22,7 +22,7 @@ function CreateEventAction() {
   return (
     <Link
       href="/account/events/new"
-      className="inline-flex items-center gap-1.5 h-9 px-4 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 transition cursor-pointer"
+      className="inline-flex items-center gap-1.5 h-9 px-4 rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-sm font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 transition cursor-pointer"
     >
       <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -40,7 +40,7 @@ function AdminPortalAction() {
   return (
     <Link
       href="/admin"
-      className="inline-flex items-center gap-1.5 h-9 px-4 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 transition cursor-pointer"
+      className="inline-flex items-center gap-1.5 h-9 px-4 rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-sm font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 transition cursor-pointer"
     >
       <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L4 5v6.5C4 16.5 7.5 20.5 12 22c4.5-1.5 8-5.5 8-10.5V5l-8-3z" />
@@ -206,7 +206,7 @@ function TabNav({ active }: { active: TabKey }) {
             scroll={false}
             className={`px-4 py-2.5 text-sm font-medium -mb-px border-b-2 transition ${
               isActive
-                ? "border-neutral-900 dark:border-white text-neutral-900 dark:text-white"
+                ? "border-neutral-400 dark:border-neutral-700 text-neutral-900 dark:text-white"
                 : "border-transparent text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
             }`}
           >

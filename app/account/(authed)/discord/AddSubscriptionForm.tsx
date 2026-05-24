@@ -55,7 +55,7 @@ export default function AddSubscriptionForm({
     <div>
       <button
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-2 h-9 px-4 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 transition cursor-pointer"
+        className="inline-flex items-center gap-2 h-9 px-4 rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-sm font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 transition cursor-pointer"
       >
         + New auto-post
       </button>
@@ -360,7 +360,7 @@ function FormModal({
             <button
               onClick={submit}
               disabled={!canSubmit}
-              className="inline-flex items-center justify-center h-9 px-4 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium hover:bg-neutral-800 dark:hover:bg-neutral-200 disabled:opacity-50 transition cursor-pointer"
+              className="inline-flex items-center justify-center h-9 px-4 rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-sm font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 disabled:opacity-50 transition cursor-pointer"
             >
               {submitting ? "Creating…" : "Create auto-post"}
             </button>
@@ -402,7 +402,7 @@ function ReauthCard() {
       </p>
       <button
         onClick={() => signIn("discord")}
-        className="px-3 py-1.5 rounded-md bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-neutral-900 text-sm font-medium transition"
+        className="px-3 py-1.5 rounded-md bg-neutral-100 hover:bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:hover:bg-neutral-700 dark:text-white text-sm font-medium transition"
       >
         Sign in with Discord
       </button>

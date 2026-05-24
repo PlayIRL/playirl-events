@@ -212,7 +212,7 @@ function ThemeOption({
       title={label}
       className={`flex-1 flex items-center justify-center py-2 rounded-md cursor-pointer transition-colors ${
         active
-          ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+          ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white"
           : "text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-white/5"
       }`}
     >
@@ -241,7 +241,7 @@ function SignedInTrigger({ user }: { user: User }) {
             decoding="async"
           />
         ) : (
-          <span className="w-full h-full rounded-full bg-neutral-800 dark:bg-neutral-100 text-white dark:text-neutral-900 text-[11px] font-bold flex items-center justify-center tracking-wide">
+          <span className="w-full h-full rounded-full bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-[11px] font-bold flex items-center justify-center tracking-wide">
             {initials}
           </span>
         )}

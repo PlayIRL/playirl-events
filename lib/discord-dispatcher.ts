@@ -443,6 +443,59 @@ function utcOffsetSuffix(timeZone: string, dateStr: string): string {
   }
 }
 
+/**
+ * Next scheduled fire moment for a subscription, or null if none can be
+ * predicted. Used by the activity log to show "Next: …" alongside past fires.
+ *
+ * - weekly/daily: deterministic — next future UTC instant matching the
+ *   subscription's hour_utc/dow, snapped to minute 0 (the canonical fire
+ *   moment; the dispatcher window is just slack for cron jitter).
+ * - reminder:    queries matching events in the next `days_ahead` window and
+ *   returns the earliest `event.start - lead_minutes` that is still in the
+ *   future. Null when no upcoming event matches.
+ */
+export function computeNextScheduledFire(
+  sub: DiscordSubscription,
+  now: Date,
+): Date | null {
+  if (sub.mode === "weekly") {
+    if (sub.dow === null) return null;
+    const d = new Date(now);
+    d.setUTCHours(sub.hour_utc, 0, 0, 0);
+    let daysUntil = (sub.dow - d.getUTCDay() + 7) % 7;
+    if (daysUntil === 0 && d <= now) daysUntil = 7;
+    d.setUTCDate(d.getUTCDate() + daysUntil);
+    return d;
+  }
+  if (sub.mode === "daily") {
+    const d = new Date(now);
+    d.setUTCHours(sub.hour_utc, 0, 0, 0);
+    if (d <= now) d.setUTCDate(d.getUTCDate() + 1);
+    return d;
+  }
+  if (sub.mode === "reminder") {
+    const lead = sub.lead_minutes;
+    const windowEnd = addMinutes(now, sub.days_ahead * 24 * 60);
+    const candidates = eventsForSubscription(sub, now, windowEnd);
+    let soonest: Date | null = null;
+    for (const ev of candidates) {
+      if (!ev.time) continue;
+      const tz = ev.timezone || "America/New_York";
+      let evStart: Date;
+      try {
+        evStart = new Date(`${ev.date}T${ev.time}:00${utcOffsetSuffix(tz, ev.date)}`);
+      } catch {
+        continue;
+      }
+      const fireAt = addMinutes(evStart, -lead);
+      if (fireAt <= now) continue;
+      if (!soonest || fireAt < soonest) soonest = fireAt;
+    }
+    return soonest;
+  }
+  return null;
+}
+
 // --- Public surface --------------------------------------------------------
 
 async function dispatchEventsTabSubsForAll(

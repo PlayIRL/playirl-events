@@ -154,7 +154,7 @@ export default function MapView({
         {pendingSearch && (
           <button
             onClick={applyPendingSearch}
-            className="absolute top-3 left-1/2 -translate-x-1/2 z-[1] inline-flex items-center gap-1.5 h-9 px-4 rounded-md bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 text-sm font-medium shadow-lg hover:bg-neutral-800 dark:hover:bg-neutral-200 transition cursor-pointer"
+            className="absolute top-3 left-1/2 -translate-x-1/2 z-[1] inline-flex items-center gap-1.5 h-9 px-4 rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-sm font-medium shadow-lg hover:bg-neutral-200 dark:hover:bg-neutral-700 transition cursor-pointer"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m-4-4h8m6 0a10 10 0 11-20 0 10 10 0 0120 0z" />
@@ -165,7 +165,7 @@ export default function MapView({
 
         {/* Stats badge — bottom-center overlay. Sits above the Google attribution
             line via a small bottom offset so it doesn't compete with it. */}
-        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-[1] inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-neutral-900/90 dark:bg-neutral-100/90 text-white dark:text-neutral-900 text-xs font-medium shadow-lg backdrop-blur-sm pointer-events-none">
+        <div className="absolute bottom-7 left-1/2 -translate-x-1/2 z-[1] inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-neutral-100/90 text-neutral-900 dark:bg-neutral-800/90 dark:text-white text-xs font-medium shadow-lg backdrop-blur-sm pointer-events-none">
           <span>
             {groups.length} venue{groups.length === 1 ? "" : "s"} · {totalMapped} mapped event{totalMapped === 1 ? "" : "s"}
           </span>

@@ -156,7 +156,7 @@ export default function CalendarView({
                     key={day.date}
                     className={`flex items-center justify-center gap-1.5 py-1.5 ${
                       isToday
-                        ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+                        ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white"
                         : "bg-white dark:bg-neutral-900"
                     }`}
                   >

@@ -150,7 +150,7 @@ export default function PreferencesEditor({ initial, fallbackLocationLabel }: Pr
             aria-pressed={formats.size === 0}
             className={`text-xs px-2.5 py-1 rounded-full border transition cursor-pointer ${
               formats.size === 0
-                ? "bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 border-neutral-900 dark:border-neutral-100"
+                ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white border-neutral-400 dark:border-neutral-700"
                 : "bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800"
             }`}
           >
@@ -166,7 +166,7 @@ export default function PreferencesEditor({ initial, fallbackLocationLabel }: Pr
                 aria-pressed={active}
                 className={`text-xs px-2.5 py-1 rounded-full border transition cursor-pointer ${
                   active
-                    ? "bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 border-neutral-900 dark:border-neutral-100"
+                    ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white border-neutral-400 dark:border-neutral-700"
                     : "bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800"
                 }`}
               >
@@ -197,7 +197,7 @@ export default function PreferencesEditor({ initial, fallbackLocationLabel }: Pr
         <button
           onClick={save}
           disabled={busy || !dirty}
-          className="px-3 py-1.5 rounded-md bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-neutral-900 text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="px-3 py-1.5 rounded-md bg-neutral-100 hover:bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:hover:bg-neutral-700 dark:text-white text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           {busy ? "Saving…" : dirty ? "Save changes" : "Saved"}
         </button>

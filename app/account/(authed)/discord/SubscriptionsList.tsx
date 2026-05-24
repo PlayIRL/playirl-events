@@ -75,6 +75,7 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
   const [activityLoading, setActivityLoading] = useState(false);
   const [activityError, setActivityError] = useState<string | null>(null);
   const [activityData, setActivityData] = useState<ActivityEntry[] | null>(null);
+  const [nextFireAt, setNextFireAt] = useState<string | null>(null);
 
   async function loadActivity() {
     setActivityLoading(true);
@@ -84,6 +85,7 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
       const body = await res.json();
       if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
       setActivityData(body.activity ?? []);
+      setNextFireAt(body.next_fire_at ?? null);
     } catch (e) {
       setActivityError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -494,12 +496,15 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
           </button>
 
           {activityOpen && (
-            <div id={`discord-activity-${sub.id}`} className="mt-3">
+            <div id={`discord-activity-${sub.id}`} className="mt-3 space-y-3">
               {activityLoading && (
                 <p className="text-xs text-neutral-500 dark:text-neutral-400">Loading…</p>
               )}
               {activityError && (
                 <p className="text-xs text-red-600 dark:text-red-400">{activityError}</p>
+              )}
+              {activityData && (
+                <NextFireLine nextFireAt={nextFireAt} enabled={!!sub.enabled} mode={sub.mode} />
               )}
               {activityData && activityData.length === 0 && (
                 <p className="text-xs text-neutral-500 dark:text-neutral-400">
@@ -589,7 +594,7 @@ function SubscriptionCard({ sub }: { sub: DiscordSubscription }) {
                   <button
                     onClick={save}
                     disabled={busy || !scopeOk}
-                    className="px-3 py-1.5 rounded-md bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-neutral-900 text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-3 py-1.5 rounded-md bg-neutral-100 hover:bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:hover:bg-neutral-700 dark:text-white text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {busy ? "Saving…" : "Save"}
                   </button>
@@ -689,6 +694,71 @@ function formatFiredAt(d: Date): string {
     hour: "numeric",
     minute: "2-digit",
   });
+}
+
+function formatRelative(target: Date, now: Date): string {
+  const diffMs = target.getTime() - now.getTime();
+  const absMin = Math.round(Math.abs(diffMs) / 60_000);
+  const past = diffMs < 0;
+  let phrase: string;
+  if (absMin < 1) phrase = "moments";
+  else if (absMin < 60) phrase = `${absMin} min`;
+  else if (absMin < 60 * 24) {
+    const h = Math.round(absMin / 60);
+    phrase = `${h} hour${h === 1 ? "" : "s"}`;
+  } else {
+    const d = Math.round(absMin / (60 * 24));
+    phrase = `${d} day${d === 1 ? "" : "s"}`;
+  }
+  return past ? `${phrase} ago` : `in ${phrase}`;
+}
+
+function NextFireLine({
+  nextFireAt,
+  enabled,
+  mode,
+}: {
+  nextFireAt: string | null;
+  enabled: boolean;
+  mode: "weekly" | "daily" | "reminder";
+}) {
+  if (!enabled) {
+    return (
+      <p className="text-xs text-neutral-500 dark:text-neutral-400">
+        <span className="font-medium text-neutral-700 dark:text-neutral-300">Next scheduled:</span>{" "}
+        Disabled — won&apos;t fire until re-enabled.
+      </p>
+    );
+  }
+  if (!nextFireAt) {
+    return (
+      <p className="text-xs text-neutral-500 dark:text-neutral-400">
+        <span className="font-medium text-neutral-700 dark:text-neutral-300">Next scheduled:</span>{" "}
+        {mode === "reminder"
+          ? "No matching events in the watch window."
+          : "Not scheduled."}
+      </p>
+    );
+  }
+  const d = new Date(nextFireAt);
+  const ts = d.toLocaleString(undefined, {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  return (
+    <p className="text-xs text-neutral-600 dark:text-neutral-300">
+      <span className="font-medium text-neutral-700 dark:text-neutral-200">Next scheduled:</span>{" "}
+      <time dateTime={d.toISOString()} className="font-mono tabular-nums" title={d.toISOString()}>
+        {ts}
+      </time>{" "}
+      <span className="text-neutral-500 dark:text-neutral-400">
+        ({formatRelative(d, new Date())})
+      </span>
+    </p>
+  );
 }
 
 function ActivityRow({ entry }: { entry: ActivityEntry }) {

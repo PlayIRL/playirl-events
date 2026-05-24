@@ -121,7 +121,7 @@ export default function AboutPage() {
             <div className="flex flex-wrap items-center gap-2 pt-1">
               <Link
                 href="/account/events/new"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium rounded-md hover:bg-neutral-800 dark:hover:bg-neutral-100 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/20 active:translate-y-0 transition-all duration-200"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-sm font-medium rounded-md hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/20 active:translate-y-0 transition-all duration-200"
               >
                 {"\u270F\uFE0F"} Create an event
               </Link>

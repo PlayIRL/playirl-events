@@ -51,13 +51,13 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
       className="fixed left-1/2 -translate-x-1/2 z-40 flex"
       style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
     >
-      <div className="relative flex flex-row bg-white dark:bg-neutral-800 rounded-md p-1 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/15 dark:shadow-black/50">
+      <div className="relative flex flex-row bg-white dark:bg-neutral-900 rounded-md p-1 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/15 dark:shadow-black/50">
         {/* Sliding selection pill — width matches a single button, transform
             step = button width + 4px gap. Tailwind generates both mobile
             (60/120px) and sm: (84/168px) variants so the bar tracks the
             active tab at either breakpoint without runtime media queries. */}
         <div
-          className={`absolute top-1 bottom-1 left-1 w-14 sm:w-20 rounded-md bg-neutral-900 dark:bg-white shadow-sm transition-transform duration-200 ease-out ${
+          className={`absolute top-1 bottom-1 left-1 w-14 sm:w-20 rounded-md bg-neutral-100 dark:bg-neutral-800 shadow-sm transition-transform duration-200 ease-out ${
             activeView === "calendar"
               ? "translate-x-[60px] sm:translate-x-[84px]"
               : activeView === "map"
@@ -68,7 +68,7 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
         <button
           onClick={() => setView("list")}
           title="List view"
-          className={`relative z-10 flex flex-col items-center justify-center gap-1 w-14 h-14 sm:w-20 sm:h-16 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ${activeView === "list" ? "text-white dark:text-neutral-900" : "text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white"}`}
+          className={`relative z-10 flex flex-col items-center justify-center gap-1 w-14 h-14 sm:w-20 sm:h-16 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ${activeView === "list" ? "text-neutral-900 dark:text-white" : "text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white"}`}
         >
           <ListIcon />
           <span className="text-[11px] sm:text-xs font-semibold leading-none">List</span>
@@ -76,7 +76,7 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
         <button
           onClick={() => setView("calendar")}
           title="Calendar view"
-          className={`relative z-10 flex flex-col items-center justify-center gap-1 w-14 h-14 sm:w-20 sm:h-16 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ml-1 ${activeView === "calendar" ? "text-white dark:text-neutral-900" : "text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white"}`}
+          className={`relative z-10 flex flex-col items-center justify-center gap-1 w-14 h-14 sm:w-20 sm:h-16 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ml-1 ${activeView === "calendar" ? "text-neutral-900 dark:text-white" : "text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white"}`}
         >
           <CalendarIcon />
           <span className="text-[11px] sm:text-xs font-semibold leading-none">Calendar</span>
@@ -84,7 +84,7 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
         <button
           onClick={() => setView("map")}
           title="Map view"
-          className={`relative z-10 flex flex-col items-center justify-center gap-1 w-14 h-14 sm:w-20 sm:h-16 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ml-1 ${activeView === "map" ? "text-white dark:text-neutral-900" : "text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white"}`}
+          className={`relative z-10 flex flex-col items-center justify-center gap-1 w-14 h-14 sm:w-20 sm:h-16 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ml-1 ${activeView === "map" ? "text-neutral-900 dark:text-white" : "text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white"}`}
         >
           <MapIcon />
           <span className="text-[11px] sm:text-xs font-semibold leading-none">Map</span>

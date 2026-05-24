@@ -30,28 +30,28 @@ export const FORMAT_EMOJI: Record<string, string> = {
 export const FORMAT_BADGE: Record<string, string> = {
   // Plum — legendary / mythic
   Commander:
-    "bg-[#E1C5F5] text-[#2A1145] dark:bg-[#6B3FA0]/60 dark:text-[#F1E4F9]",
+    "bg-[#C9A2EE] text-[#2A1145] dark:bg-[#6B3FA0]/85 dark:text-[#F1E4F9]",
   // U — Island
   Modern:
-    "bg-[#B5D7F0] text-[#0A2D4D] dark:bg-[#0E68AB]/65 dark:text-[#D6ECF7]",
+    "bg-[#8FC1E8] text-[#0A2D4D] dark:bg-[#0E68AB]/85 dark:text-[#D6ECF7]",
   // G — Forest
   Standard:
-    "bg-[#A8E0BD] text-[#0A2E1A] dark:bg-[#00733E]/65 dark:text-[#D6F0DD]",
+    "bg-[#7DD49C] text-[#0A2E1A] dark:bg-[#00733E]/85 dark:text-[#D6F0DD]",
   // R — Mountain
   Pioneer:
-    "bg-[#FAB6A4] text-[#3D0E0E] dark:bg-[#D3202A]/55 dark:text-[#FAD8C9]",
+    "bg-[#F69279] text-[#3D0E0E] dark:bg-[#D3202A]/75 dark:text-[#FAD8C9]",
   // B — Swamp / eternal
   Legacy:
-    "bg-[#D9D1C5] text-[#15110D] dark:bg-[#3A352F]/85 dark:text-[#E8E2DC]",
+    "bg-[#C8BDA9] text-[#15110D] dark:bg-[#3A352F] dark:text-[#E8E2DC]",
   // W — Plains / commons (pastel sun-gold)
   Pauper:
-    "bg-[#FCE48F] text-[#5C4400] dark:bg-[#F8E26B]/55 dark:text-[#FBF4C5]",
+    "bg-[#FBD651] text-[#5C4400] dark:bg-[#F8E26B]/75 dark:text-[#FBF4C5]",
   // Amber-gold — limited
   Draft:
-    "bg-[#FCC68C] text-[#3D1F08] dark:bg-[#E08F2B]/65 dark:text-[#F9DCB0]",
+    "bg-[#FAA958] text-[#3D1F08] dark:bg-[#E08F2B]/85 dark:text-[#F9DCB0]",
   // Bronze-gold — sealed mystery
   Sealed:
-    "bg-[#E5BD93] text-[#291A07] dark:bg-[#B86E1F]/65 dark:text-[#EBCFA5]",
+    "bg-[#D9A467] text-[#291A07] dark:bg-[#B86E1F]/85 dark:text-[#EBCFA5]",
 };
 
 // Saturated swatches for the format-selector dot in the radius dropdown.
