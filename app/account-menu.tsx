@@ -101,17 +101,23 @@ export default function AccountMenu({
 
   return (
     <div ref={wrapperRef} className="relative flex">
-      {/* Padding around the 32px avatar matches on all sides (4px) so the pill
-        * reads as a circle hugging the avatar instead of a stretched capsule
-        * offset to the right. sm:pr-4 keeps a comfortable buffer after the
-        * name text on desktop where the label is visible. */}
+      {/* Left padding is conditional on auth state:
+        *   signed-in  → pl-1 so the 32px avatar visually hugs the pill edge
+        *                (the avatar itself fills the left side).
+        *   signed-out → pl-4 to match pr-4. The signed-out trigger is just a
+        *                16px icon + label, so pl-1 left it glued to the edge
+        *                with no breathing room.
+        * sm:pr-4 is shared — keeps a comfortable buffer after the label in
+        * both states on desktop where the text is visible. */}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
         title={signedIn ? user?.name ?? "Account" : "Sign in"}
-        className="inline-flex items-center justify-center gap-2 w-10 h-10 p-1 sm:w-auto sm:pl-1 sm:pr-4 rounded-full cursor-pointer transition-colors text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20"
+        className={`inline-flex items-center justify-center gap-2 w-10 h-10 p-1 sm:w-auto sm:pr-4 rounded-full cursor-pointer transition-colors text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ${
+          signedIn ? "sm:pl-1" : "sm:pl-4"
+        }`}
       >
         {trigger}
       </button>
