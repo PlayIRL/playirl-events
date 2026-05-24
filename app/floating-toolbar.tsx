@@ -51,7 +51,7 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
       className="fixed left-1/2 -translate-x-1/2 z-40 flex"
       style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
     >
-      <div className="relative flex flex-row bg-white dark:bg-neutral-900 rounded-md p-1 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/15 dark:shadow-black/50">
+      <div className="relative flex flex-row bg-white dark:bg-neutral-950 rounded-md p-1 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/15 dark:shadow-black/50">
         {/* Sliding selection pill — width matches a single button, transform
             step = button width + 4px gap. Tailwind generates both mobile
             (60/120px) and sm: (84/168px) variants so the bar tracks the
