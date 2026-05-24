@@ -9,7 +9,7 @@ X-WR-CALDESC:Modern events in Philadelphia area
 BEGIN:VEVENT
 UID:wotc-10653654
 SEQUENCE:0
-DTSTAMP:20260524T111702Z
+DTSTAMP:20260524T155624Z
 DTSTART:20260526T223000Z
 DTEND:20260527T013000Z
 SUMMARY:Tuesday Modern @ Top Deck Games - Cherry Hill
@@ -23,7 +23,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794456
 SEQUENCE:0
-DTSTAMP:20260524T111702Z
+DTSTAMP:20260524T155624Z
 DTSTART:20260528T223000Z
 DTEND:20260529T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -41,7 +41,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794457
 SEQUENCE:0
-DTSTAMP:20260524T111702Z
+DTSTAMP:20260524T155624Z
 DTSTART:20260604T223000Z
 DTEND:20260605T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -59,7 +59,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794458
 SEQUENCE:0
-DTSTAMP:20260524T111702Z
+DTSTAMP:20260524T155624Z
 DTSTART:20260611T223000Z
 DTEND:20260612T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -75,9 +75,36 @@ DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/10794458
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11067544
+SEQUENCE:0
+DTSTAMP:20260524T155624Z
+DTSTART:20260614T150000Z
+DTEND:20260614T180000Z
+SUMMARY:US RCQ  | 2026-27 Round 1 Modern 2-Slot RCQ @ Top Deck Games - Che
+ rry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Modern\nCost: $40\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11067544\n\nJoin us a
+ t Top Deck Games for our Modern 2-Slot RCQ!\n\nWHEN: Sunday\, June 14th\, 
+ 11:00am\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 100\n
+ Cherry Hill\, NJ 08003\n856-858-2700\n \n ENTRY: $40\n- Players must have 
+ a valid Wizard's Player Account.\n- Players are recommended to have the MT
+ G Companion App.\n\n FORMAT: Constructed - Modern\n- Competitive REL- Deck
+  lists required\n- Decklists can be written\, printed or emailed to cherry
+ hill@topdeckgames.com\n- Swiss Rounds with cut based on attendance\n\nPRIZ
+ ES: Promos and Store Credit scaling based on attendance\n- Participation: 
+ 1x Promo card\n- Top 8: Non-foil Promo\n- Top 1: Foil Winner Promo\n\n@32 
+ Players\n- 1st & 2nd: $250 + Regional Championship Invite\n- Top 4: $150\n
+ - Top 8: $50\n\nPromos:\n- 1st & 2nd: 1x Foil Sowing Mycospawn foil\n- Top
+  8: 1x Sowing Mycospawn \n- Participation: 1x Ancient Stirrings\nSource: w
+ izards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11067544
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10794459
 SEQUENCE:0
-DTSTAMP:20260524T111702Z
+DTSTAMP:20260524T155624Z
 DTSTART:20260618T223000Z
 DTEND:20260619T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -95,7 +122,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794460
 SEQUENCE:0
-DTSTAMP:20260524T111702Z
+DTSTAMP:20260524T155624Z
 DTSTART:20260625T223000Z
 DTEND:20260626T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -113,7 +140,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794461
 SEQUENCE:0
-DTSTAMP:20260524T111702Z
+DTSTAMP:20260524T155624Z
 DTSTART:20260702T223000Z
 DTEND:20260703T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -131,7 +158,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794462
 SEQUENCE:0
-DTSTAMP:20260524T111702Z
+DTSTAMP:20260524T155624Z
 DTSTART:20260709T223000Z
 DTEND:20260710T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -149,7 +176,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794463
 SEQUENCE:0
-DTSTAMP:20260524T111702Z
+DTSTAMP:20260524T155624Z
 DTSTART:20260716T223000Z
 DTEND:20260717T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
