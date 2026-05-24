@@ -323,7 +323,7 @@ export function SubscribeDropdown({
   }
 
   return (
-    <div ref={triggerRef} className="relative ml-1 inline-block">
+    <div ref={triggerRef} className="relative inline-block">
       <button
         onClick={() => status === "open" ? close() : open()}
         title="Subscribe to calendar"
@@ -583,33 +583,36 @@ export default function RadiusSelector({
           isCustom={isLocationCustom}
         />
 
-        {/* Timeframe selector — only shown in map view. List view extends
-            forward via the footer "Load more events" button, and calendar
-            view has its own week navigation, so neither needs a chip here. */}
-        {currentView === "map" && (
-          <>
-            <span className={CONNECTOR}>,</span>
-            <ChipSelect
-              label={TIME_OPTIONS.find((t) => t.value === String(currentDays))?.label || "This week"}
-              heading="Timeframe"
-              options={TIME_OPTIONS}
-              value={String(currentDays)}
-              onChange={(v) => updateParam("days", v)}
-              align="end"
-            />
-          </>
-        )}
-
         {/* "= N" event count hidden per user request. Re-enable by un-commenting. */}
         {/* <span className={CONNECTOR}>=</span>
         <span className="inline-flex items-center justify-center min-w-[1.75rem] px-1.5 py-0.5 rounded-md bg-neutral-100 dark:bg-white/10 text-neutral-900 dark:text-white text-xs sm:text-sm font-semibold tabular-nums leading-none">{eventCount}</span> */}
 
-        <SubscribeDropdown
-          currentFormat={currentFormat}
-          currentRadius={currentRadius}
-          currentDays={currentDays}
-          onToast={showToast}
-        />
+        {/* Trailing controls (timeframe + subscribe) bundled into a single
+            inline-flex unit so they wrap as a group instead of leaving the
+            subscribe button stranded on its own line when the row barely
+            overflows. Timeframe only renders in map view (list/calendar have
+            their own navigation). */}
+        <div className="inline-flex items-center gap-x-1.5">
+          {currentView === "map" && (
+            <>
+              <span className={CONNECTOR}>,</span>
+              <ChipSelect
+                label={TIME_OPTIONS.find((t) => t.value === String(currentDays))?.label || "This week"}
+                heading="Timeframe"
+                options={TIME_OPTIONS}
+                value={String(currentDays)}
+                onChange={(v) => updateParam("days", v)}
+                align="end"
+              />
+            </>
+          )}
+          <SubscribeDropdown
+            currentFormat={currentFormat}
+            currentRadius={currentRadius}
+            currentDays={currentDays}
+            onToast={showToast}
+          />
+        </div>
       </div>
       <CreateEventButton />
     </>
