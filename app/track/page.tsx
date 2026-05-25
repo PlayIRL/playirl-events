@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/app/reveal";
 import { PlayIrlLogo } from "@/app/playirl-logo";
@@ -52,6 +53,45 @@ export default function LifePage() {
         <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-6 leading-relaxed">
           Now in open beta on iOS via TestFlight — install with the badge below. Android is still in development; join the waitlist and we&apos;ll email when Play Store invites open up.
         </p>
+      </Reveal>
+
+      <Reveal delay={220}>
+        <div
+          className="my-12 select-none"
+          aria-label="PlayIRL Track app screenshots"
+        >
+          {/* Stage: card with light/dark backgrounds framing the composition */}
+          <div className="relative rounded-2xl border border-neutral-200 dark:border-white/10 bg-gradient-to-br from-neutral-100 to-neutral-200 dark:from-neutral-800 dark:to-neutral-900 p-3 sm:p-4 md:p-5">
+            <div className="relative mx-auto w-[310px] h-[260px] sm:w-[560px] sm:h-[370px] md:w-[680px] md:h-[450px]">
+
+              {/* Theme menu phone — behind, peeks past card's right edge */}
+              <div className="absolute z-0 -right-4 sm:-right-6 md:-right-8 top-1/2 -translate-y-1/2 w-[130px] sm:w-[190px] md:w-[230px]">
+                <Image
+                  src="/images/track/theme.png"
+                  width={1036}
+                  height={2004}
+                  alt="PlayIRL Track — theme picker with color themes, artwork gallery, and customization options"
+                  className="w-full h-auto drop-shadow-2xl"
+                  priority
+                />
+              </div>
+
+              {/* Gameplay landscape phone — in front, anchored left, shifted 10% leftward, dominant */}
+              <div className="absolute z-10 left-0 top-1/2 -translate-x-[10%] -translate-y-1/2 w-[280px] h-[145px] sm:w-[520px] sm:h-[269px] md:w-[640px] md:h-[331px]">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[145px] h-[280px] sm:w-[269px] sm:h-[520px] md:w-[331px] md:h-[640px] rotate-90 origin-center">
+                  <Image
+                    src="/images/track/gameplay-art.png"
+                    width={1036}
+                    height={2004}
+                    alt="PlayIRL Track — 4-player MTG life counter with card art backgrounds, each player rotated to face their seat"
+                    className="w-full h-full drop-shadow-2xl"
+                    priority
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </Reveal>
 
       <Reveal delay={300}>

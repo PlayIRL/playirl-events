@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/app/reveal";
 import { PlayIrlLogo } from "@/app/playirl-logo";
@@ -149,6 +150,23 @@ export default function AboutPage() {
         <Reveal>
           <div className="bg-neutral-50 dark:bg-white/[0.04] border border-neutral-200 dark:border-white/10 rounded-md p-5 space-y-3">
             <p className="text-base font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white">{"\uD83D\uDCF1"} Companion app {"\u2014"} PlayIRL.gg/Track</p>
+            <Link
+              href="/track"
+              aria-label="Learn more about PlayIRL.gg/Track"
+              className="group mx-auto block w-fit py-2 select-none rounded-md outline-none transition-transform hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-neutral-400 dark:focus-visible:ring-white/40"
+            >
+              <div className="relative w-[290px] h-[150px] sm:w-[520px] sm:h-[269px] md:w-[620px] md:h-[320px]">
+                <div className="absolute top-1/2 left-1/2 w-[150px] h-[290px] sm:w-[269px] sm:h-[520px] md:w-[320px] md:h-[620px] -translate-x-1/2 -translate-y-1/2 rotate-90 origin-center">
+                  <Image
+                    src="/images/track/gameplay-art.png"
+                    width={1036}
+                    height={2004}
+                    alt="PlayIRL Track \u2014 4-player MTG life counter in landscape table mode, each player rotated to face their seat. Click to learn more."
+                    className="w-full h-full drop-shadow-2xl"
+                  />
+                </div>
+              </div>
+            </Link>
             <p className="text-sm text-neutral-700 dark:text-neutral-300">
               A simple, no-fuss MTG life tracker for the table. Now in open beta on iOS via TestFlight {"\u2014"} {" "}
               <Link href="/track" className="text-neutral-900 dark:text-white underline underline-offset-2 hover:no-underline">
