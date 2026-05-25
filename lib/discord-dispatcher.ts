@@ -57,6 +57,12 @@ import type { DiscordEventsTabSub } from "@/lib/discord-events-tab-subs";
 import { drainAdminNotifications } from "@/lib/discord-admin-push";
 
 const REMINDER_WINDOW_MINUTES = 5;
+// How late a missed per-event reminder can fire and still be useful. The
+// purpose of a reminder is lead-time notice — if a tick lands 90 min late
+// on a 60-min-lead reminder, sending it 30 min before the event is fine;
+// sending it after the event has started is not (claimPost dedupes, and
+// the evStart > now guard below blocks post-start fires regardless).
+const REMINDER_CATCHUP_MAX_LATE_MINUTES = 60;
 // How late a missed weekly/daily digest slot can be before we give up on it.
 // Set high enough to tolerate the slowest realistic scheduler delay (we've
 // seen GHA cron skip 4+ hours), low enough that an "8 AM digest" never
@@ -304,9 +310,16 @@ async function fireReminders(
   trigger: DiscordActivityTrigger,
 ): Promise<void> {
   const lead = sub.lead_minutes;
-  // Window: events starting in [now+lead, now+lead+5min). The 5-min width
-  // matches the cron cadence — every event passes through exactly one window.
-  const from = addMinutes(now, lead);
+  // Window: events starting in [now + lead − CATCHUP, now + lead + 5min).
+  //
+  // The forward 5-min half matches the cron cadence — an on-time tick still
+  // catches a single ideal-fire-time window. The backward CATCHUP half
+  // exists because the scheduler isn't on time: GHA cron skews 1–4h, and we
+  // need a delayed tick to still fire reminders whose ideal time has just
+  // passed. claimPost in the loop body keeps a same-event reminder from
+  // double-posting across overlapping windows; the `evStart > now` guard
+  // blocks fires for events that have already started.
+  const from = addMinutes(now, lead - REMINDER_CATCHUP_MAX_LATE_MINUTES);
   const to = addMinutes(now, lead + REMINDER_WINDOW_MINUTES);
   // Date filter is day-granular in getActiveEvents; pull the union of dates
   // that the window straddles, then narrow by exact UTC start time below.
@@ -323,6 +336,9 @@ async function fireReminders(
       continue;
     }
     if (evStart < from || evStart >= to) continue;
+    // Skip reminders for events that have already started — a "reminder
+    // 10 min before X" message arriving after X is worse than silence.
+    if (evStart <= now) continue;
     // Re-fetch to honor cancelled_at flips.
     const fresh = getEvent(ev.id);
     if (!fresh || fresh.cancelled_at) continue;

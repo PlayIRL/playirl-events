@@ -208,6 +208,67 @@ assertEq(
   true,
 );
 
+// --- Reminder catch-up window logic ---
+// fireReminders is async + DB-coupled, so we re-implement the pure window
+// predicate here. The intent: at a tick, fire reminders for events whose
+// ideal reminder time was in (now - CATCHUP, now + 5min] AND that haven't
+// already started.
+console.log("\n=== Reminder catch-up window ===");
+
+const REMINDER_WINDOW_MINUTES = 5;
+const REMINDER_CATCHUP_MAX_LATE_MINUTES = 60;
+
+function addMin(d: Date, mins: number): Date {
+  return new Date(d.getTime() + mins * 60_000);
+}
+
+function shouldRemind(now: Date, evStart: Date, leadMinutes: number): boolean {
+  const from = addMin(now, leadMinutes - REMINDER_CATCHUP_MAX_LATE_MINUTES);
+  const to = addMin(now, leadMinutes + REMINDER_WINDOW_MINUTES);
+  if (evStart < from || evStart >= to) return false;
+  if (evStart <= now) return false;
+  return true;
+}
+
+// Lead = 60, event at T = 14:00 UTC. Ideal reminder at 13:00.
+const eventT = new Date("2026-05-25T14:00:00Z");
+
+assertEq(
+  "on-time tick at 13:00 fires reminder",
+  shouldRemind(new Date("2026-05-25T13:00:00Z"), eventT, 60),
+  true,
+);
+assertEq(
+  "tick 30m late (13:30) still fires reminder",
+  shouldRemind(new Date("2026-05-25T13:30:00Z"), eventT, 60),
+  true,
+);
+assertEq(
+  "tick 59m late (13:59) still fires reminder",
+  shouldRemind(new Date("2026-05-25T13:59:00Z"), eventT, 60),
+  true,
+);
+assertEq(
+  "tick at event start (14:00) does NOT fire reminder",
+  shouldRemind(new Date("2026-05-25T14:00:00Z"), eventT, 60),
+  false,
+);
+assertEq(
+  "tick after event start (14:05) does NOT fire reminder",
+  shouldRemind(new Date("2026-05-25T14:05:00Z"), eventT, 60),
+  false,
+);
+assertEq(
+  "tick 10m before ideal (12:50) fires reminder (within forward 5min for next event-ish, no — should NOT)",
+  shouldRemind(new Date("2026-05-25T12:50:00Z"), eventT, 60),
+  false,
+);
+assertEq(
+  "tick 4m before ideal (12:56) fires reminder",
+  shouldRemind(new Date("2026-05-25T12:56:00Z"), eventT, 60),
+  true,
+);
+
 console.log(
   failures === 0
     ? "\n✓ All catch-up dispatch checks passed.\n"
