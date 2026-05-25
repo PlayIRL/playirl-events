@@ -57,6 +57,12 @@ import type { DiscordEventsTabSub } from "@/lib/discord-events-tab-subs";
 import { drainAdminNotifications } from "@/lib/discord-admin-push";
 
 const REMINDER_WINDOW_MINUTES = 5;
+// How late a missed weekly/daily digest slot can be before we give up on it.
+// Set high enough to tolerate the slowest realistic scheduler delay (we've
+// seen GHA cron skip 4+ hours), low enough that an "8 AM digest" never
+// surprises subscribers by landing in the evening.
+const DIGEST_MAX_LATE_HOURS = 6;
+const DIGEST_MAX_LATE_MS = DIGEST_MAX_LATE_HOURS * 60 * 60 * 1000;
 // Inter-message gap for CROSS-channel fan-out (reminders + retry queue).
 // Discord's global rate limit is 50 req/s; 25ms keeps us well under that
 // when fanning out a single tick to many channels.
@@ -544,6 +550,84 @@ async function dispatchOneEventsTabSub(
 }
 
 /**
+ * Most recent UTC timestamp at-or-before `now` matching (dow, hourUtc:00).
+ * dow uses Date.getUTCDay() convention (0=Sun..6=Sat). Used by catch-up
+ * dispatch: if the most recent slot is in the past and `last_dispatched_at`
+ * is older, we missed a tick and should fire now (subject to lateness cap).
+ */
+export function mostRecentWeeklyOccurrenceUtc(
+  now: Date,
+  dow: number,
+  hourUtc: number,
+): Date {
+  const fire = new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+    hourUtc, 0, 0, 0,
+  ));
+  // Walk back to the target dow.
+  const daysBack = (fire.getUTCDay() - dow + 7) % 7;
+  fire.setUTCDate(fire.getUTCDate() - daysBack);
+  // If we're on the target day but before hourUtc, that put us in the future
+  // — step back a full week to the previous occurrence.
+  if (fire.getTime() > now.getTime()) {
+    fire.setUTCDate(fire.getUTCDate() - 7);
+  }
+  return fire;
+}
+
+/**
+ * Most recent UTC timestamp at-or-before `now` matching hourUtc:00 on any day.
+ */
+export function mostRecentDailyOccurrenceUtc(now: Date, hourUtc: number): Date {
+  const fire = new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+    hourUtc, 0, 0, 0,
+  ));
+  if (fire.getTime() > now.getTime()) {
+    fire.setUTCDate(fire.getUTCDate() - 1);
+  }
+  return fire;
+}
+
+/**
+ * Parse SQLite `datetime('now')` text (e.g. "2026-05-25 17:57:00") as UTC ms.
+ * Returns 0 if null/unparsable so dedupe treats "never fired" as
+ * earlier-than-any-slot.
+ */
+function parseLastDispatchedAtMs(value: string | null): number {
+  if (!value) return 0;
+  const isoish = value.includes("T") ? value : value.replace(" ", "T");
+  const hasTz = /[Zz]|[+-]\d{2}:?\d{2}$/.test(isoish);
+  const parsed = Date.parse(hasTz ? isoish : isoish + "Z");
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+/**
+ * Catch-up dispatch check: fire if the most recent scheduled slot is in the
+ * past, we haven't fired since that slot, and the slot isn't too stale.
+ *
+ * This replaces a narrow `utcMinute < 5` gate that depended on the scheduler
+ * being on time — which GitHub Actions cron isn't. Now a tick delayed up to
+ * DIGEST_MAX_LATE_HOURS still catches the missed slot; subsequent ticks
+ * within the same slot dedupe via `last_dispatched_at`.
+ */
+function isDigestSlotDue(
+  sub: DiscordSubscription,
+  now: Date,
+  slot: Date,
+): boolean {
+  const slotMs = slot.getTime();
+  const nowMs = now.getTime();
+  if (slotMs > nowMs) return false; // future slot
+  if (nowMs - slotMs > DIGEST_MAX_LATE_MS) return false; // ancient slot, skip
+  return parseLastDispatchedAtMs(sub.last_dispatched_at) < slotMs;
+}
+
+/**
  * The cron body — drain pending retries, evaluate every enabled channel
  * subscription against time gates, then push every Events-tab match. Used by
  * both /api/discord/dispatch (cron) and /api/admin/discord-servers/dispatch-all.
@@ -565,21 +649,25 @@ export async function dispatchAllSubs(
   const subs = listEnabledSubscriptions();
   summary.subscriptions_checked = subs.length;
 
-  const utcDow = now.getUTCDay();
-  const utcHour = now.getUTCHours();
-  const utcMinute = now.getUTCMinutes();
-  const inFireWindow = utcMinute < REMINDER_WINDOW_MINUTES;
-
   for (const sub of subs) {
     try {
       if (sub.mode === "weekly") {
-        const due = force || (sub.dow === utcDow && sub.hour_utc === utcHour && inFireWindow);
+        if (sub.dow === null) {
+          // Weekly mode requires a configured day-of-week. A null here means
+          // the row is misconfigured (UI bug or partial migration); skip
+          // silently rather than picking an arbitrary day.
+          console.warn(`[discord-dispatch] sub=${sub.id} weekly mode missing dow, skipping`);
+          continue;
+        }
+        const slot = mostRecentWeeklyOccurrenceUtc(now, sub.dow, sub.hour_utc);
+        const due = force || isDigestSlotDue(sub, now, slot);
         if (due) {
           await fireDigest(sub, isoWeekKey(now), sub.days_ahead, summary, "scheduled");
           markSubscriptionDispatched(sub.id);
         }
       } else if (sub.mode === "daily") {
-        const due = force || (sub.hour_utc === utcHour && inFireWindow);
+        const slot = mostRecentDailyOccurrenceUtc(now, sub.hour_utc);
+        const due = force || isDigestSlotDue(sub, now, slot);
         if (due) {
           await fireDigest(sub, dateKey(now), Math.min(sub.days_ahead, 2), summary, "scheduled");
           markSubscriptionDispatched(sub.id);

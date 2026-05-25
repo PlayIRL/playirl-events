@@ -10,6 +10,8 @@
     "start": "exec next start",
     "lint": "eslint",
     "discord:register": "tsx cli/register-discord-commands.ts",
+    "test:dispatch-catchup": "tsx cli/smoke-test-dispatch-catchup.ts",
+    "cron:dispatch": "tsx cli/dispatch-tick.ts",
     "scrape:trigger": "tsx cli/trigger-prod-scrape.ts",
     "prod:diagnose": "tsx cli/diagnose-prod.ts"
   },
