@@ -1,19 +1,20 @@
-name: Discord Bot Dispatch
+name: Discord Bot Dispatch (manual emergency lever)
 
-# Fires the bot dispatcher every 5 minutes. Each tick checks every enabled
-# subscription, posts any digests whose schedule matches, posts any
-# per-event reminders whose lead window includes the next 5 minutes, and
-# drains the pending-post retry queue.
+# Manual-only fire path for the Discord dispatcher. The scheduled cron has
+# moved to Railway (service `discord-cron`, schedule `*/5 * * * *`) because
+# GitHub Actions cron skewed 1-4 hours on the free tier, which made it
+# unusable as a precise scheduler even for the 6-hour catch-up logic.
 #
-# Note: GitHub's cron has a 5-minute minimum and runs may be delayed up to
-# 15 minutes during peak usage. The dispatcher's idempotency ledger and
-# retry queue both tolerate missed/late ticks — for digests the time gate
-# is `minute < 5` so a single delayed tick still catches the window; for
-# reminders, failed posts queue and back off automatically.
+# This workflow stays around purely as a manual lever:
+#   - If Railway has an outage, trigger this with `force=true` to push the
+#     pending digests immediately.
+#   - Same idempotency contract as Railway: claimPost dedupes across both
+#     systems, so firing here while Railway is also running is harmless.
+#
+# Scheduling intentionally left disabled — re-enable only if Railway cron
+# is unrecoverable; otherwise duplicate scheduled ticks just bloat logs.
 
 on:
-  schedule:
-    - cron: "*/5 * * * *"
   workflow_dispatch:
     inputs:
       force:

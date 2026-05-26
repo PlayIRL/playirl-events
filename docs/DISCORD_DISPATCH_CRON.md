@@ -1,81 +1,87 @@
 # Discord dispatch cron
 
-The Discord auto-post dispatcher (`/api/discord/dispatch`) needs to be
-triggered on a schedule. Historically we used GitHub Actions cron, but in
-practice GHA cron skews by 1–4+ hours on the free tier — enough that an "8 AM
-EDT" weekly digest can miss the day entirely. We now run the trigger as a
-Railway cron service.
+The Discord auto-post dispatcher (`/api/discord/dispatch`) is triggered on a
+schedule by a Railway cron service named **`discord-cron`** in the
+`fulfilling-ambition` / `production` project. The service runs the
+single-shot script `cli/dispatch-tick.ts` (npm script: `cron:dispatch`)
+which POSTs to the dispatcher endpoint with the shared secret header.
 
-The dispatcher itself is resilient: as of the catch-up fix in
-`lib/discord-dispatcher.ts`, a tick delayed up to **6 hours** past a
-scheduled slot will still post the digest once, and a same-slot retry tick
-is deduped via `discord_subscriptions.last_dispatched_at`. The cron only
-needs to fire roughly every 5–15 minutes; missed individual ticks are
-harmless.
+Before May 2026 the schedule lived in `.github/workflows/discord-dispatch.yml`
+on GitHub Actions cron. GHA's free-tier cron skewed 1–4 hours, which made it
+miss the narrow time gate the dispatcher used at the time (`utcMinute < 5`).
+Two things changed:
 
-## Railway setup
+1. Dispatcher gained **catch-up semantics** (`lib/discord-dispatcher.ts`):
+   a missed weekly/daily slot fires within 6 hours of the scheduled time, and
+   reminders catch up within 60 minutes. Idempotency via `last_dispatched_at`
+   on subscriptions and the per-post `claimPost` ledger.
+2. **Railway cron** replaces GHA as the trigger. Railway's scheduler runs
+   on time, so the catch-up logic mostly carries the load only when Railway
+   itself has a blip.
 
-1. **Create a new service in the same Railway project** as the web app.
-   "New" → "Empty Service" → connect the same GitHub repo.
+## Current state
 
-2. **Set the start command** to:
+| Piece                  | Where                                                          |
+|------------------------|----------------------------------------------------------------|
+| Dispatcher endpoint    | `app/api/discord/dispatch/route.ts` on the `PlayIRL.GG` service|
+| Tick worker script     | `cli/dispatch-tick.ts` (run as `npm run cron:dispatch`)        |
+| Cron service           | Railway → project `fulfilling-ambition` → service `discord-cron`|
+| Cron schedule          | `*/5 * * * *` (every 5 minutes, UTC)                           |
+| Env vars on cron       | `DISPATCH_URL`, `DISPATCH_SECRET` (referenced from web service)|
+| GHA workflow           | `discord-dispatch.yml` — **manual-only**, no schedule          |
+
+## Verifying it's running
+
+1. **Railway logs** — open the `discord-cron` service → Deployments → most
+   recent container log. Each tick should show:
 
    ```
-   npm run cron:dispatch
+   > tsx cli/dispatch-tick.ts
+   [dispatch-tick] attempt=1 ok status=200 ms=XXX body={"ok":true,...}
    ```
 
-   This runs `cli/dispatch-tick.ts`, which POSTs to the dispatcher with
-   retries (3 attempts, 5s apart) and exits.
+   Most ticks return `digests_posted: 0` (no slot due that minute). When a
+   scheduled slot fires, the response body shows `digests_posted: 1` (or more).
 
-3. **Mark the service as a cron job.** In Service Settings → "Cron Schedule",
-   set:
+2. **Database** — on the prod box:
 
+   ```sql
+   SELECT id, name, datetime(last_dispatched_at, 'unixepoch') AS last_fired
+   FROM discord_subscriptions
+   WHERE enabled=1 AND mode IN ('weekly','daily');
    ```
-   */5 * * * *
-   ```
 
-   Railway's cron is closer to wall-clock accurate than GHA. A 5-min cadence
-   gives the catch-up dispatcher plenty of opportunities to land each slot
-   on time.
+   `last_fired` should be recent (within the past few minutes/hours after a
+   slot has passed).
 
-4. **Set environment variables** on the cron service (Variables tab):
+3. **Activity log** — UI at `/account/discord/<sub-id>` shows runs with
+   `trigger='scheduled'` for cron-fired digests and `trigger='manual'` for
+   admin-fired ones.
 
-   | Var               | Value                                              |
-   |-------------------|----------------------------------------------------|
-   | `DISPATCH_URL`    | `https://playirl.gg/api/discord/dispatch`          |
-   | `DISPATCH_SECRET` | Same value as on the web service                   |
+## Manual emergency fire
 
-   Reference both via "Add Variable" → "Add Reference" to keep them in sync
-   with the web service if it ever rotates.
+If Railway is down or you need to push pending digests immediately:
 
-5. **Deploy.** Railway will show the cron's run history under "Deployments";
-   each successful tick should log a single line with status + elapsed ms.
+```
+gh workflow run discord-dispatch.yml -f force=true \
+  --repo PlayIRL/playirl-events
+```
 
-## Verifying
+…or hit the **Actions** tab in GitHub → **Discord Bot Dispatch** workflow →
+**Run workflow** → toggle `force` → Run.
 
-After ~10 minutes of cron uptime, check:
+Both Railway and this manual workflow share the same `claimPost` idempotency
+ledger, so accidentally running both at once won't double-post.
 
-- Railway deployment log shows ticks every ~5 min (no multi-hour gaps).
-- `SELECT id, last_dispatched_at FROM discord_subscriptions WHERE enabled=1;`
-  shows recent timestamps on enabled subs whose scheduled slot has passed.
-- The Activity log on `/account/discord/<sub-id>` shows `trigger='scheduled'`
-  rows from now on (manual fires still log as `trigger='manual'`).
+## Why not GHA's schedule, ever again
 
-## Why not Vercel Cron / Inngest / etc.
+The dispatcher *will work* under GHA's cron with the catch-up logic — a tick
+within 6 hours of any scheduled slot still posts the digest correctly. But:
 
-We're already on Railway and the app's other infra (DB, scrape worker) lives
-there. Adding a second vendor for one cron isn't worth the operational
-surface. If Railway cron ever proves unreliable too, Cloudflare Workers
-Cron Triggers are a strong fallback — free, accurate, and would only need
-the `dispatch-tick.ts` logic ported to a Worker.
+- Railway gives accurate-to-the-minute fires; GHA's hourly skew means a "8 AM
+  digest" lands somewhere between 8 AM and 11 AM and looks unreliable to users.
+- Having two schedulers in flight bloats logs and confuses debugging without
+  adding redundancy (claimPost handles dedup; that's not the bottleneck).
 
-## Decommissioning GHA
-
-Once Railway cron has been running on schedule for ~24h:
-
-- Delete `.github/workflows/discord-dispatch.yml`, OR
-- Keep it with `workflow_dispatch:` only (remove the `schedule:` block) as
-  a manual emergency lever.
-
-Don't run both — duplicate ticks won't double-post (idempotency ledger) but
-they confuse the Railway logs.
+If Railway ever becomes a problem, re-enable `schedule:` in the workflow
+file as a fallback. Don't run both in parallel as the steady state.
