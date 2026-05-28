@@ -25,7 +25,7 @@ function buildFeedPath({ format, radius, days, venue, rcq }: { format?: string; 
   return qs ? `/calendar?${qs}` : `/calendar`;
 }
 
-const RADIUS_OPTIONS = [1, 5, 10, 15, 25, 50];
+const RADIUS_OPTIONS = [1, 5, 10, 15, 25, 50, 100];
 function getTimeOptions() {
   const now = new Date();
   const options: { value: string; label: string }[] = [
