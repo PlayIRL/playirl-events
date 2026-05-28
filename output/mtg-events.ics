@@ -9,7 +9,7 @@ X-WR-CALDESC:MTG events near Philadelphia via PlayIRL.GG
 BEGIN:VEVENT
 UID:wotc-11051612
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260528T200000Z
 DTEND:20260528T230000Z
 SUMMARY:Open play at Garden of Earthly Delights @ Garden of Earthly Deligh
@@ -25,7 +25,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710233
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260528T210000Z
 DTEND:20260529T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
@@ -40,7 +40,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794456
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260528T223000Z
 DTEND:20260529T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -58,7 +58,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653667
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260528T223000Z
 DTEND:20260529T013000Z
 SUMMARY:Thursday Pioneer @ Top Deck Games - Cherry Hill
@@ -73,7 +73,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653687
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260529T210000Z
 DTEND:20260530T000000Z
 SUMMARY:Friday Night Magic Commander @ Top Deck Games - Cherry Hill
@@ -94,7 +94,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461086
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260529T223000Z
 DTEND:20260530T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
@@ -108,7 +108,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599496
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260529T223000Z
 DTEND:20260530T013000Z
 SUMMARY:Friday Night Commander @ Kryptic Collections
@@ -126,7 +126,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650421
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260529T223000Z
 DTEND:20260530T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
@@ -141,7 +141,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10653681
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260529T223000Z
 DTEND:20260530T013000Z
 SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
@@ -156,7 +156,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10739378
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260529T230000Z
 DTEND:20260530T020000Z
 SUMMARY:FNM COMMANDER NIGHTS @ Play Another Game
@@ -170,7 +170,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599236
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260529T230000Z
 DTEND:20260530T020000Z
 SUMMARY:Friday Night Magic Commander @ 7th Dimension Games
@@ -185,7 +185,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11008186
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260530T150000Z
 DTEND:20260530T180000Z
 SUMMARY:Secrets of Strixhaven - Store Championship Store Championship @ To
@@ -209,7 +209,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599271
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260530T170000Z
 DTEND:20260530T200000Z
 SUMMARY:Saturday Draft @ 7th Dimension Games
@@ -224,7 +224,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10926585
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260530T223000Z
 DTEND:20260531T013000Z
 SUMMARY:Magic Presents: Open The Archive MTG Open the Archive Event @ Hobb
@@ -239,7 +239,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10893386
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260531T170000Z
 DTEND:20260531T200000Z
 SUMMARY:Magic Academy: Learn to Play @ Top Deck Games - Cherry Hill
@@ -267,7 +267,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599471
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260531T190000Z
 DTEND:20260531T220000Z
 SUMMARY:Sunday Afternoon Commander @ Kryptic Collections
@@ -285,7 +285,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10570213
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260531T213000Z
 DTEND:20260601T003000Z
 SUMMARY:PGS Sunday Standard Showdown @ The Philly Game Shop
@@ -305,7 +305,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881709
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260601T210000Z
 DTEND:20260602T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -317,9 +317,30 @@ DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
 URL;VALUE=URI:https://locator.wizards.com/events/10881709
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096346
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260601T210000Z
+DTEND:20260602T000000Z
+SUMMARY:Monday Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096346\n\nJoin u
+ s at Top Deck Games for our Casual Commander events!\n\nWHEN: Every Monday
+ \, 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite #10
+ 0\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Players must have an active Wiz
+ ards Account / MTG Companion App Account\n- Sign up at https://myaccounts.
+ wizards.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPR
+ IZES: Per Pod\n- All Players: $5 credit\n- Winner: Additional $15 credit\n
+ \nCONTACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSourc
+ e: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096346
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968409
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260601T223000Z
 DTEND:20260602T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
@@ -331,9 +352,51 @@ DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/10968409
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096308
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260601T223000Z
+DTEND:20260602T013000Z
+SUMMARY:Monday Pauper @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pauper\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096308\n\nJoin us a
+ t Top Deck Games for our weekly MTG Pauper tournament at 6:30pm!\n\nWHEN: 
+ Every Monday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd
+ \, Suite 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an
+  active Wizards Account / MTG Companion App Account\n- Sign up at https://
+ myaccounts.wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-
+ minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1
+ : $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856
+ -858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096308
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096329
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260601T223000Z
+DTEND:20260602T013000Z
+SUMMARY:Monday Legacy @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Legacy\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096329\n\nJoin us a
+ t Top Deck Games for our weekly MTG Legacy tournament!\n\nWHEN: Every Mond
+ ay\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 1
+ 00\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active Wi
+ zards Account / MTG Companion App Account\n- Sign up at https://myaccounts
+ .wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-minute Rou
+ nds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30 Cred
+ it\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-2700\
+ nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096329
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10650596
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260602T210000Z
 DTEND:20260603T000000Z
 SUMMARY:Cryptid Edition @ Cryptid Toys and Games
@@ -348,7 +411,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710234
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260602T210000Z
 DTEND:20260603T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
@@ -363,7 +426,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461072
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260602T223000Z
 DTEND:20260603T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
@@ -379,7 +442,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650407
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260602T223000Z
 DTEND:20260603T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
@@ -392,9 +455,30 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650407
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096465
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260602T223000Z
+DTEND:20260603T013000Z
+SUMMARY:Tuesday Modern @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Modern\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096465\n\nJoin us a
+ t Top Deck Games for our weekly MTG Modern tournament!\n\nWHEN: Every Tues
+ day\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 
+ 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active W
+ izards Account / MTG Companion App Account\n- Sign up at https://myaccount
+ s.wizards.com/register\n\nFORMAT: Modern\n- 3 Swiss Rounds\n- 50-minute Ro
+ unds\, Best of 3\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-
+ 0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 
+ 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096465
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10518588
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260603T210000Z
 DTEND:20260604T000000Z
 SUMMARY:Commander Night @ Queen & Rook Game Tavern! @ Queen and Rook Game 
@@ -416,7 +500,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10814225
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260603T210000Z
 DTEND:20260604T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -430,7 +514,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11001253
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260603T210000Z
 DTEND:20260604T000000Z
 SUMMARY:Wednesday Night Commander @ The Guild Hall Hobby
@@ -453,7 +537,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599484
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260603T223000Z
 DTEND:20260604T013000Z
 SUMMARY:Wednesday Commander Night @ Kryptic Collections
@@ -469,9 +553,31 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
 URL;VALUE=URI:https://locator.wizards.com/events/10599484
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096594
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260603T223000Z
+DTEND:20260604T013000Z
+SUMMARY:Wednesday Booster Draft @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Draft\nCost: $25\nStore: https://www.topdeckgamesonlin
+ e.com/\nDetails: https://locator.wizards.com/events/11096594\n\nJoin us at
+  Top Deck Games for our weekly MTG Booster Draft!\n\nWHEN: Every Wednesday
+ \, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 100
+ \nCherry Hill\, NJ 08003\n\nENTRY: $25\n- Players must have an active Wiza
+ rds Account / MTG Companion App Account\n- Sign up at https://myaccounts.w
+ izards.com/register\n\nFORMAT: Booster Draft\n- 3x Boosters\n- 3 Swiss Rou
+ nds\n- 50 Minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Cre
+ dit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\n
+ Phone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-l
+ ocator
+URL;VALUE=URI:https://locator.wizards.com/events/11096594
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-11051613
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260604T200000Z
 DTEND:20260604T230000Z
 SUMMARY:Open play at Garden of Earthly Delights @ Garden of Earthly Deligh
@@ -487,7 +593,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710235
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260604T210000Z
 DTEND:20260605T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
@@ -502,7 +608,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794457
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260604T223000Z
 DTEND:20260605T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -518,9 +624,30 @@ DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/10794457
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096630
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260604T223000Z
+DTEND:20260605T013000Z
+SUMMARY:Thursday Pioneer @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pioneer\nCost: $15\nStore: https://www.topdeckgamesonl
+ ine.com/\nDetails: https://locator.wizards.com/events/11096630\n\nJoin us 
+ at Top Deck Games for our weekly MTG Pioneer tournament!\n\nWHEN: Every Th
+ ursday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Sui
+ te 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an activ
+ e Wizards Account / MTG Companion App Account\n- Sign up at https://myacco
+ unts.wizards.com/register\n\nFORMAT: Pioneer\n- 3 Swiss Rounds\n- 50-minut
+ e Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30
+  Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-
+ 2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096630
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10737683
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260605T190000Z
 DTEND:20260605T220000Z
 SUMMARY:PGS Presents: SOS Commander Party @ The Philly Game Shop
@@ -538,9 +665,30 @@ DESCRIPTION:Format: Commander\nCost: Free\nStore: http://phillygameshop.co
 URL;VALUE=URI:https://locator.wizards.com/events/10737683
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096685
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260605T210000Z
+DTEND:20260606T000000Z
+SUMMARY:Friday Night Magic Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096685\n\nJoin u
+ s at Top Deck Games every Friday for our Friday Night Magic Commander at 5
+ :00pm!\n\nWHEN: Every Friday @ 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Commander - Fi
+ ll & Fire\n- Pods of 4\n\nPRIZES: Per Pod\n- All Players: $5 credit\n- Win
+ ner: Additional $15 credit\n\nCONTACT:\nPhone: 856-858-2700\nEmail: cherry
+ hill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096685
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10461087
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260605T223000Z
 DTEND:20260606T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
@@ -554,7 +702,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599497
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260605T223000Z
 DTEND:20260606T013000Z
 SUMMARY:Friday Night Commander @ Kryptic Collections
@@ -572,7 +720,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650422
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260605T223000Z
 DTEND:20260606T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
@@ -585,9 +733,32 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650422
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096669
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260605T223000Z
+DTEND:20260606T013000Z
+SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
+ l
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Standard\nCost: $15\nStore: https://www.topdeckgameson
+ line.com/\nDetails: https://locator.wizards.com/events/11096669\n\nJoin us
+  at Top Deck Games every Friday for our Friday Night Magic Standard at 6:3
+ 0pm!\n\nWHEN: Every Friday @ 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonf
+ ield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Playe
+ rs must have an active Wizards Account / MTG Companion App Account\n- Sign
+  up at https://myaccounts.wizards.com/register\n\nFORMAT: Standard\n- 3 Sw
+ iss Rounds\n- 50-minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: 
+ $40 Credit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCON
+ TACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wi
+ zards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096669
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10739379
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260605T230000Z
 DTEND:20260606T020000Z
 SUMMARY:FNM COMMANDER NIGHTS @ Play Another Game
@@ -601,7 +772,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10423824
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260605T230000Z
 DTEND:20260606T020000Z
 SUMMARY:Magic: Presents Pride FNM Commander @ 7th Dimension Games
@@ -615,7 +786,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599268
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260606T170000Z
 DTEND:20260606T200000Z
 SUMMARY:Saturday Draft @ 7th Dimension Games
@@ -630,12 +801,12 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10722086
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260606T220000Z
 DTEND:20260607T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 636 - Port Richmond
 LOCATION:GameStop - 636 - Port Richmond\, Aramingo Avenue\, Philadelphia\,
-  Pennsylvania\, 19134
+  Pennsylvania\, 19125
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.gamestop.com
  /\nDetails: https://locator.wizards.com/events/10722086\n\nJoin us at your
   local GameStop for a casual commander event!\nSource: wizards-locator
@@ -644,7 +815,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10722161
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260606T220000Z
 DTEND:20260607T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 1735 - Philadelphia
@@ -659,7 +830,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10722091
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260606T220000Z
 DTEND:20260607T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 666 - Great Northea
@@ -674,7 +845,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045400
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260607T190000Z
 DTEND:20260607T220000Z
 SUMMARY:Sunday Afternoon Commander @ Kryptic Collections
@@ -692,7 +863,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881710
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260608T210000Z
 DTEND:20260609T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -704,9 +875,30 @@ DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
 URL;VALUE=URI:https://locator.wizards.com/events/10881710
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096347
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260608T210000Z
+DTEND:20260609T000000Z
+SUMMARY:Monday Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096347\n\nJoin u
+ s at Top Deck Games for our Casual Commander events!\n\nWHEN: Every Monday
+ \, 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite #10
+ 0\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Players must have an active Wiz
+ ards Account / MTG Companion App Account\n- Sign up at https://myaccounts.
+ wizards.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPR
+ IZES: Per Pod\n- All Players: $5 credit\n- Winner: Additional $15 credit\n
+ \nCONTACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSourc
+ e: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096347
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968410
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260608T223000Z
 DTEND:20260609T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
@@ -718,9 +910,51 @@ DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/10968410
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096309
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260608T223000Z
+DTEND:20260609T013000Z
+SUMMARY:Monday Pauper @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pauper\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096309\n\nJoin us a
+ t Top Deck Games for our weekly MTG Pauper tournament at 6:30pm!\n\nWHEN: 
+ Every Monday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd
+ \, Suite 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an
+  active Wizards Account / MTG Companion App Account\n- Sign up at https://
+ myaccounts.wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-
+ minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1
+ : $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856
+ -858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096309
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096330
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260608T223000Z
+DTEND:20260609T013000Z
+SUMMARY:Monday Legacy @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Legacy\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096330\n\nJoin us a
+ t Top Deck Games for our weekly MTG Legacy tournament!\n\nWHEN: Every Mond
+ ay\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 1
+ 00\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active Wi
+ zards Account / MTG Companion App Account\n- Sign up at https://myaccounts
+ .wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-minute Rou
+ nds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30 Cred
+ it\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-2700\
+ nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096330
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10650597
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260609T210000Z
 DTEND:20260610T000000Z
 SUMMARY:Cryptid Edition @ Cryptid Toys and Games
@@ -735,7 +969,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710236
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260609T210000Z
 DTEND:20260610T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
@@ -750,7 +984,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461073
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260609T223000Z
 DTEND:20260610T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
@@ -766,7 +1000,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650408
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260609T223000Z
 DTEND:20260610T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
@@ -779,9 +1013,30 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650408
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096466
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260609T223000Z
+DTEND:20260610T013000Z
+SUMMARY:Tuesday Modern @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Modern\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096466\n\nJoin us a
+ t Top Deck Games for our weekly MTG Modern tournament!\n\nWHEN: Every Tues
+ day\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 
+ 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active W
+ izards Account / MTG Companion App Account\n- Sign up at https://myaccount
+ s.wizards.com/register\n\nFORMAT: Modern\n- 3 Swiss Rounds\n- 50-minute Ro
+ unds\, Best of 3\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-
+ 0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 
+ 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096466
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10803856
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260609T223000Z
 DTEND:20260610T013000Z
 SUMMARY:Secrets of Strixhaven Commander Party @ 7th Dimension Games
@@ -795,7 +1050,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518872
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260610T210000Z
 DTEND:20260611T000000Z
 SUMMARY:Queen & Rook Strixhaven Commander Party @ Queen and Rook Game Cafe
@@ -816,7 +1071,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10814226
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260610T210000Z
 DTEND:20260611T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -830,7 +1085,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11001254
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260610T210000Z
 DTEND:20260611T000000Z
 SUMMARY:Wednesday Night Commander @ The Guild Hall Hobby
@@ -853,7 +1108,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045413
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260610T223000Z
 DTEND:20260611T013000Z
 SUMMARY:Wednesday Commander Night @ Kryptic Collections
@@ -869,9 +1124,31 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
 URL;VALUE=URI:https://locator.wizards.com/events/11045413
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096595
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260610T223000Z
+DTEND:20260611T013000Z
+SUMMARY:Wednesday Booster Draft @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Draft\nCost: $25\nStore: https://www.topdeckgamesonlin
+ e.com/\nDetails: https://locator.wizards.com/events/11096595\n\nJoin us at
+  Top Deck Games for our weekly MTG Booster Draft!\n\nWHEN: Every Wednesday
+ \, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 100
+ \nCherry Hill\, NJ 08003\n\nENTRY: $25\n- Players must have an active Wiza
+ rds Account / MTG Companion App Account\n- Sign up at https://myaccounts.w
+ izards.com/register\n\nFORMAT: Booster Draft\n- 3x Boosters\n- 3 Swiss Rou
+ nds\n- 50 Minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Cre
+ dit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\n
+ Phone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-l
+ ocator
+URL;VALUE=URI:https://locator.wizards.com/events/11096595
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-11051614
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260611T200000Z
 DTEND:20260611T230000Z
 SUMMARY:Open play at Garden of Earthly Delights @ Garden of Earthly Deligh
@@ -887,7 +1164,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710237
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260611T210000Z
 DTEND:20260612T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
@@ -902,7 +1179,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794458
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260611T223000Z
 DTEND:20260612T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -918,9 +1195,51 @@ DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/10794458
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096631
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260611T223000Z
+DTEND:20260612T013000Z
+SUMMARY:Thursday Pioneer @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pioneer\nCost: $15\nStore: https://www.topdeckgamesonl
+ ine.com/\nDetails: https://locator.wizards.com/events/11096631\n\nJoin us 
+ at Top Deck Games for our weekly MTG Pioneer tournament!\n\nWHEN: Every Th
+ ursday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Sui
+ te 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an activ
+ e Wizards Account / MTG Companion App Account\n- Sign up at https://myacco
+ unts.wizards.com/register\n\nFORMAT: Pioneer\n- 3 Swiss Rounds\n- 50-minut
+ e Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30
+  Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-
+ 2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096631
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096686
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260612T210000Z
+DTEND:20260613T000000Z
+SUMMARY:Friday Night Magic Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096686\n\nJoin u
+ s at Top Deck Games every Friday for our Friday Night Magic Commander at 5
+ :00pm!\n\nWHEN: Every Friday @ 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Commander - Fi
+ ll & Fire\n- Pods of 4\n\nPRIZES: Per Pod\n- All Players: $5 credit\n- Win
+ ner: Additional $15 credit\n\nCONTACT:\nPhone: 856-858-2700\nEmail: cherry
+ hill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096686
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10461088
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260612T223000Z
 DTEND:20260613T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
@@ -934,7 +1253,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045427
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260612T223000Z
 DTEND:20260613T013000Z
 SUMMARY:Friday Night Commander @ Kryptic Collections
@@ -952,7 +1271,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650423
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260612T223000Z
 DTEND:20260613T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
@@ -965,9 +1284,32 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650423
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096670
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260612T223000Z
+DTEND:20260613T013000Z
+SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
+ l
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Standard\nCost: $15\nStore: https://www.topdeckgameson
+ line.com/\nDetails: https://locator.wizards.com/events/11096670\n\nJoin us
+  at Top Deck Games every Friday for our Friday Night Magic Standard at 6:3
+ 0pm!\n\nWHEN: Every Friday @ 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonf
+ ield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Playe
+ rs must have an active Wizards Account / MTG Companion App Account\n- Sign
+  up at https://myaccounts.wizards.com/register\n\nFORMAT: Standard\n- 3 Sw
+ iss Rounds\n- 50-minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: 
+ $40 Credit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCON
+ TACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wi
+ zards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096670
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10739380
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260612T230000Z
 DTEND:20260613T020000Z
 SUMMARY:FNM COMMANDER NIGHTS @ Play Another Game
@@ -981,7 +1323,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11035218
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260612T230000Z
 DTEND:20260613T020000Z
 SUMMARY:Friday Night Magic Commander @ 7th Dimension Games
@@ -995,7 +1337,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10599270
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260613T170000Z
 DTEND:20260613T200000Z
 SUMMARY:Saturday Draft @ 7th Dimension Games
@@ -1010,7 +1352,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10902362
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260613T190000Z
 DTEND:20260613T220000Z
 SUMMARY:Avengers Academy Magic Presents: Avengers Academy @ Top Deck Games
@@ -1025,7 +1367,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11067544
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260614T150000Z
 DTEND:20260614T180000Z
 SUMMARY:US RCQ  | 2026-27 Round 1 Modern 2-Slot RCQ @ Top Deck Games - Che
@@ -1052,7 +1394,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10518781
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260614T163000Z
 DTEND:20260614T193000Z
 SUMMARY:Magic: Presents Pride @ Queen & Rook Game Tavern! @ Queen and Rook
@@ -1071,7 +1413,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045401
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260614T190000Z
 DTEND:20260614T220000Z
 SUMMARY:Sunday Afternoon Commander @ Kryptic Collections
@@ -1089,7 +1431,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881711
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260615T210000Z
 DTEND:20260616T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -1101,9 +1443,30 @@ DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
 URL;VALUE=URI:https://locator.wizards.com/events/10881711
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096348
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260615T210000Z
+DTEND:20260616T000000Z
+SUMMARY:Monday Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096348\n\nJoin u
+ s at Top Deck Games for our Casual Commander events!\n\nWHEN: Every Monday
+ \, 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite #10
+ 0\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Players must have an active Wiz
+ ards Account / MTG Companion App Account\n- Sign up at https://myaccounts.
+ wizards.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPR
+ IZES: Per Pod\n- All Players: $5 credit\n- Winner: Additional $15 credit\n
+ \nCONTACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSourc
+ e: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096348
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968411
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260615T223000Z
 DTEND:20260616T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
@@ -1115,9 +1478,51 @@ DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/10968411
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096310
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260615T223000Z
+DTEND:20260616T013000Z
+SUMMARY:Monday Pauper @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pauper\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096310\n\nJoin us a
+ t Top Deck Games for our weekly MTG Pauper tournament at 6:30pm!\n\nWHEN: 
+ Every Monday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd
+ \, Suite 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an
+  active Wizards Account / MTG Companion App Account\n- Sign up at https://
+ myaccounts.wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-
+ minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1
+ : $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856
+ -858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096310
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096331
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260615T223000Z
+DTEND:20260616T013000Z
+SUMMARY:Monday Legacy @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Legacy\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096331\n\nJoin us a
+ t Top Deck Games for our weekly MTG Legacy tournament!\n\nWHEN: Every Mond
+ ay\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 1
+ 00\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active Wi
+ zards Account / MTG Companion App Account\n- Sign up at https://myaccounts
+ .wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-minute Rou
+ nds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30 Cred
+ it\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-2700\
+ nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096331
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10650598
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260616T210000Z
 DTEND:20260617T000000Z
 SUMMARY:Cryptid Edition @ Cryptid Toys and Games
@@ -1132,7 +1537,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710238
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260616T210000Z
 DTEND:20260617T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
@@ -1147,7 +1552,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461074
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260616T223000Z
 DTEND:20260617T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
@@ -1163,7 +1568,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650409
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260616T223000Z
 DTEND:20260617T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
@@ -1176,9 +1581,30 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650409
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096467
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260616T223000Z
+DTEND:20260617T013000Z
+SUMMARY:Tuesday Modern @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Modern\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096467\n\nJoin us a
+ t Top Deck Games for our weekly MTG Modern tournament!\n\nWHEN: Every Tues
+ day\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 
+ 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active W
+ izards Account / MTG Companion App Account\n- Sign up at https://myaccount
+ s.wizards.com/register\n\nFORMAT: Modern\n- 3 Swiss Rounds\n- 50-minute Ro
+ unds\, Best of 3\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-
+ 0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 
+ 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096467
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10518590
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260617T210000Z
 DTEND:20260618T000000Z
 SUMMARY:Commander Night @ Queen & Rook Game Tavern! @ Queen and Rook Game 
@@ -1200,7 +1626,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10814227
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260617T210000Z
 DTEND:20260618T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -1214,7 +1640,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11001255
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260617T210000Z
 DTEND:20260618T000000Z
 SUMMARY:Wednesday Night Commander @ The Guild Hall Hobby
@@ -1237,7 +1663,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045414
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260617T223000Z
 DTEND:20260618T013000Z
 SUMMARY:Wednesday Commander Night @ Kryptic Collections
@@ -1253,9 +1679,31 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
 URL;VALUE=URI:https://locator.wizards.com/events/11045414
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096596
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260617T223000Z
+DTEND:20260618T013000Z
+SUMMARY:Wednesday Booster Draft @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Draft\nCost: $25\nStore: https://www.topdeckgamesonlin
+ e.com/\nDetails: https://locator.wizards.com/events/11096596\n\nJoin us at
+  Top Deck Games for our weekly MTG Booster Draft!\n\nWHEN: Every Wednesday
+ \, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 100
+ \nCherry Hill\, NJ 08003\n\nENTRY: $25\n- Players must have an active Wiza
+ rds Account / MTG Companion App Account\n- Sign up at https://myaccounts.w
+ izards.com/register\n\nFORMAT: Booster Draft\n- 3x Boosters\n- 3 Swiss Rou
+ nds\n- 50 Minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Cre
+ dit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\n
+ Phone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-l
+ ocator
+URL;VALUE=URI:https://locator.wizards.com/events/11096596
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-11051615
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260618T200000Z
 DTEND:20260618T230000Z
 SUMMARY:Open play at Garden of Earthly Delights @ Garden of Earthly Deligh
@@ -1271,7 +1719,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10710239
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260618T210000Z
 DTEND:20260619T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
@@ -1286,7 +1734,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794459
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260618T223000Z
 DTEND:20260619T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -1302,9 +1750,51 @@ DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/10794459
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096632
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260618T223000Z
+DTEND:20260619T013000Z
+SUMMARY:Thursday Pioneer @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pioneer\nCost: $15\nStore: https://www.topdeckgamesonl
+ ine.com/\nDetails: https://locator.wizards.com/events/11096632\n\nJoin us 
+ at Top Deck Games for our weekly MTG Pioneer tournament!\n\nWHEN: Every Th
+ ursday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Sui
+ te 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an activ
+ e Wizards Account / MTG Companion App Account\n- Sign up at https://myacco
+ unts.wizards.com/register\n\nFORMAT: Pioneer\n- 3 Swiss Rounds\n- 50-minut
+ e Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30
+  Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-
+ 2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096632
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096687
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260619T210000Z
+DTEND:20260620T000000Z
+SUMMARY:Friday Night Magic Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096687\n\nJoin u
+ s at Top Deck Games every Friday for our Friday Night Magic Commander at 5
+ :00pm!\n\nWHEN: Every Friday @ 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Commander - Fi
+ ll & Fire\n- Pods of 4\n\nPRIZES: Per Pod\n- All Players: $5 credit\n- Win
+ ner: Additional $15 credit\n\nCONTACT:\nPhone: 856-858-2700\nEmail: cherry
+ hill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096687
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10862490
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
@@ -1325,7 +1815,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10461089
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
@@ -1339,7 +1829,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11046548
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:PGS Marvel Super Heroes Prerelease @ The Philly Game Shop
@@ -1357,7 +1847,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11070692
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:Marvel Super Heroes Pre Release Prerelease @ Garden of Earthly Del
@@ -1375,7 +1865,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045428
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:Friday Night Commander @ Kryptic Collections
@@ -1393,7 +1883,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650424
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
@@ -1408,7 +1898,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10925310
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260619T223000Z
 DTEND:20260620T013000Z
 SUMMARY:MTG Marvel: Super Heroes #1 Prerelease @ Top Deck Games - Cherry H
@@ -1432,9 +1922,32 @@ DESCRIPTION:Format: Sealed\nCost: $60\nStore: https://www.topdeckgamesonli
 URL;VALUE=URI:https://locator.wizards.com/events/10925310
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096671
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260619T223000Z
+DTEND:20260620T013000Z
+SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
+ l
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Standard\nCost: $15\nStore: https://www.topdeckgameson
+ line.com/\nDetails: https://locator.wizards.com/events/11096671\n\nJoin us
+  at Top Deck Games every Friday for our Friday Night Magic Standard at 6:3
+ 0pm!\n\nWHEN: Every Friday @ 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonf
+ ield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Playe
+ rs must have an active Wizards Account / MTG Companion App Account\n- Sign
+  up at https://myaccounts.wizards.com/register\n\nFORMAT: Standard\n- 3 Sw
+ iss Rounds\n- 50-minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: 
+ $40 Credit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCON
+ TACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wi
+ zards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096671
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10819527
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260619T230000Z
 DTEND:20260620T020000Z
 SUMMARY:Kryptic Collections Marvel Super Heroes Prerelease @ Kryptic Colle
@@ -1449,7 +1962,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10739381
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260619T230000Z
 DTEND:20260620T020000Z
 SUMMARY:FNM COMMANDER NIGHTS @ Play Another Game
@@ -1463,7 +1976,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10702521
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260619T230000Z
 DTEND:20260620T020000Z
 SUMMARY:Marvel Super Heroes Prerelease @ 7th Dimension Games
@@ -1478,7 +1991,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10702522
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260620T130000Z
 DTEND:20260620T160000Z
 SUMMARY:Marvel Super Heroes Prerelease @ 7th Dimension Games
@@ -1493,7 +2006,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952141
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260620T150000Z
 DTEND:20260620T180000Z
 SUMMARY:MTG Marvel: Super Heroes #2 Prerelease @ Top Deck Games - Cherry H
@@ -1517,7 +2030,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11046549
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260620T153000Z
 DTEND:20260620T183000Z
 SUMMARY:PGS Marvel Super Heroes Prerelease @ The Philly Game Shop
@@ -1535,7 +2048,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10819530
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260620T170000Z
 DTEND:20260620T200000Z
 SUMMARY:Kryptic Collections Marvel Super Heroes Prerelease @ Kryptic Colle
@@ -1550,7 +2063,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10902252
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260620T190000Z
 DTEND:20260620T220000Z
 SUMMARY:Marvel Super-Heroes 2HG #3 Prerelease @ Top Deck Games - Cherry Hi
@@ -1573,7 +2086,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952164
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260620T230000Z
 DTEND:20260621T020000Z
 SUMMARY:MTG Marvel: Super Heroes #4 Prerelease @ Top Deck Games - Cherry H
@@ -1597,7 +2110,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11046550
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260621T150000Z
 DTEND:20260621T180000Z
 SUMMARY:PGS Marvel Super Heroes Prerelease @ The Philly Game Shop
@@ -1615,7 +2128,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952167
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260621T150000Z
 DTEND:20260621T180000Z
 SUMMARY:MTG Marvel: Super Heroes #5 Prerelease @ Top Deck Games - Cherry H
@@ -1639,7 +2152,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10702524
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260621T170000Z
 DTEND:20260621T200000Z
 SUMMARY:Marvel Super Heroes Prerelease @ 7th Dimension Games
@@ -1654,7 +2167,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045402
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260621T190000Z
 DTEND:20260621T220000Z
 SUMMARY:Sunday Afternoon Commander @ Kryptic Collections
@@ -1672,7 +2185,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10952190
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260621T190000Z
 DTEND:20260621T220000Z
 SUMMARY:MTG Marvel: Super Heroes Draft @ Top Deck Games - Cherry Hill
@@ -1699,7 +2212,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11046551
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260621T213000Z
 DTEND:20260622T003000Z
 SUMMARY:PGS Marvel Super Heroes Two-Headed Giant Prerelease @ The Philly G
@@ -1719,7 +2232,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881712
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260622T210000Z
 DTEND:20260623T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -1731,9 +2244,30 @@ DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
 URL;VALUE=URI:https://locator.wizards.com/events/10881712
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096349
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260622T210000Z
+DTEND:20260623T000000Z
+SUMMARY:Monday Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096349\n\nJoin u
+ s at Top Deck Games for our Casual Commander events!\n\nWHEN: Every Monday
+ \, 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite #10
+ 0\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Players must have an active Wiz
+ ards Account / MTG Companion App Account\n- Sign up at https://myaccounts.
+ wizards.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPR
+ IZES: Per Pod\n- All Players: $5 credit\n- Winner: Additional $15 credit\n
+ \nCONTACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSourc
+ e: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096349
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968412
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260622T223000Z
 DTEND:20260623T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
@@ -1747,7 +2281,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11046552
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260622T223000Z
 DTEND:20260623T013000Z
 SUMMARY:PGS Marvel Super Heroes Prerelease @ The Philly Game Shop
@@ -1763,9 +2297,51 @@ DESCRIPTION:Format: Sealed\nCost: $45\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/11046552
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096311
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260622T223000Z
+DTEND:20260623T013000Z
+SUMMARY:Monday Pauper @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pauper\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096311\n\nJoin us a
+ t Top Deck Games for our weekly MTG Pauper tournament at 6:30pm!\n\nWHEN: 
+ Every Monday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd
+ \, Suite 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an
+  active Wizards Account / MTG Companion App Account\n- Sign up at https://
+ myaccounts.wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-
+ minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1
+ : $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856
+ -858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096311
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096332
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260622T223000Z
+DTEND:20260623T013000Z
+SUMMARY:Monday Legacy @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Legacy\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096332\n\nJoin us a
+ t Top Deck Games for our weekly MTG Legacy tournament!\n\nWHEN: Every Mond
+ ay\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 1
+ 00\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active Wi
+ zards Account / MTG Companion App Account\n- Sign up at https://myaccounts
+ .wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-minute Rou
+ nds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30 Cred
+ it\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-2700\
+ nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096332
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10710240
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260623T210000Z
 DTEND:20260624T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
@@ -1780,7 +2356,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10994467
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260623T223000Z
 DTEND:20260624T013000Z
 SUMMARY:Marvel Super Heros Prerelease @ Runehammer Games
@@ -1799,7 +2375,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10862491
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260623T223000Z
 DTEND:20260624T013000Z
 SUMMARY:Queen & Rook Presents: Marvel Superheroes Prerelease @ Queen and R
@@ -1820,7 +2396,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968422
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260623T223000Z
 DTEND:20260624T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
@@ -1836,7 +2412,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11046553
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260623T223000Z
 DTEND:20260624T013000Z
 SUMMARY:PGS Marvel Super Heroes Prerelease @ The Philly Game Shop
@@ -1854,7 +2430,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650410
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260623T223000Z
 DTEND:20260624T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
@@ -1867,9 +2443,30 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650410
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096468
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260623T223000Z
+DTEND:20260624T013000Z
+SUMMARY:Tuesday Modern @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Modern\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096468\n\nJoin us a
+ t Top Deck Games for our weekly MTG Modern tournament!\n\nWHEN: Every Tues
+ day\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 
+ 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active W
+ izards Account / MTG Companion App Account\n- Sign up at https://myaccount
+ s.wizards.com/register\n\nFORMAT: Modern\n- 3 Swiss Rounds\n- 50-minute Ro
+ unds\, Best of 3\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-
+ 0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 
+ 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096468
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10814228
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260624T210000Z
 DTEND:20260625T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -1883,7 +2480,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11001256
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260624T210000Z
 DTEND:20260625T000000Z
 SUMMARY:Wednesday Night Commander @ The Guild Hall Hobby
@@ -1906,7 +2503,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11046554
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260624T223000Z
 DTEND:20260625T013000Z
 SUMMARY:PGS Marvel Super Heroes Prerelease @ The Philly Game Shop
@@ -1924,7 +2521,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045415
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260624T223000Z
 DTEND:20260625T013000Z
 SUMMARY:Wednesday Commander Night @ Kryptic Collections
@@ -1940,9 +2537,31 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
 URL;VALUE=URI:https://locator.wizards.com/events/11045415
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096597
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260624T223000Z
+DTEND:20260625T013000Z
+SUMMARY:Wednesday Booster Draft @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Draft\nCost: $25\nStore: https://www.topdeckgamesonlin
+ e.com/\nDetails: https://locator.wizards.com/events/11096597\n\nJoin us at
+  Top Deck Games for our weekly MTG Booster Draft!\n\nWHEN: Every Wednesday
+ \, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 100
+ \nCherry Hill\, NJ 08003\n\nENTRY: $25\n- Players must have an active Wiza
+ rds Account / MTG Companion App Account\n- Sign up at https://myaccounts.w
+ izards.com/register\n\nFORMAT: Booster Draft\n- 3x Boosters\n- 3 Swiss Rou
+ nds\n- 50 Minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Cre
+ dit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\n
+ Phone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-l
+ ocator
+URL;VALUE=URI:https://locator.wizards.com/events/11096597
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-11051616
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260625T200000Z
 DTEND:20260625T230000Z
 SUMMARY:Open play at Garden of Earthly Delights @ Garden of Earthly Deligh
@@ -1956,24 +2575,28 @@ DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.instagram.co
 URL;VALUE=URI:https://locator.wizards.com/events/11051616
 END:VEVENT
 BEGIN:VEVENT
-UID:wotc-10710241
+UID:wotc-11096405
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260625T210000Z
 DTEND:20260626T000000Z
 SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
 LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
  rry Hill Township\, New Jersey\, 08003
-DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.topdeckgames
- online.com/\nDetails: https://locator.wizards.com/events/10710241\n\nBuy a
-  pack and play to win that pack in Fill and Fire Commander Pods all night!
- \nSource: wizards-locator
-URL;VALUE=URI:https://locator.wizards.com/events/10710241
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096405\n\nBuy a 
+ pack and play to win that pack in Fill and Fire Commander Pods all night!\
+ n\nENTRY: Purchase any Booster Pack\n- Players must have an active Wizards
+  Account / MTG Companion App Account\n- Sign up at https://myaccounts.wiza
+ rds.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPRIZES
+ : Per Pod\n- Winner: 1 Pack matching their entry pack\nSource: wizards-loc
+ ator
+URL;VALUE=URI:https://locator.wizards.com/events/11096405
 END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10794460
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260625T223000Z
 DTEND:20260626T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -1991,7 +2614,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11046555
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260625T223000Z
 DTEND:20260626T013000Z
 SUMMARY:PGS Marvel Super Heroes Prerelease @ The Philly Game Shop
@@ -2007,14 +2630,56 @@ DESCRIPTION:Format: Sealed\nCost: $45\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/11046555
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096633
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260625T223000Z
+DTEND:20260626T013000Z
+SUMMARY:Thursday Pioneer @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pioneer\nCost: $15\nStore: https://www.topdeckgamesonl
+ ine.com/\nDetails: https://locator.wizards.com/events/11096633\n\nJoin us 
+ at Top Deck Games for our weekly MTG Pioneer tournament!\n\nWHEN: Every Th
+ ursday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Sui
+ te 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an activ
+ e Wizards Account / MTG Companion App Account\n- Sign up at https://myacco
+ unts.wizards.com/register\n\nFORMAT: Pioneer\n- 3 Swiss Rounds\n- 50-minut
+ e Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30
+  Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-
+ 2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096633
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096688
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260626T210000Z
+DTEND:20260627T000000Z
+SUMMARY:Friday Night Magic Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096688\n\nJoin u
+ s at Top Deck Games every Friday for our Friday Night Magic Commander at 5
+ :00pm!\n\nWHEN: Every Friday @ 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Commander - Fi
+ ll & Fire\n- Pods of 4\n\nPRIZES: Per Pod\n- All Players: $5 credit\n- Win
+ ner: Additional $15 credit\n\nCONTACT:\nPhone: 856-858-2700\nEmail: cherry
+ hill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096688
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10722668
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260626T220000Z
 DTEND:20260627T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 636 - Port Richmond
 LOCATION:GameStop - 636 - Port Richmond\, Aramingo Avenue\, Philadelphia\,
-  Pennsylvania\, 19134
+  Pennsylvania\, 19125
 DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.gamestop.com
  /\nDetails: https://locator.wizards.com/events/10722668\n\nJoin us at your
   local GameStop for a casual commander event to celebrate the launch of Ma
@@ -2025,7 +2690,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10722747
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260626T220000Z
 DTEND:20260627T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 1735 - Philadelphia
@@ -2042,7 +2707,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10722675
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260626T220000Z
 DTEND:20260627T010000Z
 SUMMARY:GameStop Magic Meetup - Commander @ GameStop - 666 - Great Northea
@@ -2059,7 +2724,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10968435
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260626T223000Z
 DTEND:20260627T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
@@ -2073,7 +2738,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045429
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260626T223000Z
 DTEND:20260627T013000Z
 SUMMARY:Friday Night Commander @ Kryptic Collections
@@ -2091,7 +2756,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650425
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260626T223000Z
 DTEND:20260627T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
@@ -2104,9 +2769,54 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650425
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096672
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260626T223000Z
+DTEND:20260627T013000Z
+SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
+ l
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Standard\nCost: $15\nStore: https://www.topdeckgameson
+ line.com/\nDetails: https://locator.wizards.com/events/11096672\n\nJoin us
+  at Top Deck Games every Friday for our Friday Night Magic Standard at 6:3
+ 0pm!\n\nWHEN: Every Friday @ 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonf
+ ield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Playe
+ rs must have an active Wizards Account / MTG Companion App Account\n- Sign
+  up at https://myaccounts.wizards.com/register\n\nFORMAT: Standard\n- 3 Sw
+ iss Rounds\n- 50-minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: 
+ $40 Credit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCON
+ TACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wi
+ zards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096672
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096705
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260626T223000Z
+DTEND:20260627T013000Z
+SUMMARY:Friday Night Magic Booster Draft @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Draft\nCost: $30\nStore: https://www.topdeckgamesonlin
+ e.com/\nDetails: https://locator.wizards.com/events/11096705\n\nJoin us at
+  Top Deck Games every Friday for our Friday Night Magic Booster Draft at 6
+ :30pm!\n\nWHEN: Every Friday @ 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $30\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Booster Draft\
+ n- 3x Play Booster Draft\, 30-minute build\n- 3 Swiss Rounds\n- 50-minute 
+ Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30 C
+ redit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-27
+ 00\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096705
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10739382
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260626T230000Z
 DTEND:20260627T020000Z
 SUMMARY:FNM COMMANDER NIGHTS @ Play Another Game
@@ -2120,7 +2830,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11089471
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260626T230000Z
 DTEND:20260627T020000Z
 SUMMARY:Friday Night Magic Commander @ 7th Dimension Games
@@ -2134,7 +2844,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045403
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260628T190000Z
 DTEND:20260628T220000Z
 SUMMARY:Sunday Afternoon Commander @ Kryptic Collections
@@ -2152,7 +2862,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881713
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260629T210000Z
 DTEND:20260630T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -2164,9 +2874,30 @@ DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
 URL;VALUE=URI:https://locator.wizards.com/events/10881713
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096350
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260629T210000Z
+DTEND:20260630T000000Z
+SUMMARY:Monday Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096350\n\nJoin u
+ s at Top Deck Games for our Casual Commander events!\n\nWHEN: Every Monday
+ \, 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite #10
+ 0\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Players must have an active Wiz
+ ards Account / MTG Companion App Account\n- Sign up at https://myaccounts.
+ wizards.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPR
+ IZES: Per Pod\n- All Players: $5 credit\n- Winner: Additional $15 credit\n
+ \nCONTACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSourc
+ e: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096350
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968413
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260629T223000Z
 DTEND:20260630T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
@@ -2178,9 +2909,70 @@ DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/10968413
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096312
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260629T223000Z
+DTEND:20260630T013000Z
+SUMMARY:Monday Pauper @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pauper\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096312\n\nJoin us a
+ t Top Deck Games for our weekly MTG Pauper tournament at 6:30pm!\n\nWHEN: 
+ Every Monday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd
+ \, Suite 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an
+  active Wizards Account / MTG Companion App Account\n- Sign up at https://
+ myaccounts.wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-
+ minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1
+ : $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856
+ -858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096312
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096333
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260629T223000Z
+DTEND:20260630T013000Z
+SUMMARY:Monday Legacy @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Legacy\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096333\n\nJoin us a
+ t Top Deck Games for our weekly MTG Legacy tournament!\n\nWHEN: Every Mond
+ ay\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 1
+ 00\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active Wi
+ zards Account / MTG Companion App Account\n- Sign up at https://myaccounts
+ .wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-minute Rou
+ nds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30 Cred
+ it\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-2700\
+ nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096333
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096406
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260630T210000Z
+DTEND:20260701T000000Z
+SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096406\n\nBuy a 
+ pack and play to win that pack in Fill and Fire Commander Pods all night!\
+ n\nENTRY: Purchase any Booster Pack\n- Players must have an active Wizards
+  Account / MTG Companion App Account\n- Sign up at https://myaccounts.wiza
+ rds.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPRIZES
+ : Per Pod\n- Winner: 1 Pack matching their entry pack\nSource: wizards-loc
+ ator
+URL;VALUE=URI:https://locator.wizards.com/events/11096406
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968423
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260630T223000Z
 DTEND:20260701T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
@@ -2196,7 +2988,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650411
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260630T223000Z
 DTEND:20260701T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
@@ -2209,9 +3001,30 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650411
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096469
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260630T223000Z
+DTEND:20260701T013000Z
+SUMMARY:Tuesday Modern @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Modern\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096469\n\nJoin us a
+ t Top Deck Games for our weekly MTG Modern tournament!\n\nWHEN: Every Tues
+ day\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 
+ 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active W
+ izards Account / MTG Companion App Account\n- Sign up at https://myaccount
+ s.wizards.com/register\n\nFORMAT: Modern\n- 3 Swiss Rounds\n- 50-minute Ro
+ unds\, Best of 3\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-
+ 0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 
+ 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096469
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10767929
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260630T223000Z
 DTEND:20260701T013000Z
 SUMMARY:Two Headed Giant Commander Tuesday Event @ 7th Dimension Games
@@ -2225,7 +3038,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10814229
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260701T210000Z
 DTEND:20260702T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -2239,7 +3052,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11001257
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260701T210000Z
 DTEND:20260702T000000Z
 SUMMARY:Wednesday Night Commander @ The Guild Hall Hobby
@@ -2262,7 +3075,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045416
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260701T223000Z
 DTEND:20260702T013000Z
 SUMMARY:Wednesday Commander Night @ Kryptic Collections
@@ -2278,9 +3091,31 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
 URL;VALUE=URI:https://locator.wizards.com/events/11045416
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096598
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260701T223000Z
+DTEND:20260702T013000Z
+SUMMARY:Wednesday Booster Draft @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Draft\nCost: $25\nStore: https://www.topdeckgamesonlin
+ e.com/\nDetails: https://locator.wizards.com/events/11096598\n\nJoin us at
+  Top Deck Games for our weekly MTG Booster Draft!\n\nWHEN: Every Wednesday
+ \, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 100
+ \nCherry Hill\, NJ 08003\n\nENTRY: $25\n- Players must have an active Wiza
+ rds Account / MTG Companion App Account\n- Sign up at https://myaccounts.w
+ izards.com/register\n\nFORMAT: Booster Draft\n- 3x Boosters\n- 3 Swiss Rou
+ nds\n- 50 Minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Cre
+ dit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\n
+ Phone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-l
+ ocator
+URL;VALUE=URI:https://locator.wizards.com/events/11096598
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-11051617
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260702T200000Z
 DTEND:20260702T230000Z
 SUMMARY:Open play at Garden of Earthly Delights @ Garden of Earthly Deligh
@@ -2294,9 +3129,28 @@ DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.instagram.co
 URL;VALUE=URI:https://locator.wizards.com/events/11051617
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096407
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260702T210000Z
+DTEND:20260703T000000Z
+SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096407\n\nBuy a 
+ pack and play to win that pack in Fill and Fire Commander Pods all night!\
+ n\nENTRY: Purchase any Booster Pack\n- Players must have an active Wizards
+  Account / MTG Companion App Account\n- Sign up at https://myaccounts.wiza
+ rds.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPRIZES
+ : Per Pod\n- Winner: 1 Pack matching their entry pack\nSource: wizards-loc
+ ator
+URL;VALUE=URI:https://locator.wizards.com/events/11096407
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10794461
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260702T223000Z
 DTEND:20260703T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -2312,9 +3166,30 @@ DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/10794461
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096634
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260702T223000Z
+DTEND:20260703T013000Z
+SUMMARY:Thursday Pioneer @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pioneer\nCost: $15\nStore: https://www.topdeckgamesonl
+ ine.com/\nDetails: https://locator.wizards.com/events/11096634\n\nJoin us 
+ at Top Deck Games for our weekly MTG Pioneer tournament!\n\nWHEN: Every Th
+ ursday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Sui
+ te 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an activ
+ e Wizards Account / MTG Companion App Account\n- Sign up at https://myacco
+ unts.wizards.com/register\n\nFORMAT: Pioneer\n- 3 Swiss Rounds\n- 50-minut
+ e Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30
+  Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-
+ 2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096634
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-11095002
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260703T190000Z
 DTEND:20260703T220000Z
 SUMMARY:PGS Presents: Marvel Superheroes Commander Party @ The Philly Game
@@ -2333,9 +3208,30 @@ DESCRIPTION:Format: Commander\nCost: Free\nStore: http://phillygameshop.co
 URL;VALUE=URI:https://locator.wizards.com/events/11095002
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096689
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260703T210000Z
+DTEND:20260704T000000Z
+SUMMARY:Friday Night Magic Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096689\n\nJoin u
+ s at Top Deck Games every Friday for our Friday Night Magic Commander at 5
+ :00pm!\n\nWHEN: Every Friday @ 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Commander - Fi
+ ll & Fire\n- Pods of 4\n\nPRIZES: Per Pod\n- All Players: $5 credit\n- Win
+ ner: Additional $15 credit\n\nCONTACT:\nPhone: 856-858-2700\nEmail: cherry
+ hill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096689
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968436
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260703T223000Z
 DTEND:20260704T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
@@ -2349,7 +3245,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045430
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260703T223000Z
 DTEND:20260704T013000Z
 SUMMARY:Friday Night Commander @ Kryptic Collections
@@ -2367,7 +3263,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650426
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260703T223000Z
 DTEND:20260704T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
@@ -2380,9 +3276,54 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650426
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096673
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260703T223000Z
+DTEND:20260704T013000Z
+SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
+ l
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Standard\nCost: $15\nStore: https://www.topdeckgameson
+ line.com/\nDetails: https://locator.wizards.com/events/11096673\n\nJoin us
+  at Top Deck Games every Friday for our Friday Night Magic Standard at 6:3
+ 0pm!\n\nWHEN: Every Friday @ 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonf
+ ield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Playe
+ rs must have an active Wizards Account / MTG Companion App Account\n- Sign
+  up at https://myaccounts.wizards.com/register\n\nFORMAT: Standard\n- 3 Sw
+ iss Rounds\n- 50-minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: 
+ $40 Credit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCON
+ TACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wi
+ zards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096673
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096706
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260703T223000Z
+DTEND:20260704T013000Z
+SUMMARY:Friday Night Magic Booster Draft @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Draft\nCost: $30\nStore: https://www.topdeckgamesonlin
+ e.com/\nDetails: https://locator.wizards.com/events/11096706\n\nJoin us at
+  Top Deck Games every Friday for our Friday Night Magic Booster Draft at 6
+ :30pm!\n\nWHEN: Every Friday @ 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $30\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Booster Draft\
+ n- 3x Play Booster Draft\, 30-minute build\n- 3 Swiss Rounds\n- 50-minute 
+ Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30 C
+ redit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-27
+ 00\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096706
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-11089472
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260703T230000Z
 DTEND:20260704T020000Z
 SUMMARY:Friday Night Magic Commander @ 7th Dimension Games
@@ -2396,7 +3337,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11075441
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260705T140000Z
 DTEND:20260705T170000Z
 SUMMARY:US RCQ  | 2026-27 Round 1 Marvel Super Heroes 2-Slot Limited RCQ @
@@ -2420,7 +3361,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045404
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260705T190000Z
 DTEND:20260705T220000Z
 SUMMARY:Sunday Afternoon Commander @ Kryptic Collections
@@ -2438,7 +3379,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881714
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260706T210000Z
 DTEND:20260707T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -2450,9 +3391,30 @@ DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
 URL;VALUE=URI:https://locator.wizards.com/events/10881714
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096351
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260706T210000Z
+DTEND:20260707T000000Z
+SUMMARY:Monday Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096351\n\nJoin u
+ s at Top Deck Games for our Casual Commander events!\n\nWHEN: Every Monday
+ \, 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite #10
+ 0\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Players must have an active Wiz
+ ards Account / MTG Companion App Account\n- Sign up at https://myaccounts.
+ wizards.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPR
+ IZES: Per Pod\n- All Players: $5 credit\n- Winner: Additional $15 credit\n
+ \nCONTACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSourc
+ e: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096351
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968414
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260706T223000Z
 DTEND:20260707T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
@@ -2464,9 +3426,70 @@ DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/10968414
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096313
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260706T223000Z
+DTEND:20260707T013000Z
+SUMMARY:Monday Pauper @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pauper\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096313\n\nJoin us a
+ t Top Deck Games for our weekly MTG Pauper tournament at 6:30pm!\n\nWHEN: 
+ Every Monday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd
+ \, Suite 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an
+  active Wizards Account / MTG Companion App Account\n- Sign up at https://
+ myaccounts.wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-
+ minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1
+ : $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856
+ -858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096313
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096334
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260706T223000Z
+DTEND:20260707T013000Z
+SUMMARY:Monday Legacy @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Legacy\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096334\n\nJoin us a
+ t Top Deck Games for our weekly MTG Legacy tournament!\n\nWHEN: Every Mond
+ ay\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 1
+ 00\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active Wi
+ zards Account / MTG Companion App Account\n- Sign up at https://myaccounts
+ .wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-minute Rou
+ nds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30 Cred
+ it\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-2700\
+ nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096334
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096408
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260707T210000Z
+DTEND:20260708T000000Z
+SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096408\n\nBuy a 
+ pack and play to win that pack in Fill and Fire Commander Pods all night!\
+ n\nENTRY: Purchase any Booster Pack\n- Players must have an active Wizards
+  Account / MTG Companion App Account\n- Sign up at https://myaccounts.wiza
+ rds.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPRIZES
+ : Per Pod\n- Winner: 1 Pack matching their entry pack\nSource: wizards-loc
+ ator
+URL;VALUE=URI:https://locator.wizards.com/events/11096408
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968424
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260707T223000Z
 DTEND:20260708T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
@@ -2482,7 +3505,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650412
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260707T223000Z
 DTEND:20260708T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
@@ -2495,9 +3518,30 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650412
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096470
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260707T223000Z
+DTEND:20260708T013000Z
+SUMMARY:Tuesday Modern @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Modern\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096470\n\nJoin us a
+ t Top Deck Games for our weekly MTG Modern tournament!\n\nWHEN: Every Tues
+ day\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 
+ 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active W
+ izards Account / MTG Companion App Account\n- Sign up at https://myaccount
+ s.wizards.com/register\n\nFORMAT: Modern\n- 3 Swiss Rounds\n- 50-minute Ro
+ unds\, Best of 3\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-
+ 0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 
+ 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096470
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10767932
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260707T223000Z
 DTEND:20260708T013000Z
 SUMMARY:Tuesday Commander Party @ 7th Dimension Games
@@ -2511,7 +3555,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10814230
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260708T210000Z
 DTEND:20260709T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -2525,7 +3569,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11001258
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260708T210000Z
 DTEND:20260709T000000Z
 SUMMARY:Wednesday Night Commander @ The Guild Hall Hobby
@@ -2548,7 +3592,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045417
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260708T223000Z
 DTEND:20260709T013000Z
 SUMMARY:Wednesday Commander Night @ Kryptic Collections
@@ -2564,9 +3608,31 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
 URL;VALUE=URI:https://locator.wizards.com/events/11045417
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096599
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260708T223000Z
+DTEND:20260709T013000Z
+SUMMARY:Wednesday Booster Draft @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Draft\nCost: $25\nStore: https://www.topdeckgamesonlin
+ e.com/\nDetails: https://locator.wizards.com/events/11096599\n\nJoin us at
+  Top Deck Games for our weekly MTG Booster Draft!\n\nWHEN: Every Wednesday
+ \, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 100
+ \nCherry Hill\, NJ 08003\n\nENTRY: $25\n- Players must have an active Wiza
+ rds Account / MTG Companion App Account\n- Sign up at https://myaccounts.w
+ izards.com/register\n\nFORMAT: Booster Draft\n- 3x Boosters\n- 3 Swiss Rou
+ nds\n- 50 Minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Cre
+ dit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\n
+ Phone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-l
+ ocator
+URL;VALUE=URI:https://locator.wizards.com/events/11096599
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-11051618
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260709T200000Z
 DTEND:20260709T230000Z
 SUMMARY:Open play at Garden of Earthly Delights @ Garden of Earthly Deligh
@@ -2580,9 +3646,28 @@ DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.instagram.co
 URL;VALUE=URI:https://locator.wizards.com/events/11051618
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096409
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260709T210000Z
+DTEND:20260710T000000Z
+SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096409\n\nBuy a 
+ pack and play to win that pack in Fill and Fire Commander Pods all night!\
+ n\nENTRY: Purchase any Booster Pack\n- Players must have an active Wizards
+  Account / MTG Companion App Account\n- Sign up at https://myaccounts.wiza
+ rds.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPRIZES
+ : Per Pod\n- Winner: 1 Pack matching their entry pack\nSource: wizards-loc
+ ator
+URL;VALUE=URI:https://locator.wizards.com/events/11096409
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10794462
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260709T223000Z
 DTEND:20260710T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -2598,9 +3683,51 @@ DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/10794462
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096635
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260709T223000Z
+DTEND:20260710T013000Z
+SUMMARY:Thursday Pioneer @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pioneer\nCost: $15\nStore: https://www.topdeckgamesonl
+ ine.com/\nDetails: https://locator.wizards.com/events/11096635\n\nJoin us 
+ at Top Deck Games for our weekly MTG Pioneer tournament!\n\nWHEN: Every Th
+ ursday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Sui
+ te 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an activ
+ e Wizards Account / MTG Companion App Account\n- Sign up at https://myacco
+ unts.wizards.com/register\n\nFORMAT: Pioneer\n- 3 Swiss Rounds\n- 50-minut
+ e Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30
+  Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-
+ 2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096635
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096690
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260710T210000Z
+DTEND:20260711T000000Z
+SUMMARY:Friday Night Magic Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096690\n\nJoin u
+ s at Top Deck Games every Friday for our Friday Night Magic Commander at 5
+ :00pm!\n\nWHEN: Every Friday @ 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Commander - Fi
+ ll & Fire\n- Pods of 4\n\nPRIZES: Per Pod\n- All Players: $5 credit\n- Win
+ ner: Additional $15 credit\n\nCONTACT:\nPhone: 856-858-2700\nEmail: cherry
+ hill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096690
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968437
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260710T223000Z
 DTEND:20260711T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
@@ -2614,7 +3741,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045431
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260710T223000Z
 DTEND:20260711T013000Z
 SUMMARY:Friday Night Commander @ Kryptic Collections
@@ -2632,7 +3759,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650427
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260710T223000Z
 DTEND:20260711T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
@@ -2645,9 +3772,54 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650427
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096674
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260710T223000Z
+DTEND:20260711T013000Z
+SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
+ l
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Standard\nCost: $15\nStore: https://www.topdeckgameson
+ line.com/\nDetails: https://locator.wizards.com/events/11096674\n\nJoin us
+  at Top Deck Games every Friday for our Friday Night Magic Standard at 6:3
+ 0pm!\n\nWHEN: Every Friday @ 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonf
+ ield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Playe
+ rs must have an active Wizards Account / MTG Companion App Account\n- Sign
+  up at https://myaccounts.wizards.com/register\n\nFORMAT: Standard\n- 3 Sw
+ iss Rounds\n- 50-minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: 
+ $40 Credit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCON
+ TACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wi
+ zards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096674
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096707
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260710T223000Z
+DTEND:20260711T013000Z
+SUMMARY:Friday Night Magic Booster Draft @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Draft\nCost: $30\nStore: https://www.topdeckgamesonlin
+ e.com/\nDetails: https://locator.wizards.com/events/11096707\n\nJoin us at
+  Top Deck Games every Friday for our Friday Night Magic Booster Draft at 6
+ :30pm!\n\nWHEN: Every Friday @ 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $30\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Booster Draft\
+ n- 3x Play Booster Draft\, 30-minute build\n- 3 Swiss Rounds\n- 50-minute 
+ Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30 C
+ redit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-27
+ 00\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096707
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-11089473
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260710T230000Z
 DTEND:20260711T020000Z
 SUMMARY:Friday Night Magic Commander @ 7th Dimension Games
@@ -2661,7 +3833,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11089496
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260711T170000Z
 DTEND:20260711T200000Z
 SUMMARY:Saturday Draft @ 7th Dimension Games
@@ -2675,7 +3847,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045405
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260712T190000Z
 DTEND:20260712T220000Z
 SUMMARY:Sunday Afternoon Commander @ Kryptic Collections
@@ -2693,7 +3865,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881715
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260713T210000Z
 DTEND:20260714T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -2705,9 +3877,30 @@ DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
 URL;VALUE=URI:https://locator.wizards.com/events/10881715
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096352
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260713T210000Z
+DTEND:20260714T000000Z
+SUMMARY:Monday Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096352\n\nJoin u
+ s at Top Deck Games for our Casual Commander events!\n\nWHEN: Every Monday
+ \, 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite #10
+ 0\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Players must have an active Wiz
+ ards Account / MTG Companion App Account\n- Sign up at https://myaccounts.
+ wizards.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPR
+ IZES: Per Pod\n- All Players: $5 credit\n- Winner: Additional $15 credit\n
+ \nCONTACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSourc
+ e: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096352
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968415
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260713T223000Z
 DTEND:20260714T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
@@ -2719,9 +3912,70 @@ DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/10968415
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096314
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260713T223000Z
+DTEND:20260714T013000Z
+SUMMARY:Monday Pauper @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pauper\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096314\n\nJoin us a
+ t Top Deck Games for our weekly MTG Pauper tournament at 6:30pm!\n\nWHEN: 
+ Every Monday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd
+ \, Suite 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an
+  active Wizards Account / MTG Companion App Account\n- Sign up at https://
+ myaccounts.wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-
+ minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1
+ : $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856
+ -858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096314
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096335
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260713T223000Z
+DTEND:20260714T013000Z
+SUMMARY:Monday Legacy @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Legacy\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096335\n\nJoin us a
+ t Top Deck Games for our weekly MTG Legacy tournament!\n\nWHEN: Every Mond
+ ay\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 1
+ 00\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active Wi
+ zards Account / MTG Companion App Account\n- Sign up at https://myaccounts
+ .wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-minute Rou
+ nds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30 Cred
+ it\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-2700\
+ nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096335
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096410
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260714T210000Z
+DTEND:20260715T000000Z
+SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096410\n\nBuy a 
+ pack and play to win that pack in Fill and Fire Commander Pods all night!\
+ n\nENTRY: Purchase any Booster Pack\n- Players must have an active Wizards
+  Account / MTG Companion App Account\n- Sign up at https://myaccounts.wiza
+ rds.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPRIZES
+ : Per Pod\n- Winner: 1 Pack matching their entry pack\nSource: wizards-loc
+ ator
+URL;VALUE=URI:https://locator.wizards.com/events/11096410
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968425
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260714T223000Z
 DTEND:20260715T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
@@ -2737,7 +3991,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650413
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260714T223000Z
 DTEND:20260715T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
@@ -2750,9 +4004,30 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650413
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096471
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260714T223000Z
+DTEND:20260715T013000Z
+SUMMARY:Tuesday Modern @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Modern\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096471\n\nJoin us a
+ t Top Deck Games for our weekly MTG Modern tournament!\n\nWHEN: Every Tues
+ day\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 
+ 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active W
+ izards Account / MTG Companion App Account\n- Sign up at https://myaccount
+ s.wizards.com/register\n\nFORMAT: Modern\n- 3 Swiss Rounds\n- 50-minute Ro
+ unds\, Best of 3\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-
+ 0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 
+ 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096471
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10814231
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260715T210000Z
 DTEND:20260716T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -2766,7 +4041,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11001259
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260715T210000Z
 DTEND:20260716T000000Z
 SUMMARY:Wednesday Night Commander @ The Guild Hall Hobby
@@ -2789,7 +4064,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045418
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260715T223000Z
 DTEND:20260716T013000Z
 SUMMARY:Wednesday Commander Night @ Kryptic Collections
@@ -2805,9 +4080,31 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
 URL;VALUE=URI:https://locator.wizards.com/events/11045418
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096600
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260715T223000Z
+DTEND:20260716T013000Z
+SUMMARY:Wednesday Booster Draft @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Draft\nCost: $25\nStore: https://www.topdeckgamesonlin
+ e.com/\nDetails: https://locator.wizards.com/events/11096600\n\nJoin us at
+  Top Deck Games for our weekly MTG Booster Draft!\n\nWHEN: Every Wednesday
+ \, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 100
+ \nCherry Hill\, NJ 08003\n\nENTRY: $25\n- Players must have an active Wiza
+ rds Account / MTG Companion App Account\n- Sign up at https://myaccounts.w
+ izards.com/register\n\nFORMAT: Booster Draft\n- 3x Boosters\n- 3 Swiss Rou
+ nds\n- 50 Minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Cre
+ dit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\n
+ Phone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-l
+ ocator
+URL;VALUE=URI:https://locator.wizards.com/events/11096600
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-11051619
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260716T200000Z
 DTEND:20260716T230000Z
 SUMMARY:Open play at Garden of Earthly Delights @ Garden of Earthly Deligh
@@ -2821,9 +4118,28 @@ DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.instagram.co
 URL;VALUE=URI:https://locator.wizards.com/events/11051619
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096411
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260716T210000Z
+DTEND:20260717T000000Z
+SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096411\n\nBuy a 
+ pack and play to win that pack in Fill and Fire Commander Pods all night!\
+ n\nENTRY: Purchase any Booster Pack\n- Players must have an active Wizards
+  Account / MTG Companion App Account\n- Sign up at https://myaccounts.wiza
+ rds.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPRIZES
+ : Per Pod\n- Winner: 1 Pack matching their entry pack\nSource: wizards-loc
+ ator
+URL;VALUE=URI:https://locator.wizards.com/events/11096411
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10794463
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260716T223000Z
 DTEND:20260717T013000Z
 SUMMARY:PGS Modern Thursdays @ The Philly Game Shop
@@ -2839,9 +4155,69 @@ DESCRIPTION:Format: Modern\nCost: $10\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/10794463
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096636
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260716T223000Z
+DTEND:20260717T013000Z
+SUMMARY:Thursday Pioneer @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pioneer\nCost: $15\nStore: https://www.topdeckgamesonl
+ ine.com/\nDetails: https://locator.wizards.com/events/11096636\n\nJoin us 
+ at Top Deck Games for our weekly MTG Pioneer tournament!\n\nWHEN: Every Th
+ ursday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Sui
+ te 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an activ
+ e Wizards Account / MTG Companion App Account\n- Sign up at https://myacco
+ unts.wizards.com/register\n\nFORMAT: Pioneer\n- 3 Swiss Rounds\n- 50-minut
+ e Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30
+  Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-
+ 2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096636
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096700
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260717T190000Z
+DTEND:20260717T220000Z
+SUMMARY:Magic Presents: God of Mischief at PGS @ The Philly Game Shop
+LOCATION:The Philly Game Shop\, 521-525 South 5th Street\, Philadelphia\, 
+ Pennsylvania\, 19147
+DESCRIPTION:Format: Commander\nCost: Free\nStore: http://phillygameshop.co
+ m/\nDetails: https://locator.wizards.com/events/11096700\n\nTake on the ro
+ le of Loki\, God of Mischief in this exciting twist on the commander forma
+ t! One player is the villain\, and the other 3 have to work together to ta
+ ke them down arch-enemy style. Each participant in this event will receive
+  an exclusive promo while supplies last. We can't wait to see you there!\n
+ Source: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096700
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096691
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260717T210000Z
+DTEND:20260718T000000Z
+SUMMARY:Friday Night Magic Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096691\n\nJoin u
+ s at Top Deck Games every Friday for our Friday Night Magic Commander at 5
+ :00pm!\n\nWHEN: Every Friday @ 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Commander - Fi
+ ll & Fire\n- Pods of 4\n\nPRIZES: Per Pod\n- All Players: $5 credit\n- Win
+ ner: Additional $15 credit\n\nCONTACT:\nPhone: 856-858-2700\nEmail: cherry
+ hill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096691
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968438
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260717T223000Z
 DTEND:20260718T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
@@ -2855,7 +4231,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045432
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260717T223000Z
 DTEND:20260718T013000Z
 SUMMARY:Friday Night Commander @ Kryptic Collections
@@ -2873,7 +4249,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650428
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260717T223000Z
 DTEND:20260718T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
@@ -2886,9 +4262,54 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650428
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096675
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260717T223000Z
+DTEND:20260718T013000Z
+SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
+ l
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Standard\nCost: $15\nStore: https://www.topdeckgameson
+ line.com/\nDetails: https://locator.wizards.com/events/11096675\n\nJoin us
+  at Top Deck Games every Friday for our Friday Night Magic Standard at 6:3
+ 0pm!\n\nWHEN: Every Friday @ 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonf
+ ield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Playe
+ rs must have an active Wizards Account / MTG Companion App Account\n- Sign
+  up at https://myaccounts.wizards.com/register\n\nFORMAT: Standard\n- 3 Sw
+ iss Rounds\n- 50-minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: 
+ $40 Credit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCON
+ TACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wi
+ zards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096675
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096708
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260717T223000Z
+DTEND:20260718T013000Z
+SUMMARY:Friday Night Magic Booster Draft @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Draft\nCost: $30\nStore: https://www.topdeckgamesonlin
+ e.com/\nDetails: https://locator.wizards.com/events/11096708\n\nJoin us at
+  Top Deck Games every Friday for our Friday Night Magic Booster Draft at 6
+ :30pm!\n\nWHEN: Every Friday @ 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $30\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Booster Draft\
+ n- 3x Play Booster Draft\, 30-minute build\n- 3 Swiss Rounds\n- 50-minute 
+ Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30 C
+ redit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-27
+ 00\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096708
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-11089474
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260717T230000Z
 DTEND:20260718T020000Z
 SUMMARY:Friday Night Magic Commander @ 7th Dimension Games
@@ -2902,7 +4323,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11067715
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260718T153000Z
 DTEND:20260718T183000Z
 SUMMARY:US RCQ  | 2026-27 Round 1 Sealed RCQ - Secrets of Strixhaven @ Top
@@ -2927,7 +4348,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11089497
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260718T170000Z
 DTEND:20260718T200000Z
 SUMMARY:Saturday Draft @ 7th Dimension Games
@@ -2941,7 +4362,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045406
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260719T190000Z
 DTEND:20260719T220000Z
 SUMMARY:Sunday Afternoon Commander @ Kryptic Collections
@@ -2959,7 +4380,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881716
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260720T210000Z
 DTEND:20260721T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -2971,9 +4392,30 @@ DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
 URL;VALUE=URI:https://locator.wizards.com/events/10881716
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096353
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260720T210000Z
+DTEND:20260721T000000Z
+SUMMARY:Monday Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096353\n\nJoin u
+ s at Top Deck Games for our Casual Commander events!\n\nWHEN: Every Monday
+ \, 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite #10
+ 0\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Players must have an active Wiz
+ ards Account / MTG Companion App Account\n- Sign up at https://myaccounts.
+ wizards.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPR
+ IZES: Per Pod\n- All Players: $5 credit\n- Winner: Additional $15 credit\n
+ \nCONTACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSourc
+ e: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096353
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968416
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260720T223000Z
 DTEND:20260721T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
@@ -2985,9 +4427,70 @@ DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
 URL;VALUE=URI:https://locator.wizards.com/events/10968416
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096315
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260720T223000Z
+DTEND:20260721T013000Z
+SUMMARY:Monday Pauper @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pauper\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096315\n\nJoin us a
+ t Top Deck Games for our weekly MTG Pauper tournament at 6:30pm!\n\nWHEN: 
+ Every Monday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd
+ \, Suite 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an
+  active Wizards Account / MTG Companion App Account\n- Sign up at https://
+ myaccounts.wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-
+ minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1
+ : $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856
+ -858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096315
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096336
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260720T223000Z
+DTEND:20260721T013000Z
+SUMMARY:Monday Legacy @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Legacy\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096336\n\nJoin us a
+ t Top Deck Games for our weekly MTG Legacy tournament!\n\nWHEN: Every Mond
+ ay\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 1
+ 00\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active Wi
+ zards Account / MTG Companion App Account\n- Sign up at https://myaccounts
+ .wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-minute Rou
+ nds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30 Cred
+ it\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-2700\
+ nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096336
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096412
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260721T210000Z
+DTEND:20260722T000000Z
+SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096412\n\nBuy a 
+ pack and play to win that pack in Fill and Fire Commander Pods all night!\
+ n\nENTRY: Purchase any Booster Pack\n- Players must have an active Wizards
+  Account / MTG Companion App Account\n- Sign up at https://myaccounts.wiza
+ rds.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPRIZES
+ : Per Pod\n- Winner: 1 Pack matching their entry pack\nSource: wizards-loc
+ ator
+URL;VALUE=URI:https://locator.wizards.com/events/11096412
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968426
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260721T223000Z
 DTEND:20260722T013000Z
 SUMMARY:Tuesday Draft at PGS @ The Philly Game Shop
@@ -3003,7 +4506,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650414
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260721T223000Z
 DTEND:20260722T013000Z
 SUMMARY:Tuesday Commander Nights @ Hobby Vault
@@ -3016,9 +4519,30 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650414
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096472
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260721T223000Z
+DTEND:20260722T013000Z
+SUMMARY:Tuesday Modern @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Modern\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096472\n\nJoin us a
+ t Top Deck Games for our weekly MTG Modern tournament!\n\nWHEN: Every Tues
+ day\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 
+ 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active W
+ izards Account / MTG Companion App Account\n- Sign up at https://myaccount
+ s.wizards.com/register\n\nFORMAT: Modern\n- 3 Swiss Rounds\n- 50-minute Ro
+ unds\, Best of 3\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-
+ 0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 
+ 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096472
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10767940
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260721T223000Z
 DTEND:20260722T013000Z
 SUMMARY:Magic Presents: God of Mischief Tuesday Event @ 7th Dimension Game
@@ -3033,7 +4557,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11001260
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260722T210000Z
 DTEND:20260723T000000Z
 SUMMARY:Wednesday Night Commander @ The Guild Hall Hobby
@@ -3056,7 +4580,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045419
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260722T223000Z
 DTEND:20260723T013000Z
 SUMMARY:Wednesday Commander Night @ Kryptic Collections
@@ -3072,9 +4596,31 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.krypticcollect
 URL;VALUE=URI:https://locator.wizards.com/events/11045419
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096601
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260722T223000Z
+DTEND:20260723T013000Z
+SUMMARY:Wednesday Booster Draft @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Draft\nCost: $25\nStore: https://www.topdeckgamesonlin
+ e.com/\nDetails: https://locator.wizards.com/events/11096601\n\nJoin us at
+  Top Deck Games for our weekly MTG Booster Draft!\n\nWHEN: Every Wednesday
+ \, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 100
+ \nCherry Hill\, NJ 08003\n\nENTRY: $25\n- Players must have an active Wiza
+ rds Account / MTG Companion App Account\n- Sign up at https://myaccounts.w
+ izards.com/register\n\nFORMAT: Booster Draft\n- 3x Boosters\n- 3 Swiss Rou
+ nds\n- 50 Minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Cre
+ dit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\n
+ Phone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-l
+ ocator
+URL;VALUE=URI:https://locator.wizards.com/events/11096601
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-11051620
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260723T200000Z
 DTEND:20260723T230000Z
 SUMMARY:Open play at Garden of Earthly Delights @ Garden of Earthly Deligh
@@ -3088,9 +4634,70 @@ DESCRIPTION:Format: Commander\nCost: Free\nStore: https://www.instagram.co
 URL;VALUE=URI:https://locator.wizards.com/events/11051620
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096413
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260723T210000Z
+DTEND:20260724T000000Z
+SUMMARY:Booster Pack Entry Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096413\n\nBuy a 
+ pack and play to win that pack in Fill and Fire Commander Pods all night!\
+ n\nENTRY: Purchase any Booster Pack\n- Players must have an active Wizards
+  Account / MTG Companion App Account\n- Sign up at https://myaccounts.wiza
+ rds.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPRIZES
+ : Per Pod\n- Winner: 1 Pack matching their entry pack\nSource: wizards-loc
+ ator
+URL;VALUE=URI:https://locator.wizards.com/events/11096413
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096637
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260723T223000Z
+DTEND:20260724T013000Z
+SUMMARY:Thursday Pioneer @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pioneer\nCost: $15\nStore: https://www.topdeckgamesonl
+ ine.com/\nDetails: https://locator.wizards.com/events/11096637\n\nJoin us 
+ at Top Deck Games for our weekly MTG Pioneer tournament!\n\nWHEN: Every Th
+ ursday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Sui
+ te 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an activ
+ e Wizards Account / MTG Companion App Account\n- Sign up at https://myacco
+ unts.wizards.com/register\n\nFORMAT: Pioneer\n- 3 Swiss Rounds\n- 50-minut
+ e Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30
+  Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-
+ 2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096637
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096692
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260724T210000Z
+DTEND:20260725T000000Z
+SUMMARY:Friday Night Magic Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096692\n\nJoin u
+ s at Top Deck Games every Friday for our Friday Night Magic Commander at 5
+ :00pm!\n\nWHEN: Every Friday @ 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Commander - Fi
+ ll & Fire\n- Pods of 4\n\nPRIZES: Per Pod\n- All Players: $5 credit\n- Win
+ ner: Additional $15 credit\n\nCONTACT:\nPhone: 856-858-2700\nEmail: cherry
+ hill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096692
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968439
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260724T223000Z
 DTEND:20260725T013000Z
 SUMMARY:Friday Night Magic Draft @ The Philly Game Shop
@@ -3104,7 +4711,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045433
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260724T223000Z
 DTEND:20260725T013000Z
 SUMMARY:Friday Night Commander @ Kryptic Collections
@@ -3122,7 +4729,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10650429
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260724T223000Z
 DTEND:20260725T013000Z
 SUMMARY:Friday Night Magic Commander @ Hobby Vault
@@ -3135,9 +4742,54 @@ DESCRIPTION:Format: Commander\nCost: $10\nStore: http://www.hobby-vault.co
 URL;VALUE=URI:https://locator.wizards.com/events/10650429
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096676
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260724T223000Z
+DTEND:20260725T013000Z
+SUMMARY:Friday Night Magic Standard Showdown @ Top Deck Games - Cherry Hil
+ l
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Standard\nCost: $15\nStore: https://www.topdeckgameson
+ line.com/\nDetails: https://locator.wizards.com/events/11096676\n\nJoin us
+  at Top Deck Games every Friday for our Friday Night Magic Standard at 6:3
+ 0pm!\n\nWHEN: Every Friday @ 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonf
+ ield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Playe
+ rs must have an active Wizards Account / MTG Companion App Account\n- Sign
+  up at https://myaccounts.wizards.com/register\n\nFORMAT: Standard\n- 3 Sw
+ iss Rounds\n- 50-minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: 
+ $40 Credit\n2-0-1: $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCON
+ TACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wi
+ zards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096676
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096709
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260724T223000Z
+DTEND:20260725T013000Z
+SUMMARY:Friday Night Magic Booster Draft @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Draft\nCost: $30\nStore: https://www.topdeckgamesonlin
+ e.com/\nDetails: https://locator.wizards.com/events/11096709\n\nJoin us at
+  Top Deck Games every Friday for our Friday Night Magic Booster Draft at 6
+ :30pm!\n\nWHEN: Every Friday @ 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddo
+ nfield-Berlin Rd\, Store #100\nCherry Hill\, NJ 08003\n\nENTRY: $30\n- Pla
+ yers must have an active Wizards Account / MTG Companion App Account\n- Si
+ gn up at https://myaccounts.wizards.com/register\n\nFORMAT: Booster Draft\
+ n- 3x Play Booster Draft\, 30-minute build\n- 3 Swiss Rounds\n- 50-minute 
+ Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30 C
+ redit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-27
+ 00\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096709
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-11089476
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260724T230000Z
 DTEND:20260725T020000Z
 SUMMARY:Friday Night Magic Commander @ 7th Dimension Games
@@ -3151,7 +4803,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11089498
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260725T170000Z
 DTEND:20260725T200000Z
 SUMMARY:Saturday Draft @ 7th Dimension Games
@@ -3165,7 +4817,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-11045407
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260726T190000Z
 DTEND:20260726T220000Z
 SUMMARY:Sunday Afternoon Commander @ Kryptic Collections
@@ -3183,7 +4835,7 @@ END:VEVENT
 BEGIN:VEVENT
 UID:wotc-10881717
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260727T210000Z
 DTEND:20260728T000000Z
 SUMMARY:Cryptid Casual Commander @ Cryptid Toys and Games
@@ -3195,9 +4847,30 @@ DESCRIPTION:Format: Commander\nCost: $5\nStore: https://www.youtube.com/@C
 URL;VALUE=URI:https://locator.wizards.com/events/10881717
 END:VEVENT
 BEGIN:VEVENT
+UID:wotc-11096354
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260727T210000Z
+DTEND:20260728T000000Z
+SUMMARY:Monday Commander @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Commander\nCost: $10\nStore: https://www.topdeckgameso
+ nline.com/\nDetails: https://locator.wizards.com/events/11096354\n\nJoin u
+ s at Top Deck Games for our Casual Commander events!\n\nWHEN: Every Monday
+ \, 5:00pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite #10
+ 0\nCherry Hill\, NJ 08003\n\nENTRY: $10\n- Players must have an active Wiz
+ ards Account / MTG Companion App Account\n- Sign up at https://myaccounts.
+ wizards.com/register\n\nFORMAT: Commander - Fill & Fire\n- Pods of 4\n\nPR
+ IZES: Per Pod\n- All Players: $5 credit\n- Winner: Additional $15 credit\n
+ \nCONTACT:\nPhone: 856-858-2700\nEmail: cherryhill@topdeckgames.com\nSourc
+ e: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096354
+END:VEVENT
+BEGIN:VEVENT
 UID:wotc-10968417
 SEQUENCE:0
-DTSTAMP:20260528T200432Z
+DTSTAMP:20260528T214452Z
 DTSTART:20260727T223000Z
 DTEND:20260728T013000Z
 SUMMARY:PGS Monday Pauper @ The Philly Game Shop
@@ -3207,5 +4880,47 @@ DESCRIPTION:Format: Pauper\nCost: $10\nStore: http://phillygameshop.com/\n
  Details: https://locator.wizards.com/events/10968417\n\nJoin us at PGS for
   our Monday night Pauper tournament!\nSource: wizards-locator
 URL;VALUE=URI:https://locator.wizards.com/events/10968417
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096316
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260727T223000Z
+DTEND:20260728T013000Z
+SUMMARY:Monday Pauper @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Pauper\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096316\n\nJoin us a
+ t Top Deck Games for our weekly MTG Pauper tournament at 6:30pm!\n\nWHEN: 
+ Every Monday\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd
+ \, Suite 100\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an
+  active Wizards Account / MTG Companion App Account\n- Sign up at https://
+ myaccounts.wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-
+ minute Rounds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1
+ : $30 Credit\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856
+ -858-2700\nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096316
+END:VEVENT
+BEGIN:VEVENT
+UID:wotc-11096337
+SEQUENCE:0
+DTSTAMP:20260528T214452Z
+DTSTART:20260727T223000Z
+DTEND:20260728T013000Z
+SUMMARY:Monday Legacy @ Top Deck Games - Cherry Hill
+LOCATION:Top Deck Games - Cherry Hill\, 1400 Haddonfield-Berlin Road\, Che
+ rry Hill Township\, New Jersey\, 08003
+DESCRIPTION:Format: Legacy\nCost: $15\nStore: https://www.topdeckgamesonli
+ ne.com/\nDetails: https://locator.wizards.com/events/11096337\n\nJoin us a
+ t Top Deck Games for our weekly MTG Legacy tournament!\n\nWHEN: Every Mond
+ ay\, 6:30pm\n\nWHERE: Top Deck Games\n1400 Haddonfield-Berlin Rd\, Suite 1
+ 00\nCherry Hill\, NJ 08003\n\nENTRY: $15\n- Players must have an active Wi
+ zards Account / MTG Companion App Account\n- Sign up at https://myaccounts
+ .wizards.com/register\n\nFORMAT: Legacy\n- 3 Swiss Rounds\n- 50-minute Rou
+ nds\n\nPRIZES: Based on record (W/L/D)\n3-0-0: $40 Credit\n2-0-1: $30 Cred
+ it\n2-1-0: $20 Credit\n1-1-1: $10 Credit\n\nCONTACT:\nPhone: 856-858-2700\
+ nEmail: cherryhill@topdeckgames.com\nSource: wizards-locator
+URL;VALUE=URI:https://locator.wizards.com/events/11096337
 END:VEVENT
 END:VCALENDAR
