@@ -1,0 +1,58 @@
+name: Register Discord Slash Commands
+
+# Manual-only workflow that re-registers the /playirl slash commands with
+# Discord. Run this after any change to the command shape in
+# cli/register-discord-commands.ts (option name/type/required/choices) —
+# Discord caches the registration server-side and the autocomplete UI only
+# reflects code changes once registration runs.
+#
+# DISCORD_BOT_CLIENT_ID isn't stored as a secret because it's a public
+# value (the bot's application ID, visible in any OAuth invite URL). The
+# workflow resolves it at runtime via the bot's own /applications/@me
+# endpoint so we don't have to remember to keep two secrets in sync.
+
+on:
+  workflow_dispatch:
+    inputs:
+      guild_id:
+        description: "Optional Discord guild ID. Leave blank for GLOBAL registration (up to 1hr propagation). Set to a test guild ID for instant propagation."
+        required: false
+        type: string
+
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve bot client ID from Discord
+        id: client
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+        run: |
+          response=$(curl -fsSL \
+            -H "Authorization: Bot $DISCORD_BOT_TOKEN" \
+            https://discord.com/api/v10/applications/@me)
+          client_id=$(echo "$response" | jq -r '.id // empty')
+          if [ -z "$client_id" ]; then
+            echo "::error::Failed to resolve client ID. Response: $response"
+            exit 1
+          fi
+          echo "Resolved bot application ID: $client_id"
+          echo "client_id=$client_id" >> "$GITHUB_OUTPUT"
+
+      - name: Register slash commands
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_BOT_CLIENT_ID: ${{ steps.client.outputs.client_id }}
+          DISCORD_REGISTER_GUILD_ID: ${{ inputs.guild_id }}
+        run: npm run discord:register
