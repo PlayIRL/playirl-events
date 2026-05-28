@@ -351,7 +351,7 @@ export default async function EventPage({
               )}
             </div>
           )}
-          <h1 className="text-3xl sm:text-4xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white break-words leading-tight tracking-[0.01em]">{ev.title}</h1>
+          <h1 className="text-3xl sm:text-4xl font-[family-name:var(--font-ultra)] font-black text-neutral-900 dark:text-white break-words leading-tight tracking-tight">{ev.title}</h1>
           {ev.location && (
             <p className="text-base text-neutral-600 dark:text-neutral-400 break-words flex items-center gap-2 flex-wrap">
               <Link
