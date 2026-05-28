@@ -18,6 +18,15 @@ on:
         description: "Optional Discord guild ID. Leave blank for GLOBAL registration (up to 1hr propagation). Set to a test guild ID for instant propagation."
         required: false
         type: string
+      check_only:
+        description: "Skip the PUT and only read back the current Discord-side state. Useful for confirming what's registered without modifying it."
+        required: false
+        type: boolean
+        default: false
+      diagnose_guild_id:
+        description: "Optional guild ID to ALSO inspect for guild-scoped command leftovers (the thing that could override global commands in that one guild). Pure read; no write attempted."
+        required: false
+        type: string
 
 jobs:
   register:
@@ -51,11 +60,44 @@ jobs:
           echo "client_id=$client_id" >> "$GITHUB_OUTPUT"
 
       - name: Register slash commands
+        if: ${{ !inputs.check_only }}
         env:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
           DISCORD_BOT_CLIENT_ID: ${{ steps.client.outputs.client_id }}
           DISCORD_REGISTER_GUILD_ID: ${{ inputs.guild_id }}
         run: npm run discord:register
+
+      - name: Diagnose guild-scoped command leftovers
+        if: ${{ inputs.diagnose_guild_id != '' }}
+        # If a previous registration had `applications.commands` scope and
+        # wrote guild-scoped commands, those persist server-side even after
+        # the scope is revoked — and they OVERRIDE the global registration
+        # in that specific guild. Discord's API lets us read them with just
+        # the Bot token, so we can detect the override even when we can no
+        # longer PUT/DELETE without the scope.
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_BOT_CLIENT_ID: ${{ steps.client.outputs.client_id }}
+          DIAGNOSE_GUILD: ${{ inputs.diagnose_guild_id }}
+        run: |
+          echo "Probing guild $DIAGNOSE_GUILD for guild-scoped commands…"
+          status_code=$(curl -s -o /tmp/guild_cmds.json -w "%{http_code}" \
+            -H "Authorization: Bot $DISCORD_BOT_TOKEN" \
+            "https://discord.com/api/v10/applications/$DISCORD_BOT_CLIENT_ID/guilds/$DIAGNOSE_GUILD/commands")
+          echo "HTTP $status_code"
+          if [ "$status_code" = "200" ]; then
+            count=$(jq 'length' /tmp/guild_cmds.json)
+            echo "Guild has $count guild-scoped command(s)."
+            if [ "$count" != "0" ]; then
+              echo "::warning::Guild-scoped commands exist and will OVERRIDE global commands in this guild."
+              jq '[.[] | {name, id, version}]' /tmp/guild_cmds.json
+            else
+              echo "No guild-scoped commands — global registration is what this guild reads from."
+            fi
+          else
+            echo "Read failed (expected if bot lacks applications.commands scope here):"
+            cat /tmp/guild_cmds.json
+          fi
 
       - name: Verify registered command shape
         # Read back what Discord actually has stored after the PUT. This is
