@@ -62,7 +62,7 @@ function ChevronDown() {
 }
 // Connector words ("events within", "miles of", "in") — Inter, body-text size, neutral weight, normal tracking. Matches the tagline rather than the slab madlib elements.
 const CONNECTOR = "font-[family-name:var(--font-inter)] font-normal text-base tracking-normal";
-const DROPDOWN_BASE = "absolute top-full mt-2 z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-hidden min-w-max";
+const DROPDOWN_BASE = "absolute top-full mt-2 z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-y-auto overscroll-contain max-h-[70vh] min-w-max";
 const DROPDOWN_ALIGN = { start: "left-0", center: "left-1/2 -translate-x-1/2", end: "right-0" };
 const OPTION = "w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-left hover:bg-neutral-50 dark:hover:bg-white/5 transition-colors";
 
@@ -338,7 +338,7 @@ export function SubscribeDropdown({
       {status !== "closed" && typeof document !== "undefined" && createPortal(
         <div
           ref={menuRef}
-          className={`fixed z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-hidden min-w-max ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}
+          className={`fixed z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-y-auto overscroll-contain max-h-[70vh] min-w-max ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}
           style={{
             top: pos ? `${pos.top}px` : -9999,
             left: pos ? `${pos.left}px` : -9999,

@@ -124,7 +124,7 @@ export default function AccountMenu({
       {open && (
         <div
           role="menu"
-          className="absolute z-50 top-full mt-2 right-0 min-w-[200px] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-md shadow-xl shadow-black/15 dark:shadow-black/50 p-1 anim-scale-in"
+          className="absolute z-50 top-full mt-2 right-0 min-w-[200px] bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-white/10 rounded-md shadow-xl shadow-black/15 dark:shadow-black/50 p-1 overflow-y-auto overscroll-contain max-h-[70vh] anim-scale-in"
           style={{ transformOrigin: "top right" }}
         >
           {signedIn && user ? (

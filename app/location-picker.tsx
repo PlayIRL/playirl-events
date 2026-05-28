@@ -26,7 +26,7 @@ const CHIP_TRIGGER =
 // popover inside the viewport on narrow phones where the trigger sits
 // far from the right edge.
 const POPOVER =
-  "fixed z-50 w-72 max-w-[calc(100vw-16px)] bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-hidden";
+  "fixed z-50 w-72 max-w-[calc(100vw-16px)] bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-y-auto overscroll-contain max-h-[70vh]";
 const PRIMARY_BTN =
   "w-full inline-flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white hover:bg-neutral-200 dark:hover:bg-neutral-700 transition disabled:opacity-50 cursor-pointer";
 const INPUT =
