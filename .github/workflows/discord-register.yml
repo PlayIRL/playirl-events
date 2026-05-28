@@ -6,6 +6,13 @@ name: Register Discord Slash Commands
 # Discord caches the registration server-side and the autocomplete UI only
 # reflects code changes once registration runs.
 #
+# IMPORTANT — uses DISCORD_PROD_BOT_TOKEN (NOT DISCORD_BOT_TOKEN). The repo
+# has two Discord apps: a SCRAPER bot (whose token is in DISCORD_BOT_TOKEN)
+# and the user-facing PRODUCTION bot that handles /playirl interactions
+# (whose token is in DISCORD_PROD_BOT_TOKEN). Registering on the wrong one
+# is silently useless — Discord accepts the PUT but it lands on a bot
+# nobody is interacting with.
+#
 # DISCORD_BOT_CLIENT_ID isn't stored as a secret because it's a public
 # value (the bot's application ID, visible in any OAuth invite URL). The
 # workflow resolves it at runtime via the bot's own /applications/@me
@@ -46,7 +53,7 @@ jobs:
       - name: Resolve bot client ID from Discord
         id: client
         env:
-          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_PROD_BOT_TOKEN }}
         run: |
           response=$(curl -fsSL \
             -H "Authorization: Bot $DISCORD_BOT_TOKEN" \
@@ -62,7 +69,7 @@ jobs:
       - name: Register slash commands
         if: ${{ !inputs.check_only }}
         env:
-          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_PROD_BOT_TOKEN }}
           DISCORD_BOT_CLIENT_ID: ${{ steps.client.outputs.client_id }}
           DISCORD_REGISTER_GUILD_ID: ${{ inputs.guild_id }}
         run: npm run discord:register
@@ -76,7 +83,7 @@ jobs:
         # the Bot token, so we can detect the override even when we can no
         # longer PUT/DELETE without the scope.
         env:
-          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_PROD_BOT_TOKEN }}
           DISCORD_BOT_CLIENT_ID: ${{ steps.client.outputs.client_id }}
           DIAGNOSE_GUILD: ${{ inputs.diagnose_guild_id }}
         run: |
@@ -106,7 +113,7 @@ jobs:
         # Pretty-prints just the `playirl` command's options (name, required,
         # choice count) so we can confirm format=required at a glance.
         env:
-          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_PROD_BOT_TOKEN }}
           DISCORD_BOT_CLIENT_ID: ${{ steps.client.outputs.client_id }}
           DISCORD_REGISTER_GUILD_ID: ${{ inputs.guild_id }}
         run: |
