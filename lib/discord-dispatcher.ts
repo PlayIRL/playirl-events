@@ -216,7 +216,13 @@ async function fireDigest(
   trigger: DiscordActivityTrigger,
 ): Promise<void> {
   const now = new Date();
-  const events = eventsForSubscription(sub, now, addMinutes(now, windowDays * 24 * 60))
+  // windowDays counts inclusive dates: a 7-day weekly digest fired Monday
+  // should cover Mon–Sun (7 dates), not Mon–next-Mon (8). `getActiveEvents`
+  // filters `date >= from AND date <= to` inclusive, and `dateKey(to)` is the
+  // calendar day `to` falls in — so we offset by `windowDays - 1` days, not
+  // `windowDays`. Mirrors the slash-command lookup in handleLookup().
+  const windowEnd = addMinutes(now, Math.max(0, windowDays - 1) * 24 * 60);
+  const events = eventsForSubscription(sub, now, windowEnd)
     // Re-resolve cancelled state at fire time — a sub created last week
     // shouldn't fire a now-cancelled event.
     .filter(ev => {
