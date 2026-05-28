@@ -129,7 +129,7 @@ export default function DayCard({
               : "bg-white dark:bg-neutral-900"
           }`}
         >
-          <span className={`text-base font-[family-name:var(--font-ultra)] font-black tracking-tight ${isToday ? "" : "text-neutral-900 dark:text-neutral-100"}`}>
+          <span className={`text-base font-[family-name:var(--font-ultra)] font-black tracking-[0.01em] ${isToday ? "" : "text-neutral-900 dark:text-neutral-100"}`}>
             {headingLabel || weekday}
           </span>
           {events.length > 0 && (
@@ -244,7 +244,7 @@ export default function DayCard({
                     )}
                   </div>
                 )}
-                <p className={`${status === "completed" ? "text-sm" : "text-base sm:text-lg"} font-[family-name:var(--font-ultra)] font-bold tracking-tight text-neutral-900 dark:text-white ${status === "completed" ? "truncate" : "line-clamp-2 sm:line-clamp-none sm:truncate"}`}>{ev.title}</p>
+                <p className={`${status === "completed" ? "text-sm" : "text-base sm:text-lg"} font-[family-name:var(--font-ultra)] font-bold tracking-[0.01em] text-neutral-900 dark:text-white ${status === "completed" ? "truncate" : "line-clamp-2 sm:line-clamp-none sm:truncate"}`}>{ev.title}</p>
                 {ev.location && (
                   <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate mt-0.5">
                     {ev.location}
