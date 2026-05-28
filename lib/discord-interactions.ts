@@ -188,7 +188,7 @@ const CHANNEL_TYPE_TEXT = 0;
 
 // --- Subscribe-button custom_id codec --------------------------------------
 //
-// The /today and /week digest result carries a "📌 Subscribe to this digest"
+// The /today and /week digest result carries a "🔁 Subscribe to this digest"
 // button whose custom_id encodes the lookup's filter state so the click
 // handler can hydrate a draft without re-running geocode. Format:
 //
@@ -277,8 +277,8 @@ function buildSubscribeButton(state: SubscribeButtonState): unknown {
         type: COMPONENT_BUTTON,
         style: BUTTON_STYLE_PRIMARY,
         label: state.mode === "weekly"
-          ? "📌 Subscribe to this weekly digest"
-          : "📌 Subscribe to this daily digest",
+          ? "🔁 Subscribe to this weekly digest"
+          : "🔁 Subscribe to this daily digest",
         custom_id: encodeSubscribeButtonId(state),
       },
     ],
@@ -889,7 +889,7 @@ function handleHelp(): InteractionHandlerResult {
     "Example: `/playirl week format:Commander location:19103 radius_miles:25`",
     "",
     "_Server admin (needs Manage Server):_",
-    "**Subscribe** — click the **📌 Subscribe** button under any `/playirl today` or `/playirl week` result to turn that lookup into a recurring auto-post. Pick channel, day, and time in the follow-up panel.",
+    "**Subscribe** — click the **🔁 Subscribe** button under any `/playirl today` or `/playirl week` result to turn that lookup into a recurring auto-post. Pick channel, day, and time in the follow-up panel.",
     "**`/playirl unsubscribe <id>`** — disable a recurring event post. Start typing in the `id` field — Discord will autocomplete from this server's subscriptions.",
     "Full management UI (rename, edit filters, reminder-mode subs) lives on the website → <https://playirl.gg/account/discord>",
     "",
