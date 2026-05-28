@@ -202,6 +202,65 @@ code, pre, kbd, samp, tt {
   );
 }
 
+/* RCQ badge — metallic gold foil with a periodic glint sweep. RCQ events
+   are Regional Championship Qualifiers, a competitive WPN tier; the
+   foil/glint treatment signals "special" without resorting to a trophy
+   emoji or other on-the-nose iconography. Gold ties to MTG's mythic-rare
+   association. Glint cycles roughly every 5.5s — slow enough to read as
+   a glint rather than a wave, but fast enough to catch the eye when
+   scrolling past a row of events. */
+@keyframes rcqGlint {
+  0%   { transform: translateX(-110%); }
+  12%  { transform: translateX(220%); }
+  100% { transform: translateX(220%); }
+}
+
+.anim-rcq-glint {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* Layered gold gradient — shadow → highlight → shadow gives the
+     foil-like depth that flat gold can't fake. 135deg axis matches the
+     glint sweep direction (which travels along a similar diagonal). */
+  background: linear-gradient(
+    135deg,
+    #8a6a1e 0%,
+    #c89236 22%,
+    #f4d97a 48%,
+    #d5a23e 72%,
+    #7a571a 100%
+  );
+  color: #1c1305;
+  /* Inner top highlight + inner bottom shadow — emboss the chip
+     edges via inset shadows rather than borders so the rounded
+     corners stay clean. */
+  box-shadow:
+    inset 0 1px 0 rgb(255 240 200 / 0.55),
+    inset 0 -1px 0 rgb(60 40 10 / 0.35),
+    0 1px 1px rgb(0 0 0 / 0.10);
+  text-shadow: 0 0.5px 0 rgb(255 240 200 / 0.4);
+}
+
+.anim-rcq-glint::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 60%;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.5) 45%,
+    rgb(255 255 255 / 0.85) 50%,
+    rgb(255 255 255 / 0.5) 55%,
+    transparent 100%
+  );
+  animation: rcqGlint 5.5s ease-in-out infinite;
+  mix-blend-mode: overlay;
+}
+
 /* Reusable animation classes */
 .anim-fade-in-up {
   animation: fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -245,4 +304,7 @@ code, pre, kbd, samp, tt {
   .dark .anim-live-row::before {
     background: rgb(56 189 248 / 0.08);
   }
+  /* RCQ badge: keep the metallic gold (static visual treatment is the
+     core signal), but drop the sweep. */
+  .anim-rcq-glint::before { animation: none; opacity: 0; }
 }

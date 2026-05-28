@@ -97,13 +97,15 @@ export function isRcq(title: string | null | undefined): boolean {
   return /RCQ|Regional Championship Qualifier/i.test(title);
 }
 
-// Inverted black/white stamp — sits alongside the format chip when a row
-// is an RCQ. Uses no mana-color hue (those are reserved for FORMAT_BADGE)
-// and uses Inter rather than Beleren (Beleren is reserved for format
-// tags per project typography conventions). Reads as an orthogonal
-// "tournament stamp" overlay rather than a competing format chip.
+// Metallic gold foil stamp with a periodic glint sweep — see the
+// `.anim-rcq-glint` rule in app/globals.css for the gradient + animation.
+// Sits alongside the format chip when a row is an RCQ. Uses Inter rather
+// than Beleren (Beleren is reserved for format tags per project typography
+// conventions). The gold signals "premium / tournament" without competing
+// with FORMAT_BADGE's mana colors — those are blues, reds, greens, plums,
+// browns; none use the saturated gold of mythic-rare foils.
 export const RCQ_BADGE =
-  "inline-block rounded-sm font-bold uppercase tracking-wider bg-neutral-900 text-white dark:bg-white dark:text-neutral-900";
+  "anim-rcq-glint inline-block rounded-sm font-bold uppercase tracking-wider";
 
 // Hex-int values for Discord embed `color` field. Mirrors FORMAT_DOT —
 // the deep ("ink") version of each mana color, so the embed accent matches
