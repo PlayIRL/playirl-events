@@ -122,11 +122,20 @@ jobs:
             "https://discord.com/api/v10/$path" \
           | jq '.[] | select(.name == "playirl") | {
               name,
+              id,
+              version,
               subcommands: [
                 .options[]? | select(.type == 1) | {
                   name,
+                  description,
                   options: [
-                    .options[]? | {name, type, required: (.required // false), choice_count: (.choices | length // 0)}
+                    .options[]? | {
+                      name,
+                      description,
+                      type,
+                      required: (.required // false),
+                      choices: (.choices // [])
+                    }
                   ]
                 }
               ]
