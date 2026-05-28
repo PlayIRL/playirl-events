@@ -56,3 +56,36 @@ jobs:
           DISCORD_BOT_CLIENT_ID: ${{ steps.client.outputs.client_id }}
           DISCORD_REGISTER_GUILD_ID: ${{ inputs.guild_id }}
         run: npm run discord:register
+
+      - name: Verify registered command shape
+        # Read back what Discord actually has stored after the PUT. This is
+        # the source of truth — if Discord's local client UI lags behind it,
+        # that's a client-cache propagation delay, not a server-side issue.
+        # Pretty-prints just the `playirl` command's options (name, required,
+        # choice count) so we can confirm format=required at a glance.
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_BOT_CLIENT_ID: ${{ steps.client.outputs.client_id }}
+          DISCORD_REGISTER_GUILD_ID: ${{ inputs.guild_id }}
+        run: |
+          if [ -n "$DISCORD_REGISTER_GUILD_ID" ]; then
+            path="applications/$DISCORD_BOT_CLIENT_ID/guilds/$DISCORD_REGISTER_GUILD_ID/commands"
+            echo "Reading GUILD-scoped registration for guild $DISCORD_REGISTER_GUILD_ID"
+          else
+            path="applications/$DISCORD_BOT_CLIENT_ID/commands"
+            echo "Reading GLOBAL registration"
+          fi
+          curl -fsSL \
+            -H "Authorization: Bot $DISCORD_BOT_TOKEN" \
+            "https://discord.com/api/v10/$path" \
+          | jq '.[] | select(.name == "playirl") | {
+              name,
+              subcommands: [
+                .options[]? | select(.type == 1) | {
+                  name,
+                  options: [
+                    .options[]? | {name, type, required: (.required // false), choice_count: (.choices | length // 0)}
+                  ]
+                }
+              ]
+            }'
