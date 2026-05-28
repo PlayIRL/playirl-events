@@ -44,6 +44,8 @@ export default async function HomePage({
     format?: string; radius?: string; days?: string; view?: string; offset?: string;
     /** Location override (URL primary). Triple of label + lat + lng. */
     loc?: string; lat?: string; lng?: string;
+    /** "1" to restrict the listing to RCQ events. Orthogonal to format. */
+    rcq?: string;
   }>;
 }) {
   const params = await searchParams;
@@ -65,6 +67,7 @@ export default async function HomePage({
     ? parseInt(params.days, 10)
     : currentView === "map" ? 1 : defaultDays;
   const currentFormat = params.format ?? defaultFormat;
+  const currentRcq = params.rcq === "1";
   const currentOffset = params.offset ? Math.max(0, parseInt(params.offset, 10)) : 0;
 
   // Location resolution: URL > prefs > IP geolocation > Philly default.
@@ -164,6 +167,7 @@ export default async function HomePage({
     radiusMiles: currentRadius,
     centerLat: currentLocationLat,
     centerLng: currentLocationLng,
+    rcq: currentRcq || undefined,
   });
 
   const enriched = events.map((ev) => {
@@ -201,6 +205,7 @@ export default async function HomePage({
           currentRadius={currentRadius}
           currentDays={currentDays}
           currentFormat={currentFormat}
+          currentRcq={currentRcq}
           currentView={currentView}
           formats={formats}
           eventCount={events.length}

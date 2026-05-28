@@ -9,7 +9,7 @@ import { DiscordIcon } from "./discord-icon";
 // Build the canonical /calendar URL given the user's current filter state.
 // Empty/falsy filters are omitted so subscribers to the bare /calendar
 // keep getting the unfiltered global feed.
-function buildFeedPath({ format, radius, days, venue }: { format?: string; radius?: number; days?: number; venue?: string }): string {
+function buildFeedPath({ format, radius, days, venue, rcq }: { format?: string; radius?: number; days?: number; venue?: string; rcq?: boolean }): string {
   const sp = new URLSearchParams();
   if (format) sp.set("format", format);
   if (venue) {
@@ -20,6 +20,7 @@ function buildFeedPath({ format, radius, days, venue }: { format?: string; radiu
     sp.set("radius", String(radius));
   }
   if (days) sp.set("days", String(days));
+  if (rcq) sp.set("rcq", "1");
   const qs = sp.toString();
   return qs ? `/calendar?${qs}` : `/calendar`;
 }
@@ -62,7 +63,13 @@ function ChevronDown() {
 }
 // Connector words ("events within", "miles of", "in") — Inter, body-text size, neutral weight, normal tracking. Matches the tagline rather than the slab madlib elements.
 const CONNECTOR = "font-[family-name:var(--font-inter)] font-normal text-base tracking-normal";
-const DROPDOWN_BASE = "absolute top-full mt-2 z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-y-auto overscroll-contain max-h-[70vh] min-w-max";
+// width: fixed minimum (16rem ≈ 256px — enough for the longest format name
+// "Dungeons and Dragons Event") and capped at viewport so long lines like
+// the Format chip's "RCQs only" description wrap instead of forcing the
+// dropdown wider than the screen. We can't use `w-max` here: option rows
+// use `flex-1` on their label, which has flex-basis: 0 and so contributes
+// nothing to max-content — the dropdown would collapse to icon-only width.
+const DROPDOWN_BASE = "absolute top-full mt-2 z-50 bg-white dark:bg-neutral-900 border border-neutral-100 dark:border-white/10 rounded-md shadow-xl overflow-y-auto overscroll-contain max-h-[70vh] min-w-[16rem] max-w-[calc(100vw-16px)]";
 const DROPDOWN_ALIGN = { start: "left-0", center: "left-1/2 -translate-x-1/2", end: "right-0" };
 const OPTION = "w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-left hover:bg-neutral-50 dark:hover:bg-white/5 transition-colors";
 
@@ -146,6 +153,7 @@ function ChipSelect({
   dot,
   align = "center",
   custom,
+  toggle,
   mono = false,
 }: {
   label: string;
@@ -158,6 +166,10 @@ function ChipSelect({
   /** Optional freeform numeric input at the bottom of the dropdown — used by
    *  the Range chip so users can pick e.g. "3 mi" without a preset for it. */
   custom?: { unit: string; placeholder: string; min: number; max: number };
+  /** Optional boolean toggle at the bottom of the dropdown. Used by the
+   *  Format chip to expose the orthogonal "RCQs only" filter without adding
+   *  a separate chip to the already-crowded sticky bar. */
+  toggle?: { label: string; description?: string; checked: boolean; onChange: (checked: boolean) => void };
   /** Render the chip label in Space Mono — for numeric-data chips like the
    *  radius value. */
   mono?: boolean;
@@ -203,7 +215,7 @@ function ChipSelect({
       {status !== "closed" && (
         <div className={`${DROPDOWN_BASE} ${DROPDOWN_ALIGN[align]} ${status === "closing" ? "anim-scale-out" : "anim-scale-in"}`}>
           <div className="px-4 py-2.5 border-b border-neutral-100 dark:border-white/8">
-            <p className="text-[10px] font-semibold text-neutral-500 dark:text-neutral-400">{heading}</p>
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">{heading}</p>
           </div>
           {options.map((opt) => {
             const selected = value === opt.value;
@@ -246,6 +258,26 @@ function ChipSelect({
               </button>
             </div>
           )}
+          {toggle && (
+            <label className="border-t border-neutral-100 dark:border-white/8 px-4 py-2.5 flex items-start gap-2.5 cursor-pointer hover:bg-neutral-50 dark:hover:bg-white/5 transition-colors">
+              <input
+                type="checkbox"
+                checked={toggle.checked}
+                onChange={(e) => { close(); toggle.onChange(e.target.checked); }}
+                className="mt-0.5 h-3.5 w-3.5 shrink-0 accent-neutral-900 dark:accent-white cursor-pointer"
+              />
+              <span className="flex-1 min-w-0">
+                <span className="block text-sm font-medium text-neutral-900 dark:text-white leading-tight">
+                  {toggle.label}
+                </span>
+                {toggle.description && (
+                  <span className="block text-[11px] text-neutral-500 dark:text-neutral-400 leading-snug mt-0.5">
+                    {toggle.description}
+                  </span>
+                )}
+              </span>
+            </label>
+          )}
         </div>
       )}
     </div>
@@ -256,12 +288,16 @@ export function SubscribeDropdown({
   currentFormat,
   currentRadius,
   currentDays,
+  currentRcq,
   venueName,
   onToast,
 }: {
   currentFormat?: string;
   currentRadius: number;
   currentDays: number;
+  /** When set, the subscribed feed URL includes rcq=1 so the calendar app
+   *  receives only RCQ events — same filter the user sees on the site. */
+  currentRcq?: boolean;
   /** When set, the dropdown subscribes the user to ONE venue's events
    *  (skips radius). Triggered from the venue page's Subscribe button. */
   venueName?: string;
@@ -299,9 +335,21 @@ export function SubscribeDropdown({
     radius: venueName ? undefined : currentRadius,
     days: currentDays,
     venue: venueName,
+    rcq: currentRcq,
   });
   const webcalUrl = `webcal://${host}${path}`;
   const httpsUrl = `https://${host}${path}`;
+  // Per-provider subscription URLs.
+  //  - Google expects a `cid` param containing the webcal:// URL; it opens
+  //    a "subscribe to this calendar" dialog in Google Calendar.
+  //  - Apple is webcal:// (registered protocol on macOS/iOS — opens
+  //    Calendar.app's add-subscription sheet). It's the only flow Apple
+  //    exposes; users not on Apple devices have no Apple option.
+  //  - Outlook Web's add-by-URL endpoint; works for both outlook.com
+  //    accounts and Microsoft 365 (live.com redirects M365 users).
+  const calendarName = venueName ? `PlayIRL — ${venueName}` : "PlayIRL MTG events";
+  const googleUrl = `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(webcalUrl)}`;
+  const outlookUrl = `https://outlook.live.com/calendar/0/addfromweb?url=${encodeURIComponent(httpsUrl)}&name=${encodeURIComponent(calendarName)}`;
   const venueSlug = venueName ? venueName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") : null;
   const downloadName = venueName
     ? `mtg-${currentFormat ?? "events"}-${venueSlug}-${currentDays}d.ics`
@@ -347,44 +395,99 @@ export function SubscribeDropdown({
             transformOrigin: "top right",
           }}
         >
+          {/* Per-provider subscription buttons. The old single "Subscribe in
+              calendar app" entry relied on the webcal:// protocol handler
+              being registered on the user's OS — fragile and dead-ends users
+              on Chrome/Windows/Android where nothing handles webcal://.
+              These three links go to each provider's web-based add-by-URL
+              flow (Google, Outlook) or trigger the protocol handler only
+              where it's known to work (Apple's Calendar.app on macOS/iOS). */}
+          <p className="px-4 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+            Add to calendar
+          </p>
+          <a
+            href={googleUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={close}
+            className={`${OPTION} text-neutral-700 dark:text-neutral-300`}
+          >
+            {/* Google "G" mark — simplified monochrome for menu use. */}
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 11h8.5a8.5 8.5 0 11-2.5-6" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M20.5 11v3.5H17" />
+            </svg>
+            <span className="flex-1">Add to Google Calendar</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5h5v5M19 5l-9 9M5 7v12h12" />
+            </svg>
+          </a>
+
           <a
             href={webcalUrl}
             onClick={close}
             className={`${OPTION} text-neutral-700 dark:text-neutral-300`}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 3v3m8-3v3M4 9h16M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" />
+            {/* Apple mark. */}
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.05 12.97c-.02-2.05 1.67-3.04 1.75-3.09-.96-1.4-2.45-1.59-2.97-1.61-1.27-.13-2.47.74-3.11.74-.65 0-1.64-.72-2.69-.7-1.39.02-2.67.8-3.38 2.04-1.44 2.5-.37 6.21 1.03 8.24.69.99 1.5 2.11 2.56 2.07 1.03-.04 1.42-.66 2.66-.66 1.24 0 1.59.66 2.68.64 1.11-.02 1.81-1.01 2.49-2 .79-1.15 1.11-2.27 1.13-2.32-.03-.01-2.16-.83-2.18-3.29zM15.2 7.05c.57-.69.95-1.65.85-2.61-.82.03-1.81.55-2.4 1.24-.53.61-.99 1.58-.87 2.52.92.07 1.85-.46 2.42-1.15z" />
             </svg>
-            Subscribe in calendar app
+            <span className="flex-1">Add to Apple Calendar</span>
+            <span className="text-[11px] text-neutral-400 dark:text-neutral-500 shrink-0">Mac / iOS</span>
           </a>
 
-          <button
-            type="button"
-            onClick={copyLink}
-            className={`${OPTION} text-neutral-700 dark:text-neutral-300 cursor-pointer`}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-            </svg>
-            {copied ? "Copied!" : "Copy URL"}
-          </button>
-
           <a
-            href={httpsUrl}
-            download={downloadName}
+            href={outlookUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             onClick={close}
             className={`${OPTION} text-neutral-700 dark:text-neutral-300`}
           >
+            {/* Outlook envelope mark — monochrome. */}
             <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 10l5 5 5-5M12 15V3" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 7l9 6 9-6M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M3 7a2 2 0 012-2h14a2 2 0 012 2" />
             </svg>
-            Download .ics
+            <span className="flex-1">Add to Outlook</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14 5h5v5M19 5l-9 9M5 7v12h12" />
+            </svg>
           </a>
+
+          <div className="border-t border-neutral-100 dark:border-white/8 mt-1 pt-1">
+            <p className="px-4 pt-1 pb-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+              iCal feed
+            </p>
+            <button
+              type="button"
+              onClick={copyLink}
+              className={`${OPTION} text-neutral-700 dark:text-neutral-300 cursor-pointer`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+              {copied ? "Copied!" : "Copy URL"}
+            </button>
+
+            <a
+              href={httpsUrl}
+              download={downloadName}
+              onClick={close}
+              className={`${OPTION} text-neutral-700 dark:text-neutral-300`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2M7 10l5 5 5-5M12 15V3" />
+              </svg>
+              Download .ics
+            </a>
+          </div>
 
           {/* Discord pair: both items go to /account?tab=discord — the first
               prefills the channel-message subscription form, the second
               prefills the Events-tab subscription form. */}
           <div className="border-t border-neutral-100 dark:border-white/8 mt-1 pt-1">
+            <p className="px-4 pt-1 pb-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+              Discord
+            </p>
             <Link
               href={venueName ? `/account?tab=discord&venue=${encodeURIComponent(venueName)}` : "/account?tab=discord"}
               onClick={close}
@@ -478,6 +581,7 @@ export default function RadiusSelector({
   currentRadius,
   currentDays,
   currentFormat,
+  currentRcq = false,
   currentView,
   formats,
   eventCount,
@@ -488,6 +592,10 @@ export default function RadiusSelector({
   currentRadius: number;
   currentDays: number;
   currentFormat?: string;
+  /** True when the user has restricted the listing to RCQ events. Threaded
+   *  through to the Format chip's bottom toggle and the SubscribeDropdown's
+   *  feed-URL builder. */
+  currentRcq?: boolean;
   /** Active view ("list" | "calendar" | "map"). The timeframe chip only
    *  renders for the map view since list has its own Load-more affordance
    *  and calendar has built-in week navigation. */
@@ -547,13 +655,19 @@ export default function RadiusSelector({
           React-19 hydration warning + DOM-nesting error in the console. */}
       <div className="text-neutral-500 dark:text-neutral-400 flex items-center justify-center flex-wrap gap-x-1.5 gap-y-1 text-lg sm:text-xl leading-relaxed font-[family-name:var(--font-ultra)] font-bold">
         <ChipSelect
-          label={currentFormat || "All MTG"}
+          label={currentRcq ? `${currentFormat || "All"} RCQ` : (currentFormat || "All MTG")}
           heading="Format"
           options={formatOptions}
           value={currentFormat || ""}
           onChange={(v) => updateParam("format", v)}
           dot
           align="start"
+          toggle={{
+            label: "RCQs only",
+            description: "Regional Championship Qualifiers — competitive WPN events.",
+            checked: currentRcq,
+            onChange: (checked) => updateParam("rcq", checked ? "1" : ""),
+          }}
         />
 
         <span className={CONNECTOR}>events within</span>
@@ -610,6 +724,7 @@ export default function RadiusSelector({
             currentFormat={currentFormat}
             currentRadius={currentRadius}
             currentDays={currentDays}
+            currentRcq={currentRcq}
             onToast={showToast}
           />
         </div>

@@ -172,6 +172,13 @@ export function getActiveEvents(filters?: {
   radiusMiles?: number;
   centerLat?: number;
   centerLng?: number;
+  /** When true, restrict to Regional Championship Qualifier events. RCQs are
+   *  identified by title pattern — scrapers (esp. wizards-locator) don't
+   *  expose a dedicated tag, but RCQ titles consistently include the
+   *  "RCQ" abbreviation or "Regional Championship Qualifier" spelled out.
+   *  Orthogonal to format (an RCQ can be Modern, Sealed, Standard, etc.) so
+   *  this combines with `format` rather than replacing it. */
+  rcq?: boolean;
 }): EventRow[] {
   const db = getDb();
   // visibility/cancelled chokepoint: every public read path goes through
@@ -183,6 +190,12 @@ export function getActiveEvents(filters?: {
   if (filters?.format) {
     sql += " AND format = ?";
     params.push(filters.format);
+  }
+  if (filters?.rcq) {
+    // No index helps here — LIKE with a leading % can't use a btree. Cost is
+    // acceptable because the chokepoint already filters by date and (often)
+    // bbox, so the candidate set is small by the time we LIKE-scan titles.
+    sql += " AND (title LIKE '%RCQ%' OR title LIKE '%Regional Championship Qualifier%')";
   }
   if (filters?.from) {
     sql += " AND date >= ?";

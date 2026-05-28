@@ -56,9 +56,18 @@ export default function StickyBar({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div ref={sentinelRef} className="h-0 w-0" />
+      {/* z-50 (not z-10): the bar creates a stacking context via
+          `position:sticky + z-index`, and dropdowns inside it (ChipSelect)
+          are bound to that context. At z-10, the FloatingToolbar at z-40
+          paints over the chip dropdowns when they extend toward the bottom
+          of the viewport — hiding the bottom options on mobile. Bumping
+          the bar above the toolbar means its descendants (the dropdowns)
+          also paint above. Bar position itself doesn't overlap the
+          toolbar — they live at opposite ends of the viewport — so this
+          doesn't change layout, only z-stacking when dropdowns are open. */}
       <div
         ref={barRef}
-        className={`sticky top-0 z-10 py-3 mb-6 bg-white dark:bg-neutral-950 border-b transition-[border-color,box-shadow] duration-300 ${
+        className={`sticky top-0 z-50 py-3 mb-6 bg-white dark:bg-neutral-950 border-b transition-[border-color,box-shadow] duration-300 ${
           isStuck
             ? "border-neutral-200 dark:border-neutral-800 shadow-[0_8px_24px_-10px_rgba(0,0,0,0.05)] dark:shadow-[0_8px_24px_-10px_rgba(0,0,0,0.18)]"
             : "border-transparent"
