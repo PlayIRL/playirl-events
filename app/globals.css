@@ -202,13 +202,14 @@ code, pre, kbd, samp, tt {
   );
 }
 
-/* RCQ badge — metallic gold foil with a periodic glint sweep. RCQ events
-   are Regional Championship Qualifiers, a competitive WPN tier; the
-   foil/glint treatment signals "special" without resorting to a trophy
-   emoji or other on-the-nose iconography. Gold ties to MTG's mythic-rare
-   association. Glint cycles roughly every 5.5s — slow enough to read as
-   a glint rather than a wave, but fast enough to catch the eye when
-   scrolling past a row of events. */
+/* RCQ badge — brushed-steel / silver foil with a periodic glint sweep.
+   RCQ events are Regional Championship Qualifiers, a competitive WPN
+   tier; the metallic treatment signals "special" without an on-the-nose
+   trophy emoji. Silver reads as an "official stamp" — closer in feel to
+   a judge's seal or stamped medal than gold's premium-trophy connotation.
+   Glint cycles roughly every 5.5s — slow enough to read as a glint
+   rather than a wave, fast enough to catch the eye when scrolling past
+   a row of events. */
 @keyframes rcqGlint {
   0%   { transform: translateX(-110%); }
   12%  { transform: translateX(220%); }
@@ -219,26 +220,26 @@ code, pre, kbd, samp, tt {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  /* Layered gold gradient — shadow → highlight → shadow gives the
-     foil-like depth that flat gold can't fake. 135deg axis matches the
-     glint sweep direction (which travels along a similar diagonal). */
+  /* Layered steel gradient — gunmetal → chrome → gunmetal gives the
+     brushed-metal depth that flat gray can't fake. 135deg axis matches
+     the glint sweep direction (which travels along a similar diagonal). */
   background: linear-gradient(
     135deg,
-    #8a6a1e 0%,
-    #c89236 22%,
-    #f4d97a 48%,
-    #d5a23e 72%,
-    #7a571a 100%
+    #4a5058 0%,
+    #8a9099 22%,
+    #e6e9ed 48%,
+    #9aa0a8 72%,
+    #3e444c 100%
   );
-  color: #1c1305;
+  color: #15181c;
   /* Inner top highlight + inner bottom shadow — emboss the chip
      edges via inset shadows rather than borders so the rounded
      corners stay clean. */
   box-shadow:
-    inset 0 1px 0 rgb(255 240 200 / 0.55),
-    inset 0 -1px 0 rgb(60 40 10 / 0.35),
-    0 1px 1px rgb(0 0 0 / 0.10);
-  text-shadow: 0 0.5px 0 rgb(255 240 200 / 0.4);
+    inset 0 1px 0 rgb(255 255 255 / 0.55),
+    inset 0 -1px 0 rgb(30 35 40 / 0.45),
+    0 1px 1px rgb(0 0 0 / 0.12);
+  text-shadow: 0 0.5px 0 rgb(255 255 255 / 0.45);
 }
 
 .anim-rcq-glint::before {

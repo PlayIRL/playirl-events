@@ -97,13 +97,13 @@ export function isRcq(title: string | null | undefined): boolean {
   return /RCQ|Regional Championship Qualifier/i.test(title);
 }
 
-// Metallic gold foil stamp with a periodic glint sweep — see the
-// `.anim-rcq-glint` rule in app/globals.css for the gradient + animation.
-// Sits alongside the format chip when a row is an RCQ. Uses Inter rather
-// than Beleren (Beleren is reserved for format tags per project typography
-// conventions). The gold signals "premium / tournament" without competing
-// with FORMAT_BADGE's mana colors — those are blues, reds, greens, plums,
-// browns; none use the saturated gold of mythic-rare foils.
+// Brushed-steel / silver foil stamp with a periodic glint sweep — see
+// the `.anim-rcq-glint` rule in app/globals.css for the gradient and
+// animation. Sits alongside the format chip when a row is an RCQ. Uses
+// Inter rather than Beleren (Beleren is reserved for format tags per
+// project typography conventions). Silver reads as an "official stamp"
+// (judge's seal / medal) and stays out of FORMAT_BADGE's mana-color
+// palette so it doesn't compete with the format chip beside it.
 export const RCQ_BADGE =
   "anim-rcq-glint inline-block rounded-sm font-bold uppercase tracking-wider";
 
