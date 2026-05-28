@@ -38,7 +38,12 @@ type Option = {
   autocomplete?: boolean;
 };
 
+// "all" is a sentinel value the handler maps to "no format filter". Discord
+// requires choice values to be non-empty strings, so we can't use "" — and
+// having an explicit choice (rather than an optional field) forces users to
+// make a conscious decision rather than silently defaulting to all formats.
 const FORMAT_CHOICES: Choice[] = [
+  { name: "All formats", value: "all" },
   { name: "Commander", value: "Commander" },
   { name: "Modern", value: "Modern" },
   { name: "Standard", value: "Standard" },
@@ -75,7 +80,8 @@ const lookupOptions: Option[] = [
   {
     type: OPT_STRING,
     name: "format",
-    description: "Optional — only show events for this format (e.g. Commander, Modern). Leave blank for any.",
+    description: "Required — pick a format, or 'All formats' to include everything.",
+    required: true,
     choices: FORMAT_CHOICES,
   },
 ];

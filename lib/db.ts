@@ -527,6 +527,35 @@ function initSchema(db: Database.Database) {
     );
     CREATE INDEX IF NOT EXISTS idx_dsa_sub_fired ON discord_subscription_activity(subscription_id, fired_at DESC);
 
+    -- Short-lived "subscribe panel" state: when a user clicks the Subscribe
+    -- button under /playirl today | week, we materialize a draft row carrying
+    -- the lookup's filters (lat/lng/radius/format/near_label) plus the
+    -- inferred mode (daily vs weekly). The follow-up panel's selects update
+    -- this row in place; the Submit button reads it back, calls
+    -- createSubscription, and deletes the draft. expires_at supports a sweep
+    -- so abandoned drafts don't accumulate.
+    --
+    -- Why a table rather than encoding state in component custom_ids: near_label
+    -- can be ~30+ chars and Discord caps custom_id at 100, so cramming the full
+    -- accumulated panel state into every component's id is fragile.
+    CREATE TABLE IF NOT EXISTS discord_subscription_drafts (
+      id           TEXT PRIMARY KEY,
+      guild_id     TEXT NOT NULL,
+      user_id      TEXT NOT NULL,           -- Discord user ID who clicked Subscribe
+      format       TEXT,                    -- carried from the lookup
+      radius_miles INTEGER NOT NULL,
+      center_lat   REAL NOT NULL,
+      center_lng   REAL NOT NULL,
+      near_label   TEXT NOT NULL,
+      mode         TEXT NOT NULL CHECK(mode IN ('weekly','daily')),
+      channel_id   TEXT,                    -- set when the user picks the channel
+      dow          INTEGER,                 -- weekly only; null until selected
+      hour_utc     INTEGER,                 -- null until selected
+      created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+      expires_at   TEXT NOT NULL            -- ~15 min after created_at
+    );
+    CREATE INDEX IF NOT EXISTS idx_disc_sub_drafts_expires ON discord_subscription_drafts(expires_at);
+
     -- Per-Discord-guild admin settings, keyed on guild_id. Used by the
     -- /admin/discord-servers page so each guild can be flipped between
     -- "auto-approve" (Discord events from this guild skip the pending

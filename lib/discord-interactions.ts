@@ -14,7 +14,16 @@ import {
   listSubscriptionsForGuild,
   setSubscriptionEnabled,
 } from "./discord-subscriptions";
-import { renderDigestSummary } from "./discord-post";
+import { renderDigestByDay } from "./discord-post";
+import { SITE_URL } from "./config";
+import { createSubscription, validateSubScope } from "./discord-subscriptions";
+import {
+  type DiscordSubscriptionDraft,
+  createDraft,
+  deleteDraft,
+  getDraft,
+  updateDraft,
+} from "./discord-subscription-drafts";
 
 const DISCORD_API = "https://discord.com/api/v10";
 
@@ -32,6 +41,8 @@ export const InteractionResponseType = {
   PONG: 1,
   CHANNEL_MESSAGE_WITH_SOURCE: 4,
   DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE: 5,
+  DEFERRED_UPDATE_MESSAGE: 6,
+  UPDATE_MESSAGE: 7,
   APPLICATION_COMMAND_AUTOCOMPLETE_RESULT: 8,
 } as const;
 
@@ -63,8 +74,19 @@ export interface DiscordInteraction {
   channel_id?: string;
   member?: InteractionMember;
   data?: {
-    name: string;
+    /** Set on APPLICATION_COMMAND / autocomplete interactions. */
+    name?: string;
     options?: InteractionOption[];
+    /** Set on MESSAGE_COMPONENT interactions (button click, select submit). */
+    custom_id?: string;
+    /** Discord component type: 2=button, 3=string-select, 8=channel-select. */
+    component_type?: number;
+    /** Select values (string IDs for string-selects, channel IDs for channel-selects). */
+    values?: string[];
+    /** Object resolutions for snowflake-valued selects (channel, user, role). */
+    resolved?: {
+      channels?: Record<string, { id: string; name: string; type: number }>;
+    };
   };
 }
 
@@ -80,12 +102,25 @@ export type InteractionHandlerResult =
       kind: "deferred";
       /** False for public lookup commands (today/week); true for admin ops. Default true. */
       ephemeral?: boolean;
-      work: (interaction: DiscordInteraction) => Promise<DeferredFollowup>;
+      /**
+       * Resolves to one or more messages. The first PATCHes the deferred ack;
+       * any additional messages are POSTed as follow-ups so multi-day digests
+       * (one embed per day) don't get truncated against Discord's 4096-char cap.
+       */
+      work: (interaction: DiscordInteraction) => Promise<DeferredFollowup[]>;
     };
 
 export interface DeferredFollowup {
   content?: string;
   embeds?: unknown[];
+  /** Discord message components (action rows + buttons/selects). Optional;
+   *  used by the /today and /week subscribe CTA to attach a button under the
+   *  last digest message. Caller is responsible for the action-row wrapping. */
+  components?: unknown[];
+  /** When true, this follow-up is only visible to the user who ran the
+   *  command. We use this for the subscribe panel (channel/mode/dow/hour
+   *  selects) so a user's draft picks don't spam the channel. */
+  ephemeral?: boolean;
 }
 
 // --- Signature verification -------------------------------------------------
@@ -133,6 +168,121 @@ export function verifyInteractionSignature(
   } catch {
     return false;
   }
+}
+
+// --- Discord message component types (subset we use for the subscribe flow) -
+
+const COMPONENT_ACTION_ROW = 1;
+const COMPONENT_BUTTON = 2;
+const COMPONENT_STRING_SELECT = 3;
+const COMPONENT_CHANNEL_SELECT = 8;
+
+const BUTTON_STYLE_PRIMARY = 1;
+const BUTTON_STYLE_SECONDARY = 2;
+const BUTTON_STYLE_SUCCESS = 3;
+
+// Channel type 0 = GUILD_TEXT. The subscribe panel's channel select filters
+// to text channels only — announcements and threads would technically accept
+// posts but the dispatcher fan-out hasn't been audited against them.
+const CHANNEL_TYPE_TEXT = 0;
+
+// --- Subscribe-button custom_id codec --------------------------------------
+//
+// The /today and /week digest result carries a "📌 Subscribe to this digest"
+// button whose custom_id encodes the lookup's filter state so the click
+// handler can hydrate a draft without re-running geocode. Format:
+//
+//   si:v1:{mode}:{radius}:{lat}:{lng}:{format|_}:{nearB64}
+//
+// where:
+//   mode    = 'd' (daily, from /today) or 'w' (weekly, from /week)
+//   radius  = integer miles (matches RADIUS_CHOICES: 5/10/25/50/100)
+//   lat/lng = 4-decimal floats (~11m precision; sufficient for a 5mi-min
+//             radius query — extra precision would just pad the custom_id)
+//   format  = exact MTG format name from FORMAT_CHOICES, or '_' for "any"
+//   nearB64 = base64url of near_label, truncated to fit Discord's 100-char
+//             custom_id cap. near_label is cosmetic on the subscription row
+//             (filtering uses lat/lng), so a truncated label is harmless.
+//
+// Versioning (`v1`) is in the prefix so we can roll a v2 format without
+// breaking buttons already in flight on Discord (clicks decode by version).
+
+const SUBSCRIBE_INIT_PREFIX = "si:v1:";
+const CUSTOM_ID_MAX = 100; // Discord's hard limit.
+
+export interface SubscribeButtonState {
+  mode: "weekly" | "daily";
+  radius_miles: number;
+  center_lat: number;
+  center_lng: number;
+  format: string | null;
+  near_label: string;
+}
+
+export function encodeSubscribeButtonId(state: SubscribeButtonState): string {
+  const m = state.mode === "weekly" ? "w" : "d";
+  const r = String(state.radius_miles);
+  const lat = state.center_lat.toFixed(4);
+  const lng = state.center_lng.toFixed(4);
+  const f = state.format ?? "_";
+  // Reserve space for the fixed-width parts so we know how much of nearB64 fits.
+  const prefix = `${SUBSCRIBE_INIT_PREFIX}${m}:${r}:${lat}:${lng}:${f}:`;
+  const nearBudget = CUSTOM_ID_MAX - prefix.length;
+  // base64url is colon-free, so the trailing field can safely include arbitrary
+  // user text (ZIPs, addresses with commas, etc.) without breaking the split.
+  let nearB64 = Buffer.from(state.near_label, "utf8").toString("base64url");
+  if (nearB64.length > nearBudget) nearB64 = nearB64.slice(0, nearBudget);
+  return prefix + nearB64;
+}
+
+export function decodeSubscribeButtonId(customId: string): SubscribeButtonState | null {
+  if (!customId.startsWith(SUBSCRIBE_INIT_PREFIX)) return null;
+  const body = customId.slice(SUBSCRIBE_INIT_PREFIX.length);
+  const parts = body.split(":");
+  if (parts.length !== 6) return null;
+  const [m, r, lat, lng, f, nearB64] = parts;
+  if (m !== "w" && m !== "d") return null;
+  const radius_miles = Number(r);
+  const center_lat = Number(lat);
+  const center_lng = Number(lng);
+  if (!Number.isFinite(radius_miles) || radius_miles <= 0) return null;
+  if (!Number.isFinite(center_lat) || center_lat < -90 || center_lat > 90) return null;
+  if (!Number.isFinite(center_lng) || center_lng < -180 || center_lng > 180) return null;
+  let near_label = "";
+  try {
+    near_label = Buffer.from(nearB64, "base64url").toString("utf8");
+  } catch {
+    return null;
+  }
+  // A truncated base64 sequence can decode to a partial multibyte sequence
+  // that breaks the validate-by-label rule in createSubscription. Fall back
+  // to a lat/lng-derived label when decoding yields empty/whitespace.
+  if (!near_label.trim()) near_label = `${center_lat.toFixed(3)}, ${center_lng.toFixed(3)}`;
+  return {
+    mode: m === "w" ? "weekly" : "daily",
+    radius_miles,
+    center_lat,
+    center_lng,
+    format: f === "_" ? null : f,
+    near_label,
+  };
+}
+
+/** Build the action-row component that goes under the last digest message. */
+function buildSubscribeButton(state: SubscribeButtonState): unknown {
+  return {
+    type: COMPONENT_ACTION_ROW,
+    components: [
+      {
+        type: COMPONENT_BUTTON,
+        style: BUTTON_STYLE_PRIMARY,
+        label: state.mode === "weekly"
+          ? "📌 Subscribe to this weekly digest"
+          : "📌 Subscribe to this daily digest",
+        custom_id: encodeSubscribeButtonId(state),
+      },
+    ],
+  };
 }
 
 // --- Helpers ---------------------------------------------------------------
@@ -197,7 +347,12 @@ function handleLookup(
   windowLabel: string,
 ): InteractionHandlerResult {
   const opts = sub.options;
-  const format = optString(opts, "format")?.trim() || undefined;
+  // "all" is the slash-command sentinel for "no format filter" — Discord
+  // requires non-empty choice values, so we can't use "" for the wildcard.
+  // Treat anything else (including a missing value, which shouldn't happen
+  // now that format is required) as the typed-in format.
+  const rawFormat = optString(opts, "format")?.trim();
+  const format = !rawFormat || rawFormat === "all" ? undefined : rawFormat;
   const location = optString(opts, "location")?.trim();
   const radiusMiles = optInt(opts, "radius_miles");
 
@@ -227,7 +382,7 @@ function handleLookup(
 
       const hit = await geocodeAddress(location);
       if (!hit) {
-        return { content: `Couldn't find "${location}". Try a ZIP code or a more specific city/address.` };
+        return [{ content: `Couldn't find "${location}". Try a ZIP code or a more specific city/address.` }];
       }
 
       const events = getActiveEvents({
@@ -243,12 +398,478 @@ function handleLookup(
       if (format) filterParts.unshift(format);
       const filterSuffix = ` matching ${filterParts.join(" · ")}`;
 
-      const msg = renderDigestSummary(events, { windowLabel: `${windowLabel}${filterSuffix}` });
-      // Lookups are public by design — the whole point is to surface events
-      // into the channel so other members see them. (No ephemeral flag.)
-      return { content: msg.content, embeds: msg.embeds ?? [] };
+      // Multi-message digest: one embed per day, matching the scheduled
+      // post format. Avoids the 4096-char "…and N more" truncation that the
+      // single-embed summary hit on busy weeks.
+      const messages = renderDigestByDay(events);
+
+      // /today (windowDays=1) seeds a daily-mode subscription draft; /week
+      // (windowDays=7) seeds weekly. The button's custom_id carries all of
+      // the lookup's filter state so the click handler can hydrate a draft
+      // without re-running geocode or re-parsing options.
+      const subscribeButton = buildSubscribeButton({
+        mode: windowDays === 1 ? "daily" : "weekly",
+        radius_miles: radiusMiles,
+        center_lat: hit.latitude,
+        center_lng: hit.longitude,
+        format: format ?? null,
+        near_label: location,
+      });
+
+      if (messages.length === 0) {
+        // Empty windows still surface the Subscribe CTA — a user looking at
+        // "no events near 19103" is exactly who'd benefit from a recurring
+        // alert when something gets scheduled later.
+        return [{
+          content: `No upcoming events ${windowLabel}${filterSuffix}. Browse the full calendar → ${SITE_URL}/?utm_source=discord`,
+          components: [subscribeButton],
+        }];
+      }
+      // Header content prefixes the first message so the filter context (format
+      // / radius / location) and total count are visible above the day cards —
+      // the per-day embeds themselves only show the date and that day's count.
+      const header = `**${events.length} event${events.length === 1 ? "" : "s"} ${windowLabel}**${filterSuffix}`;
+      // Subscribe button hangs off the LAST message so it appears as a footer
+      // CTA after the user has scrolled past every day. Putting it on the
+      // first message would push it above content the user hasn't read yet.
+      const lastIdx = messages.length - 1;
+      return messages.map((msg, i) => {
+        const followup: DeferredFollowup = i === 0
+          ? { content: header, embeds: msg.embeds }
+          : { embeds: msg.embeds };
+        if (i === lastIdx) followup.components = [subscribeButton];
+        return followup;
+      });
     },
   };
+}
+
+// --- Subscribe panel (MESSAGE_COMPONENT interactions) ----------------------
+//
+// Lifecycle:
+//   1. User clicks the Subscribe button on the /today or /week result.
+//      custom_id matches `si:v1:...` — see decodeSubscribeButtonId.
+//   2. handleSubscribeInit creates a draft row scoped to the clicking user,
+//      replies with an ephemeral panel (channel-select + mode/dow/hour
+//      selects + submit/cancel buttons). All panel component custom_ids
+//      are `sd:v1:{draftId}:{field}`.
+//   3. Each select interaction (channel/mode/dow/hour) updates the draft and
+//      re-renders the panel via UPDATE_MESSAGE so the chosen value shows as
+//      selected on the next render.
+//   4. Submit reads the draft, calls createSubscription, deletes the draft,
+//      and UPDATE_MESSAGEs the panel into a "✅ Subscribed!" confirmation
+//      with all selects stripped. Cancel just clears the panel.
+
+const SUBSCRIBE_DRAFT_PREFIX = "sd:v1:";
+
+/** Hours surfaced in the panel's hour select. Curated rather than 24 entries
+ *  so the dropdown stays scannable. Labels acknowledge the seasonal ET shift
+ *  (we store a single UTC hour per subscription; perceived ET time drifts by
+ *  one hour twice a year — same trade-off the web form makes). */
+const HOUR_CHOICES: Array<{ label: string; value: string }> = [
+  { label: "Early morning (~8 AM ET)", value: "13" },
+  { label: "Midday (~12 PM ET)", value: "17" },
+  { label: "Afternoon (~3 PM ET)", value: "20" },
+  { label: "Evening (~6 PM ET)", value: "23" },
+  { label: "Late evening (~9 PM ET)", value: "2" },
+];
+
+// Date.getUTCDay() convention — Sunday = 0.
+const DOW_CHOICES: Array<{ label: string; value: string }> = [
+  { label: "Sunday", value: "0" },
+  { label: "Monday", value: "1" },
+  { label: "Tuesday", value: "2" },
+  { label: "Wednesday", value: "3" },
+  { label: "Thursday", value: "4" },
+  { label: "Friday", value: "5" },
+  { label: "Saturday", value: "6" },
+];
+
+const MODE_CHOICES: Array<{ label: string; value: string }> = [
+  { label: "Weekly digest", value: "weekly" },
+  { label: "Daily digest", value: "daily" },
+];
+
+function ephemeralImmediate(content: string): InteractionHandlerResult {
+  return {
+    kind: "immediate",
+    response: {
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: { content, flags: FLAGS_EPHEMERAL },
+    },
+  };
+}
+
+/**
+ * Re-render the subscribe panel for a given draft. Used both for the initial
+ * panel reply (post-Subscribe-click) and for every select-driven UPDATE_MESSAGE
+ * so the chosen values show as selected on the next render.
+ *
+ * The panel layout is:
+ *   Row 1: Channel select (required — the only field with no default)
+ *   Row 2: Mode select (weekly | daily)
+ *   Row 3: Day-of-week select  ← weekly only
+ *   Row 4: Hour select
+ *   Row 5: Submit + Cancel buttons
+ *
+ * Daily mode collapses to 4 rows by hiding the dow select; the dispatcher
+ * ignores dow when mode=daily so it doesn't matter what's stored there.
+ */
+function renderSubscribePanel(draft: DiscordSubscriptionDraft): {
+  content: string;
+  components: unknown[];
+} {
+  const draftId = draft.id;
+  const filterBits: string[] = [`within ${draft.radius_miles}mi of ${draft.near_label}`];
+  if (draft.format) filterBits.unshift(draft.format);
+  const filterLine = filterBits.join(" · ");
+
+  const channelLine = draft.channel_id
+    ? `<#${draft.channel_id}>`
+    : "_pick a channel below_";
+
+  const content = [
+    "**Set up your auto-post**",
+    `Filters: ${filterLine}`,
+    `Posts to: ${channelLine}`,
+    "",
+    "Only members with **Manage Server** can subscribe. Pick a channel and confirm — you can edit or unsubscribe later at <https://playirl.gg/account/discord> or with `/playirl unsubscribe`.",
+  ].join("\n");
+
+  const components: unknown[] = [];
+
+  // Row 1: channel select (CHANNEL_SELECT type 8, text channels only).
+  components.push({
+    type: COMPONENT_ACTION_ROW,
+    components: [
+      {
+        type: COMPONENT_CHANNEL_SELECT,
+        custom_id: `${SUBSCRIBE_DRAFT_PREFIX}${draftId}:channel`,
+        placeholder: "Choose the channel to post to…",
+        channel_types: [CHANNEL_TYPE_TEXT],
+        // default_values lets Discord render the already-picked channel as
+        // selected. Empty array on first render = "user hasn't picked yet".
+        default_values: draft.channel_id
+          ? [{ id: draft.channel_id, type: "channel" }]
+          : [],
+      },
+    ],
+  });
+
+  // Row 2: mode select (weekly | daily).
+  components.push({
+    type: COMPONENT_ACTION_ROW,
+    components: [
+      {
+        type: COMPONENT_STRING_SELECT,
+        custom_id: `${SUBSCRIBE_DRAFT_PREFIX}${draftId}:mode`,
+        placeholder: "Schedule cadence",
+        options: MODE_CHOICES.map(c => ({
+          ...c,
+          default: c.value === draft.mode,
+        })),
+      },
+    ],
+  });
+
+  // Row 3: day-of-week (weekly only).
+  if (draft.mode === "weekly") {
+    components.push({
+      type: COMPONENT_ACTION_ROW,
+      components: [
+        {
+          type: COMPONENT_STRING_SELECT,
+          custom_id: `${SUBSCRIBE_DRAFT_PREFIX}${draftId}:dow`,
+          placeholder: "Day of week",
+          options: DOW_CHOICES.map(c => ({
+            ...c,
+            default: draft.dow !== null && c.value === String(draft.dow),
+          })),
+        },
+      ],
+    });
+  }
+
+  // Row 4: hour-of-day.
+  components.push({
+    type: COMPONENT_ACTION_ROW,
+    components: [
+      {
+        type: COMPONENT_STRING_SELECT,
+        custom_id: `${SUBSCRIBE_DRAFT_PREFIX}${draftId}:hour`,
+        placeholder: "Time of day",
+        options: HOUR_CHOICES.map(c => ({
+          ...c,
+          default: draft.hour_utc !== null && c.value === String(draft.hour_utc),
+        })),
+      },
+    ],
+  });
+
+  // Final row: submit + cancel.
+  components.push({
+    type: COMPONENT_ACTION_ROW,
+    components: [
+      {
+        type: COMPONENT_BUTTON,
+        style: BUTTON_STYLE_SUCCESS,
+        label: "Subscribe",
+        custom_id: `${SUBSCRIBE_DRAFT_PREFIX}${draftId}:submit`,
+        disabled: !draft.channel_id, // require channel before submit
+      },
+      {
+        type: COMPONENT_BUTTON,
+        style: BUTTON_STYLE_SECONDARY,
+        label: "Cancel",
+        custom_id: `${SUBSCRIBE_DRAFT_PREFIX}${draftId}:cancel`,
+      },
+    ],
+  });
+
+  return { content, components };
+}
+
+function handleSubscribeInit(
+  interaction: DiscordInteraction,
+  customId: string,
+): InteractionHandlerResult {
+  if (!interaction.guild_id) {
+    return ephemeralImmediate("This button only works inside a server.");
+  }
+  // Web requires Manage Server; mirror that here. Check on click rather than
+  // hiding the button — Discord can't conditionally hide buttons per-viewer.
+  if (!memberHasManageGuild(interaction.member)) {
+    return ephemeralImmediate(
+      "You need the **Manage Server** permission to set up an auto-post. Ask an admin to click Subscribe instead — or browse the calendar at <https://playirl.gg>.",
+    );
+  }
+  const userId = interaction.member?.user?.id;
+  if (!userId) {
+    return ephemeralImmediate("Couldn't identify your Discord account. Try again from a server channel.");
+  }
+  const state = decodeSubscribeButtonId(customId);
+  if (!state) {
+    return ephemeralImmediate("That subscribe button is malformed or from an older bot version. Run `/playirl today` or `/playirl week` again to get a fresh button.");
+  }
+
+  const draft = createDraft({
+    guild_id: interaction.guild_id,
+    user_id: userId,
+    format: state.format,
+    radius_miles: state.radius_miles,
+    center_lat: state.center_lat,
+    center_lng: state.center_lng,
+    near_label: state.near_label,
+    mode: state.mode,
+  });
+
+  const panel = renderSubscribePanel(draft);
+  return {
+    kind: "immediate",
+    response: {
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: {
+        content: panel.content,
+        components: panel.components,
+        flags: FLAGS_EPHEMERAL, // only the clicker sees the panel
+      },
+    },
+  };
+}
+
+interface DraftAction {
+  draftId: string;
+  field: "channel" | "mode" | "dow" | "hour" | "submit" | "cancel";
+}
+
+function parseDraftCustomId(customId: string): DraftAction | null {
+  if (!customId.startsWith(SUBSCRIBE_DRAFT_PREFIX)) return null;
+  const rest = customId.slice(SUBSCRIBE_DRAFT_PREFIX.length);
+  const idx = rest.lastIndexOf(":");
+  if (idx === -1) return null;
+  const draftId = rest.slice(0, idx);
+  const field = rest.slice(idx + 1);
+  if (!draftId) return null;
+  if (field !== "channel" && field !== "mode" && field !== "dow" && field !== "hour" && field !== "submit" && field !== "cancel") {
+    return null;
+  }
+  return { draftId, field };
+}
+
+function updateMessageResponse(content: string, components: unknown[]): InteractionHandlerResult {
+  return {
+    kind: "immediate",
+    response: {
+      type: InteractionResponseType.UPDATE_MESSAGE,
+      data: { content, components },
+    },
+  };
+}
+
+/**
+ * Replace the panel with a terminal message. Used for submit-success, cancel,
+ * and any error path that wants to clear the selects (so the user can't re-
+ * click into an already-submitted draft).
+ */
+function clearPanelResponse(content: string): InteractionHandlerResult {
+  return updateMessageResponse(content, []);
+}
+
+function handleSubscribeDraft(
+  interaction: DiscordInteraction,
+  customId: string,
+): InteractionHandlerResult {
+  const action = parseDraftCustomId(customId);
+  if (!action) return ephemeralImmediate("Unknown panel action.");
+
+  const draft = getDraft(action.draftId);
+  if (!draft) {
+    // Expired or already-submitted draft. Clear the panel rather than
+    // leaving zombie components the user can re-click into.
+    return clearPanelResponse("This subscribe panel expired or was already used. Run `/playirl today` or `/playirl week` to start a new one.");
+  }
+
+  // Defense in depth: scope every panel interaction to the user who opened
+  // it. Without this an admin in the same channel could hijack someone's
+  // draft via copy-pasting the custom_id (Discord doesn't enforce author).
+  if (draft.user_id !== interaction.member?.user?.id) {
+    return ephemeralImmediate("Only the person who started this subscribe panel can use it. Click Subscribe on a fresh `/playirl today` or `/playirl week` to open your own.");
+  }
+
+  // Re-check Manage Server on every interaction. Permissions can change
+  // mid-flow (admin role removed); we don't want a half-elevated draft to
+  // sneak a subscription through on Submit.
+  if (!memberHasManageGuild(interaction.member)) {
+    deleteDraft(action.draftId);
+    return clearPanelResponse("You no longer have **Manage Server** permission, so this subscribe panel was closed.");
+  }
+
+  switch (action.field) {
+    case "channel": {
+      const channelId = interaction.data?.values?.[0];
+      if (!channelId) return ephemeralImmediate("Channel selection was empty.");
+      const updated = updateDraft(action.draftId, { channel_id: channelId });
+      if (!updated) return clearPanelResponse("Subscribe panel expired.");
+      const panel = renderSubscribePanel(updated);
+      return updateMessageResponse(panel.content, panel.components);
+    }
+    case "mode": {
+      const raw = interaction.data?.values?.[0];
+      if (raw !== "weekly" && raw !== "daily") {
+        return ephemeralImmediate("Unsupported schedule mode.");
+      }
+      const updated = updateDraft(action.draftId, { mode: raw });
+      if (!updated) return clearPanelResponse("Subscribe panel expired.");
+      const panel = renderSubscribePanel(updated);
+      return updateMessageResponse(panel.content, panel.components);
+    }
+    case "dow": {
+      const raw = interaction.data?.values?.[0];
+      const dow = raw === undefined ? NaN : Number(raw);
+      if (!Number.isInteger(dow) || dow < 0 || dow > 6) {
+        return ephemeralImmediate("Invalid day-of-week.");
+      }
+      const updated = updateDraft(action.draftId, { dow });
+      if (!updated) return clearPanelResponse("Subscribe panel expired.");
+      const panel = renderSubscribePanel(updated);
+      return updateMessageResponse(panel.content, panel.components);
+    }
+    case "hour": {
+      const raw = interaction.data?.values?.[0];
+      const hour = raw === undefined ? NaN : Number(raw);
+      if (!Number.isInteger(hour) || hour < 0 || hour > 23) {
+        return ephemeralImmediate("Invalid hour.");
+      }
+      const updated = updateDraft(action.draftId, { hour_utc: hour });
+      if (!updated) return clearPanelResponse("Subscribe panel expired.");
+      const panel = renderSubscribePanel(updated);
+      return updateMessageResponse(panel.content, panel.components);
+    }
+    case "cancel": {
+      deleteDraft(action.draftId);
+      return clearPanelResponse("Subscribe cancelled. Run `/playirl today` or `/playirl week` if you change your mind.");
+    }
+    case "submit": {
+      if (!draft.channel_id) {
+        return ephemeralImmediate("Pick a channel before submitting.");
+      }
+      if (draft.hour_utc === null) {
+        return ephemeralImmediate("Pick a time of day before submitting.");
+      }
+      if (draft.mode === "weekly" && draft.dow === null) {
+        return ephemeralImmediate("Pick a day of week before submitting.");
+      }
+      // Mirror the web flow's scope validation — guards against a draft
+      // somehow missing lat/lng or near_label after a future refactor.
+      const scopeError = validateSubScope({
+        venue_name: null,
+        near_label: draft.near_label,
+        center_lat: draft.center_lat,
+        center_lng: draft.center_lng,
+        radius_miles: draft.radius_miles,
+      });
+      if (scopeError) {
+        return ephemeralImmediate(`Couldn't create the subscription: ${scopeError}`);
+      }
+      try {
+        const created = createSubscription({
+          guild_id: draft.guild_id,
+          channel_id: draft.channel_id,
+          mode: draft.mode,
+          format: draft.format,
+          radius_miles: draft.radius_miles,
+          center_lat: draft.center_lat,
+          center_lng: draft.center_lng,
+          near_label: draft.near_label,
+          hour_utc: draft.hour_utc,
+          // dow is required for weekly mode; the dispatcher ignores it for daily.
+          dow: draft.mode === "weekly" ? draft.dow : null,
+          // days_ahead matches the lookup window the user came from. The
+          // dispatcher already clamps daily to ≤2 days internally, so passing
+          // the literal 1/7 is safe and self-documenting.
+          days_ahead: draft.mode === "weekly" ? 7 : 1,
+          created_by: draft.user_id,
+        });
+        deleteDraft(action.draftId);
+        const cadenceLabel = draft.mode === "weekly"
+          ? `every ${DOW_CHOICES.find(d => d.value === String(draft.dow))?.label ?? "week"} at <t:${hourUtcToUnix(draft.hour_utc)}:t>`
+          : `every day at <t:${hourUtcToUnix(draft.hour_utc)}:t>`;
+        const lines = [
+          `✅ **Subscribed.** I'll post to <#${draft.channel_id}> ${cadenceLabel}.`,
+          `Filters: ${draft.format ? `${draft.format} · ` : ""}within ${draft.radius_miles}mi of ${draft.near_label}`,
+          `Manage at <https://playirl.gg/account/discord> or run \`/playirl unsubscribe\` (id \`${created.id.slice(0, 8)}\`).`,
+        ];
+        return clearPanelResponse(lines.join("\n"));
+      } catch (err) {
+        console.error("[discord-interactions] subscribe submit failed:", err);
+        return ephemeralImmediate("Couldn't create the subscription. Try again, or set it up at <https://playirl.gg/account/discord>.");
+      }
+    }
+  }
+}
+
+/**
+ * Convert an hour_utc (0–23) into a Unix timestamp for Discord's <t:NNN:t>
+ * relative-time syntax. We anchor to the next occurrence of that UTC hour
+ * starting from "now" so Discord renders the time in the viewer's local
+ * timezone — sidesteps the "is this EDT or EST?" ambiguity in the labels.
+ */
+function hourUtcToUnix(hourUtc: number): number {
+  const now = new Date();
+  const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), hourUtc, 0, 0, 0));
+  if (next.getTime() <= now.getTime()) next.setUTCDate(next.getUTCDate() + 1);
+  return Math.floor(next.getTime() / 1000);
+}
+
+function handleComponent(interaction: DiscordInteraction): InteractionHandlerResult {
+  const customId = interaction.data?.custom_id ?? "";
+  if (customId.startsWith(SUBSCRIBE_INIT_PREFIX)) {
+    return handleSubscribeInit(interaction, customId);
+  }
+  if (customId.startsWith(SUBSCRIBE_DRAFT_PREFIX)) {
+    return handleSubscribeDraft(interaction, customId);
+  }
+  return ephemeralImmediate("Unknown component action.");
 }
 
 function handleHelp(): InteractionHandlerResult {
@@ -268,8 +889,9 @@ function handleHelp(): InteractionHandlerResult {
     "Example: `/playirl week format:Commander location:19103 radius_miles:25`",
     "",
     "_Server admin (needs Manage Server):_",
+    "**Subscribe** — click the **📌 Subscribe** button under any `/playirl today` or `/playirl week` result to turn that lookup into a recurring auto-post. Pick channel, day, and time in the follow-up panel.",
     "**`/playirl unsubscribe <id>`** — disable a recurring event post. Start typing in the `id` field — Discord will autocomplete from this server's subscriptions.",
-    "Set up new subscriptions on the website → <https://playirl.gg/account/discord>",
+    "Full management UI (rename, edit filters, reminder-mode subs) lives on the website → <https://playirl.gg/account/discord>",
     "",
     "_Other:_",
     "**`/playirl help`** — show this menu.",
@@ -282,24 +904,37 @@ function handleHelp(): InteractionHandlerResult {
 // --- Deferred follow-up via webhook ----------------------------------------
 
 /**
- * PATCH the original interaction message after a deferred ack. Discord allows
- * up to 15 minutes between the ack and the follow-up — far longer than any
- * geocode or DB query takes. Logs and swallows errors so a stale-interaction
- * 404 (user dismissed the loading state) doesn't crash the dispatcher.
+ * Send one or more messages after a deferred ack. The first message PATCHes
+ * the original "thinking..." response; additional messages are POSTed as
+ * webhook follow-ups so multi-day digests (one embed per day) don't get
+ * truncated against Discord's 4096-char description cap.
+ *
+ * Discord allows up to 15 minutes between the ack and the follow-ups — far
+ * longer than any geocode or DB query takes. Logs and swallows errors so a
+ * stale-interaction 404 (user dismissed the loading state) doesn't crash the
+ * dispatcher.
  */
-export async function sendDeferredFollowup(
+export async function sendDeferredFollowups(
   applicationId: string,
   interactionToken: string,
-  followup: DeferredFollowup,
+  followups: DeferredFollowup[],
 ): Promise<void> {
-  const url = `${DISCORD_API}/webhooks/${applicationId}/${interactionToken}/messages/@original`;
+  if (followups.length === 0) return;
+
+  const [first, ...rest] = followups;
+  const patchUrl = `${DISCORD_API}/webhooks/${applicationId}/${interactionToken}/messages/@original`;
   try {
-    const res = await fetch(url, {
+    // Note: the PATCH @original endpoint can't change the ephemeral flag of
+    // the original interaction response — that's locked in by the type-5 ack.
+    // first.ephemeral on the @original message is therefore ignored; ephemeral
+    // delivery only applies to POSTed follow-ups below.
+    const res = await fetch(patchUrl, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        content: followup.content,
-        embeds: followup.embeds,
+        content: first.content,
+        embeds: first.embeds,
+        components: first.components,
       }),
     });
     if (!res.ok) {
@@ -308,6 +943,36 @@ export async function sendDeferredFollowup(
     }
   } catch (err) {
     console.error("[discord-interactions] follow-up PATCH threw:", err);
+  }
+
+  // Additional messages posted sequentially so Discord renders them in order.
+  // Webhook follow-ups don't share the per-channel rate-limit budget the bot
+  // token uses, but back-to-back POSTs can still hit 429 — a small gap keeps
+  // ordered delivery cheap. If a follow-up fails we still try the rest so a
+  // single Discord hiccup doesn't drop the whole digest.
+  const postUrl = `${DISCORD_API}/webhooks/${applicationId}/${interactionToken}`;
+  for (const followup of rest) {
+    try {
+      const res = await fetch(postUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: followup.content,
+          embeds: followup.embeds,
+          components: followup.components,
+          // Per-follow-up ephemeral flag — used by the subscribe panel so
+          // the channel/dow/hour selects only appear to the user who clicked
+          // Subscribe, not the whole channel.
+          flags: followup.ephemeral ? FLAGS_EPHEMERAL : undefined,
+        }),
+      });
+      if (!res.ok) {
+        const body = await res.text().catch(() => "");
+        console.error(`[discord-interactions] follow-up POST failed: ${res.status} ${body}`);
+      }
+    } catch (err) {
+      console.error("[discord-interactions] follow-up POST threw:", err);
+    }
   }
 }
 
@@ -381,6 +1046,10 @@ export function handleInteraction(interaction: DiscordInteraction): InteractionH
 
   if (interaction.type === InteractionType.APPLICATION_COMMAND_AUTOCOMPLETE) {
     return handleAutocomplete(interaction);
+  }
+
+  if (interaction.type === InteractionType.MESSAGE_COMPONENT) {
+    return handleComponent(interaction);
   }
 
   if (interaction.type !== InteractionType.APPLICATION_COMMAND) {

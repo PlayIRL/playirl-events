@@ -12,7 +12,7 @@ import { NextResponse, after } from "next/server";
 import {
   type InteractionHandlerResult,
   handleInteraction,
-  sendDeferredFollowup,
+  sendDeferredFollowups,
   verifyInteractionSignature,
 } from "@/lib/discord-interactions";
 
@@ -70,13 +70,13 @@ export async function POST(request: Request) {
   const work = result.work;
   after(async () => {
     try {
-      const followup = await work(interaction);
-      await sendDeferredFollowup(interaction.application_id, interaction.token, followup);
+      const followups = await work(interaction);
+      await sendDeferredFollowups(interaction.application_id, interaction.token, followups);
     } catch (err) {
       console.error("[discord-interactions] deferred work threw:", err);
-      await sendDeferredFollowup(interaction.application_id, interaction.token, {
+      await sendDeferredFollowups(interaction.application_id, interaction.token, [{
         content: "Something went wrong handling that command. Try again, or report this in #playirl-bot-support.",
-      });
+      }]);
     }
   });
 
