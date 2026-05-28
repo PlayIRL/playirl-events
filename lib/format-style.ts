@@ -87,6 +87,24 @@ export function showFormatBadge(format: string | null | undefined): boolean {
   return !!format && !HIDDEN_FORMAT_VALUES.has(format);
 }
 
+// Title-pattern match for Regional Championship Qualifier events.
+// Mirrors the SQL filter in lib/events.ts (`title LIKE '%RCQ%' OR
+// '%Regional Championship Qualifier%'`) so the on-page badge stays in
+// sync with the ?rcq=1 filter. Scrapers don't expose an RCQ flag — the
+// signal is in the title — so we detect at render time.
+export function isRcq(title: string | null | undefined): boolean {
+  if (!title) return false;
+  return /RCQ|Regional Championship Qualifier/i.test(title);
+}
+
+// Inverted black/white stamp — sits alongside the format chip when a row
+// is an RCQ. Uses no mana-color hue (those are reserved for FORMAT_BADGE)
+// and uses Inter rather than Beleren (Beleren is reserved for format
+// tags per project typography conventions). Reads as an orthogonal
+// "tournament stamp" overlay rather than a competing format chip.
+export const RCQ_BADGE =
+  "inline-block rounded-sm font-bold uppercase tracking-wider bg-neutral-900 text-white dark:bg-white dark:text-neutral-900";
+
 // Hex-int values for Discord embed `color` field. Mirrors FORMAT_DOT —
 // the deep ("ink") version of each mana color, so the embed accent matches
 // the dot color shown elsewhere.

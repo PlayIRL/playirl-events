@@ -16,7 +16,9 @@ import { resolveUserLocation } from "@/lib/user-location";
 import {
   FORMAT_BADGE,
   FORMAT_BADGE_DEFAULT,
+  RCQ_BADGE,
   SOURCE_LABELS,
+  isRcq,
   showFormatBadge,
 } from "@/lib/format-style";
 import ShareButton from "./share-button";
@@ -335,10 +337,19 @@ export default async function EventPage({
               "Event" eyebrow labels were redundant scaffolding once the
               chip got the Beleren treatment that already communicates
               "this is the format". */}
-          {showFormatBadge(ev.format) && (
-            <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
-              {ev.format}
-            </span>
+          {(showFormatBadge(ev.format) || isRcq(ev.title)) && (
+            <div className="inline-flex items-center gap-1.5 flex-wrap">
+              {showFormatBadge(ev.format) && (
+                <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                  {ev.format}
+                </span>
+              )}
+              {isRcq(ev.title) && (
+                <span className={`${RCQ_BADGE} px-2.5 py-1 text-xs`} title="Regional Championship Qualifier">
+                  RCQ
+                </span>
+              )}
+            </div>
           )}
           <h1 className="text-3xl sm:text-4xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white break-words leading-tight tracking-[0.01em]">{ev.title}</h1>
           {ev.location && (

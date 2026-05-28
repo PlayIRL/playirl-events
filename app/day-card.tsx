@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, showFormatBadge } from "@/lib/format-style";
+import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq, showFormatBadge } from "@/lib/format-style";
 import { eventDisplayStatus, formatEventTime } from "@/lib/format-time";
 import { formatDistanceMiles, haversineMiles } from "@/lib/distance";
 import SaveEventButton from "./save-event-button";
@@ -230,10 +230,19 @@ export default function DayCard({
                     fastest way to scan "what kind of event is this".
                     Suppressed entirely for "Other" / empty formats so
                     the row doesn't carry a meaningless chip. */}
-                {status !== "completed" && showFormatBadge(ev.format) && (
-                  <span className={`inline-block px-2 py-0.5 rounded-sm text-[11px] font-bold mb-1 tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
-                    {ev.format}
-                  </span>
+                {status !== "completed" && (showFormatBadge(ev.format) || isRcq(ev.title)) && (
+                  <div className="inline-flex items-center gap-1 mb-1 flex-wrap">
+                    {showFormatBadge(ev.format) && (
+                      <span className={`inline-block px-2 py-0.5 rounded-sm text-[11px] font-bold tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                        {ev.format}
+                      </span>
+                    )}
+                    {isRcq(ev.title) && (
+                      <span className={`${RCQ_BADGE} px-1.5 py-0.5 text-[10px]`} title="Regional Championship Qualifier">
+                        RCQ
+                      </span>
+                    )}
+                  </div>
                 )}
                 <p className={`${status === "completed" ? "text-sm" : "text-base sm:text-lg"} font-[family-name:var(--font-ultra)] font-bold tracking-tight text-neutral-900 dark:text-white ${status === "completed" ? "truncate" : "line-clamp-2 sm:line-clamp-none sm:truncate"}`}>{ev.title}</p>
                 {ev.location && (

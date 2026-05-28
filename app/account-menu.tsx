@@ -140,7 +140,19 @@ export default function AccountMenu({
               )}
             </>
           ) : (
-            <MenuLink href="/account/login" onSelect={() => setOpen(false)}>Sign in</MenuLink>
+            // Signed-out CTA gets a filled-button treatment instead of the
+            // subtle MenuLink used for navigation items. Sign in is the
+            // primary action for unauthenticated visitors — at the same
+            // visual weight as Overview/Events/Discord, users overlook it.
+            <Link
+              href="/account/login"
+              role="menuitem"
+              onClick={() => setOpen(false)}
+              className="flex items-center justify-center gap-2 mb-1 px-3 py-2 rounded-md text-sm font-semibold bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-100 transition-colors"
+            >
+              <UserIcon />
+              Sign in
+            </Link>
           )}
 
           <div className="my-1 h-px bg-neutral-200 dark:bg-white/10" />

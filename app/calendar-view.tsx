@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, showFormatBadge } from "@/lib/format-style";
+import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq, showFormatBadge } from "@/lib/format-style";
 import { dateStrInTz, eventDisplayStatus, formatEventTime } from "@/lib/format-time";
 import { formatDistanceMiles, haversineMiles } from "@/lib/distance";
 import { useStickySentinel } from "@/lib/use-sticky-sentinel";
@@ -230,11 +230,18 @@ export default function CalendarView({
                           ) : (
                             <div className="text-[10px] font-mono tabular-nums text-neutral-500 dark:text-neutral-400 leading-none">{formatEventTime(ev.date, ev.time, ev.timezone)}</div>
                           )}
-                          {showFormatBadge(ev.format) && (
-                            <div>
-                              <span className={`px-1.5 py-0.5 rounded-sm text-[11px] font-bold tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
-                                {ev.format}
-                              </span>
+                          {(showFormatBadge(ev.format) || isRcq(ev.title)) && (
+                            <div className="inline-flex items-center gap-1 flex-wrap">
+                              {showFormatBadge(ev.format) && (
+                                <span className={`px-1.5 py-0.5 rounded-sm text-[11px] font-bold tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                                  {ev.format}
+                                </span>
+                              )}
+                              {isRcq(ev.title) && (
+                                <span className={`${RCQ_BADGE} px-1 py-0.5 text-[9px]`} title="Regional Championship Qualifier">
+                                  RCQ
+                                </span>
+                              )}
                             </div>
                           )}
                         </div>

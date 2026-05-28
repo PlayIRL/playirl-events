@@ -9,7 +9,7 @@ import {
   InfoWindow,
   useMap,
 } from "@vis.gl/react-google-maps";
-import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT } from "@/lib/format-style";
+import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq } from "@/lib/format-style";
 import { formatEventTime } from "@/lib/format-time";
 
 const METERS_PER_MILE = 1609.344;
@@ -224,10 +224,19 @@ function VenuePopup({ venue }: { venue: VenueGroup }) {
                 {formatShortDate(ev.date)} · {formatEventTime(ev.date, ev.time, ev.timezone)}
               </div>
               <div className="text-neutral-900 font-medium">{ev.title}</div>
-              {ev.format && (
-                <span className={`inline-block mt-0.5 px-1.5 py-0.5 rounded-sm text-[9px] font-bold tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
-                  {ev.format}
-                </span>
+              {(ev.format || isRcq(ev.title)) && (
+                <div className="inline-flex items-center gap-1 mt-0.5 flex-wrap">
+                  {ev.format && (
+                    <span className={`inline-block px-1.5 py-0.5 rounded-sm text-[9px] font-bold tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
+                      {ev.format}
+                    </span>
+                  )}
+                  {isRcq(ev.title) && (
+                    <span className={`${RCQ_BADGE} px-1 py-0.5 text-[9px]`} title="Regional Championship Qualifier">
+                      RCQ
+                    </span>
+                  )}
+                </div>
               )}
             </Link>
           </li>
