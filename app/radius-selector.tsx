@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FORMAT_DOT } from "@/lib/format-style";
 import LocationPicker from "./location-picker";
 import { DiscordIcon } from "./discord-icon";
+import FeedbackButton from "./feedback-button";
 
 // Build the canonical /calendar URL given the user's current filter state.
 // Empty/falsy filters are omitted so subscribers to the bare /calendar
@@ -730,6 +731,7 @@ export default function RadiusSelector({
         </div>
       </div>
       <CreateEventButton />
+      <FeedbackButton />
     </>
   );
 }
