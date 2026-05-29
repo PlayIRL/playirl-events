@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 
 interface Settings {
   scrape_interval_hours: string;
@@ -192,8 +193,8 @@ export default function ScrapersPage() {
   }, [regionStats, regionSort]);
 
   // Compute the next expected daily cron tick (9 UTC). Same schedule the
-  // GitHub Actions workflow uses; the admin sees it next to "Last run" so
-  // there's a clear signal whether auto-scraping is healthy without
+  // GitHub Actions workflow uses; surfaced in the Scheduled scraping
+  // section so admins see when the next automatic run will fire without
   // opening the Actions tab.
   const nextScheduledTickIso = (() => {
     const next = new Date();
@@ -201,6 +202,28 @@ export default function ScrapersPage() {
     if (next.getTime() <= Date.now()) next.setUTCDate(next.getUTCDate() + 1);
     return next.toISOString();
   })();
+
+  // Find the most recent history row that was actually fired by the cron
+  // (not a manual click). Used by the Scheduled scraping panel below to
+  // show "last auto run" — distinct from `lastScrape` which counts any
+  // run regardless of source. Falls back to null on a DB that pre-dates
+  // the triggeredBy field (legacy rows have no source recorded).
+  const lastAutoRun = useMemo(() => {
+    return history.find((r) => r.summary?.triggeredBy === "cron") ?? null;
+  }, [history]);
+  const hoursSinceLastAuto = lastAutoRun
+    ? (Date.now() - new Date(lastAutoRun.ts.includes("T") ? lastAutoRun.ts : lastAutoRun.ts + "Z").getTime()) / 3_600_000
+    : Infinity;
+  const autoHealth: "ok" | "warn" | "loud" | "never" =
+    !Number.isFinite(hoursSinceLastAuto) ? "never"
+      : hoursSinceLastAuto > 48 ? "loud"
+        : hoursSinceLastAuto > 28 ? "warn"
+          : "ok";
+  const msUntilNext = new Date(nextScheduledTickIso).getTime() - Date.now();
+  const hoursUntilNext = msUntilNext / 3_600_000;
+  const untilNextLabel = hoursUntilNext < 1
+    ? `in ${Math.max(1, Math.round(msUntilNext / 60_000))} min`
+    : `in ${Math.round(hoursUntilNext)}h`;
 
   return (
     // max-w-6xl (was 3xl): the Recent runs table now has 9 columns and the
@@ -213,21 +236,8 @@ export default function ScrapersPage() {
 
       <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5 mb-4">
         <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Manual refresh</h2>
-        <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">
-          Last run: <span>{last}</span>
-        </p>
         <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
-          Next auto-run: <span>{new Date(nextScheduledTickIso).toLocaleString()}</span>
-          {" "}
-          <span className="text-neutral-400">· daily 09:00 UTC via</span>{" "}
-          <a
-            href="https://github.com/PlayIRL/playirl-events/actions/workflows/scrape.yml"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-neutral-700 dark:hover:text-neutral-300"
-          >
-            scrape.yml
-          </a>
+          Last run: <span>{last}</span>
         </p>
         <button
           onClick={runScrape}
@@ -244,6 +254,144 @@ export default function ScrapersPage() {
         {result && (
           <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-3">{result}</p>
         )}
+      </section>
+
+      {/* Scheduled scraping — promotes what was previously a single line
+          buried in Manual refresh into its own section. One card per
+          scheduled job so admins can see at a glance what's running,
+          how often, when the next fire is, and whether the last
+          automatic execution looks healthy. */}
+      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5 mb-4">
+        <div className="flex items-baseline justify-between gap-3 flex-wrap mb-3">
+          <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">Scheduled scraping</h2>
+          <span className="text-[11px] text-neutral-500 dark:text-neutral-400">
+            Schedules live in <code className="text-[10px]">.github/workflows/</code>
+          </span>
+        </div>
+
+        <div className="space-y-3">
+          {/* Daily heavy scrape — the WotC + TopDeck sweep that produces
+              the bulk of the catalogue. */}
+          <div className="border border-neutral-200 dark:border-neutral-800 rounded-md p-4">
+            <div className="flex items-start justify-between gap-3 flex-wrap mb-2">
+              <div className="flex items-center gap-2">
+                <span className="inline-block px-1.5 py-0.5 rounded-md text-[10px] font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
+                  auto
+                </span>
+                <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                  Daily multi-region scrape
+                </h3>
+              </div>
+              <span
+                className={`text-[10px] font-medium px-1.5 py-0.5 rounded-md ${
+                  autoHealth === "ok" ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
+                  : autoHealth === "warn" ? "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300"
+                  : "bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-300"
+                }`}
+              >
+                {autoHealth === "ok" ? "healthy"
+                  : autoHealth === "warn" ? "delayed"
+                  : autoHealth === "loud" ? "stuck"
+                  : "never run"}
+              </span>
+            </div>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
+              Sweeps every enabled grid in <Link href="/admin/config" className="underline hover:text-neutral-700 dark:hover:text-neutral-300">Site config → Regions</Link>.
+              Hits WotC&apos;s store + event GraphQL plus any other enabled sources.
+            </p>
+            <dl className="grid grid-cols-2 sm:grid-cols-4 gap-y-2 gap-x-4 text-xs">
+              <div>
+                <dt className="text-neutral-500 dark:text-neutral-400">Frequency</dt>
+                <dd className="text-neutral-700 dark:text-neutral-300 font-mono">daily · 09:00 UTC</dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500 dark:text-neutral-400">Next run</dt>
+                <dd className="text-neutral-700 dark:text-neutral-300">
+                  {new Date(nextScheduledTickIso).toLocaleString()}{" "}
+                  <span className="text-neutral-500 dark:text-neutral-500">({untilNextLabel})</span>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500 dark:text-neutral-400">Last auto run</dt>
+                <dd className="text-neutral-700 dark:text-neutral-300">
+                  {lastAutoRun
+                    ? new Date(lastAutoRun.ts.includes("T") ? lastAutoRun.ts : lastAutoRun.ts + "Z").toLocaleString()
+                    : <span className="text-neutral-500">never (no cron run yet)</span>}
+                  {lastAutoRun && (
+                    <span className="text-neutral-500 dark:text-neutral-500"> ({Math.round(hoursSinceLastAuto)}h ago)</span>
+                  )}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500 dark:text-neutral-400">Workflow</dt>
+                <dd>
+                  <a
+                    href="https://github.com/PlayIRL/playirl-events/actions/workflows/scrape.yml"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-neutral-700 dark:text-neutral-300 underline hover:no-underline"
+                  >
+                    scrape.yml ↗
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          {/* Discord-only frequent pull — per the production runbook, an
+              optional Railway Cron (every 15 min) hits /api/scrape-discord
+              so new guild-side scheduled events land in PlayIRL within
+              minutes rather than waiting for the daily heavy scrape. We
+              can't directly verify it's running from this page (no
+              dedicated history table), but surface it so admins know it
+              exists + where it lives. */}
+          <div className="border border-neutral-200 dark:border-neutral-800 rounded-md p-4 opacity-90">
+            <div className="flex items-start justify-between gap-3 flex-wrap mb-2">
+              <div className="flex items-center gap-2">
+                <span className="inline-block px-1.5 py-0.5 rounded-md text-[10px] font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
+                  auto
+                </span>
+                <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+                  Discord-only pull
+                </h3>
+              </div>
+              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-md bg-neutral-100 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400">
+                external schedule
+              </span>
+            </div>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
+              Light pull of Discord guild scheduled events so newly-created Discord events
+              land in PlayIRL within ~15 min instead of waiting for the daily heavy scrape.
+            </p>
+            <dl className="grid grid-cols-2 sm:grid-cols-4 gap-y-2 gap-x-4 text-xs">
+              <div>
+                <dt className="text-neutral-500 dark:text-neutral-400">Frequency</dt>
+                <dd className="text-neutral-700 dark:text-neutral-300 font-mono">every 15 min</dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500 dark:text-neutral-400">Scheduled by</dt>
+                <dd className="text-neutral-700 dark:text-neutral-300">Railway Cron</dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500 dark:text-neutral-400">Endpoint</dt>
+                <dd className="text-neutral-700 dark:text-neutral-300 font-mono text-[10px]">POST /api/scrape-discord</dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500 dark:text-neutral-400">Setup docs</dt>
+                <dd>
+                  <a
+                    href="https://github.com/PlayIRL/playirl-events/blob/main/docs/PRODUCTION_FILL_RUNBOOK.md#also-add-a-discord-only-frequent-pull"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-neutral-700 dark:text-neutral-300 underline hover:no-underline"
+                  >
+                    runbook ↗
+                  </a>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
       </section>
 
       <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5 mb-4">
