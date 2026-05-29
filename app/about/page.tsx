@@ -43,9 +43,6 @@ export default function AboutPage() {
       <Reveal delay={140}>
         <div className="flex flex-wrap items-center gap-1.5 mb-3 text-xs font-medium">
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-300 dark:border-emerald-500/30">
-            {"\u2728"} Open source
-          </span>
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-700 border border-neutral-200 dark:bg-white/[0.06] dark:text-neutral-300 dark:border-white/15">
             {"\uD83D\uDC65"} Community-run
           </span>
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-600 border border-neutral-200 dark:bg-white/5 dark:text-neutral-400 dark:border-white/10">
@@ -67,16 +64,7 @@ export default function AboutPage() {
       <div className="space-y-5 text-base text-neutral-700 dark:text-neutral-300 leading-relaxed">
         <Reveal delay={180}>
           <p>
-            <strong className="text-neutral-900 dark:text-white">PlayIRL.GG</strong> is an{" "}
-            <a
-              href="https://github.com/i1986o/mtg-cal"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline decoration-dotted underline-offset-2 hover:text-neutral-900 dark:hover:text-white"
-            >
-              open-source
-            </a>
-            , community-run alternative to the official Wizards of the Coast event locator. We aggregate local Magic: The Gathering events from multiple sources into one easy-to-browse feed — built by players, for players.
+            <strong className="text-neutral-900 dark:text-white">PlayIRL.GG</strong> is an independent, community-run alternative to the official Wizards of the Coast event locator. We aggregate local Magic: The Gathering events from multiple sources into one easy-to-browse feed — built by players, for players.
           </p>
         </Reveal>
 
@@ -182,18 +170,6 @@ export default function AboutPage() {
           </div>
         </Reveal>
 
-        <Reveal>
-          <div className="pt-2">
-            <a
-              href="https://github.com/i1986o/mtg-cal"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 text-sm font-medium rounded-md hover:bg-neutral-200 dark:hover:bg-neutral-800 hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-black/20 active:translate-y-0 transition-all duration-200 border border-neutral-100 dark:border-white/8"
-            >
-              {"\u2B50"} GitHub
-            </a>
-          </div>
-        </Reveal>
       </div>
 
       <Reveal>

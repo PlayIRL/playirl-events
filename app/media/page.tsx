@@ -132,7 +132,7 @@ export default function MediaPage() {
             },
             {
               label: "Two sentences",
-              copy: "PlayIRL.GG is a free, open-source event locator for Magic: The Gathering — built to be faster and simpler than the official tools. Find local events by format, distance, and date without the friction of the official Wizards locator.",
+              copy: "PlayIRL.GG is a free, community-run event locator for Magic: The Gathering — built to be faster and simpler than the official tools. Find local events by format, distance, and date without the friction of the official Wizards locator.",
             },
             {
               label: "Tagline",

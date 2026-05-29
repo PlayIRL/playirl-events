@@ -46,6 +46,12 @@ export default async function HomePage({
     loc?: string; lat?: string; lng?: string;
     /** "1" to restrict the listing to RCQ events. Orthogonal to format. */
     rcq?: string;
+    /** Dev-only preview hook — "1" forces the first event in the first
+     *  day card to render as in_progress, so the "happening now"
+     *  treatment can be designed without waiting for a real live event.
+     *  Gated by NODE_ENV !== production downstream so production
+     *  visitors hitting ?fake_live=1 see no effect. */
+    fake_live?: string;
   }>;
 }) {
   const params = await searchParams;
@@ -181,6 +187,15 @@ export default async function HomePage({
     grouped[ev.date].push(ev);
   }
 
+  // Dev-only "fake live" preview. `?fake_live=1` flips the first event in
+  // the first upcoming day to render as in_progress so the live treatment
+  // can be designed against a real row. Production drops the flag.
+  const futureDates = Object.keys(grouped).filter((d) => d >= todayStr).sort();
+  const fakeLiveEventId =
+    process.env.NODE_ENV !== "production" && params.fake_live === "1" && futureDates[0]
+      ? grouped[futureDates[0]][0]?.id
+      : undefined;
+
   return (
     <main className="w-full max-w-3xl mx-auto px-4 pt-8 pb-32">
       <AccountChip />
@@ -282,6 +297,7 @@ export default async function HomePage({
                     savedEventIds={savedEventIds}
                     userLat={hasUserLocation ? currentLocationLat : null}
                     userLng={hasUserLocation ? currentLocationLng : null}
+                    fakeLiveEventId={fakeLiveEventId}
                   />
                 );
               })}
@@ -313,7 +329,7 @@ export default async function HomePage({
           <span className="inline-block bg-[hsl(120,100%,50%)] text-black font-mono font-bold uppercase text-[10px] tracking-[0.15em] px-2 py-1 rounded leading-none -mt-1.5 -ml-2">Beta</span>
         </div>
         <p className="text-xs leading-relaxed mb-4 max-w-md mx-auto">
-          An open-source, community-run alternative to the official Wizards of the Coast event locator. Not affiliated with WotC.
+          An independent, community-run alternative to the official Wizards of the Coast event locator. Not affiliated with WotC.
         </p>
         <p className="text-xs leading-relaxed mb-4 max-w-md mx-auto">
           Companion app:{" "}
@@ -326,7 +342,6 @@ export default async function HomePage({
           <a href="/about" className="hover:text-neutral-900 dark:hover:text-white">About</a>
           <a href="/track" className="hover:text-neutral-900 dark:hover:text-white">Life Tracking App</a>
           <a href="/bot" className="hover:text-neutral-900 dark:hover:text-white">Discord bot</a>
-          <a href="https://github.com/i1986o/mtg-cal" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-white">GitHub</a>
           <a href="https://discord.gg/nM2Ea4NSSh" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-900 dark:hover:text-white">Discord</a>
           <a href="/account/events/new" className="hover:text-neutral-900 dark:hover:text-white">Create event</a>
           <a href="/account" className="hover:text-neutral-900 dark:hover:text-white">Sign in</a>

@@ -8,7 +8,7 @@
 // Composition: white canvas, "PlayIRL.gg" wordmark in Figtree —
 // "PlayIRL" in weight 900 + ".gg" in weight 300, matching the in-app
 // PlayIrlLogo exactly. Subheading pulls the homepage footer's
-// "open-source, community-run alternative to the official Wizards event
+// "independent, community-run alternative to the official Wizards event
 // locator" framing — strongest product-positioning line we have.
 //
 // Font strategy: Figtree weights 300/500/900 are fetched at request time
@@ -28,11 +28,11 @@ import { ImageResponse } from "next/og";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "PlayIRL.GG — an open-source alternative to the WotC event locator";
+export const alt = "PlayIRL.GG — an independent alternative to the WotC event locator";
 
 const WORDMARK_GLYPHS = "PlayIRL.g";
 const SUBHEAD_TEXT =
-  "An open-source, community-run alternative to the official Wizards event locator";
+  "An independent, community-run alternative to the official Wizards event locator";
 
 async function loadFigtree(weight: 300 | 500 | 900, glyphs: string): Promise<ArrayBuffer> {
   // Google Fonts' css2 endpoint returns a stylesheet with @font-face
@@ -112,7 +112,7 @@ export default async function OpengraphImage() {
           }}
         >
           <div style={{ display: "flex" }}>
-            An open-source, community-run alternative
+            An independent, community-run alternative
           </div>
           <div style={{ display: "flex" }}>
             to the official Wizards event locator

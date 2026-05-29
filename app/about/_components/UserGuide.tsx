@@ -351,11 +351,7 @@ export default function UserGuide() {
           <a href="https://discord.gg/nM2Ea4NSSh" target="_blank" rel="noopener noreferrer" className={LINK}>
             Ask in our Discord
           </a>{" "}
-          or{" "}
-          <a href="https://github.com/i1986o/mtg-cal/issues" target="_blank" rel="noopener noreferrer" className={LINK}>
-            open a GitHub issue
-          </a>
-          .
+          or use the <strong className="text-neutral-700 dark:text-neutral-300">Feedback</strong> button at the bottom-right of any page.
         </p>
       </footer>
     </section>
