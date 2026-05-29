@@ -519,24 +519,34 @@ function MockupFrame({
 function FilterBarMockup() {
   return (
     <MockupFrame label="Homepage filter bar">
-      <div className="space-y-3">
+      <div className="space-y-4">
+        {/* Madlib sentence — chip-style underlines mark the clickable words.
+            Calendar icon sits inline at the end as the chip-style Subscribe
+            trigger; on the real page it opens the per-provider dropdown. */}
         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-base">
           <UnderlinedWord>All MTG</UnderlinedWord>
           <span className="text-neutral-500 dark:text-neutral-400">events within</span>
           <UnderlinedWord>10</UnderlinedWord>
           <span className="text-neutral-500 dark:text-neutral-400">miles of</span>
           <UnderlinedWord>Philly</UnderlinedWord>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            disabled
-            type="button"
-            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-white text-xs font-medium"
+          <span
+            aria-label="Subscribe to calendar"
+            className="inline-flex items-center justify-center w-7 h-7 rounded-md border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white ml-0.5"
           >
             <CalendarSvg />
-            Subscribe
-          </button>
-          <div className="ml-auto flex flex-col gap-1">
+          </span>
+        </div>
+
+        {/* Hint at the orthogonal RCQ-only toggle inside the format
+            dropdown — easy to miss without calling it out. */}
+        <p className="text-xs text-neutral-500 dark:text-neutral-400 leading-relaxed">
+          Inside the <strong className="text-neutral-700 dark:text-neutral-300">All MTG</strong> dropdown, a <Pill>RCQs only</Pill> checkbox stacks on top of any format to narrow to Regional Championship Qualifiers.
+        </p>
+
+        {/* View toggle = a horizontal floating pill that lives at the
+            bottom of the page on the real site. List is the default. */}
+        <div className="pt-1 flex justify-center">
+          <div className="inline-flex items-center gap-1 px-1 py-1 rounded-md border border-neutral-200 dark:border-white/10 bg-white dark:bg-neutral-950 shadow-sm">
             <ViewToggle kind="list" active />
             <ViewToggle kind="calendar" />
             <ViewToggle kind="map" />
