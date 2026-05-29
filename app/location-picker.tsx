@@ -95,9 +95,20 @@ export default function LocationPicker({ currentLabel, isCustom, defaultLabel }:
 
   // Close on scroll/resize so the popover doesn't get stranded when its
   // anchor scrolls away under fixed positioning.
+  //
+  // EXCEPT when focus is inside the popover: on mobile, focusing the
+  // search input opens the virtual keyboard, which fires both a resize
+  // (viewport shrinks) and a scroll (browser pulls the focused input
+  // into view) — which would unconditionally close the popover before
+  // the user could type a single character. Guarding on activeElement
+  // distinguishes "user scrolled the page" from "keyboard appeared
+  // because the user is using the popover".
   useEffect(() => {
     if (!open) return;
-    const onChange = () => setOpen(false);
+    const onChange = () => {
+      if (menuRef.current?.contains(document.activeElement)) return;
+      setOpen(false);
+    };
     window.addEventListener("scroll", onChange, { passive: true });
     window.addEventListener("resize", onChange);
     return () => {
