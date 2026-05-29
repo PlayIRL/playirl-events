@@ -218,6 +218,36 @@ export function pickEventTimezone(
   return fallback;
 }
 
+/**
+ * Structured variant of {@link formatEventTime}. Returns the time string
+ * and the timezone abbreviation as separate fields so callers can stack
+ * them in UI (time on one line, zone underneath) without parsing the
+ * joined string. `zoneAbbr` is null when the event's display zone matches
+ * the app's anchor zone (so the calling UI knows not to render a second
+ * row at all in the common case).
+ */
+export function formatEventTimeParts(
+  date: string,
+  time: string,
+  timezone?: string | null,
+  locale: string = DEFAULT_LOCALE,
+): { time: string; zoneAbbr: string | null } {
+  if (!date || !time) return { time: "", zoneAbbr: null };
+  const utc = new Date(`${date}T${time}:00Z`);
+  if (isNaN(utc.getTime())) return { time: "", zoneAbbr: null };
+  const tz = timezone || DEFAULT_TZ;
+  const formatted = utc.toLocaleTimeString(locale, {
+    timeZone: tz,
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  if (tz === APP_TIMEZONE) return { time: formatted, zoneAbbr: null };
+  const abbr = new Intl.DateTimeFormat(locale, { timeZone: tz, timeZoneName: "short" })
+    .formatToParts(utc)
+    .find((p) => p.type === "timeZoneName")?.value;
+  return { time: formatted, zoneAbbr: abbr ?? null };
+}
+
 export function formatEventTime(
   date: string,
   time: string,

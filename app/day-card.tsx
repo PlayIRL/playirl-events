@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq, showFormatBadge } from "@/lib/format-style";
-import { eventDisplayStatus, formatEventTime, pickEventTimezone } from "@/lib/format-time";
+import { eventDisplayStatus, formatEventTime, formatEventTimeParts, pickEventTimezone } from "@/lib/format-time";
 import { formatDistance, haversineMiles, type DistanceUnit } from "@/lib/distance";
 import SaveEventButton from "./save-event-button";
 import AdminEventActions from "./admin-event-actions";
@@ -213,17 +213,40 @@ export default function DayCard({
               {/* Column is w-24 (not w-16) so the in-progress outline
                   has room for the widest time strings like "11:30 PM"
                   without the ring clipping or the text wrapping. */}
+              {/* Time column. Two visual variants share one structural
+                  pattern: a time line (mandatory) optionally over a zone
+                  abbreviation (only for non-Eastern venues). Stacking
+                  them keeps the live-pill width under the column's w-24
+                  budget so it doesn't overlap the thumbnail to its
+                  right. The non-live variant relies on the parent's
+                  natural wrapping; the live variant uses whitespace-nowrap
+                  to prevent the pill's pulse dot from drifting onto its
+                  own line, so we have to stack explicitly. */}
               <div className="hidden sm:block shrink-0 w-24">
-                {status === "in_progress" ? (
-                  <span className="inline-flex items-center gap-1.5 text-sm font-mono tabular-nums font-medium text-white anim-live-shine rounded-md px-1.5 py-0.5 whitespace-nowrap">
-                    <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-white anim-live-pulse shrink-0" />
-                    <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}</span>
-                  </span>
-                ) : (
-                  <span className="text-sm font-mono tabular-nums text-neutral-500 dark:text-neutral-400 transition-colors duration-200 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">
-                    {formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}
-                  </span>
-                )}
+                {(() => {
+                  const parts = formatEventTimeParts(ev.date, ev.time, pickEventTimezone(ev));
+                  if (status === "in_progress") {
+                    return (
+                      <span className="inline-flex flex-col items-start text-sm font-mono tabular-nums font-medium text-white anim-live-shine rounded-md px-1.5 py-0.5 whitespace-nowrap leading-tight">
+                        <span className="inline-flex items-center gap-1.5">
+                          <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-white anim-live-pulse shrink-0" />
+                          <span><span className="sr-only">Happening now: </span>{parts.time}</span>
+                        </span>
+                        {parts.zoneAbbr && (
+                          <span className="text-[10px] opacity-90 pl-3.5">{parts.zoneAbbr}</span>
+                        )}
+                      </span>
+                    );
+                  }
+                  return (
+                    <span className="inline-flex flex-col text-sm font-mono tabular-nums text-neutral-500 dark:text-neutral-400 transition-colors duration-200 group-hover:text-neutral-700 dark:group-hover:text-neutral-200 leading-tight">
+                      <span>{parts.time}</span>
+                      {parts.zoneAbbr && (
+                        <span className="text-[10px] text-neutral-400 dark:text-neutral-500">{parts.zoneAbbr}</span>
+                      )}
+                    </span>
+                  );
+                })()}
               </div>
               {/* Image is decorative on mobile (most events render the same
                   source-type SVG placeholder) so we drop it under sm to give
@@ -249,16 +272,26 @@ export default function DayCard({
                     the time line picks up a leading pulse dot + emerald
                     color shift, otherwise renders flat neutral. */}
                 <div className="block sm:hidden mb-1">
-                  {status === "in_progress" ? (
-                    <span className="inline-flex items-center gap-1.5 text-xs font-mono tabular-nums font-medium text-white anim-live-shine rounded-md px-1.5 py-0.5 whitespace-nowrap">
-                      <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-white anim-live-pulse shrink-0" />
-                      <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}</span>
-                    </span>
-                  ) : (
-                    <span className="text-xs font-mono tabular-nums text-neutral-500 dark:text-neutral-400">
-                      {formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}
-                    </span>
-                  )}
+                  {(() => {
+                    const parts = formatEventTimeParts(ev.date, ev.time, pickEventTimezone(ev));
+                    if (status === "in_progress") {
+                      return (
+                        <span className="inline-flex items-center gap-1.5 text-xs font-mono tabular-nums font-medium text-white anim-live-shine rounded-md px-1.5 py-0.5 whitespace-nowrap leading-tight">
+                          <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-white anim-live-pulse shrink-0" />
+                          <span>
+                            <span className="sr-only">Happening now: </span>{parts.time}
+                            {parts.zoneAbbr && <span className="opacity-90 ml-1">{parts.zoneAbbr}</span>}
+                          </span>
+                        </span>
+                      );
+                    }
+                    return (
+                      <span className="text-xs font-mono tabular-nums text-neutral-500 dark:text-neutral-400">
+                        {parts.time}
+                        {parts.zoneAbbr && <span className="text-neutral-400 ml-1">{parts.zoneAbbr}</span>}
+                      </span>
+                    );
+                  })()}
                 </div>
                 {/* Format badge sits above the title — it's the
                     fastest way to scan "what kind of event is this".

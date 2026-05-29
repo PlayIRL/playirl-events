@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq, showFormatBadge } from "@/lib/format-style";
-import { dateStrInTz, eventDisplayStatus, formatEventTime, pickEventTimezone } from "@/lib/format-time";
+import { dateStrInTz, eventDisplayStatus, formatEventTime, formatEventTimeParts, pickEventTimezone } from "@/lib/format-time";
 import { formatDistance, haversineMiles, type DistanceUnit } from "@/lib/distance";
 import { DEFAULT_LOCALE } from "@/lib/locale";
 import { useStickySentinel } from "@/lib/use-sticky-sentinel";
@@ -227,14 +227,35 @@ export default function CalendarView({
                               to sky blue with a leading pulse dot — same
                               treatment as the day-card row, scaled down
                               for the calendar cell. */}
-                          {status === "in_progress" ? (
-                            <div className="inline-flex items-center gap-1 leading-none text-[10px] font-mono tabular-nums font-medium text-white anim-live-shine rounded px-1 py-0.5 self-start whitespace-nowrap">
-                              <span aria-hidden="true" className="w-1 h-1 rounded-full bg-white anim-live-pulse shrink-0" />
-                              <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}</span>
-                            </div>
-                          ) : (
-                            <div className="text-[10px] font-mono tabular-nums text-neutral-500 dark:text-neutral-400 leading-none">{formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}</div>
-                          )}
+                          {(() => {
+                            // Stacked time + zone keeps the live pill from
+                            // spilling out of the narrow calendar cell when
+                            // the venue's zone isn't Eastern (e.g. CET / JST
+                            // events stamped as "6:00 PM GMT+2" used to
+                            // overflow the column).
+                            const parts = formatEventTimeParts(ev.date, ev.time, pickEventTimezone(ev));
+                            if (status === "in_progress") {
+                              return (
+                                <div className="inline-flex flex-col leading-tight text-[10px] font-mono tabular-nums font-medium text-white anim-live-shine rounded px-1 py-0.5 self-start whitespace-nowrap">
+                                  <span className="inline-flex items-center gap-1">
+                                    <span aria-hidden="true" className="w-1 h-1 rounded-full bg-white anim-live-pulse shrink-0" />
+                                    <span><span className="sr-only">Happening now: </span>{parts.time}</span>
+                                  </span>
+                                  {parts.zoneAbbr && (
+                                    <span className="text-[9px] opacity-90 pl-[10px]">{parts.zoneAbbr}</span>
+                                  )}
+                                </div>
+                              );
+                            }
+                            return (
+                              <div className="flex flex-col leading-tight text-[10px] font-mono tabular-nums text-neutral-500 dark:text-neutral-400">
+                                <span>{parts.time}</span>
+                                {parts.zoneAbbr && (
+                                  <span className="text-[9px] text-neutral-400 dark:text-neutral-500">{parts.zoneAbbr}</span>
+                                )}
+                              </div>
+                            );
+                          })()}
                           {(showFormatBadge(ev.format) || isRcq(ev.title)) && (
                             <div className="inline-flex items-center gap-1 flex-wrap">
                               {showFormatBadge(ev.format) && (
