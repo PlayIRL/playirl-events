@@ -202,14 +202,31 @@ export interface ScrapeResult {
   bySource: Record<string, number>;
   /** Sources that threw, with their error messages. Empty on full success. */
   failed: Record<string, string>;
+  /** What kicked off this scrape — surfaced in the admin Recent-runs
+   *  table so an admin can tell at a glance whether the last refresh
+   *  was a cron tick, an "Run now" button press, the CLI, or the
+   *  startup auto-fill. Free-form string; known values today are
+   *  "cron", "admin-refresh", "cli", "startup", and "unknown" (legacy
+   *  rows that pre-date this field). */
+  triggeredBy: string;
   /** Curation decisions across all events. */
   curation: { active: number; skip: number; pending: number };
   timestamp: string;
 }
 
-export async function runScraper(): Promise<ScrapeResult> {
+/**
+ * Run the full scrape pipeline.
+ *
+ * @param triggeredBy — Free-form identifier for what kicked this off,
+ *   stored in scrape_history so the admin Recent-runs table can show
+ *   "cron" vs "admin-refresh" vs "cli" vs "startup". Each caller is
+ *   responsible for passing the right value; defaults to "unknown" so
+ *   the function is still callable in tests + ad-hoc scripts without
+ *   noise.
+ */
+export async function runScraper(triggeredBy: string = "unknown"): Promise<ScrapeResult> {
   console.log("🃏 MTG Calendar — Scraper Run");
-  console.log(`   ${new Date().toISOString()}`);
+  console.log(`   ${new Date().toISOString()} (triggered by: ${triggeredBy})`);
   const startedAt = Date.now();
   const cfg = getConfig();
 
@@ -284,6 +301,7 @@ export async function runScraper(): Promise<ScrapeResult> {
     regions,
     bySource: stats.bySource,
     failed: stats.failed,
+    triggeredBy,
     curation,
     timestamp: now,
   };

@@ -39,7 +39,7 @@ export async function POST() {
   }
 
   const startedAt = new Date().toISOString();
-  runScraper()
+  runScraper("admin-refresh")
     .then((result) => {
       console.log(`[scrape:admin] completed: scraped=${result.scraped} added=${result.added} updated=${result.updated} ${(result.durationMs / 1000).toFixed(1)}s`);
     })

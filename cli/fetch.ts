@@ -7,7 +7,7 @@ import { config } from "@/lib/config";
 import { formatSlug } from "@/lib/formats";
 
 async function main() {
-  await runScraper();
+  await runScraper("cli");
 
   const events = getActiveEvents();
   console.log(`\n[ical] Generating calendars for ${events.length} active events`);

@@ -55,7 +55,7 @@ export async function POST(request: Request) {
   // Fire and forget. We deliberately don't await — the response goes
   // back to the cron caller now, and the scrape continues in the Node
   // process. `finally` releases the lock so a thrown error doesn't pin it.
-  runScraper()
+  runScraper("cron")
     .then((result) => {
       console.log(`[scrape:cron] completed: scraped=${result.scraped} added=${result.added} updated=${result.updated} ${(result.durationMs / 1000).toFixed(1)}s`);
     })

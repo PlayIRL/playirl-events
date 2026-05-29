@@ -8,7 +8,7 @@ export async function register() {
     if (count.c === 0) {
       console.log("[startup] Empty database — auto-populating with events...");
       const { runScraper } = await import("./lib/scraper");
-      runScraper()
+      runScraper("startup")
         .then((result) => console.log(`[startup] Done: ${result.added} events added`))
         .catch((err) => console.error("[startup] Scrape failed:", err.message));
     } else {

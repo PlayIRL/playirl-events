@@ -38,8 +38,31 @@ interface HistoryRow {
     regions?: number;
     bySource?: Record<string, number>;
     failed?: Record<string, string>;
+    /** What kicked off this scrape: "cron" | "admin-refresh" | "cli" |
+     *  "startup" | "unknown". Missing on legacy rows that pre-date this
+     *  column — those render as "—". */
+    triggeredBy?: string;
     curation?: { active: number; skip: number; pending: number };
   } | null;
+}
+
+/** Render the trigger source as a friendly label + matching color. The
+ *  raw values are kebab-case identifiers used elsewhere in logs; this
+ *  function presents them. Keeps the label short enough to fit the
+ *  table column without wrapping. */
+function triggerBadge(triggeredBy: string | undefined): { label: string; className: string } {
+  switch (triggeredBy) {
+    case "cron":
+      return { label: "auto", className: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300" };
+    case "admin-refresh":
+      return { label: "manual", className: "bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300" };
+    case "cli":
+      return { label: "cli", className: "bg-purple-50 text-purple-700 dark:bg-purple-950/40 dark:text-purple-300" };
+    case "startup":
+      return { label: "startup", className: "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300" };
+    default:
+      return { label: "—", className: "text-neutral-400 dark:text-neutral-500" };
+  }
 }
 
 interface RunningStatus {
@@ -224,23 +247,47 @@ export default function ScrapersPage() {
               <thead>
                 <tr className="text-neutral-500 dark:text-neutral-400 text-left border-b border-neutral-200 dark:border-neutral-700">
                   <th className="py-1.5 pr-3 font-normal">When</th>
+                  <th className="py-1.5 pr-3 font-normal">Trigger</th>
                   <th className="py-1.5 pr-3 font-normal">Mode</th>
                   <th className="py-1.5 pr-3 font-normal text-right">Scraped</th>
                   <th className="py-1.5 pr-3 font-normal text-right">+New</th>
                   <th className="py-1.5 pr-3 font-normal text-right">Skip</th>
                   <th className="py-1.5 pr-3 font-normal text-right">Pend</th>
                   <th className="py-1.5 pr-3 font-normal text-right">Time</th>
-                  <th className="py-1.5 font-normal">Failed</th>
+                  <th className="py-1.5 font-normal">Sources</th>
                 </tr>
               </thead>
               <tbody>
                 {history.map((row) => {
                   const s = row.summary;
-                  const failed = s?.failed ? Object.keys(s.failed) : [];
+                  // Source breakdown: bySource is the set of sources the
+                  // scraper ATTEMPTED, failed is the subset that threw.
+                  // Union = the full attempted set; (attempted - failed)
+                  // gave us the OK list. A source can appear in bySource
+                  // with count=0 yet not be in failed (just no events that
+                  // run — fine, still "ok"). The order is stable across
+                  // runs because we sort alphabetically.
+                  const attempted = new Set<string>([
+                    ...Object.keys(s?.bySource ?? {}),
+                    ...Object.keys(s?.failed ?? {}),
+                  ]);
+                  const failedSet = new Set(Object.keys(s?.failed ?? {}));
+                  const sourceEntries = [...attempted].sort().map((name) => ({
+                    name,
+                    ok: !failedSet.has(name),
+                    count: s?.bySource?.[name] ?? 0,
+                    error: s?.failed?.[name],
+                  }));
+                  const trigger = triggerBadge(s?.triggeredBy);
                   return (
                     <tr key={row.id} className="border-b border-neutral-100 dark:border-neutral-800 last:border-0">
                       <td className="py-1.5 pr-3 text-neutral-700 dark:text-neutral-300 whitespace-nowrap">
                         {new Date(row.ts.includes("T") ? row.ts : row.ts + "Z").toLocaleString()}
+                      </td>
+                      <td className="py-1.5 pr-3">
+                        <span className={`inline-block px-1.5 py-0.5 rounded-md text-[10px] font-medium ${trigger.className}`}>
+                          {trigger.label}
+                        </span>
                       </td>
                       <td className="py-1.5 pr-3 text-neutral-600 dark:text-neutral-400">
                         {s?.scope ? (s.scope === "national" ? "multi-region" : s.scope) : "—"}{s?.regions ? ` · ${s.regions}r` : ""}
@@ -252,8 +299,22 @@ export default function ScrapersPage() {
                       <td className="py-1.5 pr-3 text-right text-neutral-500 dark:text-neutral-400">
                         {s?.durationMs != null ? `${(s.durationMs / 1000).toFixed(1)}s` : "—"}
                       </td>
-                      <td className="py-1.5 text-red-700 dark:text-red-400">
-                        {failed.length > 0 ? failed.join(",") : ""}
+                      <td className="py-1.5">
+                        {sourceEntries.length === 0 ? (
+                          <span className="text-neutral-400">—</span>
+                        ) : (
+                          <span className="inline-flex flex-wrap gap-x-2 gap-y-0.5">
+                            {sourceEntries.map((src) => (
+                              <span
+                                key={src.name}
+                                className={src.ok ? "text-emerald-700 dark:text-emerald-400" : "text-red-700 dark:text-red-400"}
+                                title={src.ok ? `${src.name}: ${src.count} events` : `${src.name} failed: ${src.error ?? "unknown error"}`}
+                              >
+                                {src.ok ? "✓" : "✗"} {src.name}
+                              </span>
+                            ))}
+                          </span>
+                        )}
                       </td>
                     </tr>
                   );
