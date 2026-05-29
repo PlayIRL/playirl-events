@@ -263,6 +263,13 @@ code, pre, kbd, samp, tt {
   pointer-events: none;
   border: 1px solid rgb(16 185 129 / 0.85);
 }
+/* When two live rows are adjacent siblings, drop the second row's top
+   border so the shared boundary is rendered once (the first row's
+   bottom border) instead of two stacked 1px borders that visually
+   double to 2px. */
+.anim-live-row + .anim-live-row::after {
+  border-top: none;
+}
 
 /* RCQ badge — brushed-steel / silver foil with a periodic glint sweep.
    RCQ events are Regional Championship Qualifiers, a competitive WPN
