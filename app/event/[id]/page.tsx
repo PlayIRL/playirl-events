@@ -11,8 +11,10 @@ import { eventDisplayStatus, formatEventTimeRange, pickEventTimezone } from "@/l
 import { resolveEventImage, hasRealEventImage } from "@/lib/event-image";
 import { venueSlug } from "@/lib/venues";
 import { SITE_URL } from "@/lib/config";
-import { formatDistanceMiles, haversineMiles } from "@/lib/distance";
+import { formatDistance, haversineMiles, preferredDistanceUnit } from "@/lib/distance";
 import { resolveUserLocation } from "@/lib/user-location";
+import { getServerLocale, getServerCountry } from "@/lib/locale";
+import { displayCost } from "@/lib/format-cost";
 import {
   FORMAT_BADGE,
   FORMAT_BADGE_DEFAULT,
@@ -28,9 +30,9 @@ import SetLocationButton from "./set-location-button";
 import WaitlistPromotedBanner from "./waitlist-promoted-banner";
 import Reveal from "@/app/reveal";
 
-function formatDate(dateStr: string): string {
+function formatDate(dateStr: string, locale: string): string {
   const d = new Date(dateStr + "T12:00:00");
-  return d.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+  return d.toLocaleDateString(locale, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
 }
 
 
@@ -82,7 +84,9 @@ function buildEventDescription(ev: {
   const parts = [
     ev.format && `${ev.format} MTG`,
     ev.location && `at ${ev.location}`,
-    formatDate(ev.date),
+    // Metadata description is for OG share previews — keep en-US for
+    // consistency across links shared into mixed-locale channels.
+    formatDate(ev.date, "en-US"),
     timeRange,
     ev.cost,
   ].filter(Boolean);
@@ -212,17 +216,22 @@ export default async function EventPage({
   // effectively resolves to prefs > IP > default. Distance renders only when
   // both the viewer signal exists (isFromUser) and the event has coords.
   const prefs = signedIn && viewer ? getPreferences(viewer.id) : null;
+  const requestHeaders = await headers();
+  const locale = getServerLocale(requestHeaders);
+  const viewerCountry = getServerCountry(requestHeaders);
+  const distanceUnit = preferredDistanceUnit(viewerCountry);
   const viewerLocation = await resolveUserLocation({
     urlLat: sp.lat,
     urlLng: sp.lng,
     urlLabel: sp.loc,
     prefs,
-    requestHeaders: await headers(),
+    requestHeaders,
   });
   const distanceLabel =
     viewerLocation.isFromUser && ev.latitude != null && ev.longitude != null
-      ? formatDistanceMiles(
+      ? formatDistance(
           haversineMiles(viewerLocation.lat, viewerLocation.lng, ev.latitude, ev.longitude),
+          distanceUnit,
         )
       : "";
 
@@ -440,9 +449,9 @@ export default async function EventPage({
         <Reveal delay={120}>
           <div className="pb-2 border-t border-neutral-100 dark:border-white/8">
             <dl>
-              <DetailRow label="Date" value={formatDate(ev.date)} mono />
-              <DetailRow label="Time" value={formatEventTimeRange(ev.date, ev.time, pickEventTimezone(ev))} mono />
-              <DetailRow label="Cost" value={ev.cost || "Not listed"} mono />
+              <DetailRow label="Date" value={formatDate(ev.date, locale)} mono />
+              <DetailRow label="Time" value={formatEventTimeRange(ev.date, ev.time, pickEventTimezone(ev), 3, locale)} mono />
+              <DetailRow label="Cost" value={displayCost(ev.cost, ev.entry_fee_minor, ev.currency, locale) || "Not listed"} mono />
               {distanceLabel && (
                 <DetailRow label="Distance" value={distanceLabel} mono />
               )}

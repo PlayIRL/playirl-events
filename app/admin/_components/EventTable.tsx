@@ -15,6 +15,12 @@ export interface EventRow {
   status: string;
   owner_id?: string | null;
   notes?: string;
+  /** ISO 3166 alpha-2 country code stamped by the scraper. Empty for legacy
+   *  rows or sources without country signal — those show up under "—" in
+   *  the filter so they stay reviewable. */
+  country?: string;
+  /** ISO 4217 currency for the entry fee. Empty for free / unknown. */
+  currency?: string;
 }
 
 export interface EventTableProps {
@@ -44,6 +50,8 @@ export default function EventTable({
   const [statusFilter, setStatusFilter] = useState<(typeof STATUSES)[number]>("all");
   const [sourceFilter, setSourceFilter] = useState<string>("all");
   const [formatFilter, setFormatFilter] = useState<string>("all");
+  const [countryFilter, setCountryFilter] = useState<string>("all");
+  const [currencyFilter, setCurrencyFilter] = useState<string>("all");
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [busy, setBusy] = useState(false);
@@ -56,6 +64,18 @@ export default function EventTable({
     const set = new Set(events.map((e) => e.format).filter(Boolean));
     return ["all", ...Array.from(set).sort()];
   }, [events]);
+  // Country + currency filter options: bucket blanks under "—" so admins
+  // can isolate rows that the scraper couldn't stamp. Auto-populated from
+  // present data so the dropdown only shows what's actually in the table —
+  // a US-only DB doesn't bloat the filter with 25 unused country codes.
+  const countries = useMemo(() => {
+    const set = new Set(events.map((e) => e.country || "—"));
+    return ["all", ...Array.from(set).sort()];
+  }, [events]);
+  const currencies = useMemo(() => {
+    const set = new Set(events.map((e) => e.currency || "—"));
+    return ["all", ...Array.from(set).sort()];
+  }, [events]);
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase();
@@ -63,10 +83,12 @@ export default function EventTable({
       if (statusFilter !== "all" && e.status !== statusFilter) return false;
       if (showSourceFilter && sourceFilter !== "all" && e.source !== sourceFilter) return false;
       if (formatFilter !== "all" && e.format !== formatFilter) return false;
+      if (countryFilter !== "all" && (e.country || "—") !== countryFilter) return false;
+      if (currencyFilter !== "all" && (e.currency || "—") !== currencyFilter) return false;
       if (q && !`${e.title} ${e.location}`.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [events, statusFilter, sourceFilter, formatFilter, query, showSourceFilter]);
+  }, [events, statusFilter, sourceFilter, formatFilter, countryFilter, currencyFilter, query, showSourceFilter]);
 
   const allSelected = filtered.length > 0 && filtered.every((e) => selected.has(e.id));
 
@@ -140,6 +162,16 @@ export default function EventTable({
           <FilterSelect label="Source" value={sourceFilter} onChange={setSourceFilter} options={sources} />
         )}
         <FilterSelect label="Format" value={formatFilter} onChange={setFormatFilter} options={formats} />
+        {/* Country + currency filters only render when there's more than one
+            distinct value present in the dataset (i.e. the "all" sentinel
+            plus at least one real value). Keeps the bar tidy on US-only
+            installs and only blooms once intl scraping is on. */}
+        {countries.length > 2 && (
+          <FilterSelect label="Country" value={countryFilter} onChange={setCountryFilter} options={countries} />
+        )}
+        {currencies.length > 2 && (
+          <FilterSelect label="Currency" value={currencyFilter} onChange={setCurrencyFilter} options={currencies} />
+        )}
         <span className="ml-auto text-xs text-neutral-500 dark:text-neutral-400">
           {filtered.length} of {events.length}
         </span>

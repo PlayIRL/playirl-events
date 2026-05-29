@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq, showFormatBadge } from "@/lib/format-style";
 import { eventDisplayStatus, formatEventTime, pickEventTimezone } from "@/lib/format-time";
-import { formatDistanceMiles, haversineMiles } from "@/lib/distance";
+import { formatDistance, haversineMiles, type DistanceUnit } from "@/lib/distance";
 import SaveEventButton from "./save-event-button";
 import AdminEventActions from "./admin-event-actions";
 
@@ -40,6 +40,7 @@ export default function DayCard({
   userLat = null,
   userLng = null,
   fakeLiveEventIds,
+  distanceUnit = "mi",
 }: {
   date: string;
   weekday: string;
@@ -61,6 +62,10 @@ export default function DayCard({
    *  for real in-progress events. Wired through page.tsx behind a
    *  NODE_ENV check — production passes an empty set. */
   fakeLiveEventIds?: Set<string>;
+  /** Viewer's preferred unit. Server-resolved from the IP country (US/UK ->
+   *  "mi", everyone else -> "km"). Defaults to "mi" for back-compat in
+   *  callers that haven't threaded it yet. */
+  distanceUnit?: DistanceUnit;
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   // Tracking reveal state in React (instead of mutating element.style
@@ -177,7 +182,7 @@ export default function DayCard({
             const liveDelay = liveIdx !== undefined ? `${(liveIdx % 6) * 0.4}s` : undefined;
             const distanceLabel =
               userLat != null && userLng != null && ev.latitude != null && ev.longitude != null
-                ? formatDistanceMiles(haversineMiles(userLat, userLng, ev.latitude, ev.longitude))
+                ? formatDistance(haversineMiles(userLat, userLng, ev.latitude, ev.longitude), distanceUnit)
                 : "";
             // Compose the inline style: row-fade animation timing + the
             // completed-row opacity override + the live-row stagger.

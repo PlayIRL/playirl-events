@@ -12,3 +12,12 @@ data/uploads/
 
 # Claude scheduled tasks lock
 .claude/scheduled_tasks.lock
+
+# Cowork plugin parallel worktrees — checkouts of other branches under
+# .claude/worktrees, not part of the main tree's history.
+.claude/worktrees/
+
+# Local DB backups (any suffix). The base `data/*.db` rule misses these.
+data/*.db.local-backup-*
+data/*.db.bak
+data/*.db.backup-*

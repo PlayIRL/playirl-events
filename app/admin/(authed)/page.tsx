@@ -58,6 +58,19 @@ export default async function AdminDashboard() {
     ORDER BY count DESC
   `).all() as { source: string; count: number }[];
 
+  // Country breakdown: at-a-glance gauge for whether international scraping
+  // is producing rows. Rows whose `country` is empty (pre-existing data or
+  // sources that don't carry one) are bucketed under "—" so they don't get
+  // silently dropped from the total.
+  const byCountryRaw = db.prepare(`
+    SELECT COALESCE(NULLIF(country, ''), '—') AS country, COUNT(*) AS count
+    FROM events
+    WHERE status IN ('active','pinned')
+    GROUP BY COALESCE(NULLIF(country, ''), '—')
+    ORDER BY count DESC
+  `).all() as { country: string; count: number }[];
+  const totalForCountryBar = byCountryRaw.reduce((s, r) => s + r.count, 0);
+
   return (
     <div className="p-6 lg:p-8 max-w-6xl">
       <div className="flex items-end justify-between mb-6">
@@ -91,26 +104,53 @@ export default async function AdminDashboard() {
 
       <RecentActivity />
 
-      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
-        <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Active events by source</h2>
-        {bySource.length === 0 ? (
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">No active events.</p>
-        ) : (
-          <ul className="space-y-1.5">
-            {bySource.map((r) => (
-              <li key={r.source} className="flex items-center gap-3 text-sm">
-                <span className="text-xs text-neutral-500 dark:text-neutral-400 w-32 truncate">{r.source}</span>
-                <div className="flex-1 h-2 bg-neutral-100 dark:bg-neutral-800 rounded-md overflow-hidden">
-                  <div
-                    className="h-full bg-neutral-900 dark:bg-white"
-                    style={{ width: `${Math.max(2, Math.round((r.count / Math.max(1, eventActive)) * 100))}%` }}
-                  />
-                </div>
-                <span className="text-xs text-neutral-600 dark:text-neutral-400 w-10 text-right">{r.count}</span>
-              </li>
-            ))}
-          </ul>
-        )}
+      <section className="grid md:grid-cols-2 gap-4">
+        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
+          <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Active events by source</h2>
+          {bySource.length === 0 ? (
+            <p className="text-sm text-neutral-500 dark:text-neutral-400">No active events.</p>
+          ) : (
+            <ul className="space-y-1.5">
+              {bySource.map((r) => (
+                <li key={r.source} className="flex items-center gap-3 text-sm">
+                  <span className="text-xs text-neutral-500 dark:text-neutral-400 w-32 truncate">{r.source}</span>
+                  <div className="flex-1 h-2 bg-neutral-100 dark:bg-neutral-800 rounded-md overflow-hidden">
+                    <div
+                      className="h-full bg-neutral-900 dark:bg-white"
+                      style={{ width: `${Math.max(2, Math.round((r.count / Math.max(1, eventActive)) * 100))}%` }}
+                    />
+                  </div>
+                  <span className="text-xs text-neutral-600 dark:text-neutral-400 w-10 text-right tabular-nums">{r.count}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
+          <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-1">Active events by country</h2>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
+            International scraping confirms here. &quot;—&quot; means the row predates the country column or the source didn&apos;t stamp one.
+          </p>
+          {byCountryRaw.length === 0 ? (
+            <p className="text-sm text-neutral-500 dark:text-neutral-400">No active events.</p>
+          ) : (
+            <ul className="space-y-1.5">
+              {byCountryRaw.map((r) => (
+                <li key={r.country} className="flex items-center gap-3 text-sm">
+                  <span className="text-xs text-neutral-500 dark:text-neutral-400 w-12 truncate font-mono tabular-nums">{r.country}</span>
+                  <div className="flex-1 h-2 bg-neutral-100 dark:bg-neutral-800 rounded-md overflow-hidden">
+                    <div
+                      className="h-full bg-neutral-900 dark:bg-white"
+                      style={{ width: `${Math.max(2, Math.round((r.count / Math.max(1, totalForCountryBar)) * 100))}%` }}
+                    />
+                  </div>
+                  <span className="text-xs text-neutral-600 dark:text-neutral-400 w-10 text-right tabular-nums">{r.count}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </section>
     </div>
   );

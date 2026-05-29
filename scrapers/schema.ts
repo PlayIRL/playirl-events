@@ -1,25 +1,28 @@
 // Canonical event schema — every source must return arrays of this shape.
 //
 // {
-//   id:         string  — unique, prefixed by source (e.g. "wotc-123")
-//   title:      string  — event name
-//   format:     string  — "Commander", "Draft", "Sealed", "Modern", etc.
-//   date:       string  — "YYYY-MM-DD"
-//   time:       string  — "HH:MM" (UTC 24-hour)
-//   timezone:   string  — IANA timezone, e.g. "America/New_York"
-//   location:   string  — store/venue name
-//   address:    string  — street address
-//   cost:       string  — "Free" or "$X"
-//   store_url:  string  — store website URL
-//   detail_url: string  — event detail page URL
-//   source:     string  — source identifier (e.g. "wizards-locator")
+//   id:               string  — unique, prefixed by source (e.g. "wotc-123")
+//   title:            string  — event name
+//   format:           string  — "Commander", "Draft", "Sealed", "Modern", etc.
+//   date:             string  — "YYYY-MM-DD"
+//   time:             string  — "HH:MM" (UTC 24-hour)
+//   timezone:         string  — IANA timezone, e.g. "America/New_York"
+//   location:         string  — store/venue name
+//   address:          string  — street address
+//   cost:             string  — formatted display ("Free", "$10", "€8")
+//   currency:         string  — ISO 4217 (e.g. "USD", "EUR"). "" if unknown.
+//   entry_fee_minor:  number  — minor units (cents). null if unknown.
+//   country:          string  — ISO 3166 alpha-2 ("US","GB","JP"). "" if unknown.
+//   store_url:        string  — store website URL
+//   detail_url:       string  — event detail page URL
+//   source:           string  — source identifier (e.g. "wizards-locator")
 // }
 
 const REQUIRED = ["id", "title", "date", "source"];
 const ALL_FIELDS = [
   "id", "title", "format", "date", "time", "timezone",
   "location", "address", "cost", "store_url", "detail_url", "source", "image_url",
-  "description",
+  "description", "country", "currency",
 ];
 
 export function validateEvents(events: any, sourceName: string) {

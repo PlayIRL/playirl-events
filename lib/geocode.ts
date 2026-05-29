@@ -22,6 +22,10 @@ export interface GeocodeResult {
   longitude: number;
   /** Which provider produced the hit. Optional — older callers ignore it. */
   provider?: "google" | "nominatim";
+  /** ISO 3166 alpha-2 country code, uppercase ("US", "GB", "JP"). Optional
+   *  because not every provider response includes it; callers that need
+   *  it should fall back to a downstream reverse-geocode. */
+  countryCode?: string;
 }
 
 async function tryGoogle(query: string, signal?: AbortSignal): Promise<GeocodeResult | null> {
@@ -35,15 +39,22 @@ async function tryGoogle(query: string, signal?: AbortSignal): Promise<GeocodeRe
     if (!res.ok) return null;
     const data = (await res.json()) as {
       status?: string;
-      results?: Array<{ geometry?: { location?: { lat?: number; lng?: number } } }>;
+      results?: Array<{
+        geometry?: { location?: { lat?: number; lng?: number } };
+        address_components?: Array<{ short_name?: string; types?: string[] }>;
+      }>;
     };
     if (data.status !== "OK") return null;
-    const loc = data.results?.[0]?.geometry?.location;
+    const top = data.results?.[0];
+    const loc = top?.geometry?.location;
     const lat = loc?.lat;
     const lng = loc?.lng;
     if (lat == null || lng == null) return null;
     if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
-    return { latitude: lat, longitude: lng, provider: "google" };
+    const countryCode = top?.address_components
+      ?.find((c) => c.types?.includes("country"))
+      ?.short_name?.toUpperCase();
+    return { latitude: lat, longitude: lng, provider: "google", countryCode };
   } catch {
     return null;
   }
@@ -54,18 +65,24 @@ async function tryNominatim(query: string, signal?: AbortSignal): Promise<Geocod
   url.searchParams.set("q", query);
   url.searchParams.set("format", "json");
   url.searchParams.set("limit", "1");
+  url.searchParams.set("addressdetails", "1");
   try {
     const res = await fetch(url.toString(), {
       headers: { "Accept-Language": "en", "User-Agent": NOMINATIM_USER_AGENT },
       signal,
     });
     if (!res.ok) return null;
-    const data = (await res.json()) as Array<{ lat: string; lon: string }>;
+    const data = (await res.json()) as Array<{
+      lat: string;
+      lon: string;
+      address?: { country_code?: string };
+    }>;
     if (data.length === 0) return null;
     const lat = parseFloat(data[0].lat);
     const lng = parseFloat(data[0].lon);
     if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
-    return { latitude: lat, longitude: lng, provider: "nominatim" };
+    const countryCode = data[0].address?.country_code?.toUpperCase();
+    return { latitude: lat, longitude: lng, provider: "nominatim", countryCode };
   } catch {
     return null;
   }
@@ -104,7 +121,7 @@ export async function reverseGeocode(
   lat: number,
   lng: number,
   signal?: AbortSignal,
-): Promise<{ label: string } | null> {
+): Promise<{ label: string; countryCode?: string } | null> {
   if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
   try {
     const url = new URL("https://nominatim.openstreetmap.org/reverse");
@@ -128,15 +145,25 @@ export async function reverseGeocode(
         state?: string;
         state_code?: string;
         postcode?: string;
+        country?: string;
+        country_code?: string;
       };
     };
     const a = data.address;
     if (!a) return null;
     const place = a.city || a.town || a.village || a.hamlet || a.suburb || a.county;
-    const region = a.state_code?.toUpperCase() || a.state || "";
-    if (place && region) return { label: `${place}, ${region}` };
-    if (place) return { label: place };
-    if (a.postcode) return { label: a.postcode };
+    const countryCode = a.country_code?.toUpperCase();
+    // For US/Canada/Australia (state-coded), keep the "Place, ST" form users
+    // expect. For other countries, prefer "Place, Country" so a "London"
+    // result reads as "London, UK" rather than ambiguous between Greater
+    // London and London, Ontario.
+    const isStateCoded = countryCode === "US" || countryCode === "CA" || countryCode === "AU";
+    const region = isStateCoded
+      ? a.state_code?.toUpperCase() || a.state || ""
+      : a.country || "";
+    if (place && region) return { label: `${place}, ${region}`, countryCode };
+    if (place) return { label: place, countryCode };
+    if (a.postcode) return { label: a.postcode, countryCode };
     return null;
   } catch {
     return null;

@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq, showFormatBadge } from "@/lib/format-style";
 import { dateStrInTz, eventDisplayStatus, formatEventTime, pickEventTimezone } from "@/lib/format-time";
-import { formatDistanceMiles, haversineMiles } from "@/lib/distance";
+import { formatDistance, haversineMiles, type DistanceUnit } from "@/lib/distance";
+import { DEFAULT_LOCALE } from "@/lib/locale";
 import { useStickySentinel } from "@/lib/use-sticky-sentinel";
 
 interface EventRow {
@@ -53,12 +54,16 @@ export default function CalendarView({
   events,
   userLat = null,
   userLng = null,
+  distanceUnit = "mi",
 }: {
   events: EventRow[];
   /** Viewer's "from" coordinates. Null when no user signal is available
    *  (default Philly center) — distance is hidden so the cell stays compact. */
   userLat?: number | null;
   userLng?: number | null;
+  /** Viewer's preferred distance unit. Defaults to "mi" so callers that
+   *  don't thread it yet still render the legacy treatment. */
+  distanceUnit?: DistanceUnit;
 }) {
   const today = new Date();
   const todayStr = isoDate(today);
@@ -101,8 +106,8 @@ export default function CalendarView({
   const viewEnd = addDays(viewStart, viewSize - 1);
   const sameMonth = viewStart.getMonth() === viewEnd.getMonth();
   const viewLabel = sameMonth
-    ? `${viewStart.toLocaleDateString("en-US", { month: "long", day: "numeric" })} – ${viewEnd.getDate()}, ${viewEnd.getFullYear()}`
-    : `${viewStart.toLocaleDateString("en-US", { month: "short", day: "numeric" })} – ${viewEnd.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`;
+    ? `${viewStart.toLocaleDateString(DEFAULT_LOCALE, { month: "long", day: "numeric" })} – ${viewEnd.getDate()}, ${viewEnd.getFullYear()}`
+    : `${viewStart.toLocaleDateString(DEFAULT_LOCALE, { month: "short", day: "numeric" })} – ${viewEnd.toLocaleDateString(DEFAULT_LOCALE, { month: "short", day: "numeric", year: "numeric" })}`;
 
   return (
     <div>
@@ -208,7 +213,7 @@ export default function CalendarView({
                       const status = eventDisplayStatus(ev.date, ev.time);
                       const distanceLabel =
                         userLat != null && userLng != null && ev.latitude != null && ev.longitude != null
-                          ? formatDistanceMiles(haversineMiles(userLat, userLng, ev.latitude, ev.longitude))
+                          ? formatDistance(haversineMiles(userLat, userLng, ev.latitude, ev.longitude), distanceUnit)
                           : "";
                       return (
                       <Link

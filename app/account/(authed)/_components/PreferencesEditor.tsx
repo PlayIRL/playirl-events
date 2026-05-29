@@ -14,6 +14,12 @@ interface Props {
     radius_miles: number;
     days_ahead: number;
     formats: string[];
+    /** Current playirl-locale cookie value, or "" when unset (= follow
+     *  Accept-Language / navigator.language). */
+    locale: string;
+    /** Current playirl-country cookie value, or "" when unset (= infer
+     *  from locale or IP). */
+    country: string;
   };
   /** Global fallback location label, surfaced as placeholder when the user
    *  hasn't set a personal override. */
@@ -23,12 +29,57 @@ interface Props {
 const RADIUS_OPTIONS = [5, 10, 25, 50, 100, 250];
 const DAYS_OPTIONS = [1, 3, 7, 14, 30, 60];
 
+// Locale / country presets. Kept short — anything not on the list can be
+// entered via the "Auto" fallback which respects Accept-Language. The
+// country choices match the active scrape grids; the locale set is the
+// languages we're most likely to translate first.
+const LOCALE_OPTIONS = [
+  { value: "", label: "Auto (follow browser)" },
+  { value: "en-US", label: "English (US)" },
+  { value: "en-GB", label: "English (UK)" },
+  { value: "en-CA", label: "English (Canada)" },
+  { value: "en-AU", label: "English (Australia)" },
+  { value: "fr-FR", label: "Français" },
+  { value: "de-DE", label: "Deutsch" },
+  { value: "es-ES", label: "Español" },
+  { value: "it-IT", label: "Italiano" },
+  { value: "pt-PT", label: "Português" },
+  { value: "nl-NL", label: "Nederlands" },
+  { value: "ja-JP", label: "日本語" },
+];
+
+const COUNTRY_OPTIONS = [
+  { value: "", label: "Auto (infer)" },
+  { value: "US", label: "United States" },
+  { value: "CA", label: "Canada" },
+  { value: "GB", label: "United Kingdom" },
+  { value: "IE", label: "Ireland" },
+  { value: "FR", label: "France" },
+  { value: "DE", label: "Germany" },
+  { value: "ES", label: "Spain" },
+  { value: "IT", label: "Italy" },
+  { value: "NL", label: "Netherlands" },
+  { value: "BE", label: "Belgium" },
+  { value: "CH", label: "Switzerland" },
+  { value: "AT", label: "Austria" },
+  { value: "DK", label: "Denmark" },
+  { value: "SE", label: "Sweden" },
+  { value: "NO", label: "Norway" },
+  { value: "FI", label: "Finland" },
+  { value: "PL", label: "Poland" },
+  { value: "AU", label: "Australia" },
+  { value: "NZ", label: "New Zealand" },
+  { value: "JP", label: "Japan" },
+];
+
 export default function PreferencesEditor({ initial, fallbackLocationLabel }: Props) {
   const router = useRouter();
   const [location, setLocation] = useState(initial.location_label);
   const [radius, setRadius] = useState<number>(initial.radius_miles);
   const [days, setDays] = useState<number>(initial.days_ahead);
   const [formats, setFormats] = useState<Set<string>>(new Set(initial.formats));
+  const [locale, setLocale] = useState<string>(initial.locale);
+  const [country, setCountry] = useState<string>(initial.country);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<{ kind: "ok" | "err"; message: string } | null>(null);
 
@@ -40,7 +91,9 @@ export default function PreferencesEditor({ initial, fallbackLocationLabel }: Pr
     location.trim() !== initial.location_label.trim()
     || radius !== initial.radius_miles
     || days !== initial.days_ahead
-    || currentFormatsKey !== initialFormatsKey;
+    || currentFormatsKey !== initialFormatsKey
+    || locale !== initial.locale
+    || country !== initial.country;
 
   function toggleFormat(name: string) {
     setFormats(prev => {
@@ -63,6 +116,9 @@ export default function PreferencesEditor({ initial, fallbackLocationLabel }: Pr
           radius_miles: radius,
           days_ahead: days,
           formats: [...formats],
+          // Empty string clears the cookie on the server side.
+          locale,
+          country,
         }),
       });
       const body = await res.json().catch(() => ({}));
@@ -97,7 +153,7 @@ export default function PreferencesEditor({ initial, fallbackLocationLabel }: Pr
             type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            placeholder={fallbackLocationLabel || "City, ZIP, or address"}
+            placeholder={fallbackLocationLabel || "City, postcode, or address"}
             className="w-full px-3 py-2 rounded-md border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400/40 focus:border-neutral-400 dark:focus:ring-white/20 dark:focus:border-white/30"
           />
           <span className="block text-[11px] text-neutral-500 dark:text-neutral-400 mt-1.5 leading-snug">
@@ -178,6 +234,44 @@ export default function PreferencesEditor({ initial, fallbackLocationLabel }: Pr
         <span className="block text-[11px] text-neutral-500 dark:text-neutral-400 mt-2 leading-snug">
           &ldquo;All&rdquo; shows every format. Pick specific ones to narrow.
         </span>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 border-t border-neutral-200 dark:border-white/10 pt-5">
+        <div className="md:col-span-2">
+          <h3 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">Region &amp; language</h3>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+            Controls date formatting, distance units (km vs mi), and currency
+            display. &ldquo;Auto&rdquo; follows your browser &amp; IP.
+          </p>
+        </div>
+        <label className="block">
+          <span className="block text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-1">
+            Language
+          </span>
+          <select
+            value={locale}
+            onChange={(e) => setLocale(e.target.value)}
+            className="w-full px-3 py-2 rounded-md border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400/40 focus:border-neutral-400 dark:focus:ring-white/20 dark:focus:border-white/30"
+          >
+            {LOCALE_OPTIONS.map((o) => (
+              <option key={o.value || "auto-locale"} value={o.value}>{o.label}</option>
+            ))}
+          </select>
+        </label>
+        <label className="block">
+          <span className="block text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-1">
+            Country
+          </span>
+          <select
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            className="w-full px-3 py-2 rounded-md border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-400/40 focus:border-neutral-400 dark:focus:ring-white/20 dark:focus:border-white/30"
+          >
+            {COUNTRY_OPTIONS.map((o) => (
+              <option key={o.value || "auto-country"} value={o.value}>{o.label}</option>
+            ))}
+          </select>
+        </label>
       </div>
 
       {status && (

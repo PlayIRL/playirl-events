@@ -67,7 +67,7 @@ export default function UserGuide() {
               value (up to 500) for the rest of the country.
             </Step>
             <Step>
-              Click the location chip to change your center &mdash; type a city, ZIP, or
+              Click the location chip to change your center &mdash; type a city, postcode, or
               address. Geocoding happens server-side.
             </Step>
             <Step>

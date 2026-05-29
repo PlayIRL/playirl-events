@@ -1,23 +1,30 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { requireRole } from "@/lib/session";
 import { getSavedEvents, getSavedEventIds } from "@/lib/event-saves";
 import { resolveEventImage } from "@/lib/event-image";
+import { getServerCountry, getServerLocale } from "@/lib/locale";
+import { preferredDistanceUnit } from "@/lib/distance";
+import { t } from "@/lib/i18n";
 import DayCard from "../../../day-card";
 import SubpageShell from "../_components/SubpageShell";
 
 export const dynamic = "force-dynamic";
 
-function dayHeadingLabel(dateStr: string, todayStr: string, tomorrowStr: string): string {
+function dayHeadingLabel(dateStr: string, todayStr: string, tomorrowStr: string, locale: string): string {
   const d = new Date(dateStr + "T12:00:00");
-  const weekday = d.toLocaleDateString("en-US", { weekday: "long" });
-  const monthDay = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-  if (dateStr === todayStr) return `Today · ${weekday}, ${monthDay}`;
-  if (dateStr === tomorrowStr) return `Tomorrow · ${weekday}, ${monthDay}`;
+  const weekday = d.toLocaleDateString(locale, { weekday: "long" });
+  const monthDay = d.toLocaleDateString(locale, { month: "short", day: "numeric" });
+  if (dateStr === todayStr) return `${t("homepage.today", undefined, locale)} · ${weekday}, ${monthDay}`;
+  if (dateStr === tomorrowStr) return `${t("homepage.tomorrow", undefined, locale)} · ${weekday}, ${monthDay}`;
   return `${weekday}, ${monthDay}`;
 }
 
 export default async function SavedEventsPage() {
   const user = await requireRole(["user", "organizer", "admin"]);
+  const requestHeaders = await headers();
+  const locale = getServerLocale(requestHeaders);
+  const distanceUnit = preferredDistanceUnit(getServerCountry(requestHeaders));
   const events = getSavedEvents(user.id);
   const savedIds = getSavedEventIds(user.id);
 
@@ -69,15 +76,16 @@ export default async function SavedEventsPage() {
                   <DayCard
                     key={date}
                     date={date}
-                    weekday={d.toLocaleDateString("en-US", { weekday: "long" })}
+                    weekday={d.toLocaleDateString(locale, { weekday: "long" })}
                     isToday={date === todayStr}
                     isPast={false}
                     events={dayEvents}
-                    headingLabel={dayHeadingLabel(date, todayStr, tomorrowStr)}
+                    headingLabel={dayHeadingLabel(date, todayStr, tomorrowStr, locale)}
                     staggerBase={Math.min(i * 60, 120)}
                     signedIn
                     isAdmin={user.role === "admin"}
                     savedEventIds={savedIds}
+                    distanceUnit={distanceUnit}
                   />
                 );
               })}

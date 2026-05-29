@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment } from "react";
+import { DEFAULT_LOCALE } from "@/lib/locale";
 
 // Mirror of lib/discord-post.ts shapes — duplicated here so this client
 // component doesn't drag the server-only helpers (and their bcrypt/sqlite
@@ -42,7 +43,7 @@ export default function DiscordPreview({
   channelName = "events",
 }: Props) {
   const now = new Date();
-  const timeLabel = now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  const timeLabel = now.toLocaleTimeString(DEFAULT_LOCALE, { hour: "numeric", minute: "2-digit" });
 
   return (
     <div className="rounded-md overflow-hidden border border-neutral-700 bg-[#313338] text-[#dbdee1] font-sans">
@@ -305,12 +306,12 @@ function DiscordTimestamp({ unix, fmt }: { unix: number; fmt: TimestampFmt }) {
 function formatTimestamp(unix: number, fmt: TimestampFmt): string {
   const d = new Date(unix * 1000);
   switch (fmt) {
-    case "t": return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
-    case "T": return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit" });
-    case "d": return d.toLocaleDateString("en-US");
-    case "D": return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-    case "f": return d.toLocaleString("en-US", { year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "2-digit" });
-    case "F": return d.toLocaleString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "2-digit" });
+    case "t": return d.toLocaleTimeString(DEFAULT_LOCALE, { hour: "numeric", minute: "2-digit" });
+    case "T": return d.toLocaleTimeString(DEFAULT_LOCALE, { hour: "numeric", minute: "2-digit", second: "2-digit" });
+    case "d": return d.toLocaleDateString(DEFAULT_LOCALE);
+    case "D": return d.toLocaleDateString(DEFAULT_LOCALE, { year: "numeric", month: "long", day: "numeric" });
+    case "f": return d.toLocaleString(DEFAULT_LOCALE, { year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "2-digit" });
+    case "F": return d.toLocaleString(DEFAULT_LOCALE, { weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "2-digit" });
     case "R": return relativeTime(d);
   }
 }
@@ -318,7 +319,7 @@ function formatTimestamp(unix: number, fmt: TimestampFmt): string {
 function relativeTime(d: Date): string {
   const diffSec = Math.round((d.getTime() - Date.now()) / 1000);
   const abs = Math.abs(diffSec);
-  const rtf = new Intl.RelativeTimeFormat("en-US", { numeric: "auto" });
+  const rtf = new Intl.RelativeTimeFormat(DEFAULT_LOCALE, { numeric: "auto" });
   if (abs < 60) return rtf.format(diffSec, "second");
   if (abs < 3600) return rtf.format(Math.round(diffSec / 60), "minute");
   if (abs < 86400) return rtf.format(Math.round(diffSec / 3600), "hour");

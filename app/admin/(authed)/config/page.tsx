@@ -4,12 +4,24 @@ import { geocodeAddress } from "@/lib/geocode";
 import { FormSkeleton } from "@/app/skeleton";
 
 type ScrapeScope = "local" | "national";
+type RegionKey = "CONUS" | "CA" | "UK_IE" | "EU" | "AU_NZ" | "JP";
+
+const REGION_OPTIONS: { key: RegionKey; label: string; help: string }[] = [
+  { key: "CONUS", label: "United States (CONUS)", help: "75 anchors covering the lower 48. The historical default." },
+  { key: "CA", label: "Canada", help: "18 anchors from Vancouver to St. John's." },
+  { key: "UK_IE", label: "United Kingdom + Ireland", help: "18 anchors across England, Scotland, Wales, NI, and Ireland." },
+  { key: "EU", label: "Continental Europe", help: "53 anchors covering WPN-active countries (France, DACH, Iberia, Italy, Nordics, BeNeLux, Poland, Czechia, Greece)." },
+  { key: "AU_NZ", label: "Australia + New Zealand", help: "14 perimeter anchors. Wide radii where cities are far apart." },
+  { key: "JP", label: "Japan", help: "16 anchors hugging the Tokaido corridor + Hokkaido / Kyushu / Okinawa." },
+];
 
 interface ConfigShape {
   location: { zip: string; city: string; state: string; lat: number; lng: number };
   searchRadiusMiles: number;
   daysAhead: number;
   scrapeScope: ScrapeScope;
+  /** Active named region grids. Empty array = legacy/CONUS default. */
+  scrapeRegionKeys: RegionKey[];
   sources: {
     wizardsLocator: boolean;
     topdeck: boolean;
@@ -64,6 +76,7 @@ export default function ConfigPage() {
         searchRadiusMiles: Number(config.searchRadiusMiles),
         daysAhead: Number(config.daysAhead),
         scrapeScope: config.scrapeScope,
+        scrapeRegionKeys: config.scrapeRegionKeys,
         sourceWizardsLocator: config.sources.wizardsLocator,
         sourceTopdeck: config.sources.topdeck,
         sourceDiscordGuilds: guildIds,
@@ -156,7 +169,7 @@ export default function ConfigPage() {
           }`}
         >
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            <Field label="ZIP">
+            <Field label="ZIP / Postcode">
               <input
                 className={FIELD}
                 value={config.location.zip}
@@ -172,7 +185,7 @@ export default function ConfigPage() {
                 onBlur={() => lookupLocation(config.location)}
               />
             </Field>
-            <Field label="State">
+            <Field label="State / Region">
               <input
                 className={FIELD}
                 value={config.location.state}
@@ -184,7 +197,7 @@ export default function ConfigPage() {
           <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-2 min-h-[1rem]">
             {geoStatus === "checking" && "Looking up coordinates…"}
             {geoStatus === "found" && "✓ Coordinates updated."}
-            {geoStatus === "missing" && "Couldn't place that. Double-check the city/state/ZIP."}
+            {geoStatus === "missing" && "Couldn't place that. Double-check the city / region / postcode."}
             {geoStatus === "idle" && "Coordinates are resolved automatically — no manual entry needed."}
           </p>
         </Section>
@@ -219,6 +232,42 @@ export default function ConfigPage() {
               />
             </Field>
           </div>
+        </Section>
+
+        <Section
+          title="Regions"
+          help="Which country grids the national-mode scraper sweeps. Each region adds ~15-75 API calls per scrape. Leaving everything unchecked falls back to the historical CONUS-only default. International events get country/currency stamped automatically."
+          dimmed={!isNational}
+        >
+          <div className="grid sm:grid-cols-2 gap-2">
+            {REGION_OPTIONS.map((opt) => {
+              const checked = config.scrapeRegionKeys.includes(opt.key);
+              return (
+                <label key={opt.key} className="flex items-start gap-2 text-sm cursor-pointer p-2 rounded-md hover:bg-neutral-50 dark:hover:bg-neutral-800/50 transition-colors">
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={(e) => {
+                      const next = e.target.checked
+                        ? [...config.scrapeRegionKeys, opt.key]
+                        : config.scrapeRegionKeys.filter((k) => k !== opt.key);
+                      update("scrapeRegionKeys", next);
+                    }}
+                    className="mt-0.5"
+                  />
+                  <span>
+                    <span className="font-medium block leading-tight">{opt.label}</span>
+                    <span className="block text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">{opt.help}</span>
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+          {config.scrapeRegionKeys.length === 0 && (
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-2">
+              No regions selected — falling back to CONUS-only (historical default).
+            </p>
+          )}
         </Section>
 
         <Section

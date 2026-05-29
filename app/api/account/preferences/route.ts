@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
 import { setPreferences } from "@/lib/user-preferences";
 import { geocodeAddress } from "@/lib/geocode";
+import { COUNTRY_COOKIE, LOCALE_COOKIE } from "@/lib/locale";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +17,18 @@ interface Body {
   radius_miles?: number;
   days_ahead?: number;
   formats?: string[];
+  /** BCP-47 locale tag ("en-US", "fr-FR", "ja-JP"). Empty string clears the
+   *  per-user override and lets the site fall back to Accept-Language /
+   *  navigator.language. Persisted as the `playirl-locale` cookie, not in
+   *  user_preferences — same surface used by anon visitors. */
+  locale?: string | null;
+  /** ISO 3166 alpha-2 ("US", "GB", "JP"). Empty string clears the override
+   *  and lets the site infer from locale or IP. Persisted as the
+   *  `playirl-country` cookie. */
+  country?: string | null;
 }
+
+const ONE_YEAR_SEC = 60 * 60 * 24 * 365;
 
 export async function PUT(req: Request) {
   const user = await getCurrentUser();
@@ -68,7 +80,7 @@ export async function PUT(req: Request) {
       const hit = await geocodeAddress(label);
       if (!hit) {
         return NextResponse.json({
-          error: `Could not find a location matching "${label}". Try a city, ZIP, or street address.`,
+          error: `Could not find a location matching "${label}". Try a city, postcode, or street address.`,
         }, { status: 400 });
       }
       patch.location_lat = hit.latitude;
@@ -77,10 +89,56 @@ export async function PUT(req: Request) {
     }
   }
 
-  if (Object.keys(patch).length === 0) {
+  // Validate locale + country before checking patch emptiness so a "locale
+  // only" save still goes through (no DB patch needed — they live in cookies).
+  let localeUpdate: string | null | undefined = undefined;
+  let countryUpdate: string | null | undefined = undefined;
+  if (body.locale !== undefined) {
+    if (body.locale === null || body.locale === "") {
+      localeUpdate = null;
+    } else if (typeof body.locale === "string" && /^[a-z]{2,3}(-[A-Z]{2})?$/i.test(body.locale.trim())) {
+      localeUpdate = body.locale.trim();
+    } else {
+      return NextResponse.json({ error: "locale must be a BCP-47 tag like 'en-US'" }, { status: 400 });
+    }
+  }
+  if (body.country !== undefined) {
+    if (body.country === null || body.country === "") {
+      countryUpdate = null;
+    } else if (typeof body.country === "string" && /^[A-Z]{2}$/i.test(body.country.trim())) {
+      countryUpdate = body.country.trim().toUpperCase();
+    } else {
+      return NextResponse.json({ error: "country must be ISO 3166 alpha-2" }, { status: 400 });
+    }
+  }
+
+  const hasCookieUpdate = localeUpdate !== undefined || countryUpdate !== undefined;
+  if (Object.keys(patch).length === 0 && !hasCookieUpdate) {
     return NextResponse.json({ error: "Nothing to update" }, { status: 400 });
   }
 
-  const updated = setPreferences(user.id, patch);
-  return NextResponse.json({ ok: true, preferences: updated });
+  const updated = Object.keys(patch).length > 0 ? setPreferences(user.id, patch) : null;
+  const response = NextResponse.json({ ok: true, preferences: updated });
+
+  // Apply locale / country cookie writes alongside the patch so the response
+  // headers carry both. Setting `value: ""` with maxAge=0 clears.
+  if (localeUpdate !== undefined) {
+    response.cookies.set({
+      name: LOCALE_COOKIE,
+      value: localeUpdate ?? "",
+      maxAge: localeUpdate ? ONE_YEAR_SEC : 0,
+      path: "/",
+      sameSite: "lax",
+    });
+  }
+  if (countryUpdate !== undefined) {
+    response.cookies.set({
+      name: COUNTRY_COOKIE,
+      value: countryUpdate ?? "",
+      maxAge: countryUpdate ? ONE_YEAR_SEC : 0,
+      path: "/",
+      sameSite: "lax",
+    });
+  }
+  return response;
 }

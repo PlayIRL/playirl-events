@@ -382,7 +382,7 @@ function handleLookup(
 
       const hit = await geocodeAddress(location);
       if (!hit) {
-        return [{ content: `Couldn't find "${location}". Try a ZIP code or a more specific city/address.` }];
+        return [{ content: `Couldn't find "${location}". Try a postcode or a more specific city/address.` }];
       }
 
       const events = getActiveEvents({

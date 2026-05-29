@@ -13,6 +13,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { useRouter, useSearchParams } from "next/navigation";
+import { DEFAULT_LOCALE } from "@/lib/locale";
+import { t } from "@/lib/i18n";
 
 const PROMPTED_KEY = "playirl-loc-prompted";
 
@@ -40,9 +42,13 @@ interface Props {
   isCustom: boolean;
   /** Server-side `defaultLabel` for the chip (typically "Philly"). */
   defaultLabel: string;
+  /** Server-resolved viewer locale. Threaded down so the placeholder text
+   *  matches SSR (no hydration mismatch); defaults to en-US for back-compat
+   *  with any callers not yet passing it. */
+  locale?: string;
 }
 
-export default function LocationPicker({ currentLabel, isCustom, defaultLabel }: Props) {
+export default function LocationPicker({ currentLabel, isCustom, defaultLabel, locale = DEFAULT_LOCALE }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
@@ -291,7 +297,7 @@ export default function LocationPicker({ currentLabel, isCustom, defaultLabel }:
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="City, address, or zip"
+                placeholder={t("location_picker.placeholder", undefined, locale)}
                 className={INPUT}
                 disabled={busy === "search"}
               />

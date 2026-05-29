@@ -20,15 +20,48 @@ export function haversineMiles(
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+/** Convert miles → kilometers. The whole system stores distances internally
+ *  in miles (radius prefs, bbox prefilter, RADIUS_OPTIONS), so callers pass
+ *  miles in and ask for km at display time. */
+export const MI_PER_KM = 0.621371192;
+export function milesToKm(miles: number): number {
+  return miles / MI_PER_KM;
+}
+export function kmToMiles(km: number): number {
+  return km * MI_PER_KM;
+}
+
+export type DistanceUnit = "mi" | "km";
+
+/** Pick a sensible distance unit from a country code. US, UK, and Liberia
+ *  use miles for everyday distances; everyone else uses km. (The UK is
+ *  legally metric but signs/colloquial usage still favor miles, which is
+ *  what users entering "5 miles" in the radius chip expect.) */
+export function preferredDistanceUnit(countryCode?: string | null): DistanceUnit {
+  if (!countryCode) return "mi";
+  const cc = countryCode.toUpperCase();
+  if (cc === "US" || cc === "GB" || cc === "LR" || cc === "MM") return "mi";
+  return "km";
+}
+
 /**
- * Human-readable distance string ("3.2 mi away"). One decimal under 10 mi
- * (where precision actually matters for "is this walkable"), whole numbers
- * above. Sub-100ft distances collapse to "<0.1 mi away" so noisy float jitter
- * doesn't render as "0.0 mi away".
+ * Human-readable distance string ("3.2 mi away" or "5 km away"). One decimal
+ * under 10 (where precision matters for "is this walkable"), whole numbers
+ * above. Sub-0.1 collapses to "<0.1 X away" so noisy float jitter doesn't
+ * render as "0.0".
  */
-export function formatDistanceMiles(miles: number): string {
+export function formatDistance(miles: number, unit: DistanceUnit = "mi"): string {
   if (!Number.isFinite(miles)) return "";
-  if (miles < 0.1) return "<0.1 mi away";
-  if (miles < 10) return `${miles.toFixed(1)} mi away`;
-  return `${Math.round(miles)} mi away`;
+  const value = unit === "km" ? milesToKm(miles) : miles;
+  const u = unit;
+  if (value < 0.1) return `<0.1 ${u} away`;
+  if (value < 10) return `${value.toFixed(1)} ${u} away`;
+  return `${Math.round(value)} ${u} away`;
+}
+
+/** Backward-compatible alias for the original miles-only formatter. New
+ *  callers should reach for `formatDistance` and pass the user's preferred
+ *  unit. Existing callsites stay miles-only until the locale prefs land. */
+export function formatDistanceMiles(miles: number): string {
+  return formatDistance(miles, "mi");
 }

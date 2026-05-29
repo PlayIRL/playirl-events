@@ -13,6 +13,10 @@ export async function GET() {
     scrape_interval_hours: getSetting("scrape_interval_hours"),
     last_scrape: getSetting("last_scrape"),
     last_scrape_result: getSetting("last_scrape_result"),
+    // Per-region scrape health (WotC locator). Big-ish JSON blob (~30KB for
+    // 197 regions); admin /scrapers page renders it as a sortable table so
+    // outliers/failures are visible without diffing scrape_history rows.
+    last_scrape_regions_wotc: getSetting("last_scrape_regions_wotc"),
   });
 }
 

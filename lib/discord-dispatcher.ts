@@ -456,6 +456,10 @@ async function drainPendingPosts(now: Date, summary: DispatchSummary): Promise<v
 function utcOffsetSuffix(timeZone: string, dateStr: string): string {
   try {
     const noon = new Date(`${dateStr}T12:00:00Z`);
+    // Intentional en-US literal: the downstream regex parses the "GMT-04:00"
+    // shape produced by Intl with this locale. Switching locales here can
+    // emit non-matching strings ("ut−04:00", "UTC−4", etc.) on some
+    // implementations and break the offset extraction.
     const fmt = new Intl.DateTimeFormat("en-US", {
       timeZone,
       timeZoneName: "longOffset",

@@ -447,6 +447,25 @@ function initSchema(db: Database.Database) {
   // so admin overrides on a scraped event survive. The detail page renders
   // `notes` if set, else `description`.
   try { db.exec("ALTER TABLE events ADD COLUMN description TEXT DEFAULT ''"); } catch {}
+  // International support: ISO 3166 alpha-2 country code (e.g. "US", "GB",
+  // "JP"). Empty string when unknown — predates the international scrape
+  // grids and survives older rows that pre-date the column.
+  try { db.exec("ALTER TABLE events ADD COLUMN country TEXT DEFAULT ''"); } catch {}
+  // ISO 4217 currency code (e.g. "USD", "EUR", "GBP", "JPY") for the entry
+  // fee. Empty when the source doesn't carry one (Discord-scraped events,
+  // TopDeck) or the event is free. `cost` keeps the formatted display
+  // string for back-compat; new callers should prefer (entry_fee_cents,
+  // currency) when both are populated.
+  try { db.exec("ALTER TABLE events ADD COLUMN currency TEXT DEFAULT ''"); } catch {}
+  // Entry fee in minor units (cents/pence/yen). NULL = unknown, 0 = free.
+  // Preserves fractional currencies (GBP £4.50) that the formatted `cost`
+  // string would round to "£4" or "£5".
+  try { db.exec("ALTER TABLE events ADD COLUMN entry_fee_minor INTEGER"); } catch {}
+  // Store-geocode cache carries the country code now so the wizards-locator
+  // scraper doesn't have to re-Nominatim every store on subsequent international
+  // sweeps just to learn the country (the cached address alone doesn't tell
+  // you whether "London" means London, England or London, Ontario).
+  try { db.exec("ALTER TABLE store_geocode_cache ADD COLUMN country_code TEXT DEFAULT ''"); } catch {}
   // Waitlist→going promotion timestamp on event_rsvps. When capacity opens
   // up and lib/event-rsvps.ts promotes the next waitlister, we stamp
   // promoted_at so the event detail page can render a "🎉 You got off the
@@ -633,6 +652,17 @@ function initSchema(db: Database.Database) {
   insert.run("config_source_wizardslocator", "1");
   insert.run("config_source_topdeck", "1");
   insert.run("config_source_discord_guilds", JSON.stringify(["1451305700322967794"]));
+  // Seed the scrape region grid with global coverage. This only fires on a
+  // brand-new DB (the INSERT OR IGNORE clause leaves existing admin settings
+  // alone), so production deployments that have already configured regions
+  // through /admin/config keep their selection. The CONUS-only legacy default
+  // still applies when this setting is absent — flipping the seed lets fresh
+  // installs (dev, staging, new prod) cover the WPN-active world without
+  // an extra click in admin.
+  insert.run(
+    "config_scrape_region_keys",
+    JSON.stringify(["CONUS", "CA", "UK_IE", "EU", "AU_NZ", "JP"]),
+  );
 
   // Seed starter feature flags
   const insertFlag = db.prepare("INSERT OR IGNORE INTO feature_flags (key, enabled, description) VALUES (?, ?, ?)");

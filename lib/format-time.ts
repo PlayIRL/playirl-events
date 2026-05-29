@@ -3,6 +3,8 @@
 // the venue's local zone. Render events in venue-local time so users don't see
 // midnight-looking UTC values for a 6pm weeknight in Philly.
 
+import { DEFAULT_LOCALE } from "./locale";
+
 const DEFAULT_TZ = "America/New_York";
 
 /**
@@ -160,38 +162,86 @@ export function pickEventTimezone(
   const fallback = ev.timezone || DEFAULT_TZ;
   const { latitude: lat, longitude: lng } = ev;
   if (lat == null || lng == null) return fallback;
+
+  // --- North America (longitude-only bands) ---
   // Hawaii
   if (lat < 23 && lng < -154) return "Pacific/Honolulu";
   // Alaska
   if (lat > 50 && lng < -130) return "America/Anchorage";
-  // CONUS — longitude-only.
-  if (lng < -115) return "America/Los_Angeles";
-  if (lng < -101) return "America/Denver";
-  if (lng < -87) return "America/Chicago";
-  return "America/New_York";
+  // CONUS / Canada — same bands work for the populated belt south of 60°N.
+  if (lng >= -170 && lng < -50) {
+    if (lng < -115) return "America/Los_Angeles";
+    if (lng < -101) return "America/Denver";
+    if (lng < -87) return "America/Chicago";
+    return "America/New_York";
+  }
+
+  // --- South America ---
+  // Brazil east coast / São Paulo / Rio
+  if (lat < 5 && lat > -35 && lng > -55 && lng < -32) return "America/Sao_Paulo";
+  // Andean West Coast (Peru/Colombia/Ecuador) — UTC-5 like Eastern, but
+  // surface a region-specific tz so DST behavior is correct.
+  if (lat < 12 && lat > -20 && lng < -65 && lng > -85) return "America/Lima";
+  // Buenos Aires / Argentina / Chile (no DST in most)
+  if (lat < -20 && lng < -50 && lng > -75) return "America/Argentina/Buenos_Aires";
+
+  // --- Europe / Africa ---
+  // UK + Ireland + Portugal (UTC / BST)
+  if (lat > 35 && lat < 62 && lng > -11 && lng < 2) return "Europe/London";
+  // Western/Central Europe (CET, the bulk of the EU)
+  if (lat > 35 && lat < 71 && lng >= 2 && lng < 22) return "Europe/Berlin";
+  // Eastern Europe (EET — Greece, Finland, Baltics, Romania, Bulgaria)
+  if (lat > 33 && lat < 71 && lng >= 22 && lng < 40) return "Europe/Helsinki";
+  // South Africa (SAST, UTC+2 year-round)
+  if (lat < -22 && lng > 16 && lng < 33) return "Africa/Johannesburg";
+
+  // --- Asia / Oceania ---
+  // Moscow + Western Russia (UTC+3)
+  if (lat > 43 && lat < 70 && lng >= 30 && lng < 60) return "Europe/Moscow";
+  // India (IST, UTC+5:30)
+  if (lat > 6 && lat < 35 && lng > 68 && lng < 90) return "Asia/Kolkata";
+  // SE Asia / Bangkok belt (Thailand/Vietnam/Indonesia western)
+  if (lat > -10 && lat < 25 && lng >= 95 && lng < 110) return "Asia/Bangkok";
+  // China + Taiwan + Philippines + Singapore (CST/HKT/PHT — all UTC+8)
+  if (lat > -5 && lat < 55 && lng >= 100 && lng < 125) return "Asia/Shanghai";
+  // Japan + Korea (JST/KST, UTC+9)
+  if (lat > 30 && lat < 50 && lng >= 125 && lng < 146) return "Asia/Tokyo";
+  // Australia — east-coast metropolises (Sydney/Melbourne/Brisbane)
+  if (lat < -10 && lng >= 138 && lng < 155) return "Australia/Sydney";
+  // Perth (AWST, UTC+8 no DST)
+  if (lat < -10 && lng >= 110 && lng < 130) return "Australia/Perth";
+  // Adelaide / central Australia (ACST, UTC+9:30)
+  if (lat < -10 && lng >= 130 && lng < 138) return "Australia/Adelaide";
+  // New Zealand
+  if (lat < -30 && lng > 165 && lng < 180) return "Pacific/Auckland";
+
+  return fallback;
 }
 
 export function formatEventTime(
   date: string,
   time: string,
   timezone?: string | null,
+  locale: string = DEFAULT_LOCALE,
 ): string {
   if (!date || !time) return "";
   const utc = new Date(`${date}T${time}:00Z`);
   if (isNaN(utc.getTime())) return "";
   const tz = timezone || DEFAULT_TZ;
-  const formatted = utc.toLocaleTimeString("en-US", {
+  // hour12 follows the locale's convention by default (en-US \u2192 12h, fr-FR
+  // \u2192 24h). Omitting `hour12` lets Intl pick the right one rather than
+  // forcing 12h everywhere.
+  const formatted = utc.toLocaleTimeString(locale, {
     timeZone: tz,
     hour: "numeric",
     minute: "2-digit",
-    hour12: true,
   });
   // When the event's display zone differs from the app's anchor zone
   // (Eastern), append a short abbreviation so an NYC viewer browsing
   // LA events doesn't read "7:00 PM" and assume it's Eastern. Eastern
   // events stay bare to avoid cluttering the dominant case.
   if (tz !== APP_TIMEZONE) {
-    const abbr = new Intl.DateTimeFormat("en-US", { timeZone: tz, timeZoneName: "short" })
+    const abbr = new Intl.DateTimeFormat(locale, { timeZone: tz, timeZoneName: "short" })
       .formatToParts(utc)
       .find((p) => p.type === "timeZoneName")?.value;
     if (abbr) return `${formatted} ${abbr}`;
@@ -204,6 +254,7 @@ export function formatEventTimeRange(
   time: string,
   timezone: string | null | undefined,
   durationHours = 3,
+  locale: string = DEFAULT_LOCALE,
 ): string {
   if (!date || !time) return "";
   const start = new Date(`${date}T${time}:00Z`);
@@ -211,13 +262,12 @@ export function formatEventTimeRange(
   const end = new Date(start.getTime() + durationHours * 60 * 60 * 1000);
   const tz = timezone || DEFAULT_TZ;
   const fmt = (d: Date) =>
-    d.toLocaleTimeString("en-US", {
+    d.toLocaleTimeString(locale, {
       timeZone: tz,
       hour: "numeric",
       minute: "2-digit",
-      hour12: true,
     });
-  const zoneAbbr = new Intl.DateTimeFormat("en-US", {
+  const zoneAbbr = new Intl.DateTimeFormat(locale, {
     timeZone: tz,
     timeZoneName: "short",
   })

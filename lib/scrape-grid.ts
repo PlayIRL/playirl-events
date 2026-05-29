@@ -1,11 +1,11 @@
-// CONUS scrape grid — anchor points covering the lower 48 for the WotC
-// store/event sweep. Each anchor pulls stores within `radiusMi` of its
-// coordinates; overlap between anchors is fine (dedup happens by store ID).
+// Scrape grids — anchor points fed to the WotC store/event sweep. Each anchor
+// pulls stores within `radiusMi` of its coordinates; overlap between anchors
+// is fine (dedup happens by store ID).
 //
 // Spacing: ~150mi between anchors with a 100mi search radius gives reliable
-// coverage with modest overlap. Population-dense regions (NE corridor, CA,
-// TX, FL) get a few extra anchors. Alaska and Hawaii are skipped — add later
-// if user demand warrants.
+// coverage with modest overlap. CONUS is the historical default; INTL grids
+// (CA, UK, EU, AU, JP) are opt-in via config.scrapeRegions — admins assemble
+// the desired grid by concatenating the constants here (e.g. CONUS + CA + UK).
 
 export interface ScrapeRegion {
   /** Human label for logs ("Philadelphia", "Houston grid #4"). */
@@ -14,6 +14,12 @@ export interface ScrapeRegion {
   lng: number;
   /** Search radius in miles. */
   radiusMi: number;
+  /** ISO 3166 alpha-2 country code. Optional — falls back to per-event
+   *  reverse-geocode when missing. Setting this on the grid pre-stamps every
+   *  store hit from the anchor with the right country, which avoids a
+   *  Nominatim round-trip for stores whose coords clearly belong to one
+   *  country (e.g. a Tokyo anchor never resolves to anything but JP). */
+  country?: string;
 }
 
 export const CONUS_GRID: ScrapeRegion[] = [
@@ -108,3 +114,187 @@ export const CONUS_GRID: ScrapeRegion[] = [
   { label: "Los Angeles, CA", lat: 34.0522, lng: -118.2437, radiusMi: 100 },
   { label: "San Diego, CA", lat: 32.7157, lng: -117.1611, radiusMi: 100 },
 ];
+
+// Canada — population is concentrated south within 100mi of the US border,
+// so a relatively thin grid covers >90% of WPN stores. Add northern anchors
+// (Yellowknife, Whitehorse) if a user reports a gap.
+export const CA_GRID: ScrapeRegion[] = [
+  { label: "Vancouver, BC", lat: 49.2827, lng: -123.1207, radiusMi: 120, country: "CA" },
+  { label: "Victoria, BC", lat: 48.4284, lng: -123.3656, radiusMi: 100, country: "CA" },
+  { label: "Kelowna, BC", lat: 49.8880, lng: -119.4960, radiusMi: 120, country: "CA" },
+  { label: "Calgary, AB", lat: 51.0447, lng: -114.0719, radiusMi: 120, country: "CA" },
+  { label: "Edmonton, AB", lat: 53.5461, lng: -113.4938, radiusMi: 120, country: "CA" },
+  { label: "Saskatoon, SK", lat: 52.1332, lng: -106.6700, radiusMi: 150, country: "CA" },
+  { label: "Regina, SK", lat: 50.4452, lng: -104.6189, radiusMi: 120, country: "CA" },
+  { label: "Winnipeg, MB", lat: 49.8951, lng: -97.1384, radiusMi: 150, country: "CA" },
+  { label: "Thunder Bay, ON", lat: 48.3809, lng: -89.2477, radiusMi: 150, country: "CA" },
+  { label: "Sudbury, ON", lat: 46.4917, lng: -80.9930, radiusMi: 120, country: "CA" },
+  { label: "Toronto, ON", lat: 43.6532, lng: -79.3832, radiusMi: 100, country: "CA" },
+  { label: "London, ON", lat: 42.9849, lng: -81.2453, radiusMi: 100, country: "CA" },
+  { label: "Ottawa, ON", lat: 45.4215, lng: -75.6972, radiusMi: 100, country: "CA" },
+  { label: "Montreal, QC", lat: 45.5017, lng: -73.5673, radiusMi: 100, country: "CA" },
+  { label: "Quebec City, QC", lat: 46.8139, lng: -71.2080, radiusMi: 120, country: "CA" },
+  { label: "Halifax, NS", lat: 44.6488, lng: -63.5752, radiusMi: 120, country: "CA" },
+  { label: "Moncton, NB", lat: 46.0878, lng: -64.7782, radiusMi: 120, country: "CA" },
+  { label: "St. John's, NL", lat: 47.5615, lng: -52.7126, radiusMi: 100, country: "CA" },
+];
+
+// UK + Ireland — dense population, smaller geography than the US. ~80mi
+// anchor spacing covers it with manageable overlap, and the country code
+// is pre-stamped because WotC's locator never disambiguates GB/IE coords
+// against Continental Europe.
+export const UK_IE_GRID: ScrapeRegion[] = [
+  { label: "London, UK", lat: 51.5074, lng: -0.1278, radiusMi: 80, country: "GB" },
+  { label: "Birmingham, UK", lat: 52.4862, lng: -1.8904, radiusMi: 80, country: "GB" },
+  { label: "Manchester, UK", lat: 53.4808, lng: -2.2426, radiusMi: 80, country: "GB" },
+  { label: "Leeds, UK", lat: 53.8008, lng: -1.5491, radiusMi: 80, country: "GB" },
+  { label: "Newcastle, UK", lat: 54.9783, lng: -1.6178, radiusMi: 80, country: "GB" },
+  { label: "Edinburgh, UK", lat: 55.9533, lng: -3.1883, radiusMi: 100, country: "GB" },
+  { label: "Glasgow, UK", lat: 55.8642, lng: -4.2518, radiusMi: 100, country: "GB" },
+  { label: "Aberdeen, UK", lat: 57.1497, lng: -2.0943, radiusMi: 120, country: "GB" },
+  { label: "Inverness, UK", lat: 57.4778, lng: -4.2247, radiusMi: 120, country: "GB" },
+  { label: "Cardiff, UK", lat: 51.4816, lng: -3.1791, radiusMi: 80, country: "GB" },
+  { label: "Bristol, UK", lat: 51.4545, lng: -2.5879, radiusMi: 80, country: "GB" },
+  { label: "Southampton, UK", lat: 50.9097, lng: -1.4044, radiusMi: 80, country: "GB" },
+  { label: "Norwich, UK", lat: 52.6309, lng: 1.2974, radiusMi: 80, country: "GB" },
+  { label: "Plymouth, UK", lat: 50.3755, lng: -4.1427, radiusMi: 80, country: "GB" },
+  { label: "Belfast, UK", lat: 54.5973, lng: -5.9301, radiusMi: 80, country: "GB" },
+  { label: "Dublin, IE", lat: 53.3498, lng: -6.2603, radiusMi: 80, country: "IE" },
+  { label: "Cork, IE", lat: 51.8985, lng: -8.4756, radiusMi: 80, country: "IE" },
+  { label: "Galway, IE", lat: 53.2707, lng: -9.0568, radiusMi: 100, country: "IE" },
+];
+
+// Continental Europe — covers the WPN-active footprint (DACH, France, BeNeLux,
+// Iberia, Italy, Nordics, Poland, Czechia). Russia / former-CIS are intentionally
+// excluded; WotC's locator returns near-zero stores there and the geopolitical
+// + currency mess isn't worth chasing without a user request. Country codes
+// pre-stamped per anchor so we don't depend on Nominatim for every event.
+export const EU_GRID: ScrapeRegion[] = [
+  // France
+  { label: "Paris, FR", lat: 48.8566, lng: 2.3522, radiusMi: 100, country: "FR" },
+  { label: "Lyon, FR", lat: 45.7640, lng: 4.8357, radiusMi: 100, country: "FR" },
+  { label: "Marseille, FR", lat: 43.2965, lng: 5.3698, radiusMi: 100, country: "FR" },
+  { label: "Bordeaux, FR", lat: 44.8378, lng: -0.5792, radiusMi: 120, country: "FR" },
+  { label: "Nantes, FR", lat: 47.2184, lng: -1.5536, radiusMi: 100, country: "FR" },
+  { label: "Toulouse, FR", lat: 43.6047, lng: 1.4442, radiusMi: 120, country: "FR" },
+  { label: "Strasbourg, FR", lat: 48.5734, lng: 7.7521, radiusMi: 80, country: "FR" },
+  { label: "Lille, FR", lat: 50.6292, lng: 3.0573, radiusMi: 80, country: "FR" },
+  // Iberia
+  { label: "Madrid, ES", lat: 40.4168, lng: -3.7038, radiusMi: 120, country: "ES" },
+  { label: "Barcelona, ES", lat: 41.3851, lng: 2.1734, radiusMi: 100, country: "ES" },
+  { label: "Valencia, ES", lat: 39.4699, lng: -0.3763, radiusMi: 100, country: "ES" },
+  { label: "Seville, ES", lat: 37.3886, lng: -5.9823, radiusMi: 120, country: "ES" },
+  { label: "Bilbao, ES", lat: 43.2630, lng: -2.9350, radiusMi: 100, country: "ES" },
+  { label: "Lisbon, PT", lat: 38.7223, lng: -9.1393, radiusMi: 100, country: "PT" },
+  { label: "Porto, PT", lat: 41.1579, lng: -8.6291, radiusMi: 100, country: "PT" },
+  // Italy
+  { label: "Rome, IT", lat: 41.9028, lng: 12.4964, radiusMi: 100, country: "IT" },
+  { label: "Milan, IT", lat: 45.4642, lng: 9.1900, radiusMi: 100, country: "IT" },
+  { label: "Naples, IT", lat: 40.8518, lng: 14.2681, radiusMi: 100, country: "IT" },
+  { label: "Turin, IT", lat: 45.0703, lng: 7.6869, radiusMi: 100, country: "IT" },
+  { label: "Bologna, IT", lat: 44.4949, lng: 11.3426, radiusMi: 80, country: "IT" },
+  { label: "Palermo, IT", lat: 38.1157, lng: 13.3615, radiusMi: 120, country: "IT" },
+  // BeNeLux
+  { label: "Amsterdam, NL", lat: 52.3676, lng: 4.9041, radiusMi: 80, country: "NL" },
+  { label: "Rotterdam, NL", lat: 51.9244, lng: 4.4777, radiusMi: 80, country: "NL" },
+  { label: "Brussels, BE", lat: 50.8503, lng: 4.3517, radiusMi: 80, country: "BE" },
+  { label: "Antwerp, BE", lat: 51.2194, lng: 4.4025, radiusMi: 80, country: "BE" },
+  { label: "Luxembourg, LU", lat: 49.6116, lng: 6.1319, radiusMi: 60, country: "LU" },
+  // DACH
+  { label: "Berlin, DE", lat: 52.5200, lng: 13.4050, radiusMi: 100, country: "DE" },
+  { label: "Hamburg, DE", lat: 53.5511, lng: 9.9937, radiusMi: 100, country: "DE" },
+  { label: "Munich, DE", lat: 48.1351, lng: 11.5820, radiusMi: 100, country: "DE" },
+  { label: "Cologne, DE", lat: 50.9375, lng: 6.9603, radiusMi: 80, country: "DE" },
+  { label: "Frankfurt, DE", lat: 50.1109, lng: 8.6821, radiusMi: 80, country: "DE" },
+  { label: "Leipzig, DE", lat: 51.3397, lng: 12.3731, radiusMi: 80, country: "DE" },
+  { label: "Stuttgart, DE", lat: 48.7758, lng: 9.1829, radiusMi: 80, country: "DE" },
+  { label: "Vienna, AT", lat: 48.2082, lng: 16.3738, radiusMi: 100, country: "AT" },
+  { label: "Graz, AT", lat: 47.0707, lng: 15.4395, radiusMi: 80, country: "AT" },
+  { label: "Zurich, CH", lat: 47.3769, lng: 8.5417, radiusMi: 80, country: "CH" },
+  { label: "Geneva, CH", lat: 46.2044, lng: 6.1432, radiusMi: 80, country: "CH" },
+  // Nordics
+  { label: "Copenhagen, DK", lat: 55.6761, lng: 12.5683, radiusMi: 100, country: "DK" },
+  { label: "Aarhus, DK", lat: 56.1629, lng: 10.2039, radiusMi: 100, country: "DK" },
+  { label: "Stockholm, SE", lat: 59.3293, lng: 18.0686, radiusMi: 100, country: "SE" },
+  { label: "Gothenburg, SE", lat: 57.7089, lng: 11.9746, radiusMi: 100, country: "SE" },
+  { label: "Malmö, SE", lat: 55.6050, lng: 13.0038, radiusMi: 80, country: "SE" },
+  { label: "Oslo, NO", lat: 59.9139, lng: 10.7522, radiusMi: 100, country: "NO" },
+  { label: "Bergen, NO", lat: 60.3913, lng: 5.3221, radiusMi: 120, country: "NO" },
+  { label: "Helsinki, FI", lat: 60.1699, lng: 24.9384, radiusMi: 100, country: "FI" },
+  { label: "Tampere, FI", lat: 61.4978, lng: 23.7610, radiusMi: 100, country: "FI" },
+  { label: "Reykjavik, IS", lat: 64.1466, lng: -21.9426, radiusMi: 120, country: "IS" },
+  // Central / Eastern EU
+  { label: "Warsaw, PL", lat: 52.2297, lng: 21.0122, radiusMi: 100, country: "PL" },
+  { label: "Krakow, PL", lat: 50.0647, lng: 19.9450, radiusMi: 100, country: "PL" },
+  { label: "Gdansk, PL", lat: 54.3520, lng: 18.6466, radiusMi: 100, country: "PL" },
+  { label: "Prague, CZ", lat: 50.0755, lng: 14.4378, radiusMi: 100, country: "CZ" },
+  { label: "Brno, CZ", lat: 49.1951, lng: 16.6068, radiusMi: 80, country: "CZ" },
+  { label: "Bratislava, SK", lat: 48.1486, lng: 17.1077, radiusMi: 80, country: "SK" },
+  { label: "Budapest, HU", lat: 47.4979, lng: 19.0402, radiusMi: 100, country: "HU" },
+  // Greece
+  { label: "Athens, GR", lat: 37.9838, lng: 23.7275, radiusMi: 100, country: "GR" },
+  { label: "Thessaloniki, GR", lat: 40.6401, lng: 22.9444, radiusMi: 100, country: "GR" },
+];
+
+// Australia + New Zealand — population clusters on the coastline, so coverage
+// follows the perimeter rather than filling the interior. Wider radii where
+// the next nearest city is hundreds of km away.
+export const AU_NZ_GRID: ScrapeRegion[] = [
+  { label: "Sydney, AU", lat: -33.8688, lng: 151.2093, radiusMi: 120, country: "AU" },
+  { label: "Melbourne, AU", lat: -37.8136, lng: 144.9631, radiusMi: 120, country: "AU" },
+  { label: "Brisbane, AU", lat: -27.4698, lng: 153.0251, radiusMi: 120, country: "AU" },
+  { label: "Gold Coast, AU", lat: -28.0167, lng: 153.4000, radiusMi: 80, country: "AU" },
+  { label: "Perth, AU", lat: -31.9505, lng: 115.8605, radiusMi: 150, country: "AU" },
+  { label: "Adelaide, AU", lat: -34.9285, lng: 138.6007, radiusMi: 120, country: "AU" },
+  { label: "Hobart, AU", lat: -42.8821, lng: 147.3272, radiusMi: 120, country: "AU" },
+  { label: "Canberra, AU", lat: -35.2809, lng: 149.1300, radiusMi: 80, country: "AU" },
+  { label: "Darwin, AU", lat: -12.4634, lng: 130.8456, radiusMi: 150, country: "AU" },
+  { label: "Cairns, AU", lat: -16.9203, lng: 145.7710, radiusMi: 150, country: "AU" },
+  { label: "Newcastle, AU", lat: -32.9283, lng: 151.7817, radiusMi: 80, country: "AU" },
+  { label: "Auckland, NZ", lat: -36.8485, lng: 174.7633, radiusMi: 120, country: "NZ" },
+  { label: "Wellington, NZ", lat: -41.2865, lng: 174.7762, radiusMi: 120, country: "NZ" },
+  { label: "Christchurch, NZ", lat: -43.5321, lng: 172.6362, radiusMi: 150, country: "NZ" },
+];
+
+// Japan — high WPN density, so anchor spacing is tight. Coverage follows
+// the Tokaido megalopolis (Tokyo→Osaka), Hokkaido, Kyushu, and the major
+// secondary cities. WotC's locator returns Japanese addresses; the country
+// stamp lets us skip Nominatim for these.
+export const JP_GRID: ScrapeRegion[] = [
+  { label: "Tokyo, JP", lat: 35.6762, lng: 139.6503, radiusMi: 60, country: "JP" },
+  { label: "Yokohama, JP", lat: 35.4437, lng: 139.6380, radiusMi: 50, country: "JP" },
+  { label: "Saitama, JP", lat: 35.8617, lng: 139.6455, radiusMi: 50, country: "JP" },
+  { label: "Chiba, JP", lat: 35.6074, lng: 140.1065, radiusMi: 50, country: "JP" },
+  { label: "Nagoya, JP", lat: 35.1815, lng: 136.9066, radiusMi: 80, country: "JP" },
+  { label: "Kyoto, JP", lat: 35.0116, lng: 135.7681, radiusMi: 50, country: "JP" },
+  { label: "Osaka, JP", lat: 34.6937, lng: 135.5023, radiusMi: 50, country: "JP" },
+  { label: "Kobe, JP", lat: 34.6901, lng: 135.1955, radiusMi: 50, country: "JP" },
+  { label: "Hiroshima, JP", lat: 34.3853, lng: 132.4553, radiusMi: 100, country: "JP" },
+  { label: "Sendai, JP", lat: 38.2682, lng: 140.8694, radiusMi: 100, country: "JP" },
+  { label: "Sapporo, JP", lat: 43.0618, lng: 141.3545, radiusMi: 150, country: "JP" },
+  { label: "Fukuoka, JP", lat: 33.5904, lng: 130.4017, radiusMi: 100, country: "JP" },
+  { label: "Kumamoto, JP", lat: 32.8031, lng: 130.7079, radiusMi: 80, country: "JP" },
+  { label: "Naha, JP", lat: 26.2124, lng: 127.6809, radiusMi: 80, country: "JP" },
+  { label: "Niigata, JP", lat: 37.9026, lng: 139.0232, radiusMi: 100, country: "JP" },
+  { label: "Kanazawa, JP", lat: 36.5613, lng: 136.6562, radiusMi: 100, country: "JP" },
+];
+
+/** Named registry of all grids. Order matters only for human display in
+ *  the admin UI; runtime concat order is set by config.scrapeRegions. */
+export const REGION_GRIDS = {
+  CONUS: CONUS_GRID,
+  CA: CA_GRID,
+  UK_IE: UK_IE_GRID,
+  EU: EU_GRID,
+  AU_NZ: AU_NZ_GRID,
+  JP: JP_GRID,
+} as const;
+
+export type RegionGridKey = keyof typeof REGION_GRIDS;
+
+/** Concat the named grids into one ScrapeRegion[]. Passing no keys returns
+ *  CONUS — the historical default. */
+export function buildGrid(...keys: RegionGridKey[]): ScrapeRegion[] {
+  if (keys.length === 0) return CONUS_GRID;
+  return keys.flatMap((k) => REGION_GRIDS[k]);
+}

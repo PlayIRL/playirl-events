@@ -20,6 +20,11 @@
 export interface IpGeoResult {
   latitude: number;
   longitude: number;
+  /** ISO 3166 alpha-2 country code from ipapi.co's response, uppercase.
+   *  Optional because pre-cached entries from before this column may have
+   *  been written without it. Callers should fall back to DEFAULT_COUNTRY
+   *  when missing. */
+  countryCode?: string;
 }
 
 interface CacheEntry {
@@ -67,6 +72,7 @@ export async function geolocateIp(ip: string): Promise<IpGeoResult | null> {
       const data = (await res.json()) as {
         latitude?: number;
         longitude?: number;
+        country_code?: string;
         error?: boolean;
       };
       if (
@@ -76,7 +82,11 @@ export async function geolocateIp(ip: string): Promise<IpGeoResult | null> {
         Number.isFinite(data.latitude) &&
         Number.isFinite(data.longitude)
       ) {
-        result = { latitude: data.latitude, longitude: data.longitude };
+        result = {
+          latitude: data.latitude,
+          longitude: data.longitude,
+          countryCode: data.country_code?.toUpperCase(),
+        };
       }
     }
   } catch {

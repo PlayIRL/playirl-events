@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { requireRole } from "@/lib/session";
+import { COUNTRY_COOKIE, DEFAULT_LOCALE, LOCALE_COOKIE } from "@/lib/locale";
 import { getSavedEvents } from "@/lib/event-saves";
 import { getEventsByOwner } from "@/lib/events";
 import { listSourcesForUser } from "@/lib/user-sources";
@@ -114,6 +116,11 @@ async function OverviewTab({ userId }: { userId: string }) {
   const prefs = getPreferences(userId);
   const config = getConfig();
   const fallbackLocationLabel = `${config.location.city}, ${config.location.state}`;
+  // Locale/country prefs live in cookies (same store consulted by anonymous
+  // pages); read them so the editor can pre-fill its selects.
+  const cookieStore = await cookies();
+  const localeCookie = cookieStore.get(LOCALE_COOKIE)?.value ?? "";
+  const countryCookie = cookieStore.get(COUNTRY_COOKIE)?.value ?? "";
 
   // Lightweight counts to surface activity at a glance. Each row links into
   // the corresponding tab so the overview doubles as a directory.
@@ -130,6 +137,8 @@ async function OverviewTab({ userId }: { userId: string }) {
           radius_miles: prefs.radius_miles,
           days_ahead: prefs.days_ahead,
           formats: prefs.formats,
+          locale: localeCookie,
+          country: countryCookie,
         }}
         fallbackLocationLabel={fallbackLocationLabel}
       />
@@ -353,7 +362,10 @@ function EventListSection({
 
 function formatShortDate(dateStr: string): string {
   const d = new Date(`${dateStr}T12:00:00`);
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  // Short date used in micro-cards across the account dashboard. Kept on
+  // DEFAULT_LOCALE rather than per-request locale because these helpers
+  // run in deeply nested server components without easy headers() access.
+  return d.toLocaleDateString(DEFAULT_LOCALE, { month: "short", day: "numeric" });
 }
 
 async function DiscordTab({ userId }: { userId: string }) {

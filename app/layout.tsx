@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Figtree, Space_Grotesk, Space_Mono } from "next/font/google";
 import localFont from "next/font/local";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { SITE_URL } from "@/lib/config";
+import { CONSENT_COOKIE, getServerCountry, getServerLocale, isGdprCountry } from "@/lib/locale";
 import "./globals.css";
 import ThemeSync from "./theme-sync";
+import CookieBanner from "./cookie-banner";
 
 // Viewport / theme-color split out of `metadata` per the Next.js 14+ API.
 // Critical on mobile: without `width=device-width, initial-scale=1`, iOS
@@ -102,12 +104,33 @@ export default async function RootLayout({
   // first visit there's no cookie yet, so we render light and ThemeSync
   // re-applies the user's system preference on hydration; subsequent
   // visits read the cookie and SSR with no flash.
-  const themeCookie = (await cookies()).get("theme")?.value;
+  const cookieStore = await cookies();
+  const themeCookie = cookieStore.get("theme")?.value;
   const isDark = themeCookie === "dark";
+
+  // Decide whether to render the cookie banner. Two gates:
+  //   1. The viewer's country is GDPR-covered (EU/EEA + UK + CH).
+  //   2. They haven't already acknowledged via the consent cookie.
+  // The component itself re-checks the cookie client-side so a same-tab
+  // dismiss persists without a refresh; the server gate just avoids
+  // shipping the banner JSX to viewers outside the consent zone at all.
+  // PLAYIRL_FORCE_CONSENT=1 overrides the country gate for QA / staging.
+  const consentAck = cookieStore.get(CONSENT_COOKIE)?.value === "ack";
+  const requestHeaders = await headers();
+  const viewerCountry = getServerCountry(requestHeaders);
+  const viewerLocale = getServerLocale(requestHeaders);
+  const forceConsent = process.env.PLAYIRL_FORCE_CONSENT === "1";
+  const showConsent = !consentAck && (forceConsent || isGdprCountry(viewerCountry));
 
   return (
     <html
-      lang="en"
+      // Dynamic language attribute drives:
+      //   - Assistive tech (screen readers pronounce content correctly)
+      //   - Search engines that segment SERPs by language
+      //   - Browser auto-translate prompts (don't fire for already-matching tags)
+      // We render the BCP-47 form ("fr-FR") rather than just the language part
+      // ("fr") so country-flavored variants (en-GB vs en-US) survive.
+      lang={viewerLocale}
       className={`${figtree.variable} ${spaceGrotesk.variable} ${spaceMono.variable} ${cardTitleFont.variable} antialiased${isDark ? " dark" : ""}`}
       style={{ colorScheme: isDark ? "dark" : "light" }}
       suppressHydrationWarning
@@ -115,6 +138,7 @@ export default async function RootLayout({
       <body className="min-h-[100dvh] flex flex-col font-[family-name:var(--font-inter)] text-neutral-900 dark:text-neutral-100">
         <ThemeSync />
         {children}
+        {showConsent && <CookieBanner locale={viewerLocale} />}
       </body>
     </html>
   );

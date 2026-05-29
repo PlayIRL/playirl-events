@@ -117,7 +117,11 @@ export async function fetchAllSources(): Promise<{ events: ScrapedEvent[]; stats
     const job = jobs[i];
     const res = results[i];
     if (res.status === "fulfilled") {
-      all.push(...res.value.events);
+      // Loop append rather than `all.push(...arr)`. The spread-into-push form
+      // becomes a function call with N args; at N=133k+ (Japan-inclusive
+      // WotC sweep) V8 blows the call stack with RangeError. Manual loop
+      // is O(n) the same way but allocates no spread arglist.
+      for (const ev of res.value.events) all.push(ev);
       stats.bySource[job.name] = res.value.events.length;
     } else {
       const message = res.reason instanceof Error

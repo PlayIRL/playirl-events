@@ -1,10 +1,26 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface Settings {
   scrape_interval_hours: string;
   last_scrape: string;
   last_scrape_result: string;
+  last_scrape_regions_wotc: string;
+}
+
+interface RegionStat {
+  label: string;
+  country?: string;
+  storesFetched: number;
+  storesError?: string;
+  eventsFetched: number;
+  eventsError?: string;
+  durationMs: number;
+}
+
+interface RegionStatsPayload {
+  ts: string;
+  regions: RegionStat[];
 }
 
 interface HistoryRow {
@@ -111,6 +127,41 @@ export default function ScrapersPage() {
 
   const last = settings?.last_scrape ? new Date(settings.last_scrape).toLocaleString() : "never";
 
+  // Decode the per-region health blob and pre-compute the views the table
+  // needs (sorted variants, total event count). useMemo keeps this off the
+  // hot render path when nothing in settings changed.
+  const regionStats = useMemo<RegionStatsPayload | null>(() => {
+    const raw = settings?.last_scrape_regions_wotc;
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw) as RegionStatsPayload;
+    } catch {
+      return null;
+    }
+  }, [settings?.last_scrape_regions_wotc]);
+  const [regionSort, setRegionSort] = useState<"events" | "stores" | "duration" | "errors" | "label">("events");
+  const sortedRegions = useMemo(() => {
+    if (!regionStats) return [] as RegionStat[];
+    const rows = [...regionStats.regions];
+    const dir = regionSort === "label" ? 1 : -1; // numeric sorts descend
+    rows.sort((a, b) => {
+      switch (regionSort) {
+        case "events":   return dir * (a.eventsFetched - b.eventsFetched);
+        case "stores":   return dir * (a.storesFetched - b.storesFetched);
+        case "duration": return dir * (a.durationMs - b.durationMs);
+        case "errors": {
+          const ae = (a.storesError ? 1 : 0) + (a.eventsError ? 1 : 0);
+          const be = (b.storesError ? 1 : 0) + (b.eventsError ? 1 : 0);
+          return dir * (ae - be);
+        }
+        case "label":
+        default:
+          return dir * a.label.localeCompare(b.label);
+      }
+    });
+    return rows;
+  }, [regionStats, regionSort]);
+
   return (
     <div className="p-6 lg:p-8 max-w-3xl">
       <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-neutral-100 mb-6">
@@ -188,6 +239,83 @@ export default function ScrapersPage() {
           </div>
         )}
       </section>
+
+      {regionStats && (
+        <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5 mb-4">
+          <div className="flex items-baseline justify-between gap-3 flex-wrap mb-2">
+            <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+              WotC region health
+            </h2>
+            <span className="text-[11px] text-neutral-500 dark:text-neutral-400">
+              {regionStats.regions.length} anchors · captured {new Date(regionStats.ts).toLocaleString()}
+            </span>
+          </div>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
+            Per-anchor event + store counts from the last WotC scrape. Sort by
+            errors first to triage failures; sort by events to spot outliers
+            (Tokyo&apos;s 11k vs Boston&apos;s 3k is real, but a JP anchor
+            returning 0 events isn&apos;t).
+          </p>
+          <div className="flex gap-2 items-center mb-3">
+            <label className="text-xs text-neutral-600 dark:text-neutral-400">Sort by:</label>
+            <select
+              value={regionSort}
+              onChange={(e) => setRegionSort(e.target.value as typeof regionSort)}
+              className="text-xs px-2 py-1 border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
+            >
+              <option value="events">Events ↓</option>
+              <option value="stores">Stores ↓</option>
+              <option value="duration">Duration ↓</option>
+              <option value="errors">Errors first</option>
+              <option value="label">Label A→Z</option>
+            </select>
+          </div>
+          <div className="overflow-x-auto max-h-[500px] overflow-y-auto border border-neutral-100 dark:border-neutral-800 rounded-md">
+            <table className="w-full text-xs">
+              <thead className="bg-neutral-50 dark:bg-neutral-900 sticky top-0">
+                <tr className="text-neutral-500 dark:text-neutral-400 text-left">
+                  <th className="py-1.5 px-3 font-normal">Region</th>
+                  <th className="py-1.5 px-3 font-normal">CC</th>
+                  <th className="py-1.5 px-3 font-normal text-right">Stores</th>
+                  <th className="py-1.5 px-3 font-normal text-right">Events</th>
+                  <th className="py-1.5 px-3 font-normal text-right">Time</th>
+                  <th className="py-1.5 px-3 font-normal">Errors</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedRegions.map((r, i) => {
+                  const hasError = r.storesError || r.eventsError;
+                  return (
+                    <tr
+                      key={`${r.label}-${i}`}
+                      className={`border-t border-neutral-100 dark:border-neutral-800 ${hasError ? "bg-red-50/30 dark:bg-red-950/20" : ""}`}
+                    >
+                      <td className="py-1.5 px-3 text-neutral-700 dark:text-neutral-300 whitespace-nowrap">
+                        {r.label}
+                      </td>
+                      <td className="py-1.5 px-3 text-neutral-500 dark:text-neutral-400 font-mono">
+                        {r.country ?? "—"}
+                      </td>
+                      <td className="py-1.5 px-3 text-right tabular-nums text-neutral-700 dark:text-neutral-300">
+                        {r.storesFetched}
+                      </td>
+                      <td className="py-1.5 px-3 text-right tabular-nums text-neutral-700 dark:text-neutral-300">
+                        {r.eventsFetched.toLocaleString()}
+                      </td>
+                      <td className="py-1.5 px-3 text-right tabular-nums text-neutral-500 dark:text-neutral-400">
+                        {(r.durationMs / 1000).toFixed(1)}s
+                      </td>
+                      <td className="py-1.5 px-3 text-red-700 dark:text-red-400 max-w-[300px] truncate" title={[r.storesError, r.eventsError].filter(Boolean).join(" | ")}>
+                        {[r.storesError, r.eventsError].filter(Boolean).join(" · ")}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      )}
 
       <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5">
         <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-1">Auto-refresh interval</h2>

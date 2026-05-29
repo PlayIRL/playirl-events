@@ -271,7 +271,7 @@ export function validateSubScope(args: {
   const hasRadius = typeof args.radius_miles === "number" && args.radius_miles > 0;
 
   if (!hasLabel || !hasCenter) {
-    return "Location is required. Enter a city, ZIP, or address.";
+    return "Location is required. Enter a city, postcode, or address.";
   }
   if (!hasRadius) {
     return "Radius is required. Pick how many miles from your location to include.";

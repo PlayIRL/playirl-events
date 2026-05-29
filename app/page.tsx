@@ -7,7 +7,10 @@ import { getPreferences, setPreferences } from "@/lib/user-preferences";
 import { getCurrentUser } from "@/lib/session";
 import { resolveEventImage } from "@/lib/event-image";
 import { dateStrInTz, eventVenueDate } from "@/lib/format-time";
+import { getServerCountry, getServerLocale } from "@/lib/locale";
+import { preferredDistanceUnit } from "@/lib/distance";
 import { DEFAULT_LOCATION_LABEL, resolveUserLocation } from "@/lib/user-location";
+import { t } from "@/lib/i18n";
 import DateJumper from "./date-jumper";
 import RadiusSelector from "./radius-selector";
 import CalendarView from "./calendar-view";
@@ -27,13 +30,14 @@ function dayHeadingLabel(
   todayStr: string,
   tomorrowStr: string,
   yesterdayStr: string,
+  locale: string,
 ): string {
   const d = new Date(dateStr + "T12:00:00");
-  const weekday = d.toLocaleDateString("en-US", { weekday: "long" });
-  const monthDay = d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-  if (dateStr === todayStr) return `Today · ${weekday}, ${monthDay}`;
-  if (dateStr === tomorrowStr) return `Tomorrow · ${weekday}, ${monthDay}`;
-  if (dateStr === yesterdayStr) return `Yesterday · ${weekday}, ${monthDay}`;
+  const weekday = d.toLocaleDateString(locale, { weekday: "long" });
+  const monthDay = d.toLocaleDateString(locale, { month: "short", day: "numeric" });
+  if (dateStr === todayStr) return `${t("homepage.today", undefined, locale)} · ${weekday}, ${monthDay}`;
+  if (dateStr === tomorrowStr) return `${t("homepage.tomorrow", undefined, locale)} · ${weekday}, ${monthDay}`;
+  if (dateStr === yesterdayStr) return `${t("homepage.yesterday", undefined, locale)} · ${weekday}, ${monthDay}`;
   return `${weekday}, ${monthDay}`;
 }
 
@@ -81,12 +85,16 @@ export default async function HomePage({
   // See lib/user-location.ts for the full hierarchy + flag semantics.
   // `isFromUser` covers URL/prefs/IP (drives distance display); `isCustom`
   // is URL/prefs only (drives the LocationBanner nudge).
+  const requestHeaders = await headers();
+  const locale = getServerLocale(requestHeaders);
+  const viewerCountry = getServerCountry(requestHeaders);
+  const distanceUnit = preferredDistanceUnit(viewerCountry);
   const resolvedLocation = await resolveUserLocation({
     urlLat: params.lat,
     urlLng: params.lng,
     urlLabel: params.loc,
     prefs,
-    requestHeaders: await headers(),
+    requestHeaders,
   });
   const currentLocationLat = resolvedLocation.lat;
   const currentLocationLng = resolvedLocation.lng;
@@ -243,13 +251,15 @@ export default async function HomePage({
           currentLocationLabel={currentLocationLabel}
           defaultLocationLabel={DEFAULT_LOCATION_LABEL}
           isLocationCustom={isLocationCustom}
+          locale={locale}
+          distanceUnit={distanceUnit}
         />
       </StickyBar>
 
       {/* First-visit nudge for users still on the default location. Renders
           a dismissable banner with a "Change location" CTA so users who
           declined the silent geolocation prompt have a clear path forward. */}
-      <LocationBanner isDefault={!isLocationCustom} defaultLabel={DEFAULT_LOCATION_LABEL} />
+      <LocationBanner isDefault={!isLocationCustom} defaultLabel={DEFAULT_LOCATION_LABEL} locale={locale} />
 
       {currentView === "calendar" ? (
         <div
@@ -264,6 +274,7 @@ export default async function HomePage({
             events={events}
             userLat={hasUserLocation ? currentLocationLat : null}
             userLng={hasUserLocation ? currentLocationLng : null}
+            distanceUnit={distanceUnit}
           />
         </div>
       ) : currentView === "map" ? (
@@ -302,11 +313,11 @@ export default async function HomePage({
                   <DayCard
                     key={date}
                     date={date}
-                    weekday={d.toLocaleDateString("en-US", { weekday: "long" })}
+                    weekday={d.toLocaleDateString(locale, { weekday: "long" })}
                     isToday={date === todayStr}
                     isPast={false}
                     events={dayEvents}
-                    headingLabel={dayHeadingLabel(date, todayStr, tomorrowStr, yesterdayStr)}
+                    headingLabel={dayHeadingLabel(date, todayStr, tomorrowStr, yesterdayStr, locale)}
                     staggerBase={Math.min(i * 60, 120)}
                     signedIn={signedIn}
                     isAdmin={isAdmin}
@@ -314,6 +325,7 @@ export default async function HomePage({
                     userLat={hasUserLocation ? currentLocationLat : null}
                     userLng={hasUserLocation ? currentLocationLng : null}
                     fakeLiveEventIds={fakeLiveEventIds}
+                    distanceUnit={distanceUnit}
                   />
                 );
               })}

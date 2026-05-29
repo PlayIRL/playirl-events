@@ -18,6 +18,8 @@
 import { config } from "./config";
 import { getLabelForCoords } from "./geocode";
 import { clientIpFromHeaders, geolocateIp } from "./ip-geo";
+import { getServerCountry } from "./locale";
+import { getCountryDefaultLocation } from "./country-defaults";
 import type { UserPreferences } from "./user-preferences";
 
 export const DEFAULT_LOCATION_LABEL = "Philly";
@@ -80,7 +82,10 @@ export async function resolveUserLocation(opts: {
     };
   }
 
-  // 3. IP geolocation. Best-effort; never throws.
+  // 3. IP geolocation. Best-effort; never throws. If IP-geo succeeds with
+  // coords, we return immediately. If it fails or returns no coords, fall
+  // through to the country-aware default below — `getServerCountry` will
+  // re-parse Accept-Language / cookies independently of IP-geo's outcome.
   if (requestHeaders) {
     const ip = clientIpFromHeaders(requestHeaders);
     if (ip) {
@@ -99,7 +104,32 @@ export async function resolveUserLocation(opts: {
     }
   }
 
-  // 4. Hardcoded default.
+  // 4. Country-aware fallback. If we know the viewer's country from a
+  // cookie or Accept-Language, drop them onto that country's default city
+  // rather than Philly. Beats showing every German first-time visitor
+  // "events near Philadelphia" when IP-geo can't see them (corporate VPN,
+  // private network, throttled API).
+  if (requestHeaders) {
+    const viewerCountry = getServerCountry(requestHeaders);
+    const def = getCountryDefaultLocation(viewerCountry);
+    // Skip the override for US — US viewers expect the existing Philly
+    // default (the original audience). Only fire the override for countries
+    // we explicitly cover and that AREN'T the historical default.
+    if (def && viewerCountry !== "US") {
+      return {
+        lat: def.lat,
+        lng: def.lng,
+        label: def.label,
+        // isFromUser=true because the country signal IS a real (if coarse)
+        // viewer signal — drives the LocationBanner nudge the same way the
+        // IP-geo result does.
+        isFromUser: true,
+        isCustom: false,
+      };
+    }
+  }
+
+  // 5. Final hardcoded default (Philly).
   return {
     lat: config.location.lat,
     lng: config.location.lng,

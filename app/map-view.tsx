@@ -11,6 +11,7 @@ import {
 } from "@vis.gl/react-google-maps";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq } from "@/lib/format-style";
 import { formatEventTime, pickEventTimezone } from "@/lib/format-time";
+import { DEFAULT_LOCALE } from "@/lib/locale";
 
 const METERS_PER_MILE = 1609.344;
 // Round to ~10m precision so events at the same physical venue collapse to a
@@ -352,5 +353,5 @@ function MovementWatcher({
 
 function formatShortDate(dateStr: string): string {
   const d = new Date(`${dateStr}T12:00:00`);
-  return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+  return d.toLocaleDateString(DEFAULT_LOCALE, { weekday: "short", month: "short", day: "numeric" });
 }

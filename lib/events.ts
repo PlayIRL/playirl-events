@@ -10,6 +10,18 @@ export interface EventRow {
   location: string;
   address: string;
   cost: string;
+  /** ISO 4217 currency code for the entry fee ("USD", "EUR", "GBP", "JPY").
+   *  Empty when the source didn't carry one or the event is free. */
+  currency: string;
+  /** Entry fee in minor units (cents/pence/yen). NULL = unknown, 0 = free.
+   *  Use this in tandem with `currency` for any new price rendering — the
+   *  `cost` string keeps the historical, source-baked label for back-compat. */
+  entry_fee_minor: number | null;
+  /** ISO 3166 alpha-2 country code ("US", "GB", "JP"). Empty for legacy
+   *  rows scraped before the column existed and for events with no resolved
+   *  venue coords. Used by display layers to decide currency formatting,
+   *  distance units, and date locale. */
+  country: string;
   store_url: string;
   detail_url: string;
   latitude: number | null;
@@ -60,6 +72,13 @@ export interface ScrapedEvent {
   latitude?: number | null;
   longitude?: number | null;
   source: string;
+  /** ISO 4217 currency for the entry fee. Empty when free/unknown. */
+  currency?: string;
+  /** Entry fee in minor units (cents/pence/yen). NULL = unknown, 0 = free. */
+  entry_fee_minor?: number | null;
+  /** ISO 3166 alpha-2 country code. Empty when the venue's country couldn't
+   *  be resolved at scrape time. */
+  country?: string;
   /** User-connected sources (e.g. private Discord) set owner_id + source_type + status. */
   owner_id?: string | null;
   source_type?: string;
@@ -82,16 +101,17 @@ export function upsertEvents(events: ScrapedEvent[]): {
   const getStmt = db.prepare("SELECT status, notes, added_date, owner_id, source_type, image_url FROM events WHERE id = ?");
 
   const insertStmt = db.prepare(`
-    INSERT INTO events (id, title, format, date, time, timezone, location, address, cost, store_url, detail_url, latitude, longitude, source, status, notes, description, added_date, updated_date, owner_id, source_type, image_url)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', ?, ?, ?, ?, ?, ?)
+    INSERT INTO events (id, title, format, date, time, timezone, location, address, cost, currency, entry_fee_minor, country, store_url, detail_url, latitude, longitude, source, status, notes, description, added_date, updated_date, owner_id, source_type, image_url)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', ?, ?, ?, ?, ?, ?)
   `);
 
   // Note: owner_id and source_type are intentionally omitted from UPDATE so they survive scraper re-runs (same pattern as pinned/skip).
   // image_url is preserved when an existing row already has one — uploads should never get clobbered by a re-scrape.
   // `notes` is also omitted: host/admin-authored, scrapers must not overwrite it.
   // `description` IS refreshed on every update — it's source-authoritative.
+  // currency, entry_fee_minor, country ARE refreshed on update — source-authoritative.
   const updateStmt = db.prepare(`
-    UPDATE events SET title=?, format=?, date=?, time=?, timezone=?, location=?, address=?, cost=?, store_url=?, detail_url=?, latitude=?, longitude=?, source=?, status=?, updated_date=?, image_url=?, description=?
+    UPDATE events SET title=?, format=?, date=?, time=?, timezone=?, location=?, address=?, cost=?, currency=?, entry_fee_minor=?, country=?, store_url=?, detail_url=?, latitude=?, longitude=?, source=?, status=?, updated_date=?, image_url=?, description=?
     WHERE id=?
   `);
 
@@ -106,7 +126,7 @@ export function upsertEvents(events: ScrapedEvent[]): {
       if (!existing) {
         const insertStatus = ev.status ?? "active";
         const insertSourceType = ev.source_type ?? "scraper";
-        insertStmt.run(ev.id, ev.title, ev.format, ev.date, ev.time, ev.timezone, ev.location, ev.address, ev.cost, ev.store_url, ev.detail_url, ev.latitude ?? null, ev.longitude ?? null, ev.source, insertStatus, ev.description ?? "", now, now, ev.owner_id ?? null, insertSourceType, ev.image_url ?? "");
+        insertStmt.run(ev.id, ev.title, ev.format, ev.date, ev.time, ev.timezone, ev.location, ev.address, ev.cost, ev.currency ?? "", ev.entry_fee_minor ?? null, ev.country ?? "", ev.store_url, ev.detail_url, ev.latitude ?? null, ev.longitude ?? null, ev.source, insertStatus, ev.description ?? "", now, now, ev.owner_id ?? null, insertSourceType, ev.image_url ?? "");
         added++;
       } else if (existing.source_type === "organizer" || existing.source_type === "user" || existing.source_type === "user-discord" || existing.owner_id) {
         // User- and organizer-owned events are authoritative — never overwritten by re-scrapes.
@@ -124,7 +144,7 @@ export function upsertEvents(events: ScrapedEvent[]): {
             : "active";
         // Keep an existing image_url if the re-scrape doesn't carry one.
         const nextImage = ev.image_url || existing.image_url || "";
-        updateStmt.run(ev.title, ev.format, ev.date, ev.time, ev.timezone, ev.location, ev.address, ev.cost, ev.store_url, ev.detail_url, ev.latitude ?? null, ev.longitude ?? null, ev.source, status, now, nextImage, ev.description ?? "", ev.id);
+        updateStmt.run(ev.title, ev.format, ev.date, ev.time, ev.timezone, ev.location, ev.address, ev.cost, ev.currency ?? "", ev.entry_fee_minor ?? null, ev.country ?? "", ev.store_url, ev.detail_url, ev.latitude ?? null, ev.longitude ?? null, ev.source, status, now, nextImage, ev.description ?? "", ev.id);
         updated++;
       }
     }
@@ -354,8 +374,8 @@ export function createEvent(input: EventInput & { id: string; title: string; dat
   const db = getDb();
   const now = new Date().toISOString().split("T")[0];
   db.prepare(`
-    INSERT INTO events (id, title, format, date, time, timezone, location, address, cost, store_url, detail_url, latitude, longitude, source, status, notes, description, added_date, updated_date, owner_id, source_type, image_url, capacity, rsvp_enabled, visibility)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO events (id, title, format, date, time, timezone, location, address, cost, currency, entry_fee_minor, country, store_url, detail_url, latitude, longitude, source, status, notes, description, added_date, updated_date, owner_id, source_type, image_url, capacity, rsvp_enabled, visibility)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `).run(
     input.id,
     input.title,
@@ -366,6 +386,9 @@ export function createEvent(input: EventInput & { id: string; title: string; dat
     input.location ?? "",
     input.address ?? "",
     input.cost ?? "",
+    input.currency ?? "",
+    input.entry_fee_minor ?? null,
+    input.country ?? "",
     input.store_url ?? "",
     input.detail_url ?? "",
     input.latitude ?? null,
@@ -419,12 +442,15 @@ export function updateEvent(id: string, patch: EventInput): EventRow | undefined
   db.prepare(`
     UPDATE events SET
       title=?, format=?, date=?, time=?, timezone=?, location=?, address=?, cost=?,
+      currency=?, entry_fee_minor=?, country=?,
       store_url=?, detail_url=?, latitude=?, longitude=?, status=?, notes=?, description=?, image_url=?,
       capacity=?, rsvp_enabled=?, visibility=?, updated_date=?
     WHERE id=?
   `).run(
     merged.title, merged.format, merged.date, merged.time, merged.timezone, merged.location,
-    merged.address, merged.cost, merged.store_url, merged.detail_url,
+    merged.address, merged.cost,
+    merged.currency ?? "", merged.entry_fee_minor ?? null, merged.country ?? "",
+    merged.store_url, merged.detail_url,
     merged.latitude ?? null, merged.longitude ?? null,
     merged.status, merged.notes, merged.description ?? "", merged.image_url ?? "",
     normalizeCapacity(merged.capacity), merged.rsvp_enabled ? 1 : 0,

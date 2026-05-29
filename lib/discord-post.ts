@@ -6,6 +6,7 @@ import { fromZonedTime } from "date-fns-tz";
 import type { EventRow } from "./events";
 import { listPostedMessagesForEvent } from "./discord-subscriptions";
 import { SITE_URL } from "./config";
+import { DEFAULT_LOCALE } from "./locale";
 import {
   FORMAT_EMOJI,
   FORMAT_EMOJI_DEFAULT,
@@ -113,8 +114,12 @@ function escapeMarkdown(text: string): string {
 
 function formatDateLabel(dateStr: string): string {
   const d = new Date(`${dateStr}T12:00:00Z`);
-  const weekday = d.toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" });
-  const monthDay = d.toLocaleDateString("en-US", { month: "long", day: "numeric", timeZone: "UTC" });
+  // Discord channel posts: messages are addressed to a Discord audience
+  // whose own client renders timestamps in their personal locale. The text
+  // headers stay on DEFAULT_LOCALE so a single subscription doesn't render
+  // different copy across servers.
+  const weekday = d.toLocaleDateString(DEFAULT_LOCALE, { weekday: "long", timeZone: "UTC" });
+  const monthDay = d.toLocaleDateString(DEFAULT_LOCALE, { month: "long", day: "numeric", timeZone: "UTC" });
   return `${weekday}, ${monthDay}`;
 }
 

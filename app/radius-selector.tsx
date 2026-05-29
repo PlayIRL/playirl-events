@@ -6,6 +6,9 @@ import { FORMAT_DOT } from "@/lib/format-style";
 import LocationPicker from "./location-picker";
 import { DiscordIcon } from "./discord-icon";
 import FeedbackButton from "./feedback-button";
+import { DEFAULT_LOCALE } from "@/lib/locale";
+import { t } from "@/lib/i18n";
+import type { DistanceUnit } from "@/lib/distance";
 
 // Build the canonical /calendar URL given the user's current filter state.
 // Empty/falsy filters are omitted so subscribers to the bare /calendar
@@ -39,7 +42,7 @@ function getTimeOptions() {
     const endOfMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0);
     const daysUntilEnd = Math.ceil((endOfMonth.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
     if (daysUntilEnd < 3) continue;
-    const label = i === 0 ? "This month" : d.toLocaleDateString("en-US", { month: "long" });
+    const label = i === 0 ? "This month" : d.toLocaleDateString(DEFAULT_LOCALE, { month: "long" });
     options.push({ value: String(daysUntilEnd), label });
   }
 
@@ -589,6 +592,8 @@ export default function RadiusSelector({
   currentLocationLabel,
   defaultLocationLabel,
   isLocationCustom,
+  locale = DEFAULT_LOCALE,
+  distanceUnit = "mi",
 }: {
   currentRadius: number;
   currentDays: number;
@@ -609,7 +614,16 @@ export default function RadiusSelector({
   defaultLocationLabel: string;
   /** True when the URL or user prefs have set a non-default location. */
   isLocationCustom: boolean;
+  /** Server-resolved BCP-47 locale. Drives chip labels via t(). */
+  locale?: string;
+  /** Server-resolved preferred unit ("mi" for US/UK, "km" otherwise). Drives
+   *  the connector word ("miles of" vs "kilometers of") and the custom radius
+   *  input's unit annotation. The radius VALUE itself stays in miles
+   *  internally so existing URL params + RADIUS_OPTIONS stay backward
+   *  compatible — only the display flips. */
+  distanceUnit?: DistanceUnit;
 }) {
+  const tr = (key: string, params?: Record<string, string | number>) => t(key, params, locale);
   function updateParam(key: string, value: string) {
     const url = new URL(window.location.href);
     if (value) {
@@ -634,11 +648,22 @@ export default function RadiusSelector({
   }
 
   const formatOptions = [
-    { value: "", label: "All formats", dot: "bg-neutral-400 dark:bg-neutral-600" },
+    { value: "", label: tr("filters.all_formats"), dot: "bg-neutral-400 dark:bg-neutral-600" },
     ...formats.map((f) => ({ value: f, label: f, dot: FORMAT_DOT[f] || "bg-neutral-400" })),
   ];
 
-  const radiusOptions = RADIUS_OPTIONS.map((r) => ({ value: String(r), label: `${r} ${r === 1 ? "mile" : "miles"}` }));
+  // Radius display: dropdown labels show the value in the viewer's preferred
+  // unit (rounded to whole numbers — preset list is already "round" miles,
+  // and rounded km approximations are good enough for a discoverable preset).
+  // The stored value is still miles so URL params + back-compat hold.
+  const unitLabel = distanceUnit === "km" ? "km" : "mi";
+  const radiusOptions = RADIUS_OPTIONS.map((r) => {
+    if (distanceUnit === "km") {
+      const km = Math.round(r * 1.60934);
+      return { value: String(r), label: `${km} km` };
+    }
+    return { value: String(r), label: `${r} ${r === 1 ? "mile" : "miles"}` };
+  });
 
   return (
     <>
@@ -656,7 +681,7 @@ export default function RadiusSelector({
           React-19 hydration warning + DOM-nesting error in the console. */}
       <div className="text-neutral-500 dark:text-neutral-400 flex items-center justify-center flex-wrap gap-x-1.5 gap-y-1 text-lg sm:text-xl leading-relaxed font-[family-name:var(--font-ultra)] font-bold">
         <ChipSelect
-          label={currentRcq ? `${currentFormat || "All"} RCQ` : (currentFormat || "All MTG")}
+          label={currentRcq ? `${currentFormat || "All"} RCQ` : (currentFormat || tr("filters.all_mtg"))}
           heading="Format"
           options={formatOptions}
           value={currentFormat || ""}
@@ -664,14 +689,14 @@ export default function RadiusSelector({
           dot
           align="start"
           toggle={{
-            label: "RCQs only",
-            description: "Regional Championship Qualifiers — competitive WPN events.",
+            label: tr("filters.rcq_only_label"),
+            description: tr("filters.rcq_only_help"),
             checked: currentRcq,
             onChange: (checked) => updateParam("rcq", checked ? "1" : ""),
           }}
         />
 
-        <span className={CONNECTOR}>events within</span>
+        <span className={CONNECTOR}>{tr("filters.events_within")}</span>
 
         <ChipSelect
           label={`${currentRadius}`}
@@ -679,7 +704,7 @@ export default function RadiusSelector({
           options={radiusOptions}
           value={String(currentRadius)}
           onChange={(v) => updateParam("radius", v)}
-          custom={{ unit: "miles", placeholder: String(currentRadius), min: 1, max: 500 }}
+          custom={{ unit: unitLabel, placeholder: String(currentRadius), min: 1, max: 500 }}
           mono
         />
 
@@ -690,12 +715,15 @@ export default function RadiusSelector({
             the sentence fits on one line. */}
         <span aria-hidden="true" className="basis-full h-0 sm:hidden" />
 
-        <span className={CONNECTOR}>miles of</span>
+        <span className={CONNECTOR}>
+          {distanceUnit === "km" ? tr("filters.kilometers_of") : tr("filters.miles_of")}
+        </span>
 
         <LocationPicker
           currentLabel={currentLocationLabel}
           defaultLabel={defaultLocationLabel}
           isCustom={isLocationCustom}
+          locale={locale}
         />
 
         {/* "= N" event count hidden per user request. Re-enable by un-commenting. */}
