@@ -7,7 +7,7 @@ import { getPreferences } from "@/lib/user-preferences";
 import { getCurrentUser } from "@/lib/session";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { eventDisplayStatus, formatEventTimeRange } from "@/lib/format-time";
+import { eventDisplayStatus, formatEventTimeRange, pickEventTimezone } from "@/lib/format-time";
 import { resolveEventImage, hasRealEventImage } from "@/lib/event-image";
 import { venueSlug } from "@/lib/venues";
 import { SITE_URL } from "@/lib/config";
@@ -63,6 +63,8 @@ function buildEventDescription(ev: {
   date: string;
   time: string;
   timezone: string;
+  latitude: number | null;
+  longitude: number | null;
   cost: string;
   notes: string;
   description: string;
@@ -76,7 +78,7 @@ function buildEventDescription(ev: {
     const firstSentence = blurb.split(/(?<=[.!?])\s+/)[0] ?? blurb;
     return clampDescription(firstSentence);
   }
-  const timeRange = formatEventTimeRange(ev.date, ev.time, ev.timezone);
+  const timeRange = formatEventTimeRange(ev.date, ev.time, pickEventTimezone(ev));
   const parts = [
     ev.format && `${ev.format} MTG`,
     ev.location && `at ${ev.location}`,
@@ -439,7 +441,7 @@ export default async function EventPage({
           <div className="pb-2 border-t border-neutral-100 dark:border-white/8">
             <dl>
               <DetailRow label="Date" value={formatDate(ev.date)} mono />
-              <DetailRow label="Time" value={formatEventTimeRange(ev.date, ev.time, ev.timezone)} mono />
+              <DetailRow label="Time" value={formatEventTimeRange(ev.date, ev.time, pickEventTimezone(ev))} mono />
               <DetailRow label="Cost" value={ev.cost || "Not listed"} mono />
               {distanceLabel && (
                 <DetailRow label="Distance" value={distanceLabel} mono />

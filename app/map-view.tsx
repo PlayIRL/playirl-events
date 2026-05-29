@@ -10,7 +10,7 @@ import {
   useMap,
 } from "@vis.gl/react-google-maps";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq } from "@/lib/format-style";
-import { formatEventTime } from "@/lib/format-time";
+import { formatEventTime, pickEventTimezone } from "@/lib/format-time";
 
 const METERS_PER_MILE = 1609.344;
 // Round to ~10m precision so events at the same physical venue collapse to a
@@ -221,7 +221,7 @@ function VenuePopup({ venue }: { venue: VenueGroup }) {
               className="block text-xs leading-snug hover:underline"
             >
               <div className="text-neutral-500 font-mono tabular-nums">
-                {formatShortDate(ev.date)} · {formatEventTime(ev.date, ev.time, ev.timezone)}
+                {formatShortDate(ev.date)} · {formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}
               </div>
               <div className="text-neutral-900 font-medium">{ev.title}</div>
               {(ev.format || isRcq(ev.title)) && (

@@ -93,6 +93,55 @@ export function eventDisplayStatus(date: string, time: string): EventDisplayStat
   return "completed";
 }
 
+/**
+ * Pick the timezone we should display an event's time in.
+ *
+ * The scrapers stamp every event with `timezone = "America/New_York"`
+ * regardless of where the venue actually is (see
+ * scrapers/wizards-locator.ts:239). The stored `time` field is the
+ * event's UTC wall-clock, so the per-event timezone field controls how
+ * that UTC moment gets rendered.
+ *
+ * Defaulting that field to Eastern means a viewer anywhere — NYC, LA,
+ * anywhere — sees the same Eastern-formatted time for every event,
+ * which is wrong for non-Eastern venues. A 7pm Pacific event in LA
+ * currently displays as 10pm because the format pass converts to Eastern.
+ *
+ * At display time we re-derive the timezone from the venue's lat/lng
+ * so the LA event in the example renders as "7:00 PM" — the wall-clock
+ * a player would actually walk into the store at.
+ *
+ * Longitude-band heuristic for the four CONUS zones plus rough
+ * Alaska / Hawaii bounds. Events near zone boundaries (Arizona's
+ * year-round MST, Indiana's split, the Florida panhandle, etc.) may be
+ * an hour off — fine for an events listing. If precision matters,
+ * swap this for the `geo-tz` npm package (carries a ~50MB polygon
+ * dataset) without touching any callsites.
+ *
+ * Falls back to the stored timezone when coords are missing (date-only
+ * or online events) so the existing behavior is preserved.
+ */
+export function pickEventTimezone(
+  ev: {
+    latitude: number | null | undefined;
+    longitude: number | null | undefined;
+    timezone: string | null | undefined;
+  },
+): string {
+  const fallback = ev.timezone || DEFAULT_TZ;
+  const { latitude: lat, longitude: lng } = ev;
+  if (lat == null || lng == null) return fallback;
+  // Hawaii
+  if (lat < 23 && lng < -154) return "Pacific/Honolulu";
+  // Alaska
+  if (lat > 50 && lng < -130) return "America/Anchorage";
+  // CONUS — longitude-only.
+  if (lng < -115) return "America/Los_Angeles";
+  if (lng < -101) return "America/Denver";
+  if (lng < -87) return "America/Chicago";
+  return "America/New_York";
+}
+
 export function formatEventTime(
   date: string,
   time: string,

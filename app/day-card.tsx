@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq, showFormatBadge } from "@/lib/format-style";
-import { eventDisplayStatus, formatEventTime } from "@/lib/format-time";
+import { eventDisplayStatus, formatEventTime, pickEventTimezone } from "@/lib/format-time";
 import { formatDistanceMiles, haversineMiles } from "@/lib/distance";
 import SaveEventButton from "./save-event-button";
 import AdminEventActions from "./admin-event-actions";
@@ -212,11 +212,11 @@ export default function DayCard({
                 {status === "in_progress" ? (
                   <span className="inline-flex items-center gap-1.5 text-sm font-mono tabular-nums font-medium text-white anim-live-shine rounded-md px-1.5 py-0.5 whitespace-nowrap">
                     <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-white anim-live-pulse shrink-0" />
-                    <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
+                    <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}</span>
                   </span>
                 ) : (
                   <span className="text-sm font-mono tabular-nums text-neutral-500 dark:text-neutral-400 transition-colors duration-200 group-hover:text-neutral-700 dark:group-hover:text-neutral-200">
-                    {formatEventTime(ev.date, ev.time, ev.timezone)}
+                    {formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}
                   </span>
                 )}
               </div>
@@ -247,11 +247,11 @@ export default function DayCard({
                   {status === "in_progress" ? (
                     <span className="inline-flex items-center gap-1.5 text-xs font-mono tabular-nums font-medium text-white anim-live-shine rounded-md px-1.5 py-0.5 whitespace-nowrap">
                       <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-white anim-live-pulse shrink-0" />
-                      <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
+                      <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}</span>
                     </span>
                   ) : (
                     <span className="text-xs font-mono tabular-nums text-neutral-500 dark:text-neutral-400">
-                      {formatEventTime(ev.date, ev.time, ev.timezone)}
+                      {formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}
                     </span>
                   )}
                 </div>

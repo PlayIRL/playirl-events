@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq, showFormatBadge } from "@/lib/format-style";
-import { dateStrInTz, eventDisplayStatus, formatEventTime } from "@/lib/format-time";
+import { dateStrInTz, eventDisplayStatus, formatEventTime, pickEventTimezone } from "@/lib/format-time";
 import { formatDistanceMiles, haversineMiles } from "@/lib/distance";
 import { useStickySentinel } from "@/lib/use-sticky-sentinel";
 
@@ -214,7 +214,7 @@ export default function CalendarView({
                       <Link
                         key={ev.id}
                         href={`/event/${encodeURIComponent(ev.id)}`}
-                        title={`${ev.title}${ev.location ? ` · ${ev.location}` : ""}${distanceLabel ? ` · ${distanceLabel}` : ""}${ev.cost ? ` · ${ev.cost}` : ""} · ${formatEventTime(ev.date, ev.time, ev.timezone)}`}
+                        title={`${ev.title}${ev.location ? ` · ${ev.location}` : ""}${distanceLabel ? ` · ${distanceLabel}` : ""}${ev.cost ? ` · ${ev.cost}` : ""} · ${formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}`}
                         className={`group block rounded-md p-2 transition-all duration-150 hover:-translate-y-px hover:shadow-sm ${status === "completed" ? "opacity-50 saturate-50" : ""} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.06]" : "hover:bg-black/[0.04] dark:hover:bg-white/10"}`}
                       >
                         <div className="flex flex-col gap-px">
@@ -225,10 +225,10 @@ export default function CalendarView({
                           {status === "in_progress" ? (
                             <div className="inline-flex items-center gap-1 leading-none text-[10px] font-mono tabular-nums font-medium text-white anim-live-shine rounded px-1 py-0.5 self-start whitespace-nowrap">
                               <span aria-hidden="true" className="w-1 h-1 rounded-full bg-white anim-live-pulse shrink-0" />
-                              <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
+                              <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}</span>
                             </div>
                           ) : (
-                            <div className="text-[10px] font-mono tabular-nums text-neutral-500 dark:text-neutral-400 leading-none">{formatEventTime(ev.date, ev.time, ev.timezone)}</div>
+                            <div className="text-[10px] font-mono tabular-nums text-neutral-500 dark:text-neutral-400 leading-none">{formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}</div>
                           )}
                           {(showFormatBadge(ev.format) || isRcq(ev.title)) && (
                             <div className="inline-flex items-center gap-1 flex-wrap">
