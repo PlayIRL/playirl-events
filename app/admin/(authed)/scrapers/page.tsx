@@ -219,7 +219,7 @@ export default function ScrapersPage() {
                         {new Date(row.ts.includes("T") ? row.ts : row.ts + "Z").toLocaleString()}
                       </td>
                       <td className="py-1.5 pr-3 text-neutral-600 dark:text-neutral-400">
-                        {s?.scope ?? "—"}{s?.regions ? ` · ${s.regions}r` : ""}
+                        {s?.scope ? (s.scope === "national" ? "multi-region" : s.scope) : "—"}{s?.regions ? ` · ${s.regions}r` : ""}
                       </td>
                       <td className="py-1.5 pr-3 text-right text-neutral-700 dark:text-neutral-300">{s?.scraped ?? "—"}</td>
                       <td className="py-1.5 pr-3 text-right text-emerald-700 dark:text-emerald-400">+{s?.added ?? 0}</td>

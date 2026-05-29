@@ -98,7 +98,14 @@ export default function ConfigPage() {
     setConfig((c) => c ? { ...c, [key]: value } : c);
   }
 
-  const isNational = config.scrapeScope === "national";
+  // `isMultiRegion` is the user-facing framing of the same scrape-scope
+  // boolean — the underlying DB value stays "national" / "local" for
+  // back-compat with existing settings rows, env vars, and the CLI smoke
+  // tests, but every label, badge, and help string the admin reads says
+  // "Multi-region" because "National" actively misleads now that one
+  // scrape can sweep 30+ countries.
+  const isMultiRegion = config.scrapeScope === "national";
+  const modeLabel = isMultiRegion ? "Multi-region" : "Local";
 
   return (
     <div className="p-6 lg:p-8 max-w-3xl">
@@ -108,13 +115,13 @@ export default function ConfigPage() {
         </h1>
         <span
           className={`text-[10px] uppercase tracking-wide px-2 py-0.5 rounded-md ${
-            isNational
+            isMultiRegion
               ? "bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
               : "bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300"
           }`}
           title="Current scrape mode (editable in the Scrape mode section below)"
         >
-          Scrape mode: {config.scrapeScope}
+          Scrape mode: {modeLabel}
         </span>
       </div>
       <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-6">
@@ -126,7 +133,7 @@ export default function ConfigPage() {
       <form onSubmit={save} className="space-y-6">
         <Section
           title="Scrape mode"
-          help="Local mode scrapes one region around the Location below using the Search radius / days-ahead. National mode sweeps all anchors from the Regions section below — Location and Search settings are unused in that mode. Most production setups run national."
+          help="Local mode scrapes one region around the Location below using the Search radius / days-ahead. Multi-region mode sweeps all anchors from the Regions section below — Location and Search settings are unused in that mode. Most production setups run multi-region."
         >
           <div className="space-y-2">
             <label className="flex items-start gap-2 text-sm cursor-pointer">
@@ -137,7 +144,7 @@ export default function ConfigPage() {
                 className="mt-0.5"
               />
               <span>
-                <span className="font-medium">National</span>
+                <span className="font-medium">Multi-region</span>
                 <span className="block text-xs text-neutral-500 dark:text-neutral-400">
                   Sweep every grid you&apos;ve checked in the Regions section below. Heaviest scrape; broadest coverage.
                 </span>
@@ -163,8 +170,8 @@ export default function ConfigPage() {
         <Section
           title="Location"
           help={`Default lat/lng for the user-facing app — what signed-in users see as "near me" before they set their own location, plus the default center for ICS calendar feeds. ${
-            isNational
-              ? "Does NOT control where the scraper looks in national mode."
+            isMultiRegion
+              ? "Does NOT control where the scraper looks in multi-region mode."
               : "Also the search center for the scraper in local mode."
           }`}
         >
@@ -205,11 +212,11 @@ export default function ConfigPage() {
         <Section
           title="Search"
           help={
-            isNational
-              ? "Only used in local scrape mode. You're in national mode, so these values are currently dormant."
+            isMultiRegion
+              ? "Only used in local scrape mode. You're in multi-region mode, so these values are currently dormant."
               : "Used in local scrape mode to bound the scraper: how far from Location to search for stores, and how many days of future events to fetch."
           }
-          dimmed={isNational}
+          dimmed={isMultiRegion}
         >
           <div className="grid grid-cols-2 gap-3">
             <Field label="Radius (miles)">
@@ -237,11 +244,11 @@ export default function ConfigPage() {
         <Section
           title="Regions"
           help={
-            isNational
-              ? "Which country grids the national-mode scraper sweeps. Each anchor costs ~2 API calls per scrape (one for stores, one for events). Leaving everything unchecked falls back to the historical CONUS-only default. International events get country/currency stamped automatically."
-              : "Only used in national scrape mode. You're in local mode, so these toggles are currently dormant — switch the Scrape mode above to National to use them."
+            isMultiRegion
+              ? "Which country grids the multi-region scraper sweeps. Each anchor costs ~2 API calls per scrape (one for stores, one for events). Leaving everything unchecked falls back to the historical CONUS-only default. International events get country/currency stamped automatically."
+              : "Only used in multi-region scrape mode. You're in local mode, so these toggles are currently dormant — switch the Scrape mode above to Multi-region to use them."
           }
-          dimmed={!isNational}
+          dimmed={!isMultiRegion}
         >
           <div className="grid sm:grid-cols-2 gap-2">
             {REGION_OPTIONS.map((opt) => {
@@ -287,7 +294,7 @@ export default function ConfigPage() {
             return (
               <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-2">
                 {totalAnchors} anchors active · ~{apiCalls} API calls per scrape
-                {isNational ? "" : " (dormant — National mode not selected)"}
+                {isMultiRegion ? "" : " (dormant — Multi-region mode not selected)"}
               </p>
             );
           })()}

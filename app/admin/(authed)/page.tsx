@@ -45,7 +45,12 @@ export default async function AdminDashboard() {
     ? [
         `${lastResult.scraped} scraped · +${lastResult.added} new · ~${lastResult.updated} updated`,
         lastResult.durationMs != null ? `${(lastResult.durationMs / 1000).toFixed(1)}s` : null,
-        lastResult.scope ? `${lastResult.scope}${lastResult.regions ? ` · ${lastResult.regions} region${lastResult.regions === 1 ? "" : "s"}` : ""}` : null,
+        // Display label translates the stored "national" value to the
+        // user-facing "multi-region" framing introduced when the scrape
+        // grew beyond one country. The DB still stores "national".
+        lastResult.scope
+          ? `${lastResult.scope === "national" ? "multi-region" : lastResult.scope}${lastResult.regions ? ` · ${lastResult.regions} region${lastResult.regions === 1 ? "" : "s"}` : ""}`
+          : null,
         failedSources.length > 0 ? `⚠ failed: ${failedSources.join(", ")}` : null,
       ].filter(Boolean).join(" · ")
     : undefined;
