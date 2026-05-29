@@ -121,6 +121,35 @@ export function eventDisplayStatus(date: string, time: string): EventDisplayStat
  * Falls back to the stored timezone when coords are missing (date-only
  * or online events) so the existing behavior is preserved.
  */
+/**
+ * The event's calendar date in the venue's local timezone (YYYY-MM-DD).
+ *
+ * The stored `date` field is the UTC date of the event's stored UTC
+ * `time`. For non-Eastern venues that produces day-grouping bugs: an LA
+ * Friday 7pm event is stored as UTC Saturday 02:00, so its `date` is
+ * Saturday — even though LA people think of it as a Friday event.
+ *
+ * Re-projecting through the venue's timezone gives the LA-Friday date
+ * back, which is what the homepage day-card buckets and the "Today /
+ * Tomorrow" labels should agree with.
+ *
+ * Falls back to the stored `date` field when no time / venue coords
+ * exist to project through — for date-only / online events, the stored
+ * date is the only meaningful answer.
+ */
+export function eventVenueDate(ev: {
+  date: string;
+  time: string;
+  latitude: number | null | undefined;
+  longitude: number | null | undefined;
+  timezone: string | null | undefined;
+}): string {
+  if (!ev.date || !ev.time) return ev.date;
+  const utc = new Date(`${ev.date}T${ev.time}:00Z`);
+  if (isNaN(utc.getTime())) return ev.date;
+  return dateStrInTz(utc, pickEventTimezone(ev));
+}
+
 export function pickEventTimezone(
   ev: {
     latitude: number | null | undefined;
@@ -150,12 +179,24 @@ export function formatEventTime(
   if (!date || !time) return "";
   const utc = new Date(`${date}T${time}:00Z`);
   if (isNaN(utc.getTime())) return "";
-  return utc.toLocaleTimeString("en-US", {
-    timeZone: timezone || DEFAULT_TZ,
+  const tz = timezone || DEFAULT_TZ;
+  const formatted = utc.toLocaleTimeString("en-US", {
+    timeZone: tz,
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
   });
+  // When the event's display zone differs from the app's anchor zone
+  // (Eastern), append a short abbreviation so an NYC viewer browsing
+  // LA events doesn't read "7:00 PM" and assume it's Eastern. Eastern
+  // events stay bare to avoid cluttering the dominant case.
+  if (tz !== APP_TIMEZONE) {
+    const abbr = new Intl.DateTimeFormat("en-US", { timeZone: tz, timeZoneName: "short" })
+      .formatToParts(utc)
+      .find((p) => p.type === "timeZoneName")?.value;
+    if (abbr) return `${formatted} ${abbr}`;
+  }
+  return formatted;
 }
 
 export function formatEventTimeRange(

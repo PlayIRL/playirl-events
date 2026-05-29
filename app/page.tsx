@@ -6,7 +6,7 @@ import { getSavedEventIds } from "@/lib/event-saves";
 import { getPreferences, setPreferences } from "@/lib/user-preferences";
 import { getCurrentUser } from "@/lib/session";
 import { resolveEventImage } from "@/lib/event-image";
-import { dateStrInTz } from "@/lib/format-time";
+import { dateStrInTz, eventVenueDate } from "@/lib/format-time";
 import { DEFAULT_LOCATION_LABEL, resolveUserLocation } from "@/lib/user-location";
 import DateJumper from "./date-jumper";
 import RadiusSelector from "./radius-selector";
@@ -182,10 +182,17 @@ export default async function HomePage({
     return { ...ev, imageUrl: img.url, imageFit: img.fit };
   });
 
+  // Group by VENUE-LOCAL date, not the stored UTC date. Without this,
+  // an LA Friday 7pm event (stored as UTC Saturday 02:00) would land in
+  // the Saturday bucket — but display 7pm Pacific via pickEventTimezone,
+  // confusingly reading as "Saturday's 7pm event" when LA people think
+  // of it as Friday's. eventVenueDate re-projects through the venue's
+  // timezone so the bucket and the displayed wall-clock agree.
   const grouped: Record<string, typeof enriched> = {};
   for (const ev of enriched) {
-    if (!grouped[ev.date]) grouped[ev.date] = [];
-    grouped[ev.date].push(ev);
+    const bucketDate = eventVenueDate(ev);
+    if (!grouped[bucketDate]) grouped[bucketDate] = [];
+    grouped[bucketDate].push(ev);
   }
 
   // Dev-only "fake live" preview. `?fake_live=1` flips the first event in
