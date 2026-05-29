@@ -162,6 +162,17 @@ export default function ScrapersPage() {
     return rows;
   }, [regionStats, regionSort]);
 
+  // Compute the next expected daily cron tick (9 UTC). Same schedule the
+  // GitHub Actions workflow uses; the admin sees it next to "Last run" so
+  // there's a clear signal whether auto-scraping is healthy without
+  // opening the Actions tab.
+  const nextScheduledTickIso = (() => {
+    const next = new Date();
+    next.setUTCHours(9, 0, 0, 0);
+    if (next.getTime() <= Date.now()) next.setUTCDate(next.getUTCDate() + 1);
+    return next.toISOString();
+  })();
+
   return (
     <div className="p-6 lg:p-8 max-w-3xl">
       <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-neutral-100 mb-6">
@@ -170,8 +181,21 @@ export default function ScrapersPage() {
 
       <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5 mb-4">
         <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Manual refresh</h2>
-        <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
+        <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-1">
           Last run: <span>{last}</span>
+        </p>
+        <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
+          Next auto-run: <span>{new Date(nextScheduledTickIso).toLocaleString()}</span>
+          {" "}
+          <span className="text-neutral-400">· daily 09:00 UTC via</span>{" "}
+          <a
+            href="https://github.com/PlayIRL/playirl-events/actions/workflows/scrape.yml"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-neutral-700 dark:hover:text-neutral-300"
+          >
+            scrape.yml
+          </a>
         </p>
         <button
           onClick={runScrape}

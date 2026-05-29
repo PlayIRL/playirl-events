@@ -76,8 +76,51 @@ export default async function AdminDashboard() {
   `).all() as { country: string; count: number }[];
   const totalForCountryBar = byCountryRaw.reduce((s, r) => s + r.count, 0);
 
+  // Stale-scrape alarm. The daily GitHub Actions cron should fire `/api/scrape`
+  // around 9 UTC — even with the ±4h GitHub Actions free-tier skew, the
+  // longest legal gap between two successful scrapes is ~28 hours. We
+  // alarm at >36h (warn) and >60h (loud), giving a buffer for a single
+  // missed tick before paging the admin. Banner sits at the very top of
+  // the dashboard so it's the first thing admins see.
+  const lastScrapeMs = lastScrape ? new Date(lastScrape).getTime() : 0;
+  const hoursSinceLastScrape = lastScrapeMs > 0 ? (Date.now() - lastScrapeMs) / 3_600_000 : Infinity;
+  const scrapeAlarmLevel: "ok" | "warn" | "loud" =
+    !Number.isFinite(hoursSinceLastScrape) ? "loud"
+      : hoursSinceLastScrape > 60 ? "loud"
+        : hoursSinceLastScrape > 36 ? "warn"
+          : "ok";
+
   return (
     <div className="p-6 lg:p-8 max-w-6xl">
+      {scrapeAlarmLevel !== "ok" && (
+        <div
+          className={`mb-6 rounded-md border px-4 py-3 text-sm ${
+            scrapeAlarmLevel === "loud"
+              ? "border-red-300 bg-red-50 text-red-900 dark:border-red-500/40 dark:bg-red-950/30 dark:text-red-200"
+              : "border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-500/40 dark:bg-amber-950/30 dark:text-amber-200"
+          }`}
+        >
+          <div className="flex items-start gap-3">
+            <span className="text-base leading-tight" aria-hidden="true">
+              {scrapeAlarmLevel === "loud" ? "🚨" : "⚠️"}
+            </span>
+            <div className="flex-1 min-w-0">
+              <p className="font-semibold">
+                {scrapeAlarmLevel === "loud"
+                  ? `No scrape has run in ${Number.isFinite(hoursSinceLastScrape) ? `${Math.round(hoursSinceLastScrape)}h` : "a long time"} — auto-scraping appears broken.`
+                  : `Last scrape was ${Math.round(hoursSinceLastScrape)}h ago — a daily tick may have been skipped.`}
+              </p>
+              <p className="text-xs mt-1 opacity-90">
+                The daily cron lives at <code className="text-[11px]">.github/workflows/scrape.yml</code> and fires at 09:00 UTC.
+                Check the Actions tab for recent runs, or hit{" "}
+                <Link href="/admin/scrapers" className="underline">/admin/scrapers</Link>{" "}
+                to refresh manually.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex items-end justify-between mb-6">
         <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-neutral-100">
           Dashboard

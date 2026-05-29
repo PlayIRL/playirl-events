@@ -1,0 +1,92 @@
+name: Daily Scrape (primary)
+
+# Daily heavy scrape of the prod DB. Hits the fire-and-forget `/api/scrape`
+# endpoint with the shared secret; Railway's app process owns the actual
+# work and writes to the persistent volume. This workflow is just the
+# scheduler.
+#
+# Why GitHub Actions, not Railway Cron:
+#   - Lives in git → next admin sees the schedule + can edit it. Railway's
+#     Cron UI is opaque and historically easy to forget about (we did).
+#   - For a once-a-day scrape, GitHub Actions' 1-4h schedule skew is fine.
+#     We deliberately picked GitHub Actions here even though
+#     discord-dispatch.yml moved AWAY from GitHub Actions cron to Railway
+#     for its every-5-min cadence — precision matters at 5 min, not at
+#     once a day.
+#   - Same secret + same pattern as the discord-dispatch manual lever
+#     workflow, so the Actions secret store is already configured.
+#
+# If Railway Cron IS configured alongside this, both will fire. The
+# /api/scrape lock means only one runs at a time — the loser gets 409 and
+# the workflow surfaces that in its log but doesn't fail (409 means "we
+# tried, someone got there first" which is the correct outcome).
+
+on:
+  schedule:
+    # 9 UTC = 4–5am Eastern. Off-hours window so nightly events are
+    # ingested before the US wakes up. Adjust if the audience shifts.
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+
+# Single in-flight scrape at a time. concurrency.group is a constant so
+# any second run waits or skips — no double-fire even if a manual
+# workflow_dispatch races the scheduled tick.
+concurrency:
+  group: scrape-cron
+  cancel-in-progress: false
+
+jobs:
+  trigger:
+    name: POST /api/scrape
+    runs-on: ubuntu-latest
+    # The endpoint returns 202 immediately (fire-and-forget). Three
+    # minutes is plenty for connection + handshake + a few retries; the
+    # actual 10-15 min scrape runs detached on the Railway side.
+    timeout-minutes: 3
+    steps:
+      - name: Trigger scrape
+        env:
+          # Mirror the secret stored on Railway as `SCRAPE_SECRET`. The
+          # /api/scrape route does a constant-time compare; mismatch
+          # returns 401 and the curl below fails loudly so we notice.
+          SCRAPE_SECRET: ${{ secrets.SCRAPE_SECRET }}
+        run: |
+          if [ -z "$SCRAPE_SECRET" ]; then
+            echo "::error::SCRAPE_SECRET secret is not set in this repository."
+            echo "Set it under: Settings → Secrets and variables → Actions → New repository secret."
+            echo "Value must match the SCRAPE_SECRET env var on the Railway service."
+            exit 1
+          fi
+
+          # --retry 3 / --retry-delay 10 swallows transient Railway 5xx
+          # (most common is 502 when the tick hits the container mid-
+          # restart for a health check). --retry-all-errors retries on
+          # connection refused too. -f makes curl exit non-zero on HTTP
+          # 4xx/5xx so the workflow surfaces real failures.
+          # 409 is the "another scrape already running" success case —
+          # treat that as a soft success below.
+          HTTP_CODE=$(curl -sS -o /tmp/scrape-body.txt -w "%{http_code}" \
+            --retry 3 --retry-delay 10 --retry-all-errors \
+            -X POST https://playirl.gg/api/scrape \
+            -H "x-scrape-secret: $SCRAPE_SECRET")
+
+          echo "HTTP $HTTP_CODE"
+          cat /tmp/scrape-body.txt
+          echo ""
+
+          case "$HTTP_CODE" in
+            202)
+              echo "✅ Scrape kicked off — Railway will run it in the background (~10-15 min)."
+              ;;
+            409)
+              echo "⏳ Another scrape was already running. Treating as success — no action needed."
+              ;;
+            401)
+              echo "::error::401 Unauthorized — SCRAPE_SECRET on GitHub doesn't match the Railway env var."
+              exit 1
+              ;;
+            *)
+              echo "::error::Unexpected HTTP $HTTP_CODE from /api/scrape."
+              exit 1
+              ;;
+          esac
