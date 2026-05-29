@@ -46,6 +46,13 @@ export default async function HomePage({
     loc?: string; lat?: string; lng?: string;
     /** "1" to restrict the listing to RCQ events. Orthogonal to format. */
     rcq?: string;
+    /** Dev-only preview hook — "1" forces the first N events in the first
+     *  day card to render as in_progress, so the live treatment can be
+     *  designed without waiting for real in-progress events. Pass a
+     *  number ("3") to fake multiple simultaneous live events at once.
+     *  Gated by NODE_ENV !== production downstream so production
+     *  visitors hitting ?fake_live=… see no effect. */
+    fake_live?: string;
   }>;
 }) {
   const params = await searchParams;
@@ -181,6 +188,22 @@ export default async function HomePage({
     grouped[ev.date].push(ev);
   }
 
+  // Dev-only "fake live" preview. `?fake_live=1` flips the first event in
+  // the first upcoming day to render as in_progress; `?fake_live=N` flips
+  // the first N events. Production drops the flag.
+  const futureDates = Object.keys(grouped).filter((d) => d >= todayStr).sort();
+  const fakeLiveCount = (() => {
+    if (process.env.NODE_ENV === "production") return 0;
+    if (!params.fake_live) return 0;
+    const n = parseInt(params.fake_live, 10);
+    return Number.isFinite(n) && n > 0 ? n : 1;
+  })();
+  const fakeLiveEventIds = new Set<string>();
+  if (fakeLiveCount > 0 && futureDates[0]) {
+    for (const ev of grouped[futureDates[0]].slice(0, fakeLiveCount)) {
+      fakeLiveEventIds.add(ev.id);
+    }
+  }
 
   return (
     <main className="w-full max-w-3xl mx-auto px-4 pt-8 pb-32">
@@ -283,6 +306,7 @@ export default async function HomePage({
                     savedEventIds={savedEventIds}
                     userLat={hasUserLocation ? currentLocationLat : null}
                     userLng={hasUserLocation ? currentLocationLng : null}
+                    fakeLiveEventIds={fakeLiveEventIds}
                   />
                 );
               })}

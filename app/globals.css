@@ -137,6 +137,11 @@ code, pre, kbd, samp, tt {
 
 .anim-live-pulse {
   animation: livePulse 2.4s ease-in-out infinite;
+  /* Stagger via a per-row CSS variable set inline on the row's <Link> —
+     when a day has multiple in-progress events, identical phase made
+     them look like a synchronized strobe. Defaults to 0s for callers
+     that don't set the variable (event detail banner, etc.). */
+  animation-delay: var(--live-delay, 0s);
 }
 
 @keyframes liveRingPulse {
@@ -158,6 +163,49 @@ code, pre, kbd, samp, tt {
 
 .anim-live-ring {
   animation: liveRingPulse 2.4s ease-in-out infinite;
+}
+
+/* Filled live chip — solid emerald fill, white text, internal shine
+   sweep. The shine reads as "active / energy moving" without the chip
+   needing to breathe size or stroke. Cadence (2.4s) matches livePulse
+   on the dot, so dot pulse and chip shine phase-lock and read as one
+   organism. White overlay alpha is high enough that the shine catches
+   the eye on the saturated emerald base; a subtle dark text-shadow
+   keeps the white label legible despite the not-quite-AA contrast
+   ratio of white on emerald-500. */
+@keyframes liveShine {
+  0%   { transform: translateX(-120%); }
+  20%  { transform: translateX(220%); }
+  100% { transform: translateX(220%); }
+}
+
+.anim-live-shine {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: rgb(16 185 129);
+  color: rgb(255 255 255);
+  text-shadow: 0 1px 0 rgb(0 0 0 / 0.18);
+}
+
+.anim-live-shine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 55%;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.35) 45%,
+    rgb(255 255 255 / 0.65) 50%,
+    rgb(255 255 255 / 0.35) 55%,
+    transparent 100%
+  );
+  animation: liveShine 2.4s ease-in-out infinite;
+  animation-delay: var(--live-delay, 0s);
 }
 
 @keyframes liveRowSweep {
@@ -191,6 +239,7 @@ code, pre, kbd, samp, tt {
     transparent
   );
   animation: liveRowSweep 2.6s linear infinite;
+  animation-delay: var(--live-delay, 0s);
 }
 
 .dark .anim-live-row::before {
@@ -199,6 +248,27 @@ code, pre, kbd, samp, tt {
     transparent,
     rgb(52 211 153 / 0.09),
     transparent
+  );
+}
+
+/* Vertical emerald stripe pinned to the left edge of every live row —
+   extends the time chip's emerald fill down into the rest of the row so
+   the chip and its row read as one continuous "this is live" element
+   instead of an island chip on a flat background. Gradient top→bottom
+   gives a subtle highlight at the chip's vertical center. */
+.anim-live-row::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgb(16 185 129 / 0.55) 0%,
+    rgb(16 185 129 / 0.95) 50%,
+    rgb(16 185 129 / 0.55) 100%
   );
 }
 
@@ -308,4 +378,7 @@ code, pre, kbd, samp, tt {
   /* RCQ badge: keep the brushed-steel base (static visual treatment is
      the core signal), but drop the sweep. */
   .anim-rcq-glint::before { animation: none; opacity: 0; }
+  /* Live chip: keep the emerald fill + white text (static visual is the
+     core signal), but drop the shine sweep. */
+  .anim-live-shine::before { animation: none; opacity: 0; }
 }

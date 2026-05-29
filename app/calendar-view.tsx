@@ -223,8 +223,8 @@ export default function CalendarView({
                               treatment as the day-card row, scaled down
                               for the calendar cell. */}
                           {status === "in_progress" ? (
-                            <div className="inline-flex items-center gap-1 leading-none text-[10px] font-mono tabular-nums font-medium text-emerald-600 dark:text-emerald-400 ring-1 ring-inset ring-emerald-400/60 dark:ring-emerald-400/40 rounded px-1 py-0.5 self-start whitespace-nowrap">
-                              <span aria-hidden="true" className="w-1 h-1 rounded-full bg-emerald-500 dark:bg-emerald-400 anim-live-pulse shrink-0" />
+                            <div className="inline-flex items-center gap-1 leading-none text-[10px] font-mono tabular-nums font-medium text-white anim-live-shine rounded px-1 py-0.5 self-start whitespace-nowrap">
+                              <span aria-hidden="true" className="w-1 h-1 rounded-full bg-white anim-live-pulse shrink-0" />
                               <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
                             </div>
                           ) : (

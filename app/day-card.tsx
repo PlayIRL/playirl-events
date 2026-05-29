@@ -39,6 +39,7 @@ export default function DayCard({
   savedEventIds,
   userLat = null,
   userLng = null,
+  fakeLiveEventIds,
 }: {
   date: string;
   weekday: string;
@@ -55,6 +56,11 @@ export default function DayCard({
    *  meaningless number. */
   userLat?: number | null;
   userLng?: number | null;
+  /** Dev-only: any event whose ID is in this set is forced to render as
+   *  in_progress so the live treatment can be previewed without waiting
+   *  for real in-progress events. Wired through page.tsx behind a
+   *  NODE_ENV check — production passes an empty set. */
+  fakeLiveEventIds?: Set<string>;
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   // Tracking reveal state in React (instead of mutating element.style
@@ -146,16 +152,41 @@ export default function DayCard({
           )}
         </div>
 
-        {events.map((ev, i) => {
+        {(() => {
+          // Pre-pass: assign each live event a 0-based "live index" so the
+          // chip pulse / shine / row sweep can stagger by --live-delay
+          // instead of all firing in identical phase. When a day has 4
+          // simultaneous live events, identical phase made them look like
+          // a synchronized strobe — staggering by 0.4s across the 2.4s
+          // cycle gives 6 distinct visible phases before repeating.
+          const liveIndexById: Record<string, number> = {};
+          let liveSeen = 0;
+          for (const ev of events) {
+            const isLive =
+              fakeLiveEventIds?.has(ev.id) ||
+              eventDisplayStatus(ev.date, ev.time) === "in_progress";
+            if (isLive) liveIndexById[ev.id] = liveSeen++;
+          }
+          return events.map((ev, i) => {
             // Three-tier display state — see lib/format-time.ts. "Completed"
             // events are dimmed so the eye skips past them; "in_progress"
             // events stay full-color but pick up a LIVE pill so users can
             // spot what's happening right now at a glance.
-            const status = eventDisplayStatus(ev.date, ev.time);
+            const status = fakeLiveEventIds?.has(ev.id) ? "in_progress" : eventDisplayStatus(ev.date, ev.time);
+            const liveIdx = liveIndexById[ev.id];
+            const liveDelay = liveIdx !== undefined ? `${(liveIdx % 6) * 0.4}s` : undefined;
             const distanceLabel =
               userLat != null && userLng != null && ev.latitude != null && ev.longitude != null
                 ? formatDistanceMiles(haversineMiles(userLat, userLng, ev.latitude, ev.longitude))
                 : "";
+            // Compose the inline style: row-fade animation timing + the
+            // completed-row opacity override + the live-row stagger.
+            const baseStyle: React.CSSProperties = revealed
+              ? { animationDelay: `${80 + i * 45}ms`, "--row-opacity": status === "completed" ? 0.5 : 1 } as React.CSSProperties
+              : { opacity: 0, "--row-opacity": status === "completed" ? 0.5 : 1 } as React.CSSProperties;
+            const rowStyle: React.CSSProperties = liveDelay !== undefined
+              ? ({ ...baseStyle, "--live-delay": liveDelay } as React.CSSProperties)
+              : baseStyle;
             return (
             <Link
               key={ev.id}
@@ -165,11 +196,9 @@ export default function DayCard({
               // so completed rows actually land at 50% — without it, the
               // animation's `to: opacity: 1` (fill-mode both) overrode the
               // opacity-50 class and rows rendered full-color after reveal.
-              style={
-                revealed
-                  ? ({ animationDelay: `${80 + i * 45}ms`, "--row-opacity": status === "completed" ? 0.5 : 1 } as React.CSSProperties)
-                  : ({ opacity: 0, "--row-opacity": status === "completed" ? 0.5 : 1 } as React.CSSProperties)
-              }
+              // --live-delay (when set) staggers the three live animations
+              // so simultaneous live rows don't strobe in lockstep.
+              style={rowStyle}
               className={`${revealed ? "anim-row-in" : ""} ${status === "in_progress" ? "anim-live-row" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 ${status === "completed" ? "py-2 sm:py-2.5 saturate-50" : "py-4 sm:py-5"} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
             >
               {/* Desktop: time as a fixed left column. When the event is
@@ -181,8 +210,8 @@ export default function DayCard({
                   without the ring clipping or the text wrapping. */}
               <div className="hidden sm:block shrink-0 w-24">
                 {status === "in_progress" ? (
-                  <span className="inline-flex items-center gap-1.5 text-sm font-mono tabular-nums font-medium text-emerald-600 dark:text-emerald-400 anim-live-ring rounded-md px-1.5 py-0.5 whitespace-nowrap">
-                    <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 anim-live-pulse shrink-0" />
+                  <span className="inline-flex items-center gap-1.5 text-sm font-mono tabular-nums font-medium text-white anim-live-shine rounded-md px-1.5 py-0.5 whitespace-nowrap">
+                    <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-white anim-live-pulse shrink-0" />
                     <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
                   </span>
                 ) : (
@@ -216,8 +245,8 @@ export default function DayCard({
                     color shift, otherwise renders flat neutral. */}
                 <div className="block sm:hidden mb-1">
                   {status === "in_progress" ? (
-                    <span className="inline-flex items-center gap-1.5 text-xs font-mono tabular-nums font-medium text-emerald-600 dark:text-emerald-400 anim-live-ring rounded-md px-1.5 py-0.5 whitespace-nowrap">
-                      <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-emerald-400 anim-live-pulse shrink-0" />
+                    <span className="inline-flex items-center gap-1.5 text-xs font-mono tabular-nums font-medium text-white anim-live-shine rounded-md px-1.5 py-0.5 whitespace-nowrap">
+                      <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-white anim-live-pulse shrink-0" />
                       <span><span className="sr-only">Happening now: </span>{formatEventTime(ev.date, ev.time, ev.timezone)}</span>
                     </span>
                   ) : (
@@ -278,7 +307,8 @@ export default function DayCard({
               </div>
             </Link>
             );
-          })}
+          });
+        })()}
       </div>
     </div>
   );
