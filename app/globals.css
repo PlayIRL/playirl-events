@@ -251,25 +251,17 @@ code, pre, kbd, samp, tt {
   );
 }
 
-/* Vertical emerald stripe pinned to the left edge of every live row —
-   extends the time chip's emerald fill down into the rest of the row so
-   the chip and its row read as one continuous "this is live" element
-   instead of an island chip on a flat background. Gradient top→bottom
-   gives a subtle highlight at the chip's vertical center. */
+/* Thin emerald outline around every live row — matches the time
+   chip's fill color so the chip and its row read as one continuous
+   "this is live" element. Implemented as an absolutely-positioned
+   ::after rather than a `border` on the row itself so it doesn't fight
+   the day-card's row dividers or shift the row's padding by 1px. */
 .anim-live-row::after {
   content: "";
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 3px;
+  inset: 0;
   pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    rgb(16 185 129 / 0.55) 0%,
-    rgb(16 185 129 / 0.95) 50%,
-    rgb(16 185 129 / 0.55) 100%
-  );
+  border: 1px solid rgb(16 185 129 / 0.85);
 }
 
 /* RCQ badge — brushed-steel / silver foil with a periodic glint sweep.
