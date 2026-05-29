@@ -203,7 +203,10 @@ export default function ScrapersPage() {
   })();
 
   return (
-    <div className="p-6 lg:p-8 max-w-3xl">
+    // max-w-6xl (was 3xl): the Recent runs table now has 9 columns and the
+    // WotC region health table is also wide. Matches /admin's dashboard
+    // width so the admin app feels cohesive across sections.
+    <div className="p-6 lg:p-8 max-w-6xl">
       <h1 className="text-2xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-neutral-100 mb-6">
         Scrapers
       </h1>
