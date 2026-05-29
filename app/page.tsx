@@ -46,12 +46,6 @@ export default async function HomePage({
     loc?: string; lat?: string; lng?: string;
     /** "1" to restrict the listing to RCQ events. Orthogonal to format. */
     rcq?: string;
-    /** Dev-only preview hook — "1" forces the first event in the first
-     *  day card to render as in_progress, so the "happening now"
-     *  treatment can be designed without waiting for a real live event.
-     *  Gated by NODE_ENV !== production downstream so production
-     *  visitors hitting ?fake_live=1 see no effect. */
-    fake_live?: string;
   }>;
 }) {
   const params = await searchParams;
@@ -187,14 +181,6 @@ export default async function HomePage({
     grouped[ev.date].push(ev);
   }
 
-  // Dev-only "fake live" preview. `?fake_live=1` flips the first event in
-  // the first upcoming day to render as in_progress so the live treatment
-  // can be designed against a real row. Production drops the flag.
-  const futureDates = Object.keys(grouped).filter((d) => d >= todayStr).sort();
-  const fakeLiveEventId =
-    process.env.NODE_ENV !== "production" && params.fake_live === "1" && futureDates[0]
-      ? grouped[futureDates[0]][0]?.id
-      : undefined;
 
   return (
     <main className="w-full max-w-3xl mx-auto px-4 pt-8 pb-32">
@@ -297,7 +283,6 @@ export default async function HomePage({
                     savedEventIds={savedEventIds}
                     userLat={hasUserLocation ? currentLocationLat : null}
                     userLng={hasUserLocation ? currentLocationLng : null}
-                    fakeLiveEventId={fakeLiveEventId}
                   />
                 );
               })}
