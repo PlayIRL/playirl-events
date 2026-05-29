@@ -6,13 +6,13 @@ import { FormSkeleton } from "@/app/skeleton";
 type ScrapeScope = "local" | "national";
 type RegionKey = "CONUS" | "CA" | "UK_IE" | "EU" | "AU_NZ" | "JP";
 
-const REGION_OPTIONS: { key: RegionKey; label: string; help: string }[] = [
-  { key: "CONUS", label: "United States (CONUS)", help: "75 anchors covering the lower 48. The historical default." },
-  { key: "CA", label: "Canada", help: "18 anchors from Vancouver to St. John's." },
-  { key: "UK_IE", label: "United Kingdom + Ireland", help: "18 anchors across England, Scotland, Wales, NI, and Ireland." },
-  { key: "EU", label: "Continental Europe", help: "53 anchors covering WPN-active countries (France, DACH, Iberia, Italy, Nordics, BeNeLux, Poland, Czechia, Greece)." },
-  { key: "AU_NZ", label: "Australia + New Zealand", help: "14 perimeter anchors. Wide radii where cities are far apart." },
-  { key: "JP", label: "Japan", help: "16 anchors hugging the Tokaido corridor + Hokkaido / Kyushu / Okinawa." },
+const REGION_OPTIONS: { key: RegionKey; label: string; help: string; anchors: number }[] = [
+  { key: "CONUS", label: "United States (CONUS)", help: "75 anchors covering the lower 48. The historical default.", anchors: 75 },
+  { key: "CA", label: "Canada", help: "18 anchors from Vancouver to St. John's.", anchors: 18 },
+  { key: "UK_IE", label: "United Kingdom + Ireland", help: "18 anchors across England, Scotland, Wales, NI, and Ireland.", anchors: 18 },
+  { key: "EU", label: "Continental Europe", help: "53 anchors covering WPN-active countries (France, DACH, Iberia, Italy, Nordics, BeNeLux, Poland, Czechia, Greece).", anchors: 53 },
+  { key: "AU_NZ", label: "Australia + New Zealand", help: "14 perimeter anchors. Wide radii where cities are far apart.", anchors: 14 },
+  { key: "JP", label: "Japan", help: "16 anchors hugging the Tokaido corridor + Hokkaido / Kyushu / Okinawa.", anchors: 16 },
 ];
 
 interface ConfigShape {
@@ -126,7 +126,7 @@ export default function ConfigPage() {
       <form onSubmit={save} className="space-y-6">
         <Section
           title="Scrape mode"
-          help="Local mode scrapes one region around the Location below using the Search radius / days-ahead. National mode ignores Location + Search and instead sweeps a hard-coded list of 75 regions across the country. Most production setups run national."
+          help="Local mode scrapes one region around the Location below using the Search radius / days-ahead. National mode sweeps all anchors from the Regions section below — Location and Search settings are unused in that mode. Most production setups run national."
         >
           <div className="space-y-2">
             <label className="flex items-start gap-2 text-sm cursor-pointer">
@@ -139,7 +139,7 @@ export default function ConfigPage() {
               <span>
                 <span className="font-medium">National</span>
                 <span className="block text-xs text-neutral-500 dark:text-neutral-400">
-                  Sweep all 75 predefined regions. Heaviest scrape; most coverage.
+                  Sweep every grid you&apos;ve checked in the Regions section below. Heaviest scrape; broadest coverage.
                 </span>
               </span>
             </label>
@@ -153,7 +153,7 @@ export default function ConfigPage() {
               <span>
                 <span className="font-medium">Local</span>
                 <span className="block text-xs text-neutral-500 dark:text-neutral-400">
-                  Single region centered on the Location below, within the Search radius. Faster but limited to that area.
+                  Single region centered on the Location below, within the Search radius. Regions are ignored. Faster but limited to that area.
                 </span>
               </span>
             </label>
@@ -236,7 +236,11 @@ export default function ConfigPage() {
 
         <Section
           title="Regions"
-          help="Which country grids the national-mode scraper sweeps. Each region adds ~15-75 API calls per scrape. Leaving everything unchecked falls back to the historical CONUS-only default. International events get country/currency stamped automatically."
+          help={
+            isNational
+              ? "Which country grids the national-mode scraper sweeps. Each anchor costs ~2 API calls per scrape (one for stores, one for events). Leaving everything unchecked falls back to the historical CONUS-only default. International events get country/currency stamped automatically."
+              : "Only used in national scrape mode. You're in local mode, so these toggles are currently dormant — switch the Scrape mode above to National to use them."
+          }
           dimmed={!isNational}
         >
           <div className="grid sm:grid-cols-2 gap-2">
@@ -263,11 +267,30 @@ export default function ConfigPage() {
               );
             })}
           </div>
-          {config.scrapeRegionKeys.length === 0 && (
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-2">
-              No regions selected — falling back to CONUS-only (historical default).
-            </p>
-          )}
+          {/* Live anchor count + cost hint. Compute from the checked region
+              options; falls back to CONUS's 75 when nothing's checked so the
+              "historical default" copy matches what would actually run. */}
+          {(() => {
+            const totalAnchors = config.scrapeRegionKeys.length === 0
+              ? 75 // CONUS fallback
+              : REGION_OPTIONS
+                  .filter((o) => config.scrapeRegionKeys.includes(o.key))
+                  .reduce((sum, o) => sum + o.anchors, 0);
+            const apiCalls = totalAnchors * 2; // store + events per anchor
+            if (config.scrapeRegionKeys.length === 0) {
+              return (
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-2">
+                  No regions selected — falling back to CONUS-only ({totalAnchors} anchors, ~{apiCalls} API calls per scrape).
+                </p>
+              );
+            }
+            return (
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-2">
+                {totalAnchors} anchors active · ~{apiCalls} API calls per scrape
+                {isNational ? "" : " (dormant — National mode not selected)"}
+              </p>
+            );
+          })()}
         </Section>
 
         <Section
