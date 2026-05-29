@@ -288,16 +288,16 @@ export default async function EventPage({
         </div>
       )}
 
-      {/* "Happening now" banner — same sky-blue + pulse-dot vocabulary as
+      {/* "Happening now" banner — same emerald + pulse-dot vocabulary as
           the in-progress treatment on the list/calendar views, so an event
           card and its detail page agree at a glance. Suppressed when the
           event is cancelled because the cancel banner above takes
           precedence. */}
       {!cancelled && eventDisplayStatus(ev.date, ev.time) === "in_progress" && (
-        <div className="mb-6 rounded-md border border-sky-300 dark:border-sky-500/40 bg-sky-50 dark:bg-sky-500/10 px-4 py-2.5 anim-fade-in">
+        <div className="mb-6 rounded-md border border-emerald-300 dark:border-emerald-500/40 bg-emerald-50 dark:bg-emerald-500/10 px-4 py-2.5 anim-fade-in">
           <div className="flex items-center gap-2.5">
-            <span aria-hidden="true" className="w-2 h-2 rounded-full bg-sky-500 dark:bg-sky-400 anim-live-pulse shrink-0" />
-            <p className="text-sm font-semibold text-sky-900 dark:text-sky-100">
+            <span aria-hidden="true" className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 anim-live-pulse shrink-0" />
+            <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-100">
               Happening now
             </p>
           </div>

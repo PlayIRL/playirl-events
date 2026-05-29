@@ -141,18 +141,18 @@ code, pre, kbd, samp, tt {
 
 @keyframes liveRingPulse {
   /* The pill's stroke breathes — inset 1px stroke fades between a
-     muted base and full sky-blue, with a soft outer halo that swells
+     muted base and full emerald, with a soft outer halo that swells
      in sync. Same 2.4s cadence as the dot's livePulse so the pill
      reads as one breathing organism. */
   0%, 100% {
     box-shadow:
-      inset 0 0 0 1px rgb(14 165 233 / 0.5),
-      0 0 0 0 rgb(14 165 233 / 0);
+      inset 0 0 0 1px rgb(16 185 129 / 0.5),
+      0 0 0 0 rgb(16 185 129 / 0);
   }
   50% {
     box-shadow:
-      inset 0 0 0 1px rgb(14 165 233 / 1),
-      0 0 8px 1px rgb(14 165 233 / 0.35);
+      inset 0 0 0 1px rgb(16 185 129 / 1),
+      0 0 8px 1px rgb(16 185 129 / 0.35);
   }
 }
 
@@ -161,8 +161,8 @@ code, pre, kbd, samp, tt {
 }
 
 @keyframes liveRowSweep {
-  /* A soft sky-tinted band slides left → right across the row, like a
-     skeleton-loader shimmer. Linear so the sweep speed reads as a
+  /* A soft emerald-tinted band slides left → right across the row, like
+     a skeleton-loader shimmer. Linear so the sweep speed reads as a
      constant motion — ease-in-out would make the band loiter at the
      edges and break the "loader" feel. */
   0%   { transform: translateX(0); }
@@ -187,7 +187,7 @@ code, pre, kbd, samp, tt {
   background: linear-gradient(
     90deg,
     transparent,
-    rgb(14 165 233 / 0.12),
+    rgb(16 185 129 / 0.12),
     transparent
   );
   animation: liveRowSweep 2.6s linear infinite;
@@ -197,7 +197,7 @@ code, pre, kbd, samp, tt {
   background: linear-gradient(
     90deg,
     transparent,
-    rgb(56 189 248 / 0.09),
+    rgb(52 211 153 / 0.09),
     transparent
   );
 }
@@ -294,18 +294,18 @@ code, pre, kbd, samp, tt {
   .anim-live-pulse { animation: none; }
   .anim-live-ring {
     animation: none;
-    box-shadow: inset 0 0 0 1px rgb(14 165 233 / 0.6);
+    box-shadow: inset 0 0 0 1px rgb(16 185 129 / 0.6);
   }
   .anim-live-row::before {
     animation: none;
     left: 0;
     width: 100%;
-    background: rgb(14 165 233 / 0.08);
+    background: rgb(16 185 129 / 0.08);
   }
   .dark .anim-live-row::before {
-    background: rgb(56 189 248 / 0.08);
+    background: rgb(52 211 153 / 0.08);
   }
-  /* RCQ badge: keep the metallic gold (static visual treatment is the
-     core signal), but drop the sweep. */
+  /* RCQ badge: keep the brushed-steel base (static visual treatment is
+     the core signal), but drop the sweep. */
   .anim-rcq-glint::before { animation: none; opacity: 0; }
 }
