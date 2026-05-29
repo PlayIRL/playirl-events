@@ -220,6 +220,21 @@ export default function EventTable({
                     {ev.source_type && ev.source_type !== "scraper" && (
                       <span className="bg-neutral-100 dark:bg-white/[0.06] text-neutral-700 dark:text-neutral-300 px-1.5 rounded-md">{ev.source_type}</span>
                     )}
+                    {/* Country chip — only renders when populated so US-era
+                        rows + sources without country signal don't get a
+                        useless dash. Currency renders adjacent so admins
+                        can spot the JPY-priced events at a glance during
+                        a quick scroll. */}
+                    {ev.country && (
+                      <span className="bg-sky-50 text-sky-800 dark:bg-sky-950/50 dark:text-sky-300 px-1.5 rounded-md font-mono tabular-nums">
+                        {ev.country}
+                      </span>
+                    )}
+                    {ev.currency && ev.currency !== "USD" && (
+                      <span className="bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300 px-1.5 rounded-md font-mono tabular-nums">
+                        {ev.currency}
+                      </span>
+                    )}
                   </div>
                 </td>
                 <td className="px-3 py-2 align-top hidden md:table-cell text-neutral-600 dark:text-neutral-400">

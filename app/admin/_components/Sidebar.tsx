@@ -2,16 +2,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const NAV = [
+// Two-group sidebar: content management (events / venues / users — what
+// admins touch day-to-day) then operational settings (scrapers / config /
+// integrations — touched rarely). The visual divider between groups makes
+// the daily-driver section feel like the "home" of the admin app and the
+// settings feel like the back-room they actually are.
+const NAV: ({ href: string; label: string } | { divider: true })[] = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/events", label: "Events" },
   { href: "/admin/events/pending", label: "Pending review" },
   { href: "/admin/venues", label: "Venues" },
   { href: "/admin/users", label: "Users" },
-  { href: "/admin/flags", label: "Feature flags" },
-  { href: "/admin/config", label: "Site config" },
+  { divider: true },
   { href: "/admin/scrapers", label: "Scrapers" },
+  { href: "/admin/config", label: "Site config" },
   { href: "/admin/discord-servers", label: "Discord servers" },
+  { href: "/admin/flags", label: "Feature flags" },
 ];
 
 export default function Sidebar({
@@ -24,7 +30,16 @@ export default function Sidebar({
   const pathname = usePathname();
   return (
     <nav className="flex flex-col gap-1 p-3" aria-label="Admin">
-      {NAV.map((item) => {
+      {NAV.map((item, idx) => {
+        if ("divider" in item) {
+          return (
+            <div
+              key={`divider-${idx}`}
+              className="my-2 border-t border-neutral-200 dark:border-white/10"
+              aria-hidden="true"
+            />
+          );
+        }
         const active =
           item.href === "/admin"
             ? pathname === "/admin"

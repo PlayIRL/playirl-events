@@ -200,7 +200,7 @@ export default function ScrapersPage() {
               <thead>
                 <tr className="text-neutral-500 dark:text-neutral-400 text-left border-b border-neutral-200 dark:border-neutral-700">
                   <th className="py-1.5 pr-3 font-normal">When</th>
-                  <th className="py-1.5 pr-3 font-normal">Scope</th>
+                  <th className="py-1.5 pr-3 font-normal">Mode</th>
                   <th className="py-1.5 pr-3 font-normal text-right">Scraped</th>
                   <th className="py-1.5 pr-3 font-normal text-right">+New</th>
                   <th className="py-1.5 pr-3 font-normal text-right">Skip</th>
