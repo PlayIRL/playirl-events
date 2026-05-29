@@ -56,11 +56,15 @@ export default function UserGuide() {
           <Steps>
             <Step>
               Click <Word>All MTG</Word> to filter to a single format
-              (Commander, Modern, Pioneer, &hellip;).
+              (Commander, Modern, Pioneer, &hellip;). The same dropdown has an
+              <Pill>RCQs only</Pill> toggle at the bottom that narrows the feed
+              to Regional Championship Qualifiers &mdash; it stacks with any
+              format you pick (e.g. &ldquo;Modern RCQs only&rdquo;).
             </Step>
             <Step>
-              Click the radius number to set the search distance, or pick
-              <Pill>Anywhere</Pill> to remove the geo filter entirely.
+              Click the radius number to set the search distance &mdash; presets
+              go from 1&nbsp;mile up to 100&nbsp;miles, plus a free-form custom
+              value (up to 500) for the rest of the country.
             </Step>
             <Step>
               Click the location chip to change your center &mdash; type a city, ZIP, or
@@ -71,6 +75,12 @@ export default function UserGuide() {
               <ViewIcon kind="list" /> list,
               <ViewIcon kind="calendar" /> calendar, and
               <ViewIcon kind="map" /> map. Your filter persists across views.
+            </Step>
+            <Step>
+              Events that are happening right now glow with an emerald
+              &ldquo;live&rdquo; chip and a soft shimmer across the row &mdash;
+              easy to scan for &ldquo;what&rsquo;s going on right now&rdquo;
+              when you walk into a store.
             </Step>
             <Step>
               Use the date input at the bottom of the feed to jump to a specific day.
@@ -143,15 +153,23 @@ export default function UserGuide() {
           <Steps>
             <Step>
               Set the filter you want (format / radius / location / time
-              window).
+              window). The RCQ-only toggle inside the format dropdown carries
+              through too.
             </Step>
             <Step>
               Click <Pill>Subscribe</Pill> under the filter bar.
             </Step>
             <Step>
-              Pick how to add it:
+              Under <strong>Add to calendar</strong>, pick your provider:
               <ul className="mt-1.5 ml-5 space-y-1 list-disc text-sm">
-                <li><strong>Subscribe in calendar app</strong> &mdash; one-tap add via <code>webcal://</code> (Apple Calendar, Google Calendar, Outlook).</li>
+                <li><strong>Add to Google Calendar</strong> &mdash; opens Google&rsquo;s &ldquo;subscribe to this calendar&rdquo; dialog in a new tab.</li>
+                <li><strong>Add to Apple Calendar</strong> &mdash; triggers Calendar.app&rsquo;s subscription sheet on macOS/iOS. Won&rsquo;t do anything on other devices &mdash; use Google or Outlook instead.</li>
+                <li><strong>Add to Outlook</strong> &mdash; opens Outlook Web&rsquo;s add-by-URL flow. Works for outlook.com and Microsoft 365 accounts.</li>
+              </ul>
+            </Step>
+            <Step>
+              Under <strong>iCal feed</strong>, the raw feed is also available:
+              <ul className="mt-1.5 ml-5 space-y-1 list-disc text-sm">
                 <li><strong>Copy URL</strong> &mdash; the <code>https://</code> ICS feed URL, paste into any calendar that supports remote feeds.</li>
                 <li><strong>Download .ics</strong> &mdash; one-time snapshot, won&rsquo;t auto-update.</li>
               </ul>
@@ -584,15 +602,38 @@ function SubscribeDropdownMockup() {
   return (
     <MockupFrame label="Subscribe dropdown">
       <div className="rounded-md border border-neutral-100 dark:border-white/10 overflow-hidden bg-white dark:bg-neutral-900">
-        <DropdownItem icon={<CalendarSvg />} label="Subscribe in calendar app" />
-        <DropdownItem icon={<LinkSvg />} label="Copy URL" />
-        <DropdownItem icon={<DownloadSvg />} label="Download .ics" />
+        <DropdownHeading>Add to calendar</DropdownHeading>
+        <DropdownItem icon={<CalendarSvg />} label="Add to Google Calendar" trailing={<ExternalLinkSvg />} />
+        <DropdownItem icon={<CalendarSvg />} label="Add to Apple Calendar" trailing={<span className="text-[10px] text-neutral-400">Mac / iOS</span>} />
+        <DropdownItem icon={<CalendarSvg />} label="Add to Outlook" trailing={<ExternalLinkSvg />} />
         <div className="border-t border-neutral-100 dark:border-white/10">
+          <DropdownHeading>iCal feed</DropdownHeading>
+          <DropdownItem icon={<LinkSvg />} label="Copy URL" />
+          <DropdownItem icon={<DownloadSvg />} label="Download .ics" />
+        </div>
+        <div className="border-t border-neutral-100 dark:border-white/10">
+          <DropdownHeading>Discord</DropdownHeading>
           <DropdownItem icon={<DiscordIcon className="w-4 h-4 text-neutral-400" />} label="Post events to Discord" trailing={<ChevronSvg />} />
           <DropdownItem icon={<DiscordIcon className="w-4 h-4 text-neutral-400" />} label="Add to a server's Events tab" trailing={<ChevronSvg />} />
         </div>
       </div>
     </MockupFrame>
+  );
+}
+
+function DropdownHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="px-4 pt-2 pb-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+      {children}
+    </p>
+  );
+}
+
+function ExternalLinkSvg() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M14 5h5v5M19 5l-9 9M5 7v12h12" />
+    </svg>
   );
 }
 

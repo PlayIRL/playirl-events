@@ -91,23 +91,26 @@ export default function AboutPage() {
             <p className="text-base font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white">What you can do</p>
             <ul className="text-sm text-neutral-700 dark:text-neutral-300 space-y-2 list-disc list-outside pl-5">
               <li>
-                <strong>Browse</strong> MTG events nationwide, filtered by format, radius, and date range right from the homepage.
+                <strong>Browse</strong> MTG events nationwide, filtered by format, radius (1–100 mi or any custom value), and date range right from the homepage. Toggle <strong>RCQs only</strong> inside the format dropdown to narrow to Regional Championship Qualifiers.
               </li>
               <li>
-                <strong>Subscribe</strong> any filter as a Google Calendar / iCal feed — it stays in sync automatically.
+                <strong>Switch views</strong> between list, calendar, and map without losing your filter. Events happening right now glow with a live indicator in every view.
               </li>
               <li>
-                <strong>Add the Discord bot</strong> to your server for daily/weekly digests and per-event reminders. {" "}
+                <strong>Subscribe</strong> any filter to <strong>Google Calendar</strong>, <strong>Apple Calendar</strong>, or <strong>Outlook</strong> in one tap — or grab the raw iCal feed URL to paste anywhere. Subscriptions stay in sync automatically as new matching events land.
+              </li>
+              <li>
+                <strong>Sign in</strong> with email, Google, or Discord to save events to a personal list, RSVP with auto-waitlist, and submit your own — store events go live immediately for organizers, and pending review otherwise.
+              </li>
+              <li>
+                <strong>Add the Discord bot</strong> to your server for daily/weekly digests, per-event reminders, and pushing matching events into the native Events tab. {" "}
                 <Link href="/bot" className="text-neutral-900 dark:text-white underline underline-offset-2 hover:no-underline">See bot setup →</Link>
-              </li>
-              <li>
-                <strong>Sign in</strong> with email, Google, or Discord to save events, RSVP, and submit your own — store events go live immediately for organizers, and pending review otherwise.
               </li>
               <li>
                 <strong>Connect a Discord server</strong> as an event source so events posted there flow into your feed automatically.
               </li>
               <li>
-                <strong>Each venue gets a public page</strong> at <code className="text-xs px-1 py-0.5 rounded-sm bg-neutral-100 dark:bg-white/10">/venue/&#123;slug&#125;</code> — share one URL for all upcoming events at a store.
+                <strong>Each venue gets a public page</strong> at <code className="text-xs px-1 py-0.5 rounded-sm bg-neutral-100 dark:bg-white/10">/venue/&#123;slug&#125;</code> with its own Subscribe button — share one URL for all upcoming events at a store.
               </li>
             </ul>
           </div>
