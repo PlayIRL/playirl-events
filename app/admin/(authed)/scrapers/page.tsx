@@ -49,7 +49,13 @@ interface HistoryRow {
 /** Render the trigger source as a friendly label + matching color. The
  *  raw values are kebab-case identifiers used elsewhere in logs; this
  *  function presents them. Keeps the label short enough to fit the
- *  table column without wrapping. */
+ *  table column without wrapping.
+ *
+ *  The default "unknown" case carries a real background pill (not just
+ *  greyed text on transparent) so legacy rows whose triggeredBy never
+ *  got recorded still LOOK like they have a value — otherwise the cell
+ *  reads as blank and admins assume the column is broken.
+ */
 function triggerBadge(triggeredBy: string | undefined): { label: string; className: string } {
   switch (triggeredBy) {
     case "cron":
@@ -61,7 +67,7 @@ function triggerBadge(triggeredBy: string | undefined): { label: string; classNa
     case "startup":
       return { label: "startup", className: "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300" };
     default:
-      return { label: "—", className: "text-neutral-400 dark:text-neutral-500" };
+      return { label: "unknown", className: "bg-neutral-100 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400" };
   }
 }
 
