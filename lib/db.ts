@@ -194,11 +194,6 @@ function initSchema(db: Database.Database) {
     -- cancelled_at row-by-row, but ~99% of rows match those, so the cost
     -- collapses. Touches the homepage, ICS feeds, and format dropdown.
     CREATE INDEX IF NOT EXISTS idx_events_active_date ON events(status, date);
-    -- Covering index for getFormats' DISTINCT scan. The query filters by
-    -- (status, visibility, cancelled_at) and projects the format column;
-    -- carrying all four fields in the index lets SQLite skip the table
-    -- read entirely. Ordering matches the WHERE clause prefix.
-    CREATE INDEX IF NOT EXISTS idx_events_format_active ON events(status, visibility, cancelled_at, format);
     -- Case-insensitive venue lookup for /venue/[slug]. getEventsForVenue
     -- compares LOWER(TRIM(location)) so the index has to match expression
     -- shape exactly. SQLite supports indexes on expressions since 3.9.0.
@@ -484,6 +479,12 @@ function initSchema(db: Database.Database) {
   try { db.exec("ALTER TABLE events ADD COLUMN rsvp_enabled INTEGER DEFAULT 0"); } catch {}
   try { db.exec("ALTER TABLE events ADD COLUMN visibility TEXT DEFAULT 'public'"); } catch {}
   try { db.exec("ALTER TABLE events ADD COLUMN cancelled_at TEXT"); } catch {}
+  // Covering index for getFormats' DISTINCT scan. Lives down here (not
+  // inside the main CREATE block) because it references `visibility` and
+  // `cancelled_at`, both of which are added by the ALTER TABLE migrations
+  // above — on a fresh DB the index would fire before the columns exist
+  // and the whole initSchema throws SQLITE_ERROR ("no such column").
+  try { db.exec("CREATE INDEX IF NOT EXISTS idx_events_format_active ON events(status, visibility, cancelled_at, format)"); } catch {}
   // Password column for the email/password sign-in path (bcrypt hash).
   // Nullable — most users still come in via OAuth or magic-link.
   try { db.exec("ALTER TABLE users ADD COLUMN password_hash TEXT"); } catch {}
