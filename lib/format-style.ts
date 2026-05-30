@@ -31,11 +31,14 @@ export const FORMAT_BADGE: Record<string, string> = {
   // Plum — legendary / mythic
   Commander:
     "bg-[#C9A2EE] text-[#2A1145] dark:bg-[#6B3FA0]/85 dark:text-[#F1E4F9]",
-  // cEDH — obsidian + crimson, with the periodic glint sweep. The same
-  // visual we built for the old standalone badge, repurposed as the
-  // primary format chip now that cEDH is a sibling format rather than
-  // a sub-tag of Commander. See .anim-cedh-glint in app/globals.css.
-  cEDH: "anim-cedh-glint",
+  // Deep plum/violet — Commander's sibling, "intensified." Stays in the
+  // mythic-plum family (so cEDH reads as "Commander's competitive
+  // cousin") but darkens both light and dark modes to feel weightier.
+  // Light bg = saturated violet, dark text. Dark bg = deep aubergine,
+  // pastel-plum text. Matches the mana-color chip pattern the other
+  // formats use rather than the standalone glint stamp we had before.
+  cEDH:
+    "bg-[#9D5BC9] text-[#1F082B] dark:bg-[#3D1F58]/90 dark:text-[#E1C5F5]",
   // U — Island
   Modern:
     "bg-[#8FC1E8] text-[#0A2D4D] dark:bg-[#0E68AB]/85 dark:text-[#D6ECF7]",
@@ -64,9 +67,9 @@ export const FORMAT_BADGE: Record<string, string> = {
 // 8-10px against a light background.
 export const FORMAT_DOT: Record<string, string> = {
   Commander: "bg-[#6B3FA0]",
-  // cEDH dot: the crimson glint color, slightly muted so it reads at
-  // 8-10px without screaming.
-  cEDH: "bg-[#7A0E22]",
+  // Deep aubergine — same plum family as Commander but darker, so the
+  // dropdown dots show the family relationship at a glance.
+  cEDH: "bg-[#3D1F58]",
   Modern: "bg-[#0E68AB]",
   Standard: "bg-[#00733E]",
   Pioneer: "bg-[#D3202A]",
@@ -136,7 +139,7 @@ export function isCedh(title: string | null | undefined): boolean {
 // the dot color shown elsewhere.
 export const FORMAT_EMBED_COLOR: Record<string, number> = {
   Commander: 0x6b3fa0, // plum ink (mythic/legendary)
-  cEDH: 0x7a0e22,      // obsidian-crimson — competitive Commander
+  cEDH: 0x3d1f58,      // deep aubergine — Commander's competitive sibling
   Modern: 0x0e68ab, // U ink (Island deep blue)
   Standard: 0x00733e, // G ink (Forest deep green)
   Pioneer: 0xd3202a, // R ink (Mountain deep red)
