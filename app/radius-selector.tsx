@@ -683,18 +683,30 @@ export default function RadiusSelector({
   //                                in lib/formats.ts (curated, not
   //                                alphabetical) so the most-clicked
   //                                items land at the top of the list
-  //   3. "Other" (heading)      — every remaining format from the DB
-  //                                (already alphabetical via getFormats()
-  //                                ORDER BY LOWER(format))
+  //   3. "More" (heading)       — every remaining format from the DB
+  //                                (alphabetical via getFormats()
+  //                                ORDER BY LOWER(format)), with the
+  //                                literal "Other" format value pulled
+  //                                to the very bottom since it's a
+  //                                catch-all bucket, not a peer of
+  //                                "Pioneer" or "Vintage"
   // Popular formats not present in the DB (e.g. before the first
   // scrape) are filtered out so the section never shows phantom rows.
   const popularList = POPULAR_FORMATS.filter((f) => formats.includes(f));
   const popularSet = new Set<string>(popularList);
   const restFormats = formats.filter((f) => !popularSet.has(f));
+  // Push "Other" (WotC's catch-all for unrecognized events) to the
+  // very end of the rest list. Avoids alphabetical interleaving and
+  // also dodges the visual collision with the "Other" section header
+  // (now renamed to "More" but the bucket label survives).
+  const hasOther = restFormats.includes("Other");
+  const orderedRest = hasOther
+    ? [...restFormats.filter((f) => f !== "Other"), "Other"]
+    : restFormats;
   const formatOptions: { value: string; label: string; dot?: string; section?: string }[] = [
     { value: "", label: tr("filters.all_formats"), dot: "bg-neutral-400 dark:bg-neutral-600" },
     ...popularList.map((f) => ({ value: f, label: f, dot: FORMAT_DOT[f] || "bg-neutral-400", section: "Popular" })),
-    ...restFormats.map((f) => ({ value: f, label: f, dot: FORMAT_DOT[f] || "bg-neutral-400", section: "Other" })),
+    ...orderedRest.map((f) => ({ value: f, label: f, dot: FORMAT_DOT[f] || "bg-neutral-400", section: "More" })),
   ];
 
   // Radius display: dropdown labels show the value in the viewer's preferred
