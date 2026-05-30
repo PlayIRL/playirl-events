@@ -50,36 +50,60 @@ function haversineDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-/** TopDeck's POST /v2/tournaments now requires BOTH `game` and `format`
- *  (per their OpenAPI spec at https://topdeck.gg/openapi.json). There's no
- *  wildcard or "all formats" value — to get the same coverage we used to
- *  get from a single unfiltered call, we have to fan out one query per
- *  format and merge.
+/** TopDeck's POST /v2/tournaments requires BOTH `game` and `format` —
+ *  per their OpenAPI spec at https://topdeck.gg/openapi.json. There's no
+ *  wildcard or "all formats" value, so we fan out one query per format
+ *  and merge. The OpenAPI spec keeps `format` as a free-form string;
+ *  the enumeration of valid values lives only in the v2 reference docs
+ *  at https://topdeck.gg/docs/tournaments-v2.
  *
- *  Format names are TopDeck's exact strings (case-sensitive). Notably they
- *  use "EDH" rather than "Commander" — the canonical normalizer downstream
- *  rewrites both to "Commander" for display so the homepage filter chip
- *  stays clean. Curated to cover the MTG formats that actually see
- *  tournament organization on TopDeck (skipping micro-formats like Pauper
- *  EDH that produce <5 events/year). Easy to extend later — each extra
- *  format = +1 API call per scrape. */
+ *  This list is the exhaustive set of MTG formats TopDeck accepts (as
+ *  of the v2 docs read on 2026-05-30). Earlier iterations of this file
+ *  shipped "Brawl", "Booster Draft", and "Prerelease" — none of which
+ *  are valid TopDeck formats; they were returning empty arrays silently
+ *  and burning rate-limit budget. "Booster Draft" is "Limited" in
+ *  TopDeck's vocabulary. "Brawl" and "Prerelease" aren't tracked at all
+ *  (Prerelease events show up via WotC's API anyway).
+ *
+ *  Format names are case-sensitive. EDH is TopDeck's term for Commander;
+ *  the downstream normalizer rewrites it to "Commander" for display so
+ *  the homepage filter chip stays clean. The micro-formats at the bottom
+ *  (Old School / Tiny Leaders / Oathbreaker / etc.) see few events but
+ *  cost ~one API call each — cheap enough to include for full coverage.
+ *  Each format = +1 API call per scrape; rate limit on this endpoint is
+ *  "lower than the default 100/min" per the v2 docs, but `Promise.allSettled`
+ *  on the fan-out isolates per-format 429s so partial throttling won't
+ *  poison the whole run. */
 const TOPDECK_MTG_FORMATS = [
+  // Constructed (most-organized)
   "Standard",
   "Modern",
   "Pioneer",
   "Legacy",
   "Vintage",
   "Pauper",
-  "EDH",         // Commander
-  "Brawl",
-  "Historic",
-  "Booster Draft",
+  "Premodern",
+  // Limited
+  "Limited",         // TopDeck's term for what we used to call "Booster Draft"
   "Sealed",
-  "Prerelease",
+  // Commander family
+  "EDH",             // Commander
+  "Pauper EDH",
+  "Duel Commander",
+  "EDH Draft",
+  // Other / casual / community
+  "Historic",
+  "Timeless",
+  "Explorer",
+  "Old School 93/94",
+  "Canadian Highlander",
+  "Tiny Leaders",
+  "7pt Highlander",
+  "Oathbreaker",
 ];
 
 // Module-level counter for progress reporting. Incremented inside the
-// parallel fan-out so the admin UI can see "TopDeck · 7/12 formats" as
+// parallel fan-out so the admin UI can see "TopDeck · 7/21 formats" as
 // queries land. Reset at the top of each scrape run (only one scrape
 // in flight per process, lock guarantees that).
 let topdeckFormatsCompleted = 0;
