@@ -331,6 +331,61 @@ code, pre, kbd, samp, tt {
   mix-blend-mode: overlay;
 }
 
+/* cEDH badge: competitive-Commander sub-format marker. Same structure
+   as the RCQ badge (obsidian base + diagonal glint), but the base is
+   onyx-black and the glint is crimson rather than silver. Reads as
+   "high-stakes competitive" against RCQ's neutral "judge's seal." */
+@keyframes cedhGlint {
+  0%   { transform: translateX(-110%); }
+  12%  { transform: translateX(220%); }
+  100% { transform: translateX(220%); }
+}
+
+.anim-cedh-glint {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* Obsidian gradient — onyx → graphite → onyx for depth. The hint of
+     crimson in the mid-stop ties it to the crimson glint without
+     turning the base red. */
+  background: linear-gradient(
+    135deg,
+    #0e0e10 0%,
+    #2a1217 22%,
+    #4a1c25 48%,
+    #2a1217 72%,
+    #0e0e10 100%
+  );
+  color: #f4e8e0;
+  box-shadow:
+    inset 0 1px 0 rgb(255 200 200 / 0.18),
+    inset 0 -1px 0 rgb(0 0 0 / 0.55),
+    0 1px 1px rgb(0 0 0 / 0.18);
+  text-shadow: 0 0.5px 0 rgb(0 0 0 / 0.55);
+}
+
+.anim-cedh-glint::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 60%;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgb(220 38 38 / 0.5) 45%,
+    rgb(248 113 113 / 0.85) 50%,
+    rgb(220 38 38 / 0.5) 55%,
+    transparent 100%
+  );
+  animation: cedhGlint 5.5s ease-in-out infinite;
+  /* `screen` (vs RCQ's `overlay`) brightens through the dark base
+     instead of washing it out — keeps the crimson visible. */
+  mix-blend-mode: screen;
+}
+
 /* Reusable animation classes */
 .anim-fade-in-up {
   animation: fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -377,6 +432,8 @@ code, pre, kbd, samp, tt {
   /* RCQ badge: keep the brushed-steel base (static visual treatment is
      the core signal), but drop the sweep. */
   .anim-rcq-glint::before { animation: none; opacity: 0; }
+  /* cEDH badge: same — keep the obsidian base, drop the sweep. */
+  .anim-cedh-glint::before { animation: none; opacity: 0; }
   /* Live chip: keep the emerald fill + white text (static visual is the
      core signal), but drop the shine sweep. */
   .anim-live-shine::before { animation: none; opacity: 0; }

@@ -107,6 +107,29 @@ export function isRcq(title: string | null | undefined): boolean {
 export const RCQ_BADGE =
   "anim-rcq-glint inline-block rounded-sm font-bold uppercase tracking-wider";
 
+// Title-pattern match for cEDH (competitive EDH / competitive Commander)
+// events. Same shape as isRcq() — a sub-format signal that lives in the
+// event title rather than the `format` column. Scrapers (TopDeck mostly,
+// where ~80% of events are EDH) don't tag cEDH explicitly, so we detect
+// the marker at render + query time. Most community spellings appear:
+// "cEDH" (lowercase c, the convention), "CEDH" (all caps, also common),
+// "Competitive EDH", "Competitive Commander".
+export function isCedh(title: string | null | undefined): boolean {
+  if (!title) return false;
+  // Negative-lookbehind/around to avoid matching incidental "cedh" inside
+  // other words. The token can stand alone or be flanked by whitespace,
+  // punctuation, or string boundary.
+  return /(^|[^a-z])(cedh|competitive\s+(edh|commander))($|[^a-z])/i.test(title);
+}
+
+// Obsidian-black "competitive stamp" with a crimson glint sweep — see
+// the `.anim-cedh-glint` rule in app/globals.css. Visually distinct from
+// RCQ_BADGE's silver/foil treatment so an event can carry both badges
+// without them blending. Crimson reads as "high-stakes / competitive"
+// and contrasts with RCQ's neutral "judge's seal."
+export const CEDH_BADGE =
+  "anim-cedh-glint inline-block rounded-sm font-bold uppercase tracking-wider";
+
 // Hex-int values for Discord embed `color` field. Mirrors FORMAT_DOT —
 // the deep ("ink") version of each mana color, so the embed accent matches
 // the dot color shown elsewhere.

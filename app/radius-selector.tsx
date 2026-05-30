@@ -13,7 +13,7 @@ import type { DistanceUnit } from "@/lib/distance";
 // Build the canonical /calendar URL given the user's current filter state.
 // Empty/falsy filters are omitted so subscribers to the bare /calendar
 // keep getting the unfiltered global feed.
-function buildFeedPath({ format, radius, days, venue, rcq }: { format?: string; radius?: number; days?: number; venue?: string; rcq?: boolean }): string {
+function buildFeedPath({ format, radius, days, venue, rcq, cedh }: { format?: string; radius?: number; days?: number; venue?: string; rcq?: boolean; cedh?: boolean }): string {
   const sp = new URLSearchParams();
   if (format) sp.set("format", format);
   if (venue) {
@@ -25,6 +25,7 @@ function buildFeedPath({ format, radius, days, venue, rcq }: { format?: string; 
   }
   if (days) sp.set("days", String(days));
   if (rcq) sp.set("rcq", "1");
+  if (cedh) sp.set("cedh", "1");
   const qs = sp.toString();
   return qs ? `/calendar?${qs}` : `/calendar`;
 }
@@ -158,6 +159,7 @@ function ChipSelect({
   align = "center",
   custom,
   toggle,
+  toggles,
   mono = false,
 }: {
   label: string;
@@ -172,8 +174,14 @@ function ChipSelect({
   custom?: { unit: string; placeholder: string; min: number; max: number };
   /** Optional boolean toggle at the bottom of the dropdown. Used by the
    *  Format chip to expose the orthogonal "RCQs only" filter without adding
-   *  a separate chip to the already-crowded sticky bar. */
+   *  a separate chip to the already-crowded sticky bar. Use `toggles` for
+   *  multiple — `toggle` is the singular form kept for back-compat. */
   toggle?: { label: string; description?: string; checked: boolean; onChange: (checked: boolean) => void };
+  /** Multiple boolean toggles, rendered stacked at the bottom of the
+   *  dropdown. Used by the Format chip to expose both "RCQs only" and
+   *  "cEDH only" — orthogonal sub-format filters that don't deserve
+   *  their own sticky-bar chips. */
+  toggles?: Array<{ label: string; description?: string; checked: boolean; onChange: (checked: boolean) => void }>;
   /** Render the chip label in Space Mono — for numeric-data chips like the
    *  radius value. */
   mono?: boolean;
@@ -262,26 +270,29 @@ function ChipSelect({
               </button>
             </div>
           )}
-          {toggle && (
-            <label className="border-t border-neutral-100 dark:border-white/8 px-4 py-2.5 flex items-start gap-2.5 cursor-pointer hover:bg-neutral-50 dark:hover:bg-white/5 transition-colors">
+          {/* Toggles. `toggles` (array) is preferred; `toggle` (singular)
+              is kept for back-compat with older callers. They share the
+              same row markup so the visual treatment is identical. */}
+          {(toggles && toggles.length > 0 ? toggles : toggle ? [toggle] : []).map((t, i) => (
+            <label key={i} className="border-t border-neutral-100 dark:border-white/8 px-4 py-2.5 flex items-start gap-2.5 cursor-pointer hover:bg-neutral-50 dark:hover:bg-white/5 transition-colors">
               <input
                 type="checkbox"
-                checked={toggle.checked}
-                onChange={(e) => { close(); toggle.onChange(e.target.checked); }}
+                checked={t.checked}
+                onChange={(e) => { close(); t.onChange(e.target.checked); }}
                 className="mt-0.5 h-3.5 w-3.5 shrink-0 accent-neutral-900 dark:accent-white cursor-pointer"
               />
               <span className="flex-1 min-w-0">
                 <span className="block text-sm font-medium text-neutral-900 dark:text-white leading-tight">
-                  {toggle.label}
+                  {t.label}
                 </span>
-                {toggle.description && (
+                {t.description && (
                   <span className="block text-[11px] text-neutral-500 dark:text-neutral-400 leading-snug mt-0.5">
-                    {toggle.description}
+                    {t.description}
                   </span>
                 )}
               </span>
             </label>
-          )}
+          ))}
         </div>
       )}
     </div>
@@ -293,6 +304,7 @@ export function SubscribeDropdown({
   currentRadius,
   currentDays,
   currentRcq,
+  currentCedh,
   venueName,
   onToast,
 }: {
@@ -302,6 +314,8 @@ export function SubscribeDropdown({
   /** When set, the subscribed feed URL includes rcq=1 so the calendar app
    *  receives only RCQ events — same filter the user sees on the site. */
   currentRcq?: boolean;
+  /** Same as currentRcq, for the cEDH sub-format. */
+  currentCedh?: boolean;
   /** When set, the dropdown subscribes the user to ONE venue's events
    *  (skips radius). Triggered from the venue page's Subscribe button. */
   venueName?: string;
@@ -340,6 +354,7 @@ export function SubscribeDropdown({
     days: currentDays,
     venue: venueName,
     rcq: currentRcq,
+    cedh: currentCedh,
   });
   const webcalUrl = `webcal://${host}${path}`;
   const httpsUrl = `https://${host}${path}`;
@@ -586,6 +601,7 @@ export default function RadiusSelector({
   currentDays,
   currentFormat,
   currentRcq = false,
+  currentCedh = false,
   currentView,
   formats,
   eventCount,
@@ -602,6 +618,9 @@ export default function RadiusSelector({
    *  through to the Format chip's bottom toggle and the SubscribeDropdown's
    *  feed-URL builder. */
   currentRcq?: boolean;
+  /** True when the user has restricted to cEDH (competitive Commander).
+   *  Orthogonal to RCQ — independent sub-format filters. */
+  currentCedh?: boolean;
   /** Active view ("list" | "calendar" | "map"). The timeframe chip only
    *  renders for the map view since list has its own Load-more affordance
    *  and calendar has built-in week navigation. */
@@ -681,19 +700,33 @@ export default function RadiusSelector({
           React-19 hydration warning + DOM-nesting error in the console. */}
       <div className="text-neutral-500 dark:text-neutral-400 flex items-center justify-center flex-wrap gap-x-1.5 gap-y-1 text-lg sm:text-xl leading-relaxed font-[family-name:var(--font-ultra)] font-bold">
         <ChipSelect
-          label={currentRcq ? `${currentFormat || "All"} RCQ` : (currentFormat || tr("filters.all_mtg"))}
+          label={
+            currentCedh
+              ? `${currentFormat || "All"} cEDH`
+              : currentRcq
+                ? `${currentFormat || "All"} RCQ`
+                : (currentFormat || tr("filters.all_mtg"))
+          }
           heading="Format"
           options={formatOptions}
           value={currentFormat || ""}
           onChange={(v) => updateParam("format", v)}
           dot
           align="start"
-          toggle={{
-            label: tr("filters.rcq_only_label"),
-            description: tr("filters.rcq_only_help"),
-            checked: currentRcq,
-            onChange: (checked) => updateParam("rcq", checked ? "1" : ""),
-          }}
+          toggles={[
+            {
+              label: tr("filters.rcq_only_label"),
+              description: tr("filters.rcq_only_help"),
+              checked: currentRcq,
+              onChange: (checked) => updateParam("rcq", checked ? "1" : ""),
+            },
+            {
+              label: tr("filters.cedh_only_label"),
+              description: tr("filters.cedh_only_help"),
+              checked: currentCedh,
+              onChange: (checked) => updateParam("cedh", checked ? "1" : ""),
+            },
+          ]}
         />
 
         <span className={CONNECTOR}>{tr("filters.events_within")}</span>
@@ -754,6 +787,7 @@ export default function RadiusSelector({
             currentRadius={currentRadius}
             currentDays={currentDays}
             currentRcq={currentRcq}
+            currentCedh={currentCedh}
             onToast={showToast}
           />
         </div>

@@ -19,8 +19,10 @@ import {
   FORMAT_BADGE,
   FORMAT_BADGE_DEFAULT,
   RCQ_BADGE,
+  CEDH_BADGE,
   SOURCE_LABELS,
   isRcq,
+  isCedh,
   showFormatBadge,
 } from "@/lib/format-style";
 import ShareButton from "./share-button";
@@ -348,7 +350,7 @@ export default async function EventPage({
               "Event" eyebrow labels were redundant scaffolding once the
               chip got the Beleren treatment that already communicates
               "this is the format". */}
-          {(showFormatBadge(ev.format) || isRcq(ev.title)) && (
+          {(showFormatBadge(ev.format) || isRcq(ev.title) || isCedh(ev.title)) && (
             <div className="inline-flex items-center gap-1.5 flex-wrap">
               {showFormatBadge(ev.format) && (
                 <span className={`inline-block px-3 py-1 rounded-sm text-xs font-bold tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
@@ -358,6 +360,11 @@ export default async function EventPage({
               {isRcq(ev.title) && (
                 <span className={`${RCQ_BADGE} px-2.5 py-1 text-xs`} title="Regional Championship Qualifier">
                   RCQ
+                </span>
+              )}
+              {isCedh(ev.title) && (
+                <span className={`${CEDH_BADGE} px-2.5 py-1 text-xs`} title="Competitive EDH">
+                  cEDH
                 </span>
               )}
             </div>

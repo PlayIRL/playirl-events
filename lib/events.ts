@@ -199,6 +199,13 @@ export function getActiveEvents(filters?: {
    *  Orthogonal to format (an RCQ can be Modern, Sealed, Standard, etc.) so
    *  this combines with `format` rather than replacing it. */
   rcq?: boolean;
+  /** When true, restrict to competitive-Commander events. cEDH is a sub-format
+   *  of EDH — events use the "EDH" / "Commander" format string but flag the
+   *  competitive tier in the title ("cEDH", "CEDH", "Competitive EDH",
+   *  "Competitive Commander"). Pattern-matched at query time the same way
+   *  RCQ is. Combines with `format` (cedh=1 + format=Commander narrows to
+   *  cEDH explicitly). */
+  cedh?: boolean;
 }): EventRow[] {
   const db = getDb();
   // visibility/cancelled chokepoint: every public read path goes through
@@ -216,6 +223,15 @@ export function getActiveEvents(filters?: {
     // acceptable because the chokepoint already filters by date and (often)
     // bbox, so the candidate set is small by the time we LIKE-scan titles.
     sql += " AND (title LIKE '%RCQ%' OR title LIKE '%Regional Championship Qualifier%')";
+  }
+  if (filters?.cedh) {
+    // Same LIKE-scan trade-off as RCQ. The matcher mirrors isCedh() in
+    // lib/format-style.ts so the badge and the filter agree on which
+    // rows count. We don't AND format='Commander' here because the
+    // signal is the title, not the format string — sometimes events
+    // self-identify as "cEDH proxy event" while the scraper categorized
+    // them under a sibling format.
+    sql += " AND (title LIKE '%cEDH%' OR title LIKE '%CEDH%' OR title LIKE '%Competitive EDH%' OR title LIKE '%Competitive Commander%')";
   }
   if (filters?.from) {
     sql += " AND date >= ?";

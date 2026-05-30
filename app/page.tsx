@@ -50,6 +50,10 @@ export default async function HomePage({
     loc?: string; lat?: string; lng?: string;
     /** "1" to restrict the listing to RCQ events. Orthogonal to format. */
     rcq?: string;
+    /** "1" to restrict the listing to cEDH (competitive Commander) events.
+     *  Pattern-matched on the title, same as rcq. Combines with format —
+     *  e.g. cedh=1 + format=Commander narrows to cEDH explicitly. */
+    cedh?: string;
     /** Dev-only preview hook — "1" forces the first N events in the first
      *  day card to render as in_progress, so the live treatment can be
      *  designed without waiting for real in-progress events. Pass a
@@ -79,6 +83,7 @@ export default async function HomePage({
     : currentView === "map" ? 1 : defaultDays;
   const currentFormat = params.format ?? defaultFormat;
   const currentRcq = params.rcq === "1";
+  const currentCedh = params.cedh === "1";
   const currentOffset = params.offset ? Math.max(0, parseInt(params.offset, 10)) : 0;
 
   // Location resolution: URL > prefs > IP geolocation > Philly default.
@@ -183,6 +188,7 @@ export default async function HomePage({
     centerLat: currentLocationLat,
     centerLng: currentLocationLng,
     rcq: currentRcq || undefined,
+    cedh: currentCedh || undefined,
   });
 
   const enriched = events.map((ev) => {
@@ -245,6 +251,7 @@ export default async function HomePage({
           currentDays={currentDays}
           currentFormat={currentFormat}
           currentRcq={currentRcq}
+          currentCedh={currentCedh}
           currentView={currentView}
           formats={formats}
           eventCount={events.length}
