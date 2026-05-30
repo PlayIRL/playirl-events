@@ -77,12 +77,42 @@ interface RunningStatus {
   runningSource: string;
 }
 
+interface TestSourceResult {
+  ok: boolean;
+  source: string;
+  count?: number;
+  durationMs?: number;
+  sampleEvents?: unknown[];
+  error?: string;
+}
+
 export default function ScrapersPage() {
   const [settings, setSettings] = useState<Settings | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [result, setResult] = useState<string>("");
   const [history, setHistory] = useState<HistoryRow[]>([]);
   const [running, setRunning] = useState<RunningStatus | null>(null);
+  const [testSource, setTestSource] = useState<string>("topdeck");
+  const [testing, setTesting] = useState(false);
+  const [testResult, setTestResult] = useState<TestSourceResult | null>(null);
+
+  async function runTestSource() {
+    setTesting(true);
+    setTestResult(null);
+    try {
+      const res = await fetch("/api/admin/test-source", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ source: testSource }),
+      });
+      const data = (await res.json()) as TestSourceResult;
+      setTestResult(data);
+    } catch (err) {
+      setTestResult({ ok: false, source: testSource, error: err instanceof Error ? err.message : String(err) });
+    } finally {
+      setTesting(false);
+    }
+  }
 
   async function loadSettings() {
     const res = await fetch("/api/admin/settings");
@@ -253,6 +283,78 @@ export default function ScrapersPage() {
         )}
         {result && (
           <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-3">{result}</p>
+        )}
+      </section>
+
+      {/* Per-source diagnostic. Lets admins exercise a single scraper
+          in isolation — one upstream API call, no DB writes, no
+          scrape_history row, no venue image fetches. Built specifically
+          because debugging TopDeck auth issues by firing the full
+          10-15min multi-region scrape is slow + hits WotC ~197 times
+          for no good reason. Returns count + first 3 events on success,
+          the raw error string on failure. */}
+      <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5 mb-4">
+        <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-1">Test individual source</h2>
+        <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
+          Runs one source scraper in isolation. Fetches and validates;
+          does <em>not</em> write to the DB or to scrape history. Use for
+          debugging API keys / auth / shape changes without firing a
+          full multi-region scrape.
+        </p>
+        <div className="flex gap-2 items-center flex-wrap">
+          <select
+            value={testSource}
+            onChange={(e) => setTestSource(e.target.value)}
+            disabled={testing}
+            className="text-sm px-3 py-1.5 border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
+          >
+            <option value="topdeck">TopDeck</option>
+            <option value="wizardsLocator">Wizards Locator</option>
+            <option value="discord">Discord</option>
+          </select>
+          <button
+            onClick={runTestSource}
+            disabled={testing}
+            className="bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 disabled:opacity-50 transition"
+          >
+            {testing ? "Testing…" : "Run test"}
+          </button>
+          {testSource === "wizardsLocator" && (
+            <span className="text-[11px] text-amber-700 dark:text-amber-400">
+              ⚠ WotC test still sweeps every enabled region — heavy. Use
+              this sparingly.
+            </span>
+          )}
+        </div>
+
+        {testResult && (
+          <div
+            className={`mt-3 rounded-md border p-3 text-xs ${
+              testResult.ok
+                ? "border-emerald-300 bg-emerald-50 dark:border-emerald-500/30 dark:bg-emerald-950/20"
+                : "border-red-300 bg-red-50 dark:border-red-500/30 dark:bg-red-950/20"
+            }`}
+          >
+            <p className="font-mono mb-2 break-words">
+              {testResult.ok ? "✓" : "✗"} <strong>{testResult.source}</strong>{" "}
+              {testResult.ok
+                ? `· ${testResult.count} events · ${testResult.durationMs != null ? `${(testResult.durationMs / 1000).toFixed(2)}s` : ""}`
+                : `· failed in ${testResult.durationMs != null ? `${(testResult.durationMs / 1000).toFixed(2)}s` : "?"}`}
+            </p>
+            {!testResult.ok && testResult.error && (
+              <pre className="text-red-700 dark:text-red-300 whitespace-pre-wrap break-words text-[11px] font-mono">{testResult.error}</pre>
+            )}
+            {testResult.ok && testResult.sampleEvents && testResult.sampleEvents.length > 0 && (
+              <details className="mt-2">
+                <summary className="cursor-pointer text-neutral-700 dark:text-neutral-300 select-none">
+                  Show first {testResult.sampleEvents.length} event{testResult.sampleEvents.length === 1 ? "" : "s"}
+                </summary>
+                <pre className="mt-2 p-2 bg-white dark:bg-neutral-900 rounded-md border border-neutral-200 dark:border-neutral-700 overflow-x-auto text-[10px] font-mono max-h-72 overflow-y-auto">
+                  {JSON.stringify(testResult.sampleEvents, null, 2)}
+                </pre>
+              </details>
+            )}
+          </div>
         )}
       </section>
 
