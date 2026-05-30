@@ -257,11 +257,14 @@ async function fetchTopdeckForFormat(
       // response. `columns: []` is honored per the OpenAPI default
       // override path.
       columns: [],
-      // Filter out single-player / two-player "tournaments" that show up
-      // as TO test data or cancelled events. 4 = minimum viable swiss
-      // (two pairings × one round) — still permissive enough that
-      // legitimate small LGS events stay in.
-      participantMin: 4,
+      // No participantMin: an earlier iteration set this to 4 to filter
+      // out single-player / two-player "tournaments", but the result
+      // was that a full scrape returned exactly one event — far below
+      // the API's actual volume. The likely cause: TopDeck counts only
+      // TopDeck-registered participants, not day-of attendees, and most
+      // local store events have 0–2 pre-registered. Re-enabling
+      // participantMin should wait until we have data showing junk
+      // events are a real problem, not a hypothetical one.
     }),
   });
   if (!res.ok) {
