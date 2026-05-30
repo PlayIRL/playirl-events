@@ -12,9 +12,8 @@ export const FORMAT_EMOJI: Record<string, string> = {
 // Format colors map to the actual MTG mana-symbol swatches — the cream,
 // sky-blue, bone, salmon, and sage that show on the mana cost roundels
 // and card frames, not Tailwind's generic palette. Light-mode values
-// are the high-luminance pastel of each mana color (bright + soft, like
-// a frosted Easter-egg sticker); dark-mode keeps the deep ink color at
-// mid alpha so the chip stays readable on a near-black surface.
+// are the high-luminance pastel of each mana color; dark-mode is the
+// deep ink color so the chip reads against a near-black page.
 //
 //   W (Plains)      #FCE48F / #5C4400     → Pauper (commons)
 //   U (Island)      #B5D7F0 / #0E68AB     → Modern (control)
@@ -27,25 +26,36 @@ export const FORMAT_EMOJI: Record<string, string> = {
 //
 // Commander uses plum (the "mythic / legendary stamp" color in MTG
 // culture) rather than gold so it sits visually clear of Pauper's cream.
+//
+// All pairs are WCAG 2.1 AA compliant (≥ 4.5:1 contrast for normal text).
+// Audited 2026-05-30 — earlier versions had several failures in dark mode
+// where Pauper / Draft / Sealed used low-alpha bg + light text (both
+// near the bright end), producing 2-3:1 ratios that were genuinely
+// hard to read. Dark-mode now uses the deep ink color at full opacity
+// with the pastel as text, matching the pattern Commander / Modern /
+// Standard / Pioneer / Legacy already used.
 export const FORMAT_BADGE: Record<string, string> = {
   // Plum — legendary / mythic
   Commander:
     "bg-[#C9A2EE] text-[#2A1145] dark:bg-[#6B3FA0]/85 dark:text-[#F1E4F9]",
-  // Deep plum/violet — Commander's sibling, "intensified." Stays in the
-  // mythic-plum family (so cEDH reads as "Commander's competitive
-  // cousin") but darkens both light and dark modes to feel weightier.
-  // Light bg = saturated violet, dark text. Dark bg = deep aubergine,
-  // pastel-plum text. Matches the mana-color chip pattern the other
-  // formats use rather than the standalone glint stamp we had before.
+  // Deep plum/violet — Commander's sibling, "intensified." Stays in
+  // the mythic-plum family but uses a dark-bg / light-text treatment
+  // in BOTH modes (Commander's light mode is the inverse, pastel-bg /
+  // dark-text), so the two chips look like related-but-distinct
+  // members of the same family.
+  //
+  // The earlier light-mode pairing (#9D5BC9 / #1F082B) landed at 4.23:1
+  // which barely missed WCAG AA 4.5:1 — the bg was stuck in the awkward
+  // middle, neither dark enough for light text nor light enough for
+  // dark text. Now 8.28:1.
   //
   // tracking-tight! overrides the chip wrapper's tracking-wide. Beleren
   // (the card-title font) is designed for ALL-CAPS with generous
   // spacing; cEDH's mixed casing reads as too-spread-out at the wider
-  // default. Tightening pulls the four glyphs into a cohesive chip-sized
-  // unit while leaving the all-caps format chips (Commander, Modern,
-  // etc.) untouched at their original tracking.
+  // default. Tightening pulls the four glyphs into a cohesive unit
+  // while the all-caps chips stay at their original tracking.
   cEDH:
-    "bg-[#9D5BC9] text-[#1F082B] dark:bg-[#3D1F58]/90 dark:text-[#E1C5F5] tracking-tight!",
+    "bg-[#5E2A8C] text-[#F5EAFF] dark:bg-[#3D1F58]/90 dark:text-[#E1C5F5] tracking-tight!",
   // U — Island
   Modern:
     "bg-[#8FC1E8] text-[#0A2D4D] dark:bg-[#0E68AB]/85 dark:text-[#D6ECF7]",
@@ -58,15 +68,20 @@ export const FORMAT_BADGE: Record<string, string> = {
   // B — Swamp / eternal
   Legacy:
     "bg-[#C8BDA9] text-[#15110D] dark:bg-[#3A352F] dark:text-[#E8E2DC]",
-  // W — Plains / commons (pastel sun-gold)
+  // W — Plains / commons (pastel sun-gold). Dark mode was previously
+  // bg #F8E26B/75 with cream text — 2.05:1, unreadable. Now uses the
+  // deep Plains ink as bg with the original pastel as text (~8.3:1).
   Pauper:
-    "bg-[#FBD651] text-[#5C4400] dark:bg-[#F8E26B]/75 dark:text-[#FBF4C5]",
-  // Amber-gold — limited
+    "bg-[#FBD651] text-[#5C4400] dark:bg-[#5C4400] dark:text-[#FBF4C5]",
+  // Amber-gold — limited. Dark mode was bg #E08F2B/85 with light amber
+  // text — 2.60:1. Now deep-amber bg + pastel-amber text (~11.4:1).
   Draft:
-    "bg-[#FAA958] text-[#3D1F08] dark:bg-[#E08F2B]/85 dark:text-[#F9DCB0]",
-  // Bronze-gold — sealed mystery
+    "bg-[#FAA958] text-[#3D1F08] dark:bg-[#3D1F08] dark:text-[#F9DCB0]",
+  // Bronze-gold — sealed mystery. Dark mode was bg #B86E1F/85 — that
+  // blended bg was stuck at L≈0.15 which can't pass 4.5:1 against ANY
+  // text. Now deep-bronze bg + pastel-bronze text (~9.8:1).
   Sealed:
-    "bg-[#D9A467] text-[#291A07] dark:bg-[#B86E1F]/85 dark:text-[#EBCFA5]",
+    "bg-[#D9A467] text-[#291A07] dark:bg-[#3D2208] dark:text-[#EBCFA5]",
 };
 
 // Saturated swatches for the format-selector dot in the radius dropdown.
