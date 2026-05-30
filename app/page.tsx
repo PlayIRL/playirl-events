@@ -261,7 +261,7 @@ export default async function HomePage({
   }
 
   return (
-    <main className="w-full max-w-3xl mx-auto px-4 pt-8 pb-32">
+    <main className="w-full max-w-5xl mx-auto px-4 pt-8 pb-32">
       <AccountChip />
       <FloatingToolbar currentView={currentView} />
 
