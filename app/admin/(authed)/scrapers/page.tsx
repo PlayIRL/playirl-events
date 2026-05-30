@@ -72,9 +72,19 @@ function triggerBadge(triggeredBy: string | undefined): { label: string; classNa
   }
 }
 
+interface ScrapeProgress {
+  phase: string;
+  message: string;
+  current?: number;
+  total?: number;
+  events?: number;
+  updatedAt: number;
+}
+
 interface RunningStatus {
   runningSince: string;
   runningSource: string;
+  progress?: ScrapeProgress;
 }
 
 interface TestSourceResult {
@@ -277,9 +287,57 @@ export default function ScrapersPage() {
           {running ? "Scraping…" : refreshing ? "Starting…" : "Refresh now"}
         </button>
         {running && (
-          <p className="text-xs text-neutral-600 dark:text-neutral-300 mt-3">
-            ⏳ {running.runningSource} scrape running since {new Date(running.runningSince).toLocaleTimeString()} · cold runs take ~10–15 min
-          </p>
+          <div className="mt-3 space-y-2">
+            <p className="text-xs text-neutral-600 dark:text-neutral-300">
+              ⏳ {running.runningSource} scrape running since{" "}
+              {new Date(running.runningSince).toLocaleTimeString()}
+              {" · cold runs take ~10–15 min"}
+            </p>
+
+            {/* Live phase + progress bar. Updated every 5s as the poller
+                refreshes /api/admin/refresh. Phase + message render
+                immediately; the bar only when the phase has a definite
+                current/total (some phases like Geocoding / Dedupe don't
+                emit a count). */}
+            {running.progress && (
+              <div className="rounded-md border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900/50 px-3 py-2">
+                <div className="flex items-baseline justify-between gap-3 text-xs">
+                  <span className="font-mono text-neutral-700 dark:text-neutral-200">
+                    {running.progress.phase}
+                    {typeof running.progress.current === "number" && typeof running.progress.total === "number" && (
+                      <span className="text-neutral-500 dark:text-neutral-400">
+                        {" "}· {running.progress.current.toLocaleString()}/{running.progress.total.toLocaleString()}
+                      </span>
+                    )}
+                  </span>
+                  {/* Updated-N-sec-ago tag — if it goes stale (> 60s with
+                      no new heartbeat), the phase is probably stuck on a
+                      slow upstream and the admin should know. */}
+                  <span className="text-[10px] text-neutral-400 dark:text-neutral-500 tabular-nums">
+                    upd {Math.max(0, Math.round((Date.now() - running.progress.updatedAt) / 1000))}s ago
+                  </span>
+                </div>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5 break-words">
+                  {running.progress.message}
+                </p>
+                {typeof running.progress.current === "number" && typeof running.progress.total === "number" && running.progress.total > 0 && (
+                  <div className="mt-2 h-1.5 rounded-full bg-neutral-200 dark:bg-neutral-800 overflow-hidden">
+                    <div
+                      className="h-full bg-emerald-500 dark:bg-emerald-400 transition-all duration-500 ease-out"
+                      style={{
+                        width: `${Math.min(100, (running.progress.current / running.progress.total) * 100).toFixed(1)}%`,
+                      }}
+                    />
+                  </div>
+                )}
+                {typeof running.progress.events === "number" && (
+                  <p className="text-[10px] text-neutral-500 dark:text-neutral-400 mt-1 tabular-nums">
+                    {running.progress.events.toLocaleString()} events accumulated
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
         )}
         {result && (
           <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-3">{result}</p>

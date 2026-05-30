@@ -1,5 +1,6 @@
 import { getConfig } from "@/lib/runtime-config";
 import { normalizeFormat } from "@/lib/formats";
+import { setScrapeProgress } from "@/lib/scraper-lock";
 
 const API_URL = "https://topdeck.gg/api/v2/tournaments";
 
@@ -77,11 +78,19 @@ const TOPDECK_MTG_FORMATS = [
   "Prerelease",
 ];
 
+// Module-level counter for progress reporting. Incremented inside the
+// parallel fan-out so the admin UI can see "TopDeck · 7/12 formats" as
+// queries land. Reset at the top of each scrape run (only one scrape
+// in flight per process, lock guarantees that).
+let topdeckFormatsCompleted = 0;
+let topdeckEventsAccum = 0;
+
 async function fetchTopdeckForFormat(
   apiKey: string,
   format: string,
   start: number,
   end: number,
+  totalFormats: number,
 ): Promise<unknown[]> {
   const res = await fetch(API_URL, {
     method: "POST",
@@ -104,8 +113,25 @@ async function fetchTopdeckForFormat(
   const tournaments = await res.json();
   if (!Array.isArray(tournaments)) {
     console.warn(`[topdeck] format=${format}: unexpected response shape ${typeof tournaments}`);
+    topdeckFormatsCompleted++;
+    setScrapeProgress({
+      phase: "TopDeck",
+      message: `format=${format} returned no array`,
+      current: topdeckFormatsCompleted,
+      total: totalFormats,
+      events: topdeckEventsAccum,
+    });
     return [];
   }
+  topdeckFormatsCompleted++;
+  topdeckEventsAccum += tournaments.length;
+  setScrapeProgress({
+    phase: "TopDeck",
+    message: `format=${format} · ${tournaments.length} tournaments (running total ${topdeckEventsAccum.toLocaleString()})`,
+    current: topdeckFormatsCompleted,
+    total: totalFormats,
+    events: topdeckEventsAccum,
+  });
   return tournaments;
 }
 
@@ -126,8 +152,18 @@ export default async function fetchTopdeckEvents(sourceConfig: any = {}) {
   // Dedupe on TID because a single tournament could theoretically be tagged
   // with multiple formats; practical observation is that this almost never
   // happens, but the dedupe is cheap insurance.
+  // Reset module counters before the fan-out so progress reporting
+  // starts from zero each scrape (lock prevents concurrent runs).
+  topdeckFormatsCompleted = 0;
+  topdeckEventsAccum = 0;
+  setScrapeProgress({
+    phase: "TopDeck",
+    message: `Querying ${TOPDECK_MTG_FORMATS.length} formats…`,
+    current: 0,
+    total: TOPDECK_MTG_FORMATS.length,
+  });
   const settled = await Promise.allSettled(
-    TOPDECK_MTG_FORMATS.map((fmt) => fetchTopdeckForFormat(apiKey, fmt, now, end).then(
+    TOPDECK_MTG_FORMATS.map((fmt) => fetchTopdeckForFormat(apiKey, fmt, now, end, TOPDECK_MTG_FORMATS.length).then(
       (rows) => ({ fmt, rows }),
     )),
   );

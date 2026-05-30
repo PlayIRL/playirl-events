@@ -4,6 +4,7 @@ import type { ScrapeRegion } from "@/lib/scrape-grid";
 import { normalizeFormat } from "@/lib/formats";
 import { formatCost } from "@/lib/format-cost";
 import { setSetting } from "@/lib/events";
+import { setScrapeProgress } from "@/lib/scraper-lock";
 
 /** Per-anchor stats captured during a scrape and persisted under the
  *  `last_scrape_regions_wotc` setting so /admin/scrapers can render a
@@ -195,6 +196,12 @@ export default async function fetchWizardsEvents(_sourceConfig = {}) {
     const r = regions[i];
     const meters = Math.round(r.radiusMi * 1609.34);
     const startedAt = Date.now();
+    setScrapeProgress({
+      phase: "WotC stores",
+      message: `${r.label}${r.country ? ` (${r.country})` : ""} · ${storesById.size.toLocaleString()} unique stores so far`,
+      current: i + 1,
+      total: regions.length,
+    });
     try {
       const stores = await fetchStoresAt(r.lat, r.lng, meters);
       let added = 0;
@@ -237,7 +244,21 @@ export default async function fetchWizardsEvents(_sourceConfig = {}) {
   let cacheHits = 0;
   let cacheMisses = 0;
   let intlSkips = 0;
+  const totalStores = storesById.size;
+  let storeIdx = 0;
   for (const s of storesById.values()) {
+    storeIdx++;
+    // Throttle progress writes: every 25 stores is plenty for a UI poll
+    // that runs at 5s. Stores we cache-hit are sub-millisecond — skipping
+    // the progress update for them keeps the function tight.
+    if (storeIdx % 25 === 0 || storeIdx === totalStores) {
+      setScrapeProgress({
+        phase: "WotC geocode",
+        message: `${cacheHits.toLocaleString()} cached · ${cacheMisses} new · ${intlSkips} intl-skipped`,
+        current: storeIdx,
+        total: totalStores,
+      });
+    }
     const cached = getCachedStoreGeocode(s.id);
     if (cached !== null) {
       storeAddresses[s.id] = cached.address;
@@ -277,6 +298,13 @@ export default async function fetchWizardsEvents(_sourceConfig = {}) {
     const r = regions[i];
     const meters = Math.round(r.radiusMi * 1609.34);
     const startedAt = Date.now();
+    setScrapeProgress({
+      phase: "WotC events",
+      message: `${r.label}${r.country ? ` (${r.country})` : ""} · ${eventsById.size.toLocaleString()} unique events so far`,
+      current: i + 1,
+      total: regions.length,
+      events: eventsById.size,
+    });
     try {
       const events = await fetchEventsAt(r.lat, r.lng, meters, startDate, endDate);
       let added = 0;

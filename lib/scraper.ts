@@ -6,6 +6,7 @@ import { geocodeFirstMatch } from "./geocode";
 import { uploadFileExists } from "./upload-storage";
 import { applyDiscordAutoApprove, classifyEvent } from "./curation-rules";
 import { getConfig } from "./runtime-config";
+import { setScrapeProgress } from "./scraper-lock";
 
 function normalize(s: string): string {
   return (s || "").toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
@@ -283,12 +284,18 @@ export async function runScraper(triggeredBy: string = "unknown"): Promise<Scrap
   console.log(`   ${new Date().toISOString()} (triggered by: ${triggeredBy})`);
   const startedAt = Date.now();
   const cfg = getConfig();
+  setScrapeProgress({ phase: "Starting", message: "Loading sources…" });
 
   // 1. Fetch from all sources
   const { events: scraped, stats } = await fetchAllSources();
   console.log(`[sources] Total scraped: ${scraped.length}`);
 
   // 2. Dedupe
+  setScrapeProgress({
+    phase: "Dedupe",
+    message: `Cross-source dedup over ${scraped.length.toLocaleString()} events`,
+    events: scraped.length,
+  });
   const deduped = dedupeAcrossSources(scraped);
   console.log(`[dedupe] After dedup: ${deduped.length}`);
 
@@ -296,6 +303,11 @@ export async function runScraper(triggeredBy: string = "unknown"): Promise<Scrap
   // expose per-event lat/lng (today: Discord falling back to GUILD_COORDS)
   // get re-geocoded from their address, so the stored coords actually point
   // at the venue rather than at a guild-wide default.
+  setScrapeProgress({
+    phase: "Geocoding",
+    message: "Reconciling untrusted coords",
+    events: deduped.length,
+  });
   await reconcileEventCoords(deduped);
 
   // 2b. Auto-curation. Classify each event into active/skip/pending based on
@@ -326,15 +338,26 @@ export async function runScraper(triggeredBy: string = "unknown"): Promise<Scrap
   console.log(`[curation] active=${curation.active} skip=${curation.skip} pending=${curation.pending}`);
 
   // 3. Upsert into database
+  setScrapeProgress({
+    phase: "Saving",
+    message: `Writing ${deduped.length.toLocaleString()} events to DB`,
+    events: deduped.length,
+  });
   const result = upsertEvents(deduped);
   console.log(`[db] +${result.added} new | ~${result.updated} updated | ${result.skipped} pinned`);
 
   // 3a. Best-effort: try to grab a real photo for any newly-seen venue. This
   // never throws out of the scraper — if it fails, render-time falls back to
   // a Google Maps Static image (see lib/event-image.ts).
+  setScrapeProgress({
+    phase: "Venue images",
+    message: "Fetching venue cover photos",
+    events: deduped.length,
+  });
   await enqueueVenueImageFetches(deduped);
 
   // 4. Archive old events
+  setScrapeProgress({ phase: "Archiving", message: "Pruning expired events", events: deduped.length });
   const archived = archiveOldEvents(90);
   if (archived > 0) console.log(`[db] Archived ${archived} old events`);
 
