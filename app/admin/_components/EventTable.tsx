@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import StatusBadge from "./StatusBadge";
 
@@ -31,12 +31,11 @@ export interface EventTableProps {
   patchEndpoint?: (id: string) => string;
   deleteEndpoint?: (id: string) => string;
   bulkEndpoint?: string;
-  // Hide the "source" filter (organizer view doesn't need it).
+  // Legacy prop — kept for back-compat with the organizer events view.
+  // Has no effect now that filter UI lives in the parent page; ignored.
   showSourceFilter?: boolean;
   onChange?: () => void;
 }
-
-const STATUSES = ["all", "active", "skip", "pinned", "pending"] as const;
 
 export default function EventTable({
   events,
@@ -44,52 +43,17 @@ export default function EventTable({
   patchEndpoint,
   deleteEndpoint,
   bulkEndpoint,
-  showSourceFilter = true,
   onChange,
 }: EventTableProps) {
-  const [statusFilter, setStatusFilter] = useState<(typeof STATUSES)[number]>("all");
-  const [sourceFilter, setSourceFilter] = useState<string>("all");
-  const [formatFilter, setFormatFilter] = useState<string>("all");
-  const [countryFilter, setCountryFilter] = useState<string>("all");
-  const [currencyFilter, setCurrencyFilter] = useState<string>("all");
-  const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [busy, setBusy] = useState(false);
 
-  const sources = useMemo(() => {
-    const set = new Set(events.map((e) => e.source).filter(Boolean));
-    return ["all", ...Array.from(set).sort()];
-  }, [events]);
-  const formats = useMemo(() => {
-    const set = new Set(events.map((e) => e.format).filter(Boolean));
-    return ["all", ...Array.from(set).sort()];
-  }, [events]);
-  // Country + currency filter options: bucket blanks under "—" so admins
-  // can isolate rows that the scraper couldn't stamp. Auto-populated from
-  // present data so the dropdown only shows what's actually in the table —
-  // a US-only DB doesn't bloat the filter with 25 unused country codes.
-  const countries = useMemo(() => {
-    const set = new Set(events.map((e) => e.country || "—"));
-    return ["all", ...Array.from(set).sort()];
-  }, [events]);
-  const currencies = useMemo(() => {
-    const set = new Set(events.map((e) => e.currency || "—"));
-    return ["all", ...Array.from(set).sort()];
-  }, [events]);
-
-  const filtered = useMemo(() => {
-    const q = query.toLowerCase();
-    return events.filter((e) => {
-      if (statusFilter !== "all" && e.status !== statusFilter) return false;
-      if (showSourceFilter && sourceFilter !== "all" && e.source !== sourceFilter) return false;
-      if (formatFilter !== "all" && e.format !== formatFilter) return false;
-      if (countryFilter !== "all" && (e.country || "—") !== countryFilter) return false;
-      if (currencyFilter !== "all" && (e.currency || "—") !== currencyFilter) return false;
-      if (q && !`${e.title} ${e.location}`.toLowerCase().includes(q)) return false;
-      return true;
-    });
-  }, [events, statusFilter, sourceFilter, formatFilter, countryFilter, currencyFilter, query, showSourceFilter]);
-
+  // Filtering + pagination now lives in /admin/events page level — this
+  // component just renders the page of rows the parent passes in. The
+  // local filter UI was removed when those concerns moved server-side;
+  // at 120k+ events, client-side filter dropdowns over an unbounded
+  // dump don't scale.
+  const filtered = events;
   const allSelected = filtered.length > 0 && filtered.every((e) => selected.has(e.id));
 
   function toggleAll() {
@@ -149,34 +113,6 @@ export default function EventTable({
 
   return (
     <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md overflow-hidden">
-      {/* Filter bar */}
-      <div className="flex flex-wrap gap-2 items-center p-3 border-b border-neutral-200 dark:border-neutral-700">
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search title or location…"
-          className="px-3 py-1.5 text-sm border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 min-w-[200px]"
-        />
-        <FilterSelect label="Status" value={statusFilter} onChange={(v) => setStatusFilter(v as typeof statusFilter)} options={STATUSES as readonly string[]} />
-        {showSourceFilter && (
-          <FilterSelect label="Source" value={sourceFilter} onChange={setSourceFilter} options={sources} />
-        )}
-        <FilterSelect label="Format" value={formatFilter} onChange={setFormatFilter} options={formats} />
-        {/* Country + currency filters only render when there's more than one
-            distinct value present in the dataset (i.e. the "all" sentinel
-            plus at least one real value). Keeps the bar tidy on US-only
-            installs and only blooms once intl scraping is on. */}
-        {countries.length > 2 && (
-          <FilterSelect label="Country" value={countryFilter} onChange={setCountryFilter} options={countries} />
-        )}
-        {currencies.length > 2 && (
-          <FilterSelect label="Currency" value={currencyFilter} onChange={setCurrencyFilter} options={currencies} />
-        )}
-        <span className="ml-auto text-xs text-neutral-500 dark:text-neutral-400">
-          {filtered.length} of {events.length}
-        </span>
-      </div>
-
       {/* Bulk action bar */}
       {bulkEndpoint && (
         <div className={`flex gap-2 items-center p-3 border-b border-neutral-200 dark:border-neutral-700 transition ${selected.size === 0 ? "opacity-50" : ""}`}>
@@ -291,23 +227,6 @@ export default function EventTable({
         </table>
       </div>
     </div>
-  );
-}
-
-function FilterSelect({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: readonly string[] }) {
-  return (
-    <label className="text-xs text-neutral-600 dark:text-neutral-400 flex items-center gap-1">
-      <span>{label}:</span>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="text-sm px-2 py-1 border border-neutral-300 dark:border-neutral-600 rounded-md bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100"
-      >
-        {options.map((o) => (
-          <option key={o} value={o}>{o}</option>
-        ))}
-      </select>
-    </label>
   );
 }
 

@@ -259,12 +259,168 @@ export function getActiveEvents(filters?: {
  * browser tanks both server memory and the admin event-table page render.
  * Callers that need more should either page (pass `offset`) or query the DB
  * directly with a focused WHERE clause.
+ *
+ * Prefer `getFilteredEvents` for admin paginated/filtered listings —
+ * this fallback exists for callers that want a flat dump (CSV exports,
+ * tests).
  */
 export function getAllEvents(limit = 5000, offset = 0): EventRow[] {
   const db = getDb();
   return db
     .prepare("SELECT * FROM events ORDER BY date ASC, time ASC LIMIT ? OFFSET ?")
     .all(limit, offset) as EventRow[];
+}
+
+export interface EventFilters {
+  status?: string;       // "active" | "skip" | "pinned" | "pending" | "all"
+  source?: string;       // exact match, "all" = no filter
+  format?: string;
+  country?: string;      // ISO alpha-2; "—" filters for empty/null
+  currency?: string;     // ISO 4217; "—" filters for empty/null
+  search?: string;       // matched against title + location, case-insensitive
+}
+
+export interface PaginatedEvents {
+  events: EventRow[];
+  /** Total matching the filters (before LIMIT/OFFSET). Used to render
+   *  "Showing 1-50 of 1,234" + pagination math. */
+  total: number;
+}
+
+/**
+ * Admin paginated/filtered events lookup. All filters are server-side so
+ * the browser only sees ONE page of rows at a time — at 120k+ events,
+ * loading the full table is what was making /admin/events sluggish.
+ *
+ * Empty / "all" / undefined filter values are no-ops. The "—" sentinel
+ * for country/currency filters to "rows missing this field" — mirrors
+ * how the EventTable filter dropdowns surface empty values.
+ *
+ * Returns the total separately so callers can render pagination
+ * controls without a second round trip.
+ */
+export function getFilteredEvents(
+  filters: EventFilters,
+  limit: number = 50,
+  offset: number = 0,
+): PaginatedEvents {
+  const db = getDb();
+  const clauses: string[] = [];
+  const params: (string | number)[] = [];
+
+  if (filters.status && filters.status !== "all") {
+    clauses.push("status = ?");
+    params.push(filters.status);
+  }
+  if (filters.source && filters.source !== "all") {
+    clauses.push("source = ?");
+    params.push(filters.source);
+  }
+  if (filters.format && filters.format !== "all") {
+    clauses.push("format = ?");
+    params.push(filters.format);
+  }
+  if (filters.country && filters.country !== "all") {
+    if (filters.country === "—") {
+      clauses.push("(country IS NULL OR country = '')");
+    } else {
+      clauses.push("country = ?");
+      params.push(filters.country);
+    }
+  }
+  if (filters.currency && filters.currency !== "all") {
+    if (filters.currency === "—") {
+      clauses.push("(currency IS NULL OR currency = '')");
+    } else {
+      clauses.push("currency = ?");
+      params.push(filters.currency);
+    }
+  }
+  if (filters.search && filters.search.trim()) {
+    // LIKE %x% can't use a btree index, but the candidate set is already
+    // narrowed by the other clauses. For the worst case (no filters
+    // applied) the search runs over the full ~120k rows in ~30-50ms,
+    // which is acceptable for an admin endpoint.
+    const like = `%${filters.search.trim().toLowerCase()}%`;
+    clauses.push("(LOWER(title) LIKE ? OR LOWER(location) LIKE ?)");
+    params.push(like, like);
+  }
+
+  const whereClause = clauses.length > 0 ? "WHERE " + clauses.join(" AND ") : "";
+  const totalRow = db.prepare(`SELECT COUNT(*) AS n FROM events ${whereClause}`).get(...params) as { n: number };
+  const events = db
+    .prepare(`SELECT * FROM events ${whereClause} ORDER BY date ASC, time ASC LIMIT ? OFFSET ?`)
+    .all(...params, limit, offset) as EventRow[];
+  return { events, total: totalRow.n };
+}
+
+export interface EventStats {
+  total: number;
+  byStatus: Record<string, number>;
+  bySource: { source: string; count: number }[];
+  byCountry: { country: string; count: number }[];
+  byFormat: { format: string; count: number }[];
+  byCurrency: { currency: string; count: number }[];
+}
+
+/**
+ * DB-wide event aggregates for the /admin/events overview cards. Single
+ * SQL pass per group; SQLite uses the existing source/status/format
+ * indexes where the planner can. At ~120k rows the whole bundle
+ * computes in ~150-300ms.
+ *
+ * Returned arrays are full-width (every distinct value, sorted by
+ * count desc) — callers slice for top-N display. Country / currency
+ * empties get bucketed under "—" so they stay visible.
+ */
+export function getEventStats(): EventStats {
+  const db = getDb();
+  const total = (db.prepare("SELECT COUNT(*) AS n FROM events").get() as { n: number }).n;
+  const statusRows = db
+    .prepare("SELECT status, COUNT(*) AS n FROM events GROUP BY status")
+    .all() as { status: string; n: number }[];
+  const byStatus: Record<string, number> = {};
+  for (const r of statusRows) byStatus[r.status] = r.n;
+
+  const sourceRows = db
+    .prepare("SELECT source, COUNT(*) AS count FROM events GROUP BY source ORDER BY count DESC")
+    .all() as { source: string; count: number }[];
+
+  const countryRows = db
+    .prepare(`
+      SELECT COALESCE(NULLIF(country, ''), '—') AS country, COUNT(*) AS count
+      FROM events
+      GROUP BY COALESCE(NULLIF(country, ''), '—')
+      ORDER BY count DESC
+    `)
+    .all() as { country: string; count: number }[];
+
+  const formatRows = db
+    .prepare(`
+      SELECT COALESCE(NULLIF(format, ''), '—') AS format, COUNT(*) AS count
+      FROM events
+      GROUP BY COALESCE(NULLIF(format, ''), '—')
+      ORDER BY count DESC
+    `)
+    .all() as { format: string; count: number }[];
+
+  const currencyRows = db
+    .prepare(`
+      SELECT COALESCE(NULLIF(currency, ''), '—') AS currency, COUNT(*) AS count
+      FROM events
+      GROUP BY COALESCE(NULLIF(currency, ''), '—')
+      ORDER BY count DESC
+    `)
+    .all() as { currency: string; count: number }[];
+
+  return {
+    total,
+    byStatus,
+    bySource: sourceRows,
+    byCountry: countryRows,
+    byFormat: formatRows,
+    byCurrency: currencyRows,
+  };
 }
 
 /**
