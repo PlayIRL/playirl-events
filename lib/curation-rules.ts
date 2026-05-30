@@ -74,6 +74,8 @@ const NON_MTG_FORMATS = new Set([
   "heroquest",
   "talisman",
   "cosmolancer",
+  "market fresh", // separate WotC product, not MTG
+  "sanibel",      // separate game entirely
 ]);
 
 /** Source identifiers we trust to publish directly (scraper output → active).

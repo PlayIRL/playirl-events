@@ -704,6 +704,29 @@ function initSchema(db: Database.Database) {
     }
   }
 
+  // V2 of the non-MTG format backfill: catches "Market Fresh" and
+  // "Sanibel" which weren't in the v1 set. Separate sentinel so it
+  // runs once per DB independently of v1.
+  const backfillKeyV2 = "backfill_non_mtg_formats_v2";
+  const sentinelV2 = db.prepare("SELECT value FROM settings WHERE key = ?").get(backfillKeyV2) as { value: string } | undefined;
+  if (!sentinelV2) {
+    const result = db
+      .prepare(
+        `UPDATE events
+           SET status = 'skip', updated_date = date('now')
+         WHERE status = 'active'
+           AND LOWER(TRIM(format)) IN ('market fresh','sanibel')`,
+      )
+      .run();
+    db.prepare("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)").run(
+      backfillKeyV2,
+      JSON.stringify({ ranAt: new Date().toISOString(), demoted: result.changes }),
+    );
+    if (result.changes > 0) {
+      console.log(`[db] backfill ${backfillKeyV2}: demoted ${result.changes} non-MTG events from active → skip`);
+    }
+  }
+
   // Second one-shot backfill: cEDH is now a sibling canonical format
   // (was a sub-tag / badge on top of Commander). Existing rows where
   // the title carries the cEDH marker but the format column still says

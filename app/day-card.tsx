@@ -1,5 +1,9 @@
-"use client";
-import { useEffect, useRef, useState } from "react";
+// Server component — no hooks, no event handlers. SaveEventButton and
+// AdminEventActions stay as client components nested inside; their
+// "use client" directives make them hydration islands. Removing
+// "use client" here drops ~215 events × DayCard hydration cost on
+// the homepage, which was the bulk of the perceived "slow to spring
+// to life" delay on initial load.
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq, showFormatBadge } from "@/lib/format-style";
 import { eventDisplayStatus, formatEventTime, formatEventTimeParts, pickEventTimezone } from "@/lib/format-time";
@@ -67,67 +71,18 @@ export default function DayCard({
    *  callers that haven't threaded it yet. */
   distanceUnit?: DistanceUnit;
 }) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  // Tracking reveal state in React (instead of mutating element.style
-  // imperatively) is what keeps content visible across router.refresh().
-  // The previous version cleared opacity via removeProperty in an effect;
-  // when JSX re-rendered (e.g. after a location change) it re-applied
-  // style={{ opacity: 0 }} but the effect deps hadn't changed, so the
-  // dead-after-unobserve observer couldn't restore visibility. Today's
-  // card was hit because its observer fired on first paint and self-
-  // unobserved; later cards survived because their observers stayed
-  // attached and re-fired when layout shifted.
-  const [revealed, setRevealed] = useState(false);
-
-  // Stagger-in animation for card shell + rows
-  useEffect(() => {
-    if (revealed) return;
-    const wrapper = wrapperRef.current;
-    if (!wrapper) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setRevealed(true);
-      return;
-    }
-
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        timer = setTimeout(() => setRevealed(true), staggerBase);
-        observer.unobserve(wrapper);
-      },
-      { threshold: 0.04, rootMargin: "0px 0px -12px 0px" },
-    );
-
-    observer.observe(wrapper);
-    return () => {
-      observer.disconnect();
-      if (timer) clearTimeout(timer);
-    };
-  }, [staggerBase, revealed]);
-
-  // "Today" pops via a thicker high-contrast frame; bg matches other day
-  // cards so the page bg flows behind a single bordered shape.
+  // Wrapper: visible from first paint, no entrance animation. Previously
+  // the wrapper was gated behind hydration + IntersectionObserver +
+  // setTimeout, so every card started invisible until JS executed —
+  // that gate is what made the page feel slow to "spring to life."
+  // Per-row fade-in still runs (anim-row-in below) for subtle polish
+  // on initial paint and re-renders.
   const frameBorder = isToday
     ? "border-2 border-neutral-200 dark:border-white/10"
     : "border border-neutral-300 dark:border-white/15";
 
-  // Past day cards land at 70% opacity (subtle "this is history" treatment);
-  // today + future render at full color. The CSS var is read by the
-  // `fadeInUp` keyframe's `to` rule so the dim survives the reveal anim.
-  const wrapperOpacity = isPast && !isToday ? 0.7 : 1;
-
   return (
-    <div
-      ref={wrapperRef}
-      style={
-        revealed
-          ? ({ "--wrapper-opacity": wrapperOpacity } as React.CSSProperties)
-          : ({ opacity: 0, "--wrapper-opacity": wrapperOpacity } as React.CSSProperties)
-      }
-      className={`${revealed ? "anim-fade-in-up" : ""} ${isPast && !isToday ? "opacity-70" : ""}`}
-    >
+    <div className={isPast && !isToday ? "opacity-70" : ""}>
       {/* Single bordered frame around heading + rows. overflow-clip clips
           children to the rounded corners without creating a scroll
           container, so the sticky heading still anchors to the viewport
@@ -184,11 +139,16 @@ export default function DayCard({
               userLat != null && userLng != null && ev.latitude != null && ev.longitude != null
                 ? formatDistance(haversineMiles(userLat, userLng, ev.latitude, ev.longitude), distanceUnit)
                 : "";
-            // Compose the inline style: row-fade animation timing + the
-            // completed-row opacity override + the live-row stagger.
-            const baseStyle: React.CSSProperties = revealed
-              ? { animationDelay: `${80 + i * 45}ms`, "--row-opacity": status === "completed" ? 0.5 : 1 } as React.CSSProperties
-              : { opacity: 0, "--row-opacity": status === "completed" ? 0.5 : 1 } as React.CSSProperties;
+            // Row-fade animation timing + completed-row opacity override
+            // + live-row stagger. Animation triggers unconditionally from
+            // SSR (the `anim-row-in` class + fadeInRow keyframe) — no
+            // hydration gate. The wrapper-level reveal effect we used to
+            // depend on is gone; rows now animate in once on first paint
+            // with a small per-row stagger.
+            const baseStyle: React.CSSProperties = {
+              animationDelay: `${80 + i * 45}ms`,
+              "--row-opacity": status === "completed" ? 0.5 : 1,
+            } as React.CSSProperties;
             const rowStyle: React.CSSProperties = liveDelay !== undefined
               ? ({ ...baseStyle, "--live-delay": liveDelay } as React.CSSProperties)
               : baseStyle;
@@ -204,7 +164,7 @@ export default function DayCard({
               // --live-delay (when set) staggers the three live animations
               // so simultaneous live rows don't strobe in lockstep.
               style={rowStyle}
-              className={`${revealed ? "anim-row-in" : ""} ${status === "in_progress" ? "anim-live-row" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 ${status === "completed" ? "py-2 sm:py-2.5 saturate-50" : "py-4 sm:py-5"} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
+              className={`anim-row-in ${status === "in_progress" ? "anim-live-row" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 ${status === "completed" ? "py-2 sm:py-2.5 saturate-50" : "py-4 sm:py-5"} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
             >
               {/* Desktop: time as a fixed left column. When the event is
                   in progress the time itself shifts to a high-energy sky
