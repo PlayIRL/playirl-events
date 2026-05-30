@@ -113,28 +113,38 @@ export default function DayCard({
         </div>
 
         {(() => {
-          // Pre-pass: assign each live event a 0-based "live index" so the
-          // chip pulse / shine / row sweep can stagger by --live-delay
-          // instead of all firing in identical phase. When a day has 4
-          // simultaneous live events, identical phase made them look like
-          // a synchronized strobe — staggering by 0.4s across the 2.4s
-          // cycle gives 6 distinct visible phases before repeating.
-          const liveIndexById: Record<string, number> = {};
-          let liveSeen = 0;
+          // Per-row stagger for the live animations (chip pulse / shine /
+          // row sweep) so simultaneous live rows don't strobe in unison.
+          // Hash the event ID into a delay across the full 6s sweep
+          // cycle — deterministic (SSR-safe, no hydration mismatch) but
+          // visibly uncorrelated row-to-row. Beats a fixed-step offset,
+          // which still read as synchronized when adjacent rows landed
+          // on neighboring slots.
+          const liveIds = new Set<string>();
           for (const ev of events) {
             const isLive =
               fakeLiveEventIds?.has(ev.id) ||
               eventDisplayStatus(ev.date, ev.time) === "in_progress";
-            if (isLive) liveIndexById[ev.id] = liveSeen++;
+            if (isLive) liveIds.add(ev.id);
           }
+          // djb2 — small, fast, well-distributed for short keys like our
+          // "wotc-12345" / "td-abc" event IDs.
+          const hashId = (s: string): number => {
+            let h = 5381;
+            for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0;
+            return h;
+          };
           return events.map((ev, i) => {
             // Three-tier display state — see lib/format-time.ts. "Completed"
             // events are dimmed so the eye skips past them; "in_progress"
             // events stay full-color but pick up a LIVE pill so users can
             // spot what's happening right now at a glance.
             const status = fakeLiveEventIds?.has(ev.id) ? "in_progress" : eventDisplayStatus(ev.date, ev.time);
-            const liveIdx = liveIndexById[ev.id];
-            const liveDelay = liveIdx !== undefined ? `${(liveIdx % 6) * 0.4}s` : undefined;
+            // Randomize phase across the full 6s sweep cycle. ms-resolution
+            // → 6000 possible phases, effectively continuous distribution.
+            const liveDelay = liveIds.has(ev.id)
+              ? `${(hashId(ev.id) % 6000) / 1000}s`
+              : undefined;
             const distanceLabel =
               userLat != null && userLng != null && ev.latitude != null && ev.longitude != null
                 ? formatDistance(haversineMiles(userLat, userLng, ev.latitude, ev.longitude), distanceUnit)
@@ -188,9 +198,30 @@ export default function DayCard({
                   if (status === "in_progress") {
                     return (
                       <span className="inline-flex flex-col items-start text-sm font-mono tabular-nums font-medium text-white anim-live-shine rounded-md px-1.5 py-0.5 whitespace-nowrap leading-tight">
-                        <span className="inline-flex items-center gap-1.5">
-                          <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-white anim-live-pulse shrink-0" />
-                          <span><span className="sr-only">Happening now: </span>{parts.time}</span>
+                        {/* Single-line viewport (1lh tall) clips the inner
+                            cycle so only one label is visible at a time.
+                            Cycle stacks the time + "LIVE NOW" vertically;
+                            translateY in the keyframes swaps which one
+                            shows. */}
+                        <span className="overflow-hidden block" style={{ height: "1lh" }}>
+                          <span className="anim-live-label-cycle">
+                            <span className="inline-flex items-center gap-1.5">
+                              <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-black anim-live-pulse shrink-0" />
+                              <span><span className="sr-only">Happening now: </span>{parts.time}</span>
+                            </span>
+                            <span aria-hidden="true" className="inline-flex items-center gap-1.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-black anim-live-pulse shrink-0" />
+                              <span>LIVE NOW</span>
+                            </span>
+                            {/* Third child = identical copy of the first.
+                                Lets the keyframe loop from translateY(-66.6%)
+                                back to 0% with no visible jump — the eye
+                                sees one continuous one-direction scroll. */}
+                            <span aria-hidden="true" className="inline-flex items-center gap-1.5">
+                              <span className="w-1.5 h-1.5 rounded-full bg-black anim-live-pulse shrink-0" />
+                              <span>{parts.time}</span>
+                            </span>
+                          </span>
                         </span>
                         {parts.zoneAbbr && (
                           <span className="text-[10px] opacity-90 pl-3.5">{parts.zoneAbbr}</span>
@@ -243,11 +274,33 @@ export default function DayCard({
                     const parts = formatEventTimeParts(ev.date, ev.time, pickEventTimezone(ev));
                     if (status === "in_progress") {
                       return (
-                        <span className="inline-flex items-center gap-1.5 text-xs font-mono tabular-nums font-medium text-white anim-live-shine rounded-md px-1.5 py-0.5 whitespace-nowrap leading-tight">
-                          <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-white anim-live-pulse shrink-0" />
-                          <span>
-                            <span className="sr-only">Happening now: </span>{parts.time}
-                            {parts.zoneAbbr && <span className="opacity-90 ml-1">{parts.zoneAbbr}</span>}
+                        <span className="inline-flex items-center text-xs font-mono tabular-nums font-medium text-white anim-live-shine rounded-md px-1.5 py-0.5 whitespace-nowrap leading-tight">
+                          {/* Same slot-machine swap as the desktop chip —
+                              alternates between the start time and "LIVE NOW". */}
+                          <span className="overflow-hidden block" style={{ height: "1lh" }}>
+                            <span className="anim-live-label-cycle">
+                              <span className="inline-flex items-center gap-1.5">
+                                <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-black anim-live-pulse shrink-0" />
+                                <span>
+                                  <span className="sr-only">Happening now: </span>{parts.time}
+                                  {parts.zoneAbbr && <span className="opacity-90 ml-1">{parts.zoneAbbr}</span>}
+                                </span>
+                              </span>
+                              <span aria-hidden="true" className="inline-flex items-center gap-1.5">
+                                <span className="w-1.5 h-1.5 rounded-full bg-black anim-live-pulse shrink-0" />
+                                <span>LIVE NOW</span>
+                              </span>
+                              {/* Third child = identical copy of the first
+                                  (see desktop chip for the keyframe-loop
+                                  trick). */}
+                              <span aria-hidden="true" className="inline-flex items-center gap-1.5">
+                                <span className="w-1.5 h-1.5 rounded-full bg-black anim-live-pulse shrink-0" />
+                                <span>
+                                  {parts.time}
+                                  {parts.zoneAbbr && <span className="opacity-90 ml-1">{parts.zoneAbbr}</span>}
+                                </span>
+                              </span>
+                            </span>
                           </span>
                         </span>
                       );

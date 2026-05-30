@@ -151,13 +151,13 @@ code, pre, kbd, samp, tt {
      reads as one breathing organism. */
   0%, 100% {
     box-shadow:
-      inset 0 0 0 1px rgb(16 185 129 / 0.5),
-      0 0 0 0 rgb(16 185 129 / 0);
+      inset 0 0 0 1px hsl(120 100% 50% / 0.5),
+      0 0 0 0 hsl(120 100% 50% / 0);
   }
   50% {
     box-shadow:
-      inset 0 0 0 1px rgb(16 185 129 / 1),
-      0 0 8px 1px rgb(16 185 129 / 0.35);
+      inset 0 0 0 1px hsl(120 100% 50% / 1),
+      0 0 8px 1px hsl(120 100% 50% / 0.35);
   }
 }
 
@@ -165,14 +165,13 @@ code, pre, kbd, samp, tt {
   animation: liveRingPulse 2.4s ease-in-out infinite;
 }
 
-/* Filled live chip — solid emerald fill, white text, internal shine
-   sweep. The shine reads as "active / energy moving" without the chip
-   needing to breathe size or stroke. Cadence (2.4s) matches livePulse
-   on the dot, so dot pulse and chip shine phase-lock and read as one
-   organism. White overlay alpha is high enough that the shine catches
-   the eye on the saturated emerald base; a subtle dark text-shadow
-   keeps the white label legible despite the not-quite-AA contrast
-   ratio of white on emerald-500. */
+/* Filled live chip — solid neon-green fill (matches the "BETA" hero
+   wordmark tag so the two read as one brand-system signal), black
+   text, internal shine sweep. The shine reads as "active / energy
+   moving" without the chip needing to breathe size or stroke. Cadence
+   (5s) matches livePulse on the dot so the two phase-lock per row.
+   Black on hsl(120,100%,50%) clears WCAG AA easily — no text-shadow
+   crutch needed. */
 @keyframes liveShine {
   0%   { transform: translateX(-120%); }
   20%  { transform: translateX(220%); }
@@ -183,9 +182,8 @@ code, pre, kbd, samp, tt {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: rgb(16 185 129);
-  color: rgb(255 255 255);
-  text-shadow: 0 1px 0 rgb(0 0 0 / 0.18);
+  background: hsl(120 100% 50%);
+  color: rgb(0 0 0);
 }
 
 .anim-live-shine::before {
@@ -204,17 +202,28 @@ code, pre, kbd, samp, tt {
     rgb(255 255 255 / 0.35) 55%,
     transparent 100%
   );
-  animation: liveShine 2.4s ease-in-out infinite;
+  animation: liveShine 5s ease-in-out infinite;
   animation-delay: var(--live-delay, 0s);
 }
 
-@keyframes liveRowSweep {
-  /* A soft emerald-tinted band slides left → right across the row, like
-     a skeleton-loader shimmer. Linear so the sweep speed reads as a
-     constant motion — ease-in-out would make the band loiter at the
-     edges and break the "loader" feel. */
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(300%); }
+/* One-direction slot-machine swap for the in-progress time chip —
+   alternates between the start time ("12:00 PM") and "LIVE NOW".
+   Three children stacked: [time, LIVE NOW, time]. translateY scrolls
+   the stack upward through all three; looping from -66.666% back to 0%
+   snaps from child 3 to child 1, which render identical content, so
+   the eye sees one continuous downward scroll instead of a back-and-
+   forth bounce. Long holds + slow slides keep the motion calm. */
+@keyframes liveLabelSwap {
+  0%, 30%   { transform: translateY(0); }            /* hold: time */
+  45%, 70%  { transform: translateY(-33.333%); }     /* hold: LIVE NOW */
+  85%, 100% { transform: translateY(-66.666%); }     /* hold: time #3 (loops seamlessly) */
+}
+
+.anim-live-label-cycle {
+  display: flex;
+  flex-direction: column;
+  animation: liveLabelSwap 7s ease-in-out infinite;
+  animation-delay: var(--live-delay, 0s);
 }
 
 .anim-live-row {
@@ -223,45 +232,32 @@ code, pre, kbd, samp, tt {
   overflow: hidden;
 }
 
+/* Static emerald wash — keeps the row visually distinct from neighbors
+   without competing with the chip's slot-machine label for attention.
+   The animated throb that used to live here turned the whole list into
+   a kinetic surface; one moving element (the chip) reads cleaner. */
 .anim-live-row::before {
   content: "";
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -50%;
-  width: 50%;
+  inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgb(16 185 129 / 0.12),
-    transparent
-  );
-  animation: liveRowSweep 2.6s linear infinite;
-  animation-delay: var(--live-delay, 0s);
+  background: hsl(120 100% 50% / 0.04);
 }
 
 .dark .anim-live-row::before {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgb(52 211 153 / 0.09),
-    transparent
-  );
+  background: hsl(120 100% 50% / 0.04);
 }
 
-/* Thin emerald outline around every live row — matches the time
+/* Static thin emerald outline around every live row — matches the time
    chip's fill color so the chip and its row read as one continuous
-   "this is live" element. Implemented as an absolutely-positioned
-   ::after rather than a `border` on the row itself so it doesn't fight
-   the day-card's row dividers or shift the row's padding by 1px. */
+   "this is live" element. */
 .anim-live-row::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  border: 1px solid rgb(16 185 129 / 0.85);
+  border: 1px solid hsl(120 100% 50% / 0.35);
 }
 /* When two live rows are adjacent siblings, drop the second row's top
    border so the shared boundary is rendered once (the first row's
@@ -363,16 +359,16 @@ code, pre, kbd, samp, tt {
   .anim-live-pulse { animation: none; }
   .anim-live-ring {
     animation: none;
-    box-shadow: inset 0 0 0 1px rgb(16 185 129 / 0.6);
+    box-shadow: inset 0 0 0 1px hsl(120 100% 50% / 0.6);
   }
   .anim-live-row::before {
     animation: none;
     left: 0;
     width: 100%;
-    background: rgb(16 185 129 / 0.08);
+    background: hsl(120 100% 50% / 0.08);
   }
   .dark .anim-live-row::before {
-    background: rgb(52 211 153 / 0.08);
+    background: hsl(120 100% 50% / 0.08);
   }
   /* RCQ badge: keep the brushed-steel base (static visual treatment is
      the core signal), but drop the sweep. */
