@@ -1,53 +1,61 @@
 import { getConfig } from "@/lib/runtime-config";
 import { normalizeFormat } from "@/lib/formats";
 import { setScrapeProgress } from "@/lib/scraper-lock";
-import { pMapLimit } from "@/lib/p-limit";
 
-const API_URL = "https://topdeck.gg/api/v2/tournaments";
+/**
+ * TopDeck scraper — Typesense events index.
+ *
+ * Earlier iterations of this file used POST /api/v2/tournaments (the
+ * documented bulk endpoint). Empirically that endpoint returns ONLY
+ * completed tournaments — ones with swiss rounds, top cut, Elo data,
+ * etc. Scheduled / Ongoing events (the entire upcoming-events catalog
+ * the topdeck.gg website surfaces) are invisible to it. Confirmed via
+ * cli/lookup-topdeck.ts: a known live event was 200-fetchable via
+ * /v2/tournaments/{TID}/info with status="Ongoing", but missing from
+ * every bulk-query variant we tried.
+ *
+ * The actual data source the topdeck.gg website uses is a Typesense
+ * search index. Config (host, public search-only API key, collection
+ * name) is loaded into a global on the homepage:
+ *
+ *   const TYPESENSE_HOST = '3utwcn9824msk5jlp-1.a2.typesense.net';
+ *   const TYPESENSE_SEARCH_KEY = '3gKhXyfqlU8nPPGNhgZrpkFqRTD9J75x';
+ *   const TYPESENSE_COLLECTION = 'events';
+ *
+ * Typesense's scoped-key model: search-only keys are intentionally
+ * embeddable in browser JS — they grant read access to specific
+ * collections with optional filter restrictions. Re-using the
+ * topdeck.gg key the same way the website does is consistent with
+ * its intended use; TopDeck's own attribution requirement is met
+ * by the footer + about-page credit. Override host/key/collection
+ * via env vars if TopDeck ever rotates the public key.
+ *
+ * Volume comparison vs the old bulk endpoint:
+ *   POST /v2/tournaments + game=Magic + format=EDH + start=now + end=now+60d:
+ *     → 4 tournaments globally (completed-only)
+ *   Typesense events + publish:true + startDate:>=now + game=Magic:
+ *     → 1,215 events globally (all future MTG events)
+ *
+ * Response shape per hit (relevant fields):
+ *   id, eventName, format, game, startDate, endDate,
+ *   coordinates: [lat, lng], location, city, state, country,
+ *   eventPrice, eventCurrency, eventHeaderImage, tier, playersRegd,
+ *   eventPlayerCap, publish, isConvention, isLeague, isCircuit
+ */
 
-/** How many TopDeck format queries to keep in flight at once. The
- *  bulk-tournament endpoint has a "lower than the default 100/min"
- *  rate limit (per https://topdeck.gg/docs/tournaments-v2); empirically
- *  the bucket appears to hold ~10 requests before refusing. Concurrency
- *  2 spreads our 21 formats out enough that the 429 retry path is rare,
- *  and even if it trips we have the in-line retry. Override via
- *  TOPDECK_CONCURRENCY env var if TopDeck dials the limit up. */
-const TOPDECK_CONCURRENCY = (() => {
-  const raw = Number(process.env.TOPDECK_CONCURRENCY);
-  if (Number.isFinite(raw) && raw > 0 && raw <= 10) return Math.floor(raw);
-  return 2;
-})();
+const TYPESENSE_HOST = process.env.TOPDECK_TYPESENSE_HOST || "3utwcn9824msk5jlp-1.a2.typesense.net";
+const TYPESENSE_KEY = process.env.TOPDECK_TYPESENSE_KEY || "3gKhXyfqlU8nPPGNhgZrpkFqRTD9J75x";
+const TYPESENSE_COLLECTION = process.env.TOPDECK_TYPESENSE_COLLECTION || "events";
 
-/** Cap on per-request retry waits — TopDeck's 429 body includes a
- *  `retryAfterSeconds` field, but we don't want a single hostile reply
- *  to stall the whole scrape. 30s is plenty for normal "I'm busy" and
- *  if their bucket is in a deeper hole we'd rather skip the format
- *  this run and pick it up next scrape than block. */
-const TOPDECK_MAX_RETRY_WAIT_S = 30;
+/** Typesense default `per_page` cap is 250 (raisable via collection
+ *  config we don't control). 250 keeps us pulling a few pages tops for
+ *  the ~1,200 MTG events currently in the global index. */
+const PER_PAGE = 250;
 
-/** US state postal abbreviations + DC + the most common territories. Used
- *  as a cheap signal to stamp `country = "US"` on TopDeck rows that don't
- *  carry an explicit country field. */
-const US_STATE_CODES = new Set([
-  "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA",
-  "KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ",
-  "NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT",
-  "VA","WA","WV","WI","WY","DC","PR","VI","GU","AS","MP",
-]);
-
-/** Canadian province / territory postal abbreviations. Same pattern. */
-const CA_PROVINCE_CODES = new Set([
-  "AB","BC","MB","NB","NL","NS","NT","NU","ON","PE","QC","SK","YT",
-]);
-
-/** Country-name → ISO-3166 alpha-2 lookup for the cases where
- *  `loc.address` is just a country name (typical for non-US TopDeck rows
- *  where city/state are blank). Lower-cased keys + common variants:
- *  the WebFetch'd v2 docs don't enumerate what TopDeck actually writes
- *  here, so we hedge by mapping multiple natural-language forms per
- *  country. Coverage is biased toward countries with active MTG scenes;
- *  the long tail returns "" and we leave the country column empty
- *  rather than guess. Extending: just add a key/value. */
+/** Country-name → ISO-3166 alpha-2 lookup. Typesense rows carry country
+ *  as full natural-language names ("United States", "Brasil") rather
+ *  than ISO codes; this map normalizes them. The long tail returns ""
+ *  and we leave the column blank rather than guess. */
 const COUNTRY_NAME_TO_ISO: Record<string, string> = {
   // North America
   "united states": "US", "usa": "US", "u.s.a.": "US", "u.s.": "US", "us": "US",
@@ -134,423 +142,250 @@ const COUNTRY_NAME_TO_ISO: Record<string, string> = {
   "kenya": "KE",
 };
 
-/** Resolve an address-shaped string to an ISO-2 country code, or "". The
- *  comparison is whitespace- and case-insensitive against the lookup
- *  above. We also try the LAST comma-separated token — TopDeck addresses
- *  sometimes look like "Calle 9, Maipú, Chile" where the country is the
- *  last segment. Anything that doesn't match returns "" and the caller
- *  falls back to the no-country path. */
-function inferCountryFromAddressName(addr: string | undefined): string {
-  if (!addr || typeof addr !== "string") return "";
-  const norm = addr.trim().toLowerCase();
+function isoCountry(name: string | undefined): string {
+  if (!name || typeof name !== "string") return "";
+  const norm = name.trim().toLowerCase();
   if (!norm) return "";
-  if (COUNTRY_NAME_TO_ISO[norm]) return COUNTRY_NAME_TO_ISO[norm];
-  // Try the last comma segment for "City, Region, Country" shapes.
-  const segments = norm.split(",").map((s) => s.trim()).filter(Boolean);
-  for (let i = segments.length - 1; i >= 0; i--) {
-    const hit = COUNTRY_NAME_TO_ISO[segments[i]];
-    if (hit) return hit;
-  }
-  return "";
+  // Already ISO-2? (e.g. "US" — defensive; Typesense usually has full names)
+  if (/^[a-z]{2}$/.test(norm)) return norm.toUpperCase();
+  return COUNTRY_NAME_TO_ISO[norm] || "";
 }
 
-function inferCountryFromTopDeckLoc(
-  raw: string | undefined,
-  stateCode: string | undefined,
-  address: string | undefined,
-): string {
-  // Explicit country wins — uppercase + ISO-2 validate. (Legacy field;
-  // TopDeck v2's eventData shape doesn't include this, but kept for
-  // safety against future re-additions or non-bulk endpoints.)
-  if (raw && typeof raw === "string") {
-    const cc = raw.trim().toUpperCase();
-    if (/^[A-Z]{2}$/.test(cc)) return cc;
-  }
-  // State-code path covers the bulk of TopDeck rows (US events + Canada).
-  if (stateCode && typeof stateCode === "string") {
-    const sc = stateCode.trim().toUpperCase();
-    if (US_STATE_CODES.has(sc)) return "US";
-    if (CA_PROVINCE_CODES.has(sc)) return "CA";
-  }
-  // Fall back to parsing the address string. International TopDeck rows
-  // routinely have empty city + state + an `address` field carrying just
-  // the country name ("Chile", "Germany"). Name lookup salvages those.
-  const fromAddress = inferCountryFromAddressName(address);
-  if (fromAddress) return fromAddress;
-  return "";
+/** Currency codes from Typesense are lowercase (e.g. "usd"). Normalize
+ *  to uppercase ISO-4217 to match our schema. */
+function isoCurrency(raw: string | undefined): string {
+  if (!raw || typeof raw !== "string") return "";
+  const norm = raw.trim().toUpperCase();
+  return /^[A-Z]{3}$/.test(norm) ? norm : "";
 }
 
-function haversineDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
-  const R = 3959; // Earth radius in miles
-  const dLat = (lat2 - lat1) * Math.PI / 180;
-  const dLng = (lng2 - lng1) * Math.PI / 180;
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLng / 2) ** 2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+interface TypesenseEvent {
+  id: string;
+  eventName?: string;
+  format?: string;
+  game?: string;
+  startDate?: number;
+  endDate?: number;
+  coordinates?: [number, number];
+  location?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  eventPrice?: number;
+  eventCurrency?: string;
+  eventHeaderImage?: string;
+  tier?: string;
+  playersRegd?: number;
+  eventPlayerCap?: number;
+  publish?: boolean;
+  isConvention?: boolean;
+  isLeague?: boolean;
+  isCircuit?: boolean;
+  totalEvents?: number;
 }
 
-/** TopDeck's POST /v2/tournaments requires BOTH `game` and `format` —
- *  per their OpenAPI spec at https://topdeck.gg/openapi.json. There's no
- *  wildcard or "all formats" value, so we fan out one query per format
- *  and merge. The OpenAPI spec keeps `format` as a free-form string;
- *  the enumeration of valid values lives only in the v2 reference docs
- *  at https://topdeck.gg/docs/tournaments-v2.
- *
- *  This list is the exhaustive set of MTG formats TopDeck accepts (as
- *  of the v2 docs read on 2026-05-30). Earlier iterations of this file
- *  shipped "Brawl", "Booster Draft", and "Prerelease" — none of which
- *  are valid TopDeck formats; they were returning empty arrays silently
- *  and burning rate-limit budget. "Booster Draft" is "Limited" in
- *  TopDeck's vocabulary. "Brawl" and "Prerelease" aren't tracked at all
- *  (Prerelease events show up via WotC's API anyway).
- *
- *  Format names are case-sensitive. EDH is TopDeck's term for Commander;
- *  the downstream normalizer rewrites it to "Commander" for display so
- *  the homepage filter chip stays clean. The micro-formats at the bottom
- *  (Old School / Tiny Leaders / Oathbreaker / etc.) see few events but
- *  cost ~one API call each — cheap enough to include for full coverage.
- *  Each format = +1 API call per scrape; rate limit on this endpoint is
- *  "lower than the default 100/min" per the v2 docs, but `Promise.allSettled`
- *  on the fan-out isolates per-format 429s so partial throttling won't
- *  poison the whole run. */
-const TOPDECK_MTG_FORMATS = [
-  // Constructed (most-organized)
-  "Standard",
-  "Modern",
-  "Pioneer",
-  "Legacy",
-  "Vintage",
-  "Pauper",
-  "Premodern",
-  // Limited
-  "Limited",         // TopDeck's term for what we used to call "Booster Draft"
-  "Sealed",
-  // Commander family
-  "EDH",             // Commander
-  "Pauper EDH",
-  "Duel Commander",
-  "EDH Draft",
-  // Other / casual / community
-  "Historic",
-  "Timeless",
-  "Explorer",
-  "Old School 93/94",
-  "Canadian Highlander",
-  "Tiny Leaders",
-  "7pt Highlander",
-  "Oathbreaker",
-];
+interface TypesenseSearchResponse {
+  found: number;
+  out_of: number;
+  page: number;
+  hits: Array<{ document: TypesenseEvent }>;
+  search_time_ms?: number;
+}
 
-// Module-level counter for progress reporting. Incremented inside the
-// parallel fan-out so the admin UI can see "TopDeck · 7/21 formats" as
-// queries land. Reset at the top of each scrape run (only one scrape
-// in flight per process, lock guarantees that).
-let topdeckFormatsCompleted = 0;
-let topdeckEventsAccum = 0;
+/** Build the Typesense filter expression. Always restricts to published
+ *  MTG events with future startDate. Optional local-scope scoping adds a
+ *  coordinates radius. Conventions with zero sub-events are excluded to
+ *  match the website's default behavior (the website's filter literally
+ *  ORs isConvention:false || totalEvents:>0). */
+function buildFilter(opts: { startSeconds: number; endSeconds: number; local?: { lat: number; lng: number; radiusKm: number } }): string {
+  const parts = [
+    `publish:true`,
+    `startDate:>=${opts.startSeconds}`,
+    `startDate:<=${opts.endSeconds}`,
+    `game:\`Magic: The Gathering\``,
+    `(isConvention:false || totalEvents:>0)`,
+  ];
+  if (opts.local) {
+    parts.push(`coordinates:(${opts.local.lat}, ${opts.local.lng}, ${opts.local.radiusKm} km)`);
+  }
+  return parts.join(" && ");
+}
 
-async function fetchTopdeckForFormat(
-  apiKey: string,
-  format: string,
-  start: number,
-  end: number,
-  totalFormats: number,
-): Promise<unknown[]> {
-  const res = await fetch(API_URL, {
-    method: "POST",
+async function fetchPage(filter: string, page: number, perPage: number): Promise<TypesenseSearchResponse> {
+  const params = new URLSearchParams({
+    q: "*",
+    query_by: "eventName",
+    filter_by: filter,
+    sort_by: "startDate:asc",
+    per_page: String(perPage),
+    page: String(page),
+  });
+  const url = `https://${TYPESENSE_HOST}/collections/${TYPESENSE_COLLECTION}/documents/search?${params}`;
+  const res = await fetch(url, {
     headers: {
-      "Authorization": apiKey,
-      "Content-Type": "application/json",
-      // Identify ourselves so TopDeck can spot us in their telemetry —
-      // useful for them if they ever need to coordinate on rate-limit
-      // tuning, and the polite default for any API caller. Includes a
-      // contact-shaped URL per the conventional `User-Agent` form.
+      "X-TYPESENSE-API-KEY": TYPESENSE_KEY,
       "User-Agent": "PlayIRL.gg-events/1.0 (+https://playirl.gg)",
     },
-    body: JSON.stringify({
-      game: "Magic: The Gathering",
-      format,
-      start,
-      end,
-      // Skip the standings payload — we don't store per-player data and
-      // the empty `{}` placeholders that come back still bloat the
-      // response. `columns: []` is honored per the OpenAPI default
-      // override path.
-      columns: [],
-      // No participantMin: an earlier iteration set this to 4 to filter
-      // out single-player / two-player "tournaments", but the result
-      // was that a full scrape returned exactly one event — far below
-      // the API's actual volume. The likely cause: TopDeck counts only
-      // TopDeck-registered participants, not day-of attendees, and most
-      // local store events have 0–2 pre-registered. Re-enabling
-      // participantMin should wait until we have data showing junk
-      // events are a real problem, not a hypothetical one.
-    }),
   });
-  if (res.status === 429) {
-    // TopDeck's 429 body is {"error":"Rate limit exceeded","retryAfterSeconds":<n>}.
-    // The `Retry-After` HTTP header carries the same value. Honor whichever we
-    // can parse, capped so a misbehaving response can't hang the scrape.
-    const text = await res.text().catch(() => "");
-    let waitS = 0;
-    try {
-      const body = JSON.parse(text);
-      if (typeof body?.retryAfterSeconds === "number") waitS = body.retryAfterSeconds;
-    } catch { /* fall through to header */ }
-    if (!waitS) {
-      const headerVal = Number(res.headers.get("retry-after") ?? "");
-      if (Number.isFinite(headerVal) && headerVal > 0) waitS = headerVal;
-    }
-    if (waitS <= 0) waitS = 2;
-    waitS = Math.min(waitS, TOPDECK_MAX_RETRY_WAIT_S);
-    console.warn(`[topdeck] format=${format} 429 — waiting ${waitS}s then retrying once`);
-    await new Promise((r) => setTimeout(r, waitS * 1000 + 250));
-    // One retry. If this also 429s we surface as an error and the caller's
-    // Promise.allSettled keeps the rest of the formats moving.
-    const retry = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Authorization": apiKey,
-        "Content-Type": "application/json",
-        "User-Agent": "PlayIRL.gg-events/1.0 (+https://playirl.gg)",
-      },
-      body: JSON.stringify({
-        game: "Magic: The Gathering",
-        format,
-        start,
-        end,
-        columns: [],
-      }),
-    });
-    if (!retry.ok) {
-      const retryText = await retry.text().catch(() => "");
-      throw new Error(`TopDeck API HTTP ${retry.status} (format=${format}, after 429 retry): ${retryText.slice(0, 200)}`);
-    }
-    const tournaments = await retry.json();
-    if (!Array.isArray(tournaments)) {
-      console.warn(`[topdeck] format=${format}: retry returned non-array (${typeof tournaments})`);
-      return [];
-    }
-    topdeckFormatsCompleted++;
-    topdeckEventsAccum += tournaments.length;
-    setScrapeProgress({
-      phase: "TopDeck",
-      message: `format=${format} · ${tournaments.length} tournaments (after 429 retry)`,
-      current: topdeckFormatsCompleted,
-      total: totalFormats,
-      events: topdeckEventsAccum,
-    });
-    return tournaments;
-  }
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    throw new Error(`TopDeck API HTTP ${res.status} (format=${format}): ${text.slice(0, 200)}`);
+    throw new Error(`Typesense HTTP ${res.status}: ${text.slice(0, 300)}`);
   }
-  const tournaments = await res.json();
-  if (!Array.isArray(tournaments)) {
-    console.warn(`[topdeck] format=${format}: unexpected response shape ${typeof tournaments}`);
-    topdeckFormatsCompleted++;
-    setScrapeProgress({
-      phase: "TopDeck",
-      message: `format=${format} returned no array`,
-      current: topdeckFormatsCompleted,
-      total: totalFormats,
-      events: topdeckEventsAccum,
-    });
-    return [];
-  }
-  topdeckFormatsCompleted++;
-  topdeckEventsAccum += tournaments.length;
-  setScrapeProgress({
-    phase: "TopDeck",
-    message: `format=${format} · ${tournaments.length} tournaments (running total ${topdeckEventsAccum.toLocaleString()})`,
-    current: topdeckFormatsCompleted,
-    total: totalFormats,
-    events: topdeckEventsAccum,
-  });
-  return tournaments;
+  return res.json() as Promise<TypesenseSearchResponse>;
 }
 
-export default async function fetchTopdeckEvents(sourceConfig: any = {}) {
-  const apiKey = sourceConfig.apiKey || process.env.TOPDECK_API_KEY;
-  if (!apiKey) {
-    console.warn("[topdeck] No API key — set TOPDECK_API_KEY env var or config.sources.topdeck.apiKey");
-    return [];
-  }
-
+export default async function fetchTopdeckEvents(_sourceConfig: unknown = {}) {
   const config = getConfig();
   const now = Math.floor(Date.now() / 1000);
-  const end = Math.floor((Date.now() + config.daysAhead * 24 * 60 * 60 * 1000) / 1000);
+  const end = now + config.daysAhead * 24 * 60 * 60;
 
-  // Fan out one query per format. We used to send all 21 at once with
-  // Promise.allSettled, but TopDeck's bulk-tournament endpoint
-  // throttles aggressively — diagnostic probe showed 10/21 returning
-  // HTTP 429 with a single coord-bearing event surviving. pMapLimit
-  // with a small concurrency (TOPDECK_CONCURRENCY, default 3) keeps
-  // us under the bucket while still finishing in seconds. Per-format
-  // 429s now also self-retry once (see fetchTopdeckForFormat). Dedupe
-  // on TID downstream because a single tournament could theoretically
-  // be tagged with multiple formats; practical observation is that
-  // this almost never happens, but the dedupe is cheap insurance.
-  // Reset module counters before the fan-out so progress reporting
-  // starts from zero each scrape (lock prevents concurrent runs).
-  topdeckFormatsCompleted = 0;
-  topdeckEventsAccum = 0;
+  // Build the filter. In national/global scope we don't pass a coord
+  // radius — the orchestrator's lat/lng filtering on the UI side takes
+  // care of presenting events nearest the viewer. In "local" scope
+  // (Philly seed admin's still-on-staging local mode) we narrow at
+  // query time to keep the row count tight.
+  const isLocal = config.scrapeScope === "local";
+  const filter = buildFilter({
+    startSeconds: now,
+    endSeconds: end,
+    local: isLocal
+      ? {
+          lat: config.location.lat,
+          lng: config.location.lng,
+          // Convert configured miles → km for Typesense.
+          radiusKm: Math.round(config.searchRadiusMiles * 1.609344),
+        }
+      : undefined,
+  });
+
   setScrapeProgress({
     phase: "TopDeck",
-    message: `Querying ${TOPDECK_MTG_FORMATS.length} formats (concurrency ${TOPDECK_CONCURRENCY})…`,
+    message: `Querying Typesense events index${isLocal ? ` (≤${config.searchRadiusMiles}mi)` : " (global)"}…`,
     current: 0,
-    total: TOPDECK_MTG_FORMATS.length,
+    total: 0,
   });
-  const settled = await pMapLimit(
-    TOPDECK_MTG_FORMATS,
-    TOPDECK_CONCURRENCY,
-    (fmt) => fetchTopdeckForFormat(apiKey, fmt, now, end, TOPDECK_MTG_FORMATS.length).then(
-      (rows) => ({ fmt, rows }),
-    ),
-  );
-  const failures: string[] = [];
-  const byTid = new Map<string, any>();
-  for (let i = 0; i < settled.length; i++) {
-    const fmt = TOPDECK_MTG_FORMATS[i];
-    const res = settled[i];
-    if (res.status === "rejected") {
-      const msg = res.reason instanceof Error ? res.reason.message : String(res.reason);
-      console.warn(`[topdeck] format=${fmt} FAILED: ${msg}`);
-      failures.push(`${fmt}: ${msg}`);
+
+  // Page 1 also tells us total `found` so we can bound the loop.
+  let page = 1;
+  const firstPage = await fetchPage(filter, page, PER_PAGE);
+  const found = firstPage.found;
+  console.log(`[topdeck] Typesense: ${found} matching events (of ${firstPage.out_of} total in collection)`);
+
+  // Defensive cap — if TopDeck ever has 100k+ MTG events scheduled,
+  // we don't want a single scrape to ingest the entire world in one
+  // pass. 4000 = ~16 pages of 250, plenty of headroom.
+  const HARD_CAP = 4000;
+  const totalToFetch = Math.min(found, HARD_CAP);
+
+  const rawEvents: TypesenseEvent[] = firstPage.hits.map((h) => h.document);
+  setScrapeProgress({
+    phase: "TopDeck",
+    message: `Page 1 · ${rawEvents.length}/${totalToFetch}`,
+    current: rawEvents.length,
+    total: totalToFetch,
+    events: rawEvents.length,
+  });
+
+  // Subsequent pages, sequentially. Typesense is fast (~5-20ms/page) so
+  // parallel fan-out gains nothing and risks tripping their per-key
+  // request budget. Sequential keeps us polite and within obvious limits.
+  while (rawEvents.length < totalToFetch) {
+    page++;
+    const next = await fetchPage(filter, page, PER_PAGE);
+    if (next.hits.length === 0) break;
+    for (const h of next.hits) rawEvents.push(h.document);
+    setScrapeProgress({
+      phase: "TopDeck",
+      message: `Page ${page} · ${rawEvents.length}/${totalToFetch}`,
+      current: rawEvents.length,
+      total: totalToFetch,
+      events: rawEvents.length,
+    });
+    // Polite pause between pages — Typesense doesn't document a rate
+    // limit for free-tier search but 50ms is invisible to scrape
+    // wall-clock and keeps us off their burst radar.
+    await new Promise((r) => setTimeout(r, 50));
+  }
+
+  console.log(`[topdeck] Typesense: pulled ${rawEvents.length} events across ${page} pages`);
+
+  // Convert into our schema. Drop rows with no coordinates — they
+  // can't be placed on the map / radius filters. Typesense rows with
+  // missing coords are rare (test events, mis-configured tournaments).
+  const events: Record<string, unknown>[] = [];
+  let droppedNoCoords = 0;
+  for (const t of rawEvents) {
+    const coords = Array.isArray(t.coordinates) && t.coordinates.length === 2 ? t.coordinates : null;
+    const tLat = coords ? coords[0] : null;
+    const tLng = coords ? coords[1] : null;
+
+    if (tLat == null || tLng == null || !Number.isFinite(tLat) || !Number.isFinite(tLng)) {
+      droppedNoCoords++;
       continue;
     }
-    for (const t of res.value.rows as Array<{ TID?: string; tid?: string }>) {
-      const tid = String(t.TID ?? t.tid ?? "");
-      if (!tid) continue;
-      if (!byTid.has(tid)) byTid.set(tid, t);
-    }
-    console.log(`[topdeck] format=${fmt}: ${res.value.rows.length} tournaments`);
-  }
-
-  // If EVERY format query failed, surface that as a thrown error so
-  // scrape_history records the failure and the admin Sources column shows
-  // ✗ topdeck. Partial failures (1-2 formats down) are warnings, not errors.
-  if (failures.length === TOPDECK_MTG_FORMATS.length) {
-    throw new Error(`TopDeck all formats failed. First: ${failures[0]}`);
-  }
-  if (failures.length > 0) {
-    console.warn(`[topdeck] ${failures.length}/${TOPDECK_MTG_FORMATS.length} format queries failed (continuing with the rest)`);
-  }
-
-  const tournaments = [...byTid.values()];
-  console.log(`[topdeck] ${tournaments.length} unique MTG tournaments across ${TOPDECK_MTG_FORMATS.length - failures.length} formats`);
-
-  // In "national" scope we ingest every event with valid coords and let the UI
-  // (and ICS feed) filter by user-chosen lat/lng + radius. In "local" scope we
-  // filter at ingest time against the configured center to keep the DB lean.
-  const isNational = config.scrapeScope === "national";
-  const maxMiles = config.searchRadiusMiles;
-  const { lat, lng } = config.location;
-  const nearby = [];
-
-  // Coords live under `eventData.lat` / `eventData.lng` in TopDeck v2's
-  // current response. Older payloads used `latitude` / `longitude` (full
-  // names), so we accept both: the `??` chain keeps the scraper resilient
-  // if TopDeck ever swaps back, and any future rename will trip the
-  // "dropped N tournaments" warning below loudly rather than silently
-  // zeroing out the source again.
-  let droppedNoCoords = 0;
-  for (const t of tournaments as any[]) {
-    const loc = t.eventData || t.location || {};
-    const tLat = loc.lat ?? loc.latitude;
-    const tLng = loc.lng ?? loc.longitude;
-
-    if (tLat == null || tLng == null) {
+    // The website considers (0, 0) a placeholder. Skip those too.
+    if (tLat === 0 && tLng === 0) {
       droppedNoCoords++;
       continue;
     }
 
-    if (!isNational) {
-      const dist = haversineDistance(lat, lng, tLat, tLng);
-      if (dist > maxMiles) continue;
-    }
+    const startDate = t.startDate ? new Date(t.startDate * 1000) : null;
+    if (!startDate) continue;
 
-    const startDate = new Date(t.startDate * 1000);
     const format = normalizeFormat(t.format);
+    const country = isoCountry(t.country);
+    const currency = isoCurrency(t.eventCurrency);
+    // Typesense stores eventPrice as a number in major units (e.g. 50
+    // for $50). Convert to minor units (cents) for our schema.
+    const priceMajor = typeof t.eventPrice === "number" && Number.isFinite(t.eventPrice) ? t.eventPrice : null;
+    const entryFeeMinor = priceMajor == null ? null : Math.round(priceMajor * 100);
+    // Display cost: "Free" / "$50" / etc. The currency-aware formatter
+    // downstream will handle non-USD; here we provide a sensible
+    // fallback for the legacy `cost` column.
+    const cost = priceMajor == null
+      ? ""
+      : priceMajor === 0
+        ? "Free"
+        : `${currency === "USD" || !currency ? "$" : ""}${priceMajor}${currency && currency !== "USD" ? ` ${currency}` : ""}`;
 
-    // Country resolution priority:
-    //   1. Explicit country code (legacy fields — v2 doesn't write these,
-    //      but cheap to forward in case TopDeck re-adds them).
-    //   2. State code → US state codes map to "US", CA province codes map
-    //      to "CA". Covers nearly all North American rows.
-    //   3. Address-name lookup. International TopDeck rows routinely have
-    //      empty city/state and a `loc.address` carrying the country
-    //      name as English/native ("Chile", "Deutschland"). Parses to
-    //      ISO-2 via the COUNTRY_NAME_TO_ISO map above.
-    //   4. Empty string. Surfaces as "—" in the admin by-country
-    //      dashboard rather than guessing.
-    const rawCountry: string | undefined =
-      loc.country || loc.countryCode || loc.country_code;
-    const country = inferCountryFromTopDeckLoc(rawCountry, loc.state, loc.address);
+    // Address: prefer the full `location` string (which is usually a
+    // street-level address). Fall back to "city, state" if it's
+    // missing or empty.
+    const address = (t.location && t.location.trim()) || [t.city, t.state].filter(Boolean).join(", ") || "";
 
-    // Header image — TopDeck v2 provides `eventData.headerImage` for
-    // events whose organizer uploaded a banner. Empty when none was
-    // set. Most fields TopDeck returns are absolute URLs; defend against
-    // a hypothetical relative path by prefixing the origin.
-    const rawHeaderImage: string = typeof loc.headerImage === "string" ? loc.headerImage.trim() : "";
-    const imageUrl = rawHeaderImage
-      ? (rawHeaderImage.startsWith("http") ? rawHeaderImage : `https://topdeck.gg${rawHeaderImage.startsWith("/") ? "" : "/"}${rawHeaderImage}`)
-      : "";
-
-    nearby.push({
-      id: "topdeck-" + (t.TID || t.tid),
-      title: (t.tournamentName || t.name || "").trim(),
+    events.push({
+      id: "topdeck-" + t.id,
+      title: (t.eventName || "").trim(),
       format,
       date: startDate.toISOString().slice(0, 10),
       time: startDate.toISOString().slice(11, 16),
+      // The website renders local time per the event's coords but we
+      // don't have that signal directly; America/New_York is a safe
+      // default since the bulk of TopDeck volume is US, and the
+      // downstream timezone picker (lib/format-time.ts) overrides
+      // this from coords when rendering anyway.
       timezone: "America/New_York",
-      // `loc.address` is a new TopDeck v2 field that often carries a
-      // country-shaped string ("Chile", "Germany") when city/state are
-      // blank — common for non-US events. Use it as a fallback for the
-      // address column so international rows aren't shipped with an
-      // empty address.
-      location: loc.name || "",
-      address: [loc.city, loc.state].filter(Boolean).join(", ") || loc.address || "",
-      cost: "",
-      currency: "",
-      entry_fee_minor: null,
+      location: t.city && t.state ? `${t.city}, ${t.state}` : (t.city || t.state || ""),
+      address,
+      cost,
+      currency,
+      entry_fee_minor: entryFeeMinor,
       country,
       store_url: "",
-      detail_url: `https://topdeck.gg/event/${t.TID || t.tid}`,
+      detail_url: `https://topdeck.gg/event/${t.id}`,
       latitude: tLat,
       longitude: tLng,
-      // Optional: organizer-uploaded banner. Empty when TopDeck doesn't
-      // carry one — the UI falls back to format-tinted placeholder
-      // exactly like it does for source-less or image-less events from
-      // other scrapers.
-      image_url: imageUrl,
-      // TopDeck's API returns per-tournament coords — trust them.
+      // Typesense rows carry exact organizer-provided coords — trust them.
       coords_source: "source",
+      // Organizer-uploaded header image when present.
+      image_url: t.eventHeaderImage && t.eventHeaderImage.trim() ? t.eventHeaderImage.trim() : "",
       source: "topdeck",
     });
   }
 
-  if (isNational) {
-    console.log(`[topdeck] ${nearby.length} events with coords (national scope, no radius filter)`);
-  } else {
-    console.log(`[topdeck] ${nearby.length} events within ${maxMiles}mi radius`);
+  if (droppedNoCoords > 0) {
+    console.log(`[topdeck] dropped ${droppedNoCoords}/${rawEvents.length} events with missing/zero coords`);
   }
-
-  // Loud warning when the coord filter eats every tournament. Previously
-  // this was silent: the scrape would report ✓ topdeck · 0 events with
-  // no failure recorded, and an admin had to run cli/probe-topdeck.ts to
-  // discover a schema rename had broken the ingest. Surface it cheaply
-  // so the next field rename trips an alarm instead of a void.
-  if (tournaments.length > 0 && nearby.length === 0) {
-    console.warn(
-      `[topdeck] ⚠ DROPPED ALL ${tournaments.length} tournaments at coord filter ` +
-      `(${droppedNoCoords} missing lat/lng). Likely a TopDeck schema rename — ` +
-      `run \`npm run topdeck:probe\` to inspect the current response shape.`,
-    );
-  } else if (droppedNoCoords > 0) {
-    console.log(`[topdeck] dropped ${droppedNoCoords}/${tournaments.length} tournaments at coord filter (missing lat/lng)`);
-  }
-  return nearby;
+  console.log(`[topdeck] ingested ${events.length} events`);
+  return events;
 }
