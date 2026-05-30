@@ -1,7 +1,8 @@
 import { randomUUID } from "crypto";
 import fs from "fs/promises";
-import { existsSync, statSync } from "fs";
+import { existsSync, readdirSync, statSync } from "fs";
 import path from "path";
+import { cache } from "react";
 
 /**
  * On-disk storage for user-uploaded images. Files live alongside the SQLite
@@ -113,6 +114,26 @@ export async function deleteUpload(url: string): Promise<void> {
 }
 
 /**
+ * Per-request snapshot of every filename under /uploads/{events,venues}/.
+ * Wrapped in React.cache so a homepage render with 200+ events triggers ONE
+ * readdir per bucket instead of 200+ existsSync/statSync calls. Cache lives
+ * for the request only — admins uploading mid-session see fresh state on the
+ * very next render. Failures (missing dir, EACCES) return empty sets so
+ * lookups gracefully fail closed.
+ */
+const uploadsSnapshot = cache((): { events: Set<string>; venues: Set<string> } => {
+  const root = uploadsRoot();
+  const readBucket = (bucket: UploadBucket): Set<string> => {
+    try {
+      return new Set(readdirSync(path.join(root, bucket)));
+    } catch {
+      return new Set();
+    }
+  };
+  return { events: readBucket("events"), venues: readBucket("venues") };
+});
+
+/**
  * Sync check that a `/uploads/<bucket>/<file>` URL still resolves to a real
  * file on disk. The DB stores public URLs, but Railway persistent volumes can
  * be reset (or files manually deleted) leaving the row pointing at nothing —
@@ -122,6 +143,9 @@ export async function deleteUpload(url: string): Promise<void> {
  *
  * Returns false for empty/non-/uploads URLs, missing files, and traversal
  * attempts. Returns true only when the resolved path is a real regular file.
+ *
+ * Hot path: backed by `uploadsSnapshot` (one readdir per bucket per request)
+ * so callers can fire this once per event without N+1 fs syscalls.
  */
 export function uploadFileExists(url: string): boolean {
   if (!url || !url.startsWith("/uploads/")) return false;
@@ -129,14 +153,12 @@ export function uploadFileExists(url: string): boolean {
     .slice("/uploads/".length)
     .split("/")
     .filter(Boolean);
-  if (rel.length === 0) return false;
-  const fullPath = resolveUploadPath(rel);
-  if (!fullPath || !existsSync(fullPath)) return false;
-  try {
-    return statSync(fullPath).isFile();
-  } catch {
-    return false;
-  }
+  if (rel.length !== 2) return false;
+  const [bucket, filename] = rel;
+  if (bucket !== "events" && bucket !== "venues") return false;
+  // Fast path via the per-request snapshot. Avoids existsSync + statSync.
+  const snap = uploadsSnapshot();
+  return bucket === "events" ? snap.events.has(filename) : snap.venues.has(filename);
 }
 
 /** Resolve a public /uploads/* URL to the on-disk path, or null if it's not safe. */

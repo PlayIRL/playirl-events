@@ -27,11 +27,26 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   serverExternalPackages: ["better-sqlite3"],
+  // Strip the `X-Powered-By: Next.js` header from every response. Tiny per-
+  // response byte saving and removes a free fingerprint that helps attackers
+  // narrow down which Next/Node versions to probe for known CVEs.
+  poweredByHeader: false,
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "maps.googleapis.com" },
       { protocol: "https", hostname: "cdn.discordapp.com" },
+      // Signed-in users render an avatar in AccountChip pulled from Google's
+      // CDN (NextAuth Google OAuth). Without this entry, next/image refuses
+      // to optimize the URL and the chip falls back to an unoptimized fetch.
+      { protocol: "https", hostname: "lh3.googleusercontent.com" },
     ],
+    // Our /uploads/* sources are content-addressed (UUID filenames) — the
+    // optimizer's output for a given (src, width, quality) tuple never
+    // changes for the life of that file. Stock minimumCacheTTL is 60s, which
+    // makes the optimizer re-encode the same WebP variant once a minute under
+    // continuous traffic. Bump to 30 days so the on-disk cache survives
+    // genuine reuse without thrashing the CPU on identical work.
+    minimumCacheTTL: 60 * 60 * 24 * 30,
   },
   async headers() {
     return [

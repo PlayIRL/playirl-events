@@ -33,9 +33,60 @@ interface CacheEntry {
 }
 
 const TTL_MS = 24 * 60 * 60 * 1000;
-const TIMEOUT_MS = 1500;
+// Tight timeout so a slow upstream never blocks the SSR critical path. ipapi.co
+// usually answers in <200ms; if it doesn't, we'd rather render with the
+// hardcoded default than make every visitor wait. Negative-cached on miss so
+// repeated misses within the TTL don't repeatedly burn the budget.
+const TIMEOUT_MS = 500;
 const CACHE_MAX = 1024;
 const cache = new Map<string, CacheEntry>();
+
+// Persistent layer: backed by ip_geo_cache table. Looked up after the in-memory
+// LRU but before the network call, so a restart doesn't stampede ipapi.co.
+// Dynamic import keeps lib/db.ts out of edge-runtime bundles that might import
+// this file in the future — better-sqlite3 is Node-only.
+async function readDiskCache(ip: string): Promise<IpGeoResult | null | undefined> {
+  try {
+    const { prepareCached } = await import("./db");
+    const row = prepareCached(
+      "SELECT latitude, longitude, country_code, expires_at FROM ip_geo_cache WHERE ip = ?",
+    ).get(ip) as { latitude: number | null; longitude: number | null; country_code: string | null; expires_at: number } | undefined;
+    if (!row) return undefined;
+    if (row.expires_at < Date.now()) return undefined;
+    if (row.latitude == null || row.longitude == null) return null;
+    return {
+      latitude: row.latitude,
+      longitude: row.longitude,
+      countryCode: row.country_code ?? undefined,
+    };
+  } catch {
+    return undefined;
+  }
+}
+
+async function writeDiskCache(ip: string, value: IpGeoResult | null): Promise<void> {
+  try {
+    const { prepareCached } = await import("./db");
+    prepareCached(
+      `INSERT INTO ip_geo_cache (ip, latitude, longitude, country_code, expires_at)
+       VALUES (?, ?, ?, ?, ?)
+       ON CONFLICT(ip) DO UPDATE SET
+         latitude = excluded.latitude,
+         longitude = excluded.longitude,
+         country_code = excluded.country_code,
+         expires_at = excluded.expires_at`,
+    ).run(
+      ip,
+      value?.latitude ?? null,
+      value?.longitude ?? null,
+      value?.countryCode ?? null,
+      Date.now() + TTL_MS,
+    );
+  } catch {
+    // Disk cache is opportunistic — failure (DB locked, schema mismatch in
+    // dev, etc.) is non-fatal because the in-memory LRU still covers us.
+  }
+}
 
 /**
  * Returns true for IPs that don't make sense to look up — loopback, RFC1918
@@ -59,6 +110,14 @@ export async function geolocateIp(ip: string): Promise<IpGeoResult | null> {
   const now = Date.now();
   const cached = cache.get(ip);
   if (cached && cached.expiresAt > now) return cached.value;
+
+  // Try persistent layer before network. Warm restarts pay one SQLite read
+  // (~sub-ms) instead of a 500ms timeout-bounded HTTP call.
+  const fromDisk = await readDiskCache(ip);
+  if (fromDisk !== undefined) {
+    cache.set(ip, { value: fromDisk, expiresAt: now + TTL_MS });
+    return fromDisk;
+  }
 
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
@@ -100,6 +159,9 @@ export async function geolocateIp(ip: string): Promise<IpGeoResult | null> {
     if (firstKey !== undefined) cache.delete(firstKey);
   }
   cache.set(ip, { value: result, expiresAt: now + TTL_MS });
+  // Fire-and-forget the persistent write — no point making the caller wait
+  // on a cache update they'll never read in this request.
+  void writeDiskCache(ip, result);
   return result;
 }
 

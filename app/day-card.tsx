@@ -4,6 +4,7 @@
 // "use client" here drops ~215 events × DayCard hydration cost on
 // the homepage, which was the bulk of the perceived "slow to spring
 // to life" delay on initial load.
+import Image from "next/image";
 import Link from "next/link";
 import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq, showFormatBadge } from "@/lib/format-style";
 import { eventDisplayStatus, formatEventTime, formatEventTimeParts, pickEventTimezone } from "@/lib/format-time";
@@ -20,7 +21,6 @@ interface EventRow {
   timezone: string;
   location: string;
   cost: string;
-  store_url: string;
   latitude: number | null;
   longitude: number | null;
   /** Pre-resolved image URL (uploaded photo, scraped cover, venue default, or placeholder). */
@@ -214,8 +214,13 @@ export default function DayCard({
                   drop it on all viewports too — past events render in the
                   condensed layout so a long backlog doesn't dominate. */}
               {status !== "completed" && (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
+                // next/image generates a 56px-wide webp variant for the
+                // browser instead of shipping the original (which can be up
+                // to 4 MB per saveUpload's cap). `unoptimized` for SVG paths
+                // and external static maps that next/image's optimizer can't
+                // re-encode usefully. `sizes` is fixed at 56px since the
+                // thumbnail never grows beyond that.
+                <Image
                   src={ev.imageUrl}
                   alt=""
                   width={56}
@@ -223,8 +228,10 @@ export default function DayCard({
                   className={`hidden sm:block w-14 h-14 rounded-md shrink-0 bg-neutral-100 ${
                     ev.imageFit === "cover" ? "object-cover" : "object-contain p-1"
                   }`}
+                  sizes="56px"
                   loading="lazy"
                   decoding="async"
+                  unoptimized={ev.imageUrl.endsWith(".svg") || ev.imageUrl.startsWith("https://maps.googleapis.com")}
                 />
               )}
               <div className="flex-1 min-w-0">

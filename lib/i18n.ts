@@ -527,20 +527,3 @@ export function t(
   return interpolate(found, params);
 }
 
-/** Curried `t()` bound to a specific locale. Useful in server components
- *  that resolve the locale once via `getServerLocale(await headers())` and
- *  then need to translate many strings. */
-export function makeTranslator(locale: string): (key: string, params?: Record<string, string | number>) => string {
-  return (key, params) => t(key, params, locale);
-}
-
-/**
- * Translation registry for tests / admin tooling. Returns the raw tree —
- * read-only for callers, mutating it doesn't affect runtime lookups (the
- * `t()` helper closes over the Map at call time). Don't ship this through
- * to clients in production; it bloats the bundle with every locale's
- * strings whether the user needs them or not.
- */
-export function getRegistry(): Map<string, StringTree> {
-  return LOCALES;
-}

@@ -1,9 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-// NOTE: This middleware runs on the edge runtime, which cannot open
-// better-sqlite3. We do a coarse check here (is there *any* auth cookie?)
-// and let server components / route handlers do the role check via
-// `lib/session.ts` (which can hit the DB).
+// NOTE: This proxy (formerly "middleware" in Next ≤15) runs on the edge
+// runtime, which cannot open better-sqlite3. We do a coarse check here
+// (is there *any* auth cookie?) and let server components / route handlers
+// do the role check via `lib/session.ts` (which can hit the DB).
 
 const LEGACY_COOKIE = "mtg-cal-session";
 // Auth.js v5 default session cookie name (with optional __Secure- prefix in prod).
@@ -14,7 +14,7 @@ function hasAnySession(req: NextRequest): boolean {
   return AUTHJS_COOKIES.some((name) => !!req.cookies.get(name)?.value);
 }
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Always allow the login pages and the auth endpoints themselves.

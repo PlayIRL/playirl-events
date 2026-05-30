@@ -1,4 +1,5 @@
-import { getDb } from "./db";
+import { cache } from "react";
+import { getDb, prepareCached } from "./db";
 
 export interface EventRow {
   id: string;
@@ -195,6 +196,15 @@ function boundingBoxMiles(lat: number, lng: number, radiusMi: number) {
   };
 }
 
+// Column projection for listing views (homepage, calendar grid, map markers).
+// Excludes the body fields (`notes`, `description`) and rejection-trail fields
+// that only the event detail page reads. Across a typical homepage render
+// (~150 events × ~120 char avg description), that's ~18 KB of payload we
+// would otherwise serialize into SSR HTML and ship to the client for client
+// components that never read those fields.
+const LIGHT_COLUMNS =
+  "id, title, format, date, time, timezone, location, address, cost, currency, entry_fee_minor, country, store_url, detail_url, latitude, longitude, source, status, added_date, updated_date, owner_id, source_type, image_url, capacity, rsvp_enabled, visibility, cancelled_at, '' AS notes, '' AS description, NULL AS rejected_at, '' AS rejection_reason";
+
 export function getActiveEvents(filters?: {
   format?: string;
   from?: string;
@@ -209,12 +219,18 @@ export function getActiveEvents(filters?: {
    *  Orthogonal to format (an RCQ can be Modern, Sealed, Standard, etc.) so
    *  this combines with `format` rather than replacing it. */
   rcq?: boolean;
+  /** "light" omits notes/description/rejection fields — use for listing views
+   *  where only the row's identity, time, place, and chip-level metadata are
+   *  rendered. "full" (default) selects every column, suitable for ICS feeds
+   *  and Discord digests whose payloads quote the event body. */
+  fields?: "light" | "full";
 }): EventRow[] {
   const db = getDb();
   // visibility/cancelled chokepoint: every public read path goes through
   // here, so unlisted/private/cancelled events stay out of the homepage,
   // ICS feeds, format dropdown, and search by default.
-  let sql = "SELECT * FROM events WHERE status IN ('active', 'pinned') AND visibility = 'public' AND cancelled_at IS NULL";
+  const projection = filters?.fields === "light" ? LIGHT_COLUMNS : "*";
+  let sql = `SELECT ${projection} FROM events WHERE status IN ('active', 'pinned') AND visibility = 'public' AND cancelled_at IS NULL`;
   const params: (string | number)[] = [];
 
   if (filters?.format) {
@@ -251,7 +267,10 @@ export function getActiveEvents(filters?: {
   }
 
   sql += " ORDER BY date ASC, time ASC";
-  let rows = db.prepare(sql).all(...params) as EventRow[];
+  // prepareCached so the dozen filter-shape permutations (format set/unset,
+  // radius set/unset, rcq set/unset, light/full projection) each compile
+  // once per process instead of once per request.
+  let rows = prepareCached(sql).all(...params) as EventRow[];
 
   // Haversine refinement — only on rows that survived the bbox prefilter.
   if (filters?.radiusMiles && filters?.centerLat != null && filters?.centerLng != null) {
@@ -483,37 +502,40 @@ export function getAllEventsForVenue(name: string, limit = 500): EventRow[] {
     .all(name, limit) as EventRow[];
 }
 
-export function getEvent(id: string): EventRow | undefined {
-  const db = getDb();
-  return db.prepare("SELECT * FROM events WHERE id = ?").get(id) as EventRow | undefined;
-}
+// React.cache so the metadata() function and the page() function on
+// app/event/[id]/page.tsx (both called per request, both fetching the same
+// event) share a single SELECT instead of issuing two.
+export const getEvent = cache((id: string): EventRow | undefined => {
+  return prepareCached("SELECT * FROM events WHERE id = ?").get(id) as EventRow | undefined;
+});
 
 export function updateEventStatus(id: string, status: string, notes?: string): boolean {
-  const db = getDb();
   const now = new Date().toISOString().split("T")[0];
   if (notes !== undefined) {
-    const r = db.prepare("UPDATE events SET status=?, notes=?, updated_date=? WHERE id=?").run(status, notes, now, id);
+    const r = prepareCached("UPDATE events SET status=?, notes=?, updated_date=? WHERE id=?").run(status, notes, now, id);
     return r.changes > 0;
   }
-  const r = db.prepare("UPDATE events SET status=?, updated_date=? WHERE id=?").run(status, now, id);
+  const r = prepareCached("UPDATE events SET status=?, updated_date=? WHERE id=?").run(status, now, id);
   return r.changes > 0;
 }
 
-export function getFormats(): string[] {
-  const db = getDb();
-  // Same visibility/cancelled chokepoint as getActiveEvents — no point
-  // showing "Brawl" in the homepage filter dropdown if the only Brawl
-  // event is unlisted or cancelled. ORDER BY LOWER(format) so the sort
-  // is case-insensitive — without this, mixed-case canonical names
-  // like "cEDH" sort to the end (lowercase 'c' > uppercase 'V' in
-  // SQLite's binary collation), which is unintuitive in a dropdown.
-  const rows = db
-    .prepare(
-      "SELECT DISTINCT format FROM events WHERE status IN ('active','pinned') AND visibility = 'public' AND cancelled_at IS NULL AND format != '' ORDER BY LOWER(format)",
-    )
-    .all() as { format: string }[];
+// Same visibility/cancelled chokepoint as getActiveEvents — no point
+// showing "Brawl" in the homepage filter dropdown if the only Brawl
+// event is unlisted or cancelled. ORDER BY LOWER(format) so the sort
+// is case-insensitive — without this, mixed-case canonical names
+// like "cEDH" sort to the end (lowercase 'c' > uppercase 'V' in
+// SQLite's binary collation), which is unintuitive in a dropdown.
+//
+// Wrapped in React.cache so multiple consumers on the same SSR request
+// (homepage filter dropdown + admin counts + any future consumer) share
+// one DISTINCT scan instead of re-querying the events table each call.
+// Cache scope is per-request, automatic eviction at request end.
+export const getFormats = cache((): string[] => {
+  const rows = prepareCached(
+    "SELECT DISTINCT format FROM events WHERE status IN ('active','pinned') AND visibility = 'public' AND cancelled_at IS NULL AND format != '' ORDER BY LOWER(format)",
+  ).all() as { format: string }[];
   return rows.map(r => r.format);
-}
+});
 
 export function archiveOldEvents(daysOld: number = 90): number {
   const db = getDb();
@@ -525,14 +547,12 @@ export function archiveOldEvents(daysOld: number = 90): number {
 }
 
 export function getSetting(key: string): string {
-  const db = getDb();
-  const row = db.prepare("SELECT value FROM settings WHERE key = ?").get(key) as { value: string } | undefined;
+  const row = prepareCached("SELECT value FROM settings WHERE key = ?").get(key) as { value: string } | undefined;
   return row?.value || "";
 }
 
 export function setSetting(key: string, value: string): void {
-  const db = getDb();
-  db.prepare("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)").run(key, value);
+  prepareCached("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)").run(key, value);
 }
 
 // ----- Manual / organizer event mutations -----

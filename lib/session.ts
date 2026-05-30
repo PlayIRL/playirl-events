@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 
@@ -12,7 +13,10 @@ export interface CurrentUser {
   suspended: boolean;
 }
 
-export async function getCurrentUser(): Promise<CurrentUser | null> {
+// React.cache so layout, page, and any helper that asks for the current user
+// within one request share a single auth() call + DB lookup. Without this,
+// every server component up and down the tree pays the cost.
+export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
   const session = await auth();
   if (!session?.user) return null;
   return {
@@ -23,17 +27,12 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     role: session.user.role,
     suspended: session.user.suspended,
   };
-}
+});
 
 /** Returns true if the current request has an active admin Auth.js session. */
 export async function hasAdminAccess(): Promise<boolean> {
   const user = await getCurrentUser();
   return user?.role === "admin" && !user.suspended;
-}
-
-export async function hasOrganizerAccess(): Promise<boolean> {
-  const user = await getCurrentUser();
-  return !!user && !user.suspended && (user.role === "organizer" || user.role === "admin");
 }
 
 /** Any signed-in, non-suspended user (including base `user` role). */

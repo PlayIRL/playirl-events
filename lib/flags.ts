@@ -15,10 +15,6 @@ export function getFlag(key: string): FlagRow | undefined {
   return getDb().prepare("SELECT key, enabled, description, updated_at FROM feature_flags WHERE key = ?").get(key) as FlagRow | undefined;
 }
 
-export function isFlagEnabled(key: string): boolean {
-  return getFlag(key)?.enabled === 1;
-}
-
 export function setFlag(key: string, enabled: boolean, description?: string): FlagRow {
   const db = getDb();
   const existing = getFlag(key);
@@ -32,6 +28,3 @@ export function setFlag(key: string, enabled: boolean, description?: string): Fl
   return getFlag(key)!;
 }
 
-export function getFlagMap(): Record<string, boolean> {
-  return Object.fromEntries(getAllFlags().map((f) => [f.key, f.enabled === 1]));
-}

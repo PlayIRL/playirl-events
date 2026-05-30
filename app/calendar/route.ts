@@ -3,7 +3,11 @@ import { generateIcsString } from "@/lib/ical";
 import { config } from "@/lib/config";
 import { NextResponse } from "next/server";
 
-export const dynamic = "force-dynamic";
+// Calendar subscribers (Apple Calendar, Google Calendar, Outlook) re-poll
+// this URL every 15 minutes by default. The underlying data only changes
+// when scrapers commit. 5-minute revalidation absorbs the polling herd
+// without holding new events back materially.
+export const revalidate = 300;
 
 /**
  * Subscribable ICS feed. Accepts optional filter query params so the same

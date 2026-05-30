@@ -22,7 +22,6 @@ import FloatingToolbar from "./floating-toolbar";
 import AboutInfoButton from "./about-info-button";
 import LocationBanner from "./location-banner";
 import DayCard from "./day-card";
-import Reveal from "./reveal";
 import Link from "next/link";
 import AccountChip from "./account-chip";
 import { PlayIrlLogo } from "./playirl-logo";
@@ -69,9 +68,13 @@ export default async function HomePage({
   const user = await getCurrentUser();
   const signedIn = !!user && !user.suspended;
 
-  // Filter defaults: URL param > per-user prefs (signed-in) > global setting (signed-out) > hardcoded default.
+  // Filter defaults: URL param > per-user prefs (signed-in) > hardcoded default.
+  // (Signed-out visitors used to seed defaults from a global `settings` row;
+  // that wrote to the DB on every ?radius= visit which was wrong semantically
+  // and bad for write throughput. Now signed-out viewers get the hardcoded
+  // fallback — client-side localStorage handles per-device memory.)
   const prefs = signedIn ? getPreferences(user.id) : null;
-  const defaultRadius = prefs?.radius_miles ?? parseInt(getSetting("search_radius_miles") || "10", 10);
+  const defaultRadius = prefs?.radius_miles ?? 10;
   const defaultDays = prefs?.days_ahead ?? 7;
   const defaultFormat = prefs?.formats[0] ?? "";
 
@@ -151,10 +154,9 @@ export default async function HomePage({
         patch.location_label = "";
       }
     }
-    if (Object.keys(patch).length > 0) setPreferences(user.id, patch);
-  } else if (params.radius) {
-    // Signed-out: keep existing global-radius behavior.
-    setSetting("search_radius_miles", params.radius);
+    // Pass `prefs` through so setPreferences doesn't re-SELECT the row we
+    // already loaded a few lines up.
+    if (Object.keys(patch).length > 0 && prefs) setPreferences(user.id, patch, prefs);
   }
 
   const today = new Date();
@@ -200,11 +202,32 @@ export default async function HomePage({
     centerLat: currentLocationLat,
     centerLng: currentLocationLng,
     rcq: currentRcq || undefined,
+    // List/calendar/map views never quote the event body — skip shipping
+    // notes/description across the SSR boundary.
+    fields: "light",
   });
 
+  // Project to the field union the three listing views actually read
+  // (DayCard, CalendarView, MapView, plus the format-time helpers that need
+  // timezone/date/time). Trims another ~15 unused columns from the RSC
+  // payload that crosses into the client bundle — small per-event, but
+  // adds up across 200+ events.
   const enriched = events.map((ev) => {
     const img = resolveEventImage(ev);
-    return { ...ev, imageUrl: img.url, imageFit: img.fit };
+    return {
+      id: ev.id,
+      title: ev.title,
+      format: ev.format,
+      date: ev.date,
+      time: ev.time,
+      timezone: ev.timezone,
+      location: ev.location,
+      cost: ev.cost,
+      latitude: ev.latitude,
+      longitude: ev.longitude,
+      imageUrl: img.url,
+      imageFit: img.fit,
+    };
   });
 
   // Group by VENUE-LOCAL date, not the stored UTC date. Without this,

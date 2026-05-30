@@ -16,7 +16,12 @@ import { SITE_URL } from "@/lib/config";
 import { getActiveEventIdsForSitemap } from "@/lib/events";
 import { listKnownVenues, venueSlug } from "@/lib/venues";
 
-export const dynamic = "force-dynamic";
+// Crawlers don't need second-fresh sitemaps — new events appear in the
+// homepage's hourly changeFrequency hint anyway. Revalidate every 10 minutes:
+// long enough that thousands of bots can hit /sitemap.xml without rebuilding
+// the URL list each time, short enough that a freshly-scraped event is
+// indexable within the hour.
+export const revalidate = 600;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

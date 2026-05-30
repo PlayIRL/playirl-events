@@ -29,6 +29,13 @@ import { ImageResponse } from "next/og";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "PlayIRL.GG — an independent alternative to the WotC event locator";
+// Cache the rendered PNG for an hour. Without this, every social-card request
+// (Slack/Discord/Twitter unfurl, search crawler, etc.) re-fetches three Google
+// Fonts subsets and re-rasterizes — and there are no per-request inputs that
+// would make a fresh render meaningful. The PNG only changes when we deploy
+// new code, so an hourly window is generous slack with effectively-zero
+// staleness risk.
+export const revalidate = 3600;
 
 const WORDMARK_GLYPHS = "PlayIRL.g";
 const SUBHEAD_TEXT =

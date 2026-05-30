@@ -112,9 +112,47 @@ export function getDb(): Database.Database {
     db = new Database(DB_PATH);
     db.pragma("journal_mode = WAL");
     db.pragma("foreign_keys = ON");
+    // Performance tuning. Stock SQLite is conservative:
+    //   - cache_size: negative = KB instead of pages. -64000 = 64 MB page cache.
+    //     The DB is read-heavy and small enough that most working-set pages
+    //     stay resident.
+    //   - mmap_size: 30 MB of memory-mapped I/O. Cuts read syscalls for cold
+    //     pages on the homepage's getActiveEvents query.
+    //   - synchronous=NORMAL: safe with WAL — durable across app crashes,
+    //     only loses the last txn on OS/power loss. Faster than FULL.
+    //   - busy_timeout: when the scraper writes and a reader collides, wait
+    //     up to 5s instead of throwing SQLITE_BUSY immediately.
+    db.pragma("cache_size = -64000");
+    db.pragma("mmap_size = 30000000");
+    db.pragma("synchronous = NORMAL");
+    db.pragma("busy_timeout = 5000");
     initSchema(db);
   }
   return db;
+}
+
+// Prepared-statement cache keyed by SQL text. better-sqlite3 doesn't cache
+// internally — every db.prepare() compiles a fresh statement. Callers on hot
+// paths should use prepareCached() instead of db.prepare() so the SQLite
+// parser/planner only runs once per unique query string per process.
+//
+// Safe to share across requests: prepared statements are stateless until
+// .run/.get/.all is called. Reset on DB reopen (e.g. test teardown) so we
+// don't hand out statements bound to a closed handle.
+const stmtCache = new WeakMap<Database.Database, Map<string, Database.Statement>>();
+export function prepareCached<T extends unknown[] = unknown[]>(sql: string): Database.Statement<T> {
+  const handle = getDb();
+  let cache = stmtCache.get(handle);
+  if (!cache) {
+    cache = new Map();
+    stmtCache.set(handle, cache);
+  }
+  let stmt = cache.get(sql);
+  if (!stmt) {
+    stmt = handle.prepare(sql);
+    cache.set(sql, stmt);
+  }
+  return stmt as Database.Statement<T>;
 }
 
 function initSchema(db: Database.Database) {
@@ -156,6 +194,11 @@ function initSchema(db: Database.Database) {
     -- cancelled_at row-by-row, but ~99% of rows match those, so the cost
     -- collapses. Touches the homepage, ICS feeds, and format dropdown.
     CREATE INDEX IF NOT EXISTS idx_events_active_date ON events(status, date);
+    -- Covering index for getFormats' DISTINCT scan. The query filters by
+    -- (status, visibility, cancelled_at) and projects the format column;
+    -- carrying all four fields in the index lets SQLite skip the table
+    -- read entirely. Ordering matches the WHERE clause prefix.
+    CREATE INDEX IF NOT EXISTS idx_events_format_active ON events(status, visibility, cancelled_at, format);
     -- Case-insensitive venue lookup for /venue/[slug]. getEventsForVenue
     -- compares LOWER(TRIM(location)) so the index has to match expression
     -- shape exactly. SQLite supports indexes on expressions since 3.9.0.
@@ -387,6 +430,31 @@ function initSchema(db: Database.Database) {
       longitude  REAL,
       cached_at  TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    -- Persistent IP→geo cache. Backs the in-memory LRU in lib/ip-geo.ts so a
+    -- container restart doesn't thunder against ipapi.co on first request from
+    -- every cached IP. Stores both hits and misses (null lat/lng = negative
+    -- cache); expiry is enforced at read time against expires_at. Cleared by
+    -- manual DELETE when ipapi.co's data drifts (rare).
+    CREATE TABLE IF NOT EXISTS ip_geo_cache (
+      ip           TEXT PRIMARY KEY,
+      latitude     REAL,
+      longitude    REAL,
+      country_code TEXT,
+      expires_at   INTEGER NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_ip_geo_expires ON ip_geo_cache(expires_at);
+
+    -- Persistent coord→label cache. Same role for Nominatim reverse-geocoding:
+    -- post-restart, the homepage's "Philly", "Brooklyn, NY" labels render
+    -- from disk instead of waiting on Nominatim. Keyed at 2-decimal precision
+    -- (~1.1km in CONUS) so adjacent visitors share an entry.
+    CREATE TABLE IF NOT EXISTS coord_label_cache (
+      coord_key  TEXT PRIMARY KEY,
+      label      TEXT NOT NULL,
+      expires_at INTEGER NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_coord_label_expires ON coord_label_cache(expires_at);
 
     -- Scrape history. Each runScraper() call appends one row with the full
     -- summary as JSON; the admin /admin/scrape-stats page reads the most

@@ -27,9 +27,6 @@ export const MI_PER_KM = 0.621371192;
 export function milesToKm(miles: number): number {
   return miles / MI_PER_KM;
 }
-export function kmToMiles(km: number): number {
-  return km * MI_PER_KM;
-}
 
 export type DistanceUnit = "mi" | "km";
 
@@ -59,9 +56,3 @@ export function formatDistance(miles: number, unit: DistanceUnit = "mi"): string
   return `${Math.round(value)} ${u} away`;
 }
 
-/** Backward-compatible alias for the original miles-only formatter. New
- *  callers should reach for `formatDistance` and pass the user's preferred
- *  unit. Existing callsites stay miles-only until the locale prefs land. */
-export function formatDistanceMiles(miles: number): string {
-  return formatDistance(miles, "mi");
-}

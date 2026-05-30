@@ -50,16 +50,22 @@ const spaceMono = Space_Mono({
   weight: ["400", "700"],
 });
 
-// Card-title font: the actual Beleren-Bold ttf used on MTG cards, self-
-// hosted from public/fonts. Sourced from the magarena open-source MTG
-// project. PlayIRL.GG is explicitly unaffiliated with Wizards of the
-// Coast (see the About page disclaimer) — the font is shipped only as
-// a stylistic nod on the format badge, not as a claim of endorsement.
+// Card-title font: the actual Beleren-Bold used on MTG cards, self-hosted
+// from public/fonts. Sourced from the magarena open-source MTG project.
+// PlayIRL.GG is explicitly unaffiliated with Wizards of the Coast (see the
+// About page disclaimer) — the font is shipped only as a stylistic nod on
+// the format badge, not as a claim of endorsement.
+//
+// Shipped as woff2 (~27 KB vs 91 KB ttf) and `preload: false` because it
+// only renders inside format chips, never above the fold. swap on font-
+// display means text shows in the body fallback first and re-renders in
+// Beleren when ready, with no layout shift visible to the user.
 const cardTitleFont = localFont({
-  src: "../public/fonts/Beleren-Bold.ttf",
+  src: "../public/fonts/Beleren-Bold.woff2",
   variable: "--font-card-title",
   weight: "700",
   display: "swap",
+  preload: false,
 });
 
 const BUILD_SHA = process.env.RAILWAY_GIT_COMMIT_SHA ?? process.env.VERCEL_GIT_COMMIT_SHA ?? "local";
@@ -135,6 +141,18 @@ export default async function RootLayout({
       style={{ colorScheme: isDark ? "dark" : "light" }}
       suppressHydrationWarning
     >
+      {/* Resource hints for cross-origin domains we hit from the homepage.
+          dns-prefetch starts the DNS lookup as soon as the HTML parser sees
+          the tag; preconnect goes further and opens the TCP+TLS handshake
+          eagerly. Worth it for endpoints that block first paint:
+            - lh3.googleusercontent.com — signed-in user avatar (account chip)
+            - maps.googleapis.com — Static Maps for events without venue photos
+            - cdn.discordapp.com — cover images on Discord-sourced events */}
+      <head>
+        <link rel="preconnect" href="https://lh3.googleusercontent.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://maps.googleapis.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://cdn.discordapp.com" />
+      </head>
       <body className="min-h-[100dvh] flex flex-col font-[family-name:var(--font-inter)] text-neutral-900 dark:text-neutral-100">
         <ThemeSync />
         {children}

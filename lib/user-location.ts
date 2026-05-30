@@ -15,12 +15,22 @@
  * meaningless.
  */
 
+import { cache } from "react";
 import { config } from "./config";
 import { getLabelForCoords } from "./geocode";
 import { clientIpFromHeaders, geolocateIp } from "./ip-geo";
 import { getServerCountry } from "./locale";
 import { getCountryDefaultLocation } from "./country-defaults";
 import type { UserPreferences } from "./user-preferences";
+
+// Belt-and-braces around the in-memory LRU in ip-geo.ts: dedupes calls
+// within a single SSR render so multiple consumers of resolveUserLocation
+// (homepage + LocationBanner + any future caller) share one network round
+// trip. Cache scope is per-request, automatic eviction at render end.
+const cachedGeolocateIp = cache(async (ip: string) => geolocateIp(ip));
+const cachedLabelForCoords = cache(
+  async (lat: number, lng: number) => getLabelForCoords(lat, lng),
+);
 
 export const DEFAULT_LOCATION_LABEL = "Philly";
 
@@ -61,7 +71,7 @@ export async function resolveUserLocation(opts: {
     const explicit = urlLabel?.trim();
     const label = explicit
       ? explicit
-      : (await getLabelForCoords(parsedUrlLat, parsedUrlLng)) ?? DEFAULT_LOCATION_LABEL;
+      : (await cachedLabelForCoords(parsedUrlLat, parsedUrlLng)) ?? DEFAULT_LOCATION_LABEL;
     return {
       lat: parsedUrlLat,
       lng: parsedUrlLng,
@@ -89,10 +99,10 @@ export async function resolveUserLocation(opts: {
   if (requestHeaders) {
     const ip = clientIpFromHeaders(requestHeaders);
     if (ip) {
-      const hit = await geolocateIp(ip);
+      const hit = await cachedGeolocateIp(ip);
       if (hit) {
         const label =
-          (await getLabelForCoords(hit.latitude, hit.longitude)) ?? DEFAULT_LOCATION_LABEL;
+          (await cachedLabelForCoords(hit.latitude, hit.longitude)) ?? DEFAULT_LOCATION_LABEL;
         return {
           lat: hit.latitude,
           lng: hit.longitude,
