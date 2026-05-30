@@ -1,7 +1,9 @@
-export const dynamic = "force-dynamic";
+// Layout reads cookies() and headers(), which already opts the entire app
+// route tree into per-request rendering — no need to declare force-dynamic
+// here. Keeping the comment so future-us doesn't reach for it reflexively.
 
 import { headers } from "next/headers";
-import { getActiveEvents, getFormats, getSetting, setSetting } from "@/lib/events";
+import { getActiveEvents, getFormats } from "@/lib/events";
 import { getSavedEventIds } from "@/lib/event-saves";
 import { getPreferences, setPreferences } from "@/lib/user-preferences";
 import { getCurrentUser } from "@/lib/session";
@@ -85,7 +87,14 @@ export default async function HomePage({
   // a first-class canonical format, so any incoming ?cedh=1 URL maps to
   // ?format=cEDH for subscribers / shared links that pre-date the promotion.
   const cedhLegacy = params.cedh === "1";
-  const currentFormat = cedhLegacy ? "cEDH" : (params.format ?? defaultFormat);
+  // params.format !== undefined (not just `?? defaultFormat`) so that an
+  // explicit empty value — written by the radius-selector when the user
+  // picks "All formats" — beats the saved-pref default. Without that
+  // distinction, clicking "All formats" silently re-applied whatever
+  // format the user had saved in their prefs.
+  const currentFormat = cedhLegacy
+    ? "cEDH"
+    : (params.format !== undefined ? params.format : defaultFormat);
   const currentRcq = params.rcq === "1";
   const currentOffset = params.offset ? Math.max(0, parseInt(params.offset, 10)) : 0;
 

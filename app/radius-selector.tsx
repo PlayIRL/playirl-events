@@ -657,8 +657,24 @@ export default function RadiusSelector({
     const url = new URL(window.location.href);
     if (value) {
       url.searchParams.set(key, value);
+    } else if (key === "format") {
+      // Explicit "All formats" — write the empty string back so the
+      // server can distinguish "user actively cleared the filter"
+      // (don't fall back to their saved-pref default) from "user
+      // landed on the homepage with no URL state at all" (use the
+      // saved-pref default). Without this, the homepage was re-
+      // applying prefs.formats[0] every time the user picked
+      // "All formats."
+      url.searchParams.set(key, "");
     } else {
       url.searchParams.delete(key);
+    }
+    // Legacy ?cedh=1 was a sub-format flag; cEDH is a canonical
+    // format now. When the user picks ANY format (including
+    // "All formats"), drop the legacy flag so it can't silently
+    // override the new selection on the server.
+    if (key === "format") {
+      url.searchParams.delete("cedh");
     }
     window.location.href = url.toString();
   }
