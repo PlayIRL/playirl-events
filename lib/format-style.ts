@@ -116,10 +116,14 @@ export const RCQ_BADGE =
 // "Competitive EDH", "Competitive Commander".
 export function isCedh(title: string | null | undefined): boolean {
   if (!title) return false;
-  // Negative-lookbehind/around to avoid matching incidental "cedh" inside
-  // other words. The token can stand alone or be flanked by whitespace,
-  // punctuation, or string boundary.
-  return /(^|[^a-z])(cedh|competitive\s+(edh|commander))($|[^a-z])/i.test(title);
+  // Substring match (case-insensitive) on "cedh" — explicitly accepts
+  // prefixed regional community names like "NJcEDH", "PAcEDH", "LAcEDH",
+  // "TXcEDH", "ATLcEDH" (each is a real cEDH community). No English word
+  // contains "cedh" as a substring outside this context, so the false-
+  // positive risk is effectively zero. Matches SQL LIKE '%cEDH%' filter
+  // in lib/events.ts so the badge and the ?cedh=1 query agree on which
+  // rows count.
+  return /cedh|competitive\s+(edh|commander)/i.test(title);
 }
 
 // Obsidian-black "competitive stamp" with a crimson glint sweep — see

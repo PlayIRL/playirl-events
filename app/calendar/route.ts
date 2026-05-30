@@ -48,7 +48,10 @@ export async function GET(request: Request) {
     events = all.filter((ev) => {
       if (format && ev.format !== format) return false;
       if (rcq && !(ev.title.includes("RCQ") || ev.title.includes("Regional Championship Qualifier"))) return false;
-      if (cedh && !/(^|[^a-z])(cedh|competitive\s+(edh|commander))($|[^a-z])/i.test(ev.title)) return false;
+      // Substring match — mirrors isCedh() in lib/format-style.ts and
+      // the SQL LIKE in lib/events.ts. Accepts prefixed community names
+      // like "NJcEDH" / "PAcEDH" / etc.
+      if (cedh && !/cedh|competitive\s+(edh|commander)/i.test(ev.title)) return false;
       if (toISO && (ev.date < fromISO || ev.date > toISO)) return false;
       return true;
     });
