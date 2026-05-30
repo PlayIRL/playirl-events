@@ -37,8 +37,15 @@ export const FORMAT_BADGE: Record<string, string> = {
   // Light bg = saturated violet, dark text. Dark bg = deep aubergine,
   // pastel-plum text. Matches the mana-color chip pattern the other
   // formats use rather than the standalone glint stamp we had before.
+  //
+  // tracking-tight! overrides the chip wrapper's tracking-wide. Beleren
+  // (the card-title font) is designed for ALL-CAPS with generous
+  // spacing; cEDH's mixed casing reads as too-spread-out at the wider
+  // default. Tightening pulls the four glyphs into a cohesive chip-sized
+  // unit while leaving the all-caps format chips (Commander, Modern,
+  // etc.) untouched at their original tracking.
   cEDH:
-    "bg-[#9D5BC9] text-[#1F082B] dark:bg-[#3D1F58]/90 dark:text-[#E1C5F5]",
+    "bg-[#9D5BC9] text-[#1F082B] dark:bg-[#3D1F58]/90 dark:text-[#E1C5F5] tracking-tight!",
   // U — Island
   Modern:
     "bg-[#8FC1E8] text-[#0A2D4D] dark:bg-[#0E68AB]/85 dark:text-[#D6ECF7]",
