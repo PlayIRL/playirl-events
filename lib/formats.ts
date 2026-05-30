@@ -39,9 +39,11 @@ const ALIASES: Record<string, CanonicalFormat> = {
   // Limited
   "draft": "Draft",
   "booster draft": "Draft",
+  "pick 2 draft": "Draft", // WotC variant — group with Draft for display
   "sealed": "Sealed",
   "sealed deck": "Sealed",
   "limited": "Sealed",
+  "four pack sealed": "Sealed", // WotC variant — group with Sealed
   "prerelease": "Prerelease",
   "pre-release": "Prerelease",
 

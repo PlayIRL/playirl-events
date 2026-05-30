@@ -134,14 +134,24 @@ export function upsertEvents(events: ScrapedEvent[]): {
       } else if (existing.status === "pinned") {
         skipped++;
       } else {
-        // Preserve manual/auto-curation statuses on update. `skip` and
+        // Preserve admin/auto-curation statuses on update. `skip` and
         // `pending` survive re-scrapes — admins promote `pending` to `active`
-        // by hand from the review queue. Anything else (typically `active`)
-        // refreshes to `active`.
-        const status =
-          existing.status === "skip" || existing.status === "pending"
-            ? existing.status
-            : "active";
+        // by hand from the review queue. Otherwise the freshly-classified
+        // `ev.status` wins — most importantly, a row previously marked
+        // `active` can be DEMOTED to `skip` when the curation rules learn
+        // a new non-MTG signal (e.g. a previously-unrecognized format
+        // string). Without this, expanding NON_MTG_FORMATS / NON_MTG_KEYWORDS
+        // only filters new rows; existing rows stay visible until they
+        // expire. Admin "active" decisions made via /admin/events/{id} are
+        // preserved separately by the source_type/owner_id check above.
+        let status: string;
+        if (existing.status === "skip" || existing.status === "pending") {
+          status = existing.status;
+        } else if (ev.status === "skip") {
+          status = "skip";
+        } else {
+          status = "active";
+        }
         // Keep an existing image_url if the re-scrape doesn't carry one.
         const nextImage = ev.image_url || existing.image_url || "";
         updateStmt.run(ev.title, ev.format, ev.date, ev.time, ev.timezone, ev.location, ev.address, ev.cost, ev.currency ?? "", ev.entry_fee_minor ?? null, ev.country ?? "", ev.store_url, ev.detail_url, ev.latitude ?? null, ev.longitude ?? null, ev.source, status, now, nextImage, ev.description ?? "", ev.id);

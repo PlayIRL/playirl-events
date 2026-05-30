@@ -675,4 +675,32 @@ function initSchema(db: Database.Database) {
   insertFlag.run("organizer_portal_enabled", 1, "Kill-switch for the /account portal.");
   insertFlag.run("public_organizer_signup", 0, "Allow new signups to auto-promote from `user` to `organizer` (skip review).");
   insertFlag.run("calendar_v2", 0, "Experimental calendar view redesign.");
+
+  // One-shot backfill: WotC's event locator lists non-MTG events at
+  // WPN-affiliated stores (D&D, Beyblade, Board Game, etc.). The
+  // curation rules in lib/curation-rules.ts now skip these at scrape
+  // time, but ~6k legacy rows already in the DB are marked active.
+  // Demote them in a single UPDATE so the format dropdown is clean
+  // immediately, not whenever each row's next scrape happens to land.
+  // Guarded by a settings sentinel so it runs exactly once per DB.
+  // Admin/owner-overridden rows (`pinned`, organizer-owned) stay put.
+  const backfillKey = "backfill_non_mtg_formats_v1";
+  const sentinel = db.prepare("SELECT value FROM settings WHERE key = ?").get(backfillKey) as { value: string } | undefined;
+  if (!sentinel) {
+    const result = db
+      .prepare(
+        `UPDATE events
+           SET status = 'skip', updated_date = date('now')
+         WHERE status = 'active'
+           AND LOWER(TRIM(format)) IN ('beyblade event','board game','dungeons and dragons event','heroquest','talisman','cosmolancer')`,
+      )
+      .run();
+    db.prepare("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)").run(
+      backfillKey,
+      JSON.stringify({ ranAt: new Date().toISOString(), demoted: result.changes }),
+    );
+    if (result.changes > 0) {
+      console.log(`[db] backfill ${backfillKey}: demoted ${result.changes} non-MTG events from active → skip`);
+    }
+  }
 }

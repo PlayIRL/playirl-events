@@ -61,6 +61,21 @@ const NON_MTG_KEYWORDS = [
   /遊戯王/, // (traditional — duplicated with JP, regex engine doesn't care)
 ];
 
+/** Format strings that aren't MTG. WotC's event locator includes events at
+ *  WPN-affiliated stores for D&D, Beyblade, board games, and other
+ *  Wizards/Hasbro properties — the `eventFormat.name` field carries these
+ *  verbatim. Filter at the format column (not just title) because the title
+ *  often only carries the store name ("Beyblade at Chaos Cards!") while the
+ *  format string is the unambiguous signal. Lowercase compare. */
+const NON_MTG_FORMATS = new Set([
+  "beyblade event",
+  "board game",
+  "dungeons and dragons event",
+  "heroquest",
+  "talisman",
+  "cosmolancer",
+]);
+
 /** Source identifiers we trust to publish directly (scraper output → active).
  *  Anything else (Discord, user-submitted) lands as `pending` for review. */
 const TRUSTED_SOURCES = new Set(["wizards-locator", "topdeck"]);
@@ -73,7 +88,15 @@ export interface CurationDecision {
 }
 
 export function classifyEvent(ev: ScrapedEvent): CurationDecision {
-  // 1. Hard rule: non-MTG keyword in the title → skip.
+  // 1. Hard rule: non-MTG format → skip. WotC's `eventFormat.name` field
+  // is a deterministic signal (whereas title scanning depends on whether
+  // the organizer included the game name).
+  const format = (ev.format || "").trim().toLowerCase();
+  if (format && NON_MTG_FORMATS.has(format)) {
+    return { status: "skip", reason: `non-MTG format: ${ev.format}` };
+  }
+
+  // 2. Hard rule: non-MTG keyword in the title → skip.
   const title = ev.title || "";
   for (const re of NON_MTG_KEYWORDS) {
     if (re.test(title)) {
@@ -81,13 +104,13 @@ export function classifyEvent(ev: ScrapedEvent): CurationDecision {
     }
   }
 
-  // 2. Honor an explicit status from the scraper itself (e.g. discord scraper
+  // 3. Honor an explicit status from the scraper itself (e.g. discord scraper
   // already tags user-submitted events as "pending"). Don't override.
   if (ev.status === "pending") {
     return { status: "pending", reason: "scraper marked pending" };
   }
 
-  // 3. Trusted source → active. Everything else → pending.
+  // 4. Trusted source → active. Everything else → pending.
   if (TRUSTED_SOURCES.has(ev.source)) {
     return { status: "active", reason: "trusted source" };
   }
