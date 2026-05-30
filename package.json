@@ -15,7 +15,8 @@
     "scrape:trigger": "tsx cli/trigger-prod-scrape.ts",
     "prod:diagnose": "tsx cli/diagnose-prod.ts",
     "db:pull": "tsx cli/pull-prod-db.ts",
-    "topdeck:probe": "tsx cli/probe-topdeck.ts"
+    "topdeck:probe": "tsx cli/probe-topdeck.ts",
+    "topdeck:lookup": "tsx cli/lookup-topdeck.ts"
   },
   "dependencies": {
     "@vis.gl/react-google-maps": "^1.8.3",
