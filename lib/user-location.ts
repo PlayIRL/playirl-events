@@ -17,7 +17,7 @@
 
 import { cache } from "react";
 import { config } from "./config";
-import { getLabelForCoords } from "./geocode";
+import { getLabelForCoords } from "./geocode-cache";
 import { clientIpFromHeaders, geolocateIp } from "./ip-geo";
 import { getServerCountry } from "./locale";
 import { getCountryDefaultLocation } from "./country-defaults";

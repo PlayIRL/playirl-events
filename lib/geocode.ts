@@ -181,83 +181,11 @@ export async function reverseGeocode(
   }
 }
 
-/**
- * Cached wrapper around `reverseGeocode` for hot-path callers like the
- * homepage SSR. Lat/lng pairs are rounded-md to ~1km precision (2 decimals,
- * roughly 1.1km in CONUS) before keying the cache, so adjacent URLs share
- * a single Nominatim hit. In-memory only — restarts cold-cache, but the
- * cache fills back up within seconds in production.
- *
- * Bounded at 256 entries (more than enough for "users sharing the same
- * link to a metro center"); evicts oldest insertion order when full.
- */
-const labelCache = new Map<string, string>();
-const LABEL_CACHE_MAX = 256;
-// Persistent labels live a week — city names don't drift on the timescales we
-// care about, and after restart we'd rather render "Brooklyn, NY" from disk
-// than wait on Nominatim again. The in-memory layer in front of this keeps
-// hot-path lookups sub-microsecond.
-const DISK_LABEL_TTL_MS = 7 * 24 * 60 * 60 * 1000;
-
-async function readDiskLabel(key: string): Promise<string | undefined> {
-  try {
-    const { prepareCached } = await import("./db");
-    const row = prepareCached(
-      "SELECT label, expires_at FROM coord_label_cache WHERE coord_key = ?",
-    ).get(key) as { label: string; expires_at: number } | undefined;
-    if (!row || row.expires_at < Date.now()) return undefined;
-    return row.label;
-  } catch {
-    return undefined;
-  }
-}
-
-async function writeDiskLabel(key: string, label: string): Promise<void> {
-  try {
-    const { prepareCached } = await import("./db");
-    prepareCached(
-      `INSERT INTO coord_label_cache (coord_key, label, expires_at)
-       VALUES (?, ?, ?)
-       ON CONFLICT(coord_key) DO UPDATE SET
-         label = excluded.label,
-         expires_at = excluded.expires_at`,
-    ).run(key, label, Date.now() + DISK_LABEL_TTL_MS);
-  } catch {
-    // Non-fatal — see notes in ip-geo.ts.
-  }
-}
-
-export async function getLabelForCoords(
-  lat: number,
-  lng: number,
-  signal?: AbortSignal,
-): Promise<string | null> {
-  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
-  const key = `${lat.toFixed(2)},${lng.toFixed(2)}`;
-  const cached = labelCache.get(key);
-  if (cached !== undefined) return cached;
-
-  // Persistent layer between memory and network — survives container restarts.
-  const fromDisk = await readDiskLabel(key);
-  if (fromDisk !== undefined) {
-    labelCache.set(key, fromDisk);
-    return fromDisk;
-  }
-
-  const hit = await reverseGeocode(lat, lng, signal);
-  const label = hit?.label ?? null;
-  if (label) {
-    if (labelCache.size >= LABEL_CACHE_MAX) {
-      // Evict oldest insertion-order entry. Map preserves insertion order,
-      // so the first key is the oldest.
-      const firstKey = labelCache.keys().next().value;
-      if (firstKey !== undefined) labelCache.delete(firstKey);
-    }
-    labelCache.set(key, label);
-    void writeDiskLabel(key, label);
-  }
-  return label;
-}
+// The cached coord→label resolver `getLabelForCoords` used to live here,
+// but was moved to `lib/geocode-cache.ts` so this module stays free of
+// `better-sqlite3` imports — client components (admin forms, account
+// pickers) import `geocodeAddress` from here, and any transitive DB
+// reference fails the client bundle (`Module not found: 'fs'`).
 
 export async function geocodeFirstMatch(
   candidates: Array<string | null | undefined>,
