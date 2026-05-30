@@ -1,8 +1,9 @@
 "use client";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { Fragment, useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { FORMAT_DOT } from "@/lib/format-style";
+import { POPULAR_FORMATS } from "@/lib/formats";
 import LocationPicker from "./location-picker";
 import { DiscordIcon } from "./discord-icon";
 import FeedbackButton from "./feedback-button";
@@ -163,7 +164,12 @@ function ChipSelect({
 }: {
   label: string;
   heading: string;
-  options: { value: string; label: string; dot?: string }[];
+  /** Per-option `section` lets the menu render a small heading whenever
+   *  the section value changes between adjacent items — used by the
+   *  Format chip to group "Popular" formats at the top of the list and
+   *  push the long tail under an "Other" header. Options with no
+   *  `section` render flush (no heading) — the default behavior. */
+  options: { value: string; label: string; dot?: string; section?: string }[];
   value: string;
   onChange: (v: string) => void;
   dot?: boolean;
@@ -228,22 +234,35 @@ function ChipSelect({
           <div className="px-4 py-2.5 border-b border-neutral-100 dark:border-white/8">
             <p className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">{heading}</p>
           </div>
-          {options.map((opt) => {
+          {options.map((opt, i) => {
             const selected = value === opt.value;
+            // Render a small section heading whenever the section
+            // changes between this option and the previous one. The
+            // very first option only gets a heading if it has a
+            // section (so the "All formats" entry at the top of the
+            // Format chip stays headerless and ungrouped).
+            const prevSection = i > 0 ? options[i - 1].section : undefined;
+            const showSectionHeader = opt.section && opt.section !== prevSection;
             return (
-              <button
-                key={opt.value}
-                onClick={() => { close(); onChange(opt.value); }}
-                className={`${OPTION} ${selected ? "bg-neutral-50 dark:bg-white/8 text-neutral-900 dark:text-white font-semibold" : "text-neutral-500 dark:text-neutral-400 font-medium"}`}
-              >
-                {dot && <span className={`w-2 h-2 rounded-full shrink-0 ${opt.dot || "bg-neutral-400 dark:bg-neutral-600"}`} />}
-                <span className="flex-1">{opt.label}</span>
-                {selected && (
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-900 dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
+              <Fragment key={opt.value}>
+                {showSectionHeader && (
+                  <div className="px-4 pt-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 select-none">
+                    {opt.section}
+                  </div>
                 )}
-              </button>
+                <button
+                  onClick={() => { close(); onChange(opt.value); }}
+                  className={`${OPTION} ${selected ? "bg-neutral-50 dark:bg-white/8 text-neutral-900 dark:text-white font-semibold" : "text-neutral-500 dark:text-neutral-400 font-medium"}`}
+                >
+                  {dot && <span className={`w-2 h-2 rounded-full shrink-0 ${opt.dot || "bg-neutral-400 dark:bg-neutral-600"}`} />}
+                  <span className="flex-1">{opt.label}</span>
+                  {selected && (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 shrink-0 text-neutral-900 dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </button>
+              </Fragment>
             );
           })}
           {custom && (
@@ -657,9 +676,25 @@ export default function RadiusSelector({
     setTimeout(() => setToast(null), 2500);
   }
 
-  const formatOptions = [
+  // Format dropdown is partitioned into three regions:
+  //   1. "All formats"          — the un-filtered option, sits at top
+  //                                with no section header
+  //   2. "Popular" (heading)    — POPULAR_FORMATS, in the order defined
+  //                                in lib/formats.ts (curated, not
+  //                                alphabetical) so the most-clicked
+  //                                items land at the top of the list
+  //   3. "Other" (heading)      — every remaining format from the DB
+  //                                (already alphabetical via getFormats()
+  //                                ORDER BY LOWER(format))
+  // Popular formats not present in the DB (e.g. before the first
+  // scrape) are filtered out so the section never shows phantom rows.
+  const popularList = POPULAR_FORMATS.filter((f) => formats.includes(f));
+  const popularSet = new Set<string>(popularList);
+  const restFormats = formats.filter((f) => !popularSet.has(f));
+  const formatOptions: { value: string; label: string; dot?: string; section?: string }[] = [
     { value: "", label: tr("filters.all_formats"), dot: "bg-neutral-400 dark:bg-neutral-600" },
-    ...formats.map((f) => ({ value: f, label: f, dot: FORMAT_DOT[f] || "bg-neutral-400" })),
+    ...popularList.map((f) => ({ value: f, label: f, dot: FORMAT_DOT[f] || "bg-neutral-400", section: "Popular" })),
+    ...restFormats.map((f) => ({ value: f, label: f, dot: FORMAT_DOT[f] || "bg-neutral-400", section: "Other" })),
   ];
 
   // Radius display: dropdown labels show the value in the viewer's preferred

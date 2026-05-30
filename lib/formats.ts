@@ -30,6 +30,17 @@ export const CANONICAL_FORMATS = [
 
 export type CanonicalFormat = (typeof CANONICAL_FORMATS)[number];
 
+/** Formats surfaced in a dedicated "Popular" group at the top of the
+ *  homepage Format chip dropdown — saves users from scrolling through
+ *  the long-tail list to find what they actually came for. Picked by
+ *  community popularity + on-platform event volume: Commander dominates
+ *  by a wide margin; cEDH is its competitive sibling; Modern / Standard
+ *  cover the constructed crowd; Draft covers limited. Reorder or
+ *  resize here as the mix shifts — the dropdown adapts automatically.
+ *  Anything not in this list falls into an alphabetical "Other" group
+ *  below. */
+export const POPULAR_FORMATS = ["Commander", "cEDH", "Modern", "Standard", "Draft"] as const;
+
 /** Lookup table: lowercase alias → canonical name. */
 const ALIASES: Record<string, CanonicalFormat> = {
   // Commander family. Note: we DON'T alias "cedh" → "Commander" anymore.
