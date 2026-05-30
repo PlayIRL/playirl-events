@@ -1,0 +1,50 @@
+BEGIN:VCALENDAR
+X-PUBLISHED-TTL:PT1H
+REFRESH-INTERVAL;VALUE=DURATION:PT1H
+VERSION:2.0
+PRODID:-//mtg-cal//mtg-event-aggregator//EN
+NAME:MTG cEDH — Philadelphia
+X-WR-CALNAME:MTG cEDH — Philadelphia
+X-WR-CALDESC:cEDH events in Philadelphia area
+BEGIN:VEVENT
+UID:topdeck-play-another-game-weekly-cedh-copy
+SEQUENCE:0
+DTSTAMP:20260530T050230Z
+DTSTART:20260606T180000Z
+DTEND:20260606T210000Z
+SUMMARY:PLAY ANOTHER GAME WEEKLY CEDH @ Philadelphia\, Pennsylvania
+LOCATION:Philadelphia\, Pennsylvania\, 7956 Oxford Ave\, Philadelphia\, PA
+  19111\, USA
+DESCRIPTION:Format: cEDH\nCost: $10\nDetails: https://topdeck.gg/event/pla
+ y-another-game-weekly-cedh-copy\nSource: topdeck
+URL;VALUE=URI:https://topdeck.gg/event/play-another-game-weekly-cedh-copy
+END:VEVENT
+BEGIN:VEVENT
+UID:topdeck-well-played-cedh-1
+SEQUENCE:0
+DTSTAMP:20260530T050230Z
+DTSTART:20260619T160000Z
+DTEND:20260619T190000Z
+SUMMARY:Well Played Cedh #1 @ Glenside\, Pennsylvania
+LOCATION:Glenside\, Pennsylvania\, 100 S Keswick Ave\, Glenside\, PA 19038
+ \, USA
+DESCRIPTION:Format: cEDH\nCost: $60\nDetails: https://topdeck.gg/event/wel
+ l-played-cedh-1\nSource: topdeck
+URL;VALUE=URI:https://topdeck.gg/event/well-played-cedh-1
+END:VEVENT
+BEGIN:VEVENT
+UID:topdeck-play-another-game-monthly-cedh-dual-land-tourney
+SEQUENCE:0
+DTSTAMP:20260530T050230Z
+DTSTART:20260620T150000Z
+DTEND:20260620T180000Z
+SUMMARY:PLAY ANOTHER GAME Monthly CEDH DUAL LAND TOURNEY @ Philadelphia\, 
+ Pennsylvania
+LOCATION:Philadelphia\, Pennsylvania\, 7956 Oxford Ave\, Philadelphia\, PA
+  19111\, USA
+DESCRIPTION:Format: cEDH\nCost: $50\nDetails: https://topdeck.gg/event/pla
+ y-another-game-monthly-cedh-dual-land-tourney\nSource: topdeck
+URL;VALUE=URI:https://topdeck.gg/event/play-another-game-monthly-cedh-dual
+ -land-tourney
+END:VEVENT
+END:VCALENDAR
