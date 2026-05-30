@@ -207,12 +207,22 @@ export default async function fetchTopdeckEvents(sourceConfig: any = {}) {
   const { lat, lng } = config.location;
   const nearby = [];
 
+  // Coords live under `eventData.lat` / `eventData.lng` in TopDeck v2's
+  // current response. Older payloads used `latitude` / `longitude` (full
+  // names), so we accept both: the `??` chain keeps the scraper resilient
+  // if TopDeck ever swaps back, and any future rename will trip the
+  // "dropped N tournaments" warning below loudly rather than silently
+  // zeroing out the source again.
+  let droppedNoCoords = 0;
   for (const t of tournaments as any[]) {
     const loc = t.eventData || t.location || {};
-    const tLat = loc.latitude;
-    const tLng = loc.longitude;
+    const tLat = loc.lat ?? loc.latitude;
+    const tLng = loc.lng ?? loc.longitude;
 
-    if (tLat == null || tLng == null) continue;
+    if (tLat == null || tLng == null) {
+      droppedNoCoords++;
+      continue;
+    }
 
     if (!isNational) {
       const dist = haversineDistance(lat, lng, tLat, tLng);
@@ -239,8 +249,13 @@ export default async function fetchTopdeckEvents(sourceConfig: any = {}) {
       date: startDate.toISOString().slice(0, 10),
       time: startDate.toISOString().slice(11, 16),
       timezone: "America/New_York",
+      // `loc.address` is a new TopDeck v2 field that often carries a
+      // country-shaped string ("Chile", "Germany") when city/state are
+      // blank — common for non-US events. Use it as a fallback for the
+      // address column so international rows aren't shipped with an
+      // empty address.
       location: loc.name || "",
-      address: [loc.city, loc.state].filter(Boolean).join(", "),
+      address: [loc.city, loc.state].filter(Boolean).join(", ") || loc.address || "",
       cost: "",
       currency: "",
       entry_fee_minor: null,
@@ -259,6 +274,21 @@ export default async function fetchTopdeckEvents(sourceConfig: any = {}) {
     console.log(`[topdeck] ${nearby.length} events with coords (national scope, no radius filter)`);
   } else {
     console.log(`[topdeck] ${nearby.length} events within ${maxMiles}mi radius`);
+  }
+
+  // Loud warning when the coord filter eats every tournament. Previously
+  // this was silent: the scrape would report ✓ topdeck · 0 events with
+  // no failure recorded, and an admin had to run cli/probe-topdeck.ts to
+  // discover a schema rename had broken the ingest. Surface it cheaply
+  // so the next field rename trips an alarm instead of a void.
+  if (tournaments.length > 0 && nearby.length === 0) {
+    console.warn(
+      `[topdeck] ⚠ DROPPED ALL ${tournaments.length} tournaments at coord filter ` +
+      `(${droppedNoCoords} missing lat/lng). Likely a TopDeck schema rename — ` +
+      `run \`npm run topdeck:probe\` to inspect the current response shape.`,
+    );
+  } else if (droppedNoCoords > 0) {
+    console.log(`[topdeck] dropped ${droppedNoCoords}/${tournaments.length} tournaments at coord filter (missing lat/lng)`);
   }
   return nearby;
 }
