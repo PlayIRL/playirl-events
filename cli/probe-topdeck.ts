@@ -1,262 +1,209 @@
-// One-shot diagnostic: hit TopDeck's API directly with the local key and
-// print the raw response shape so we can tell whether the silent "0 events"
-// from the scraper means "API returned 0 tournaments" or "API returned N
-// tournaments but the scraper's filter dropped every one."
+// Diagnostic probe for the TopDeck Typesense events index — the same
+// data source scrapers/topdeck.ts now consumes. Prints:
+//   - total MTG events globally in our window (= scraper's expected
+//     upper bound)
+//   - breakdown by format and country
+//   - a sample event's raw Typesense shape
+//   - whether each event has coords (= scraper's ingest gate)
 //
-// Specifically prints, per format:
-//   - HTTP status + body length
-//   - tournament count
-//   - first tournament's shape (raw JSON, pretty-printed)
-//   - whether the shape carries the lat/lng the scraper expects
+// Earlier versions of this probe tested the documented POST /v2/tournaments
+// bulk endpoint, which turned out to be a completed-tournaments archive
+// (Ongoing/Scheduled events invisible). Both endpoints are now superseded
+// for ingestion; this file targets the search index the topdeck.gg
+// website actually uses.
 //
 // Usage:
-//   TOPDECK_API_KEY=<value> npm run topdeck:probe
-//   TOPDECK_API_KEY=<value> npm run topdeck:probe -- Standard Modern
+//   npm run topdeck:probe                          # 60d window, sample
+//   npm run topdeck:probe -- --days=180            # widen the window
+//   npm run topdeck:probe -- --raw                 # dump first hit verbatim
+//   npm run topdeck:probe -- --format=EDH          # filter to one format
 //
-// Grab TOPDECK_API_KEY from Railway → Variables (same value the prod
-// scraper reads). Format names are TopDeck's exact strings — case
-// sensitive. Defaults to a small sample if no formats are passed.
+// No TOPDECK_API_KEY needed — the Typesense search key is public and
+// embedded in topdeck.gg's homepage HTML. Override via env if it ever
+// rotates.
 
-// `export {}` keeps this file an isolated TS module so top-level names
-// don't collide with sibling cli/*.ts scripts on a project-wide tsc.
+// `export {}` makes this file an isolated TS module.
 export {};
 
-const API_URL = "https://topdeck.gg/api/v2/tournaments";
-// Full set of MTG formats TopDeck accepts (per the v2 reference docs).
-// Defaults to all 21 so a no-arg probe matches what the scraper actually
-// fans out — useful for spotting which formats have any volume at all.
-// Pass space-separated format names as args to narrow.
-const DEFAULT_FORMATS = [
-  "Standard", "Modern", "Pioneer", "Legacy", "Vintage", "Pauper", "Premodern",
-  "Limited", "Sealed",
-  "EDH", "Pauper EDH", "Duel Commander", "EDH Draft",
-  "Historic", "Timeless", "Explorer",
-  "Old School 93/94", "Canadian Highlander", "Tiny Leaders",
-  "7pt Highlander", "Oathbreaker",
-];
+const TYPESENSE_HOST = process.env.TOPDECK_TYPESENSE_HOST || "3utwcn9824msk5jlp-1.a2.typesense.net";
+const TYPESENSE_KEY = process.env.TOPDECK_TYPESENSE_KEY || "3gKhXyfqlU8nPPGNhgZrpkFqRTD9J75x";
+const TYPESENSE_COLLECTION = process.env.TOPDECK_TYPESENSE_COLLECTION || "events";
 
-function envRequired(name: string): string {
-  const v = process.env[name];
-  if (!v) {
-    console.error(`✗ ${name} is required.`);
-    console.error(`  Find it in Railway → Variables → TOPDECK_API_KEY.`);
-    console.error(`  Then: export ${name}=<value> && npm run topdeck:probe`);
-    process.exit(1);
+interface TypesenseEvent {
+  id: string;
+  eventName?: string;
+  format?: string;
+  game?: string;
+  startDate?: number;
+  endDate?: number;
+  coordinates?: [number, number];
+  location?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  eventPrice?: number;
+  eventCurrency?: string;
+  eventHeaderImage?: string;
+  tier?: string;
+  playersRegd?: number;
+  eventPlayerCap?: number;
+  publish?: boolean;
+  isConvention?: boolean;
+  isLeague?: boolean;
+  isCircuit?: boolean;
+  totalEvents?: number;
+}
+
+interface TypesenseSearchResponse {
+  found: number;
+  out_of: number;
+  page: number;
+  hits: Array<{ document: TypesenseEvent }>;
+  facet_counts?: Array<{
+    field_name: string;
+    counts: Array<{ value: string; count: number }>;
+  }>;
+  search_time_ms?: number;
+}
+
+interface CliArgs {
+  days: number;
+  format?: string;
+  showRaw: boolean;
+}
+
+function parseArgs(): CliArgs {
+  const argv = process.argv.slice(2);
+  let days = 60;
+  let format: string | undefined;
+  let showRaw = false;
+  for (const a of argv) {
+    if (a === "--raw" || a === "-v") { showRaw = true; continue; }
+    const daysMatch = /^--days=(\d+)$/.exec(a);
+    if (daysMatch) { days = Math.max(1, Math.min(3650, Number(daysMatch[1]))); continue; }
+    const formatMatch = /^--format=(.+)$/.exec(a);
+    if (formatMatch) { format = formatMatch[1]; continue; }
   }
-  return v;
+  return { days, format, showRaw };
 }
 
-interface ProbeResult {
-  format: string;
-  status: number;
-  bytes: number;
-  ms: number;
-  tournamentCount: number;
-  withCoordsCount: number;
-  withoutCoordsCount: number;
-  error?: string;
-}
-
-/** Cap on per-request retry waits — mirrors the scraper. */
-const PROBE_MAX_RETRY_WAIT_S = 30;
-
-async function makeRequest(apiKey: string, format: string, start: number, end: number): Promise<Response> {
-  const body = { game: "Magic: The Gathering", format, start, end, columns: [] };
-  return fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: apiKey },
-    body: JSON.stringify(body),
+async function search(filter: string, perPage: number, page = 1, facetBy?: string): Promise<TypesenseSearchResponse> {
+  const params = new URLSearchParams({
+    q: "*",
+    query_by: "eventName",
+    filter_by: filter,
+    sort_by: "startDate:asc",
+    per_page: String(perPage),
+    page: String(page),
   });
+  if (facetBy) params.set("facet_by", facetBy);
+  const url = `https://${TYPESENSE_HOST}/collections/${TYPESENSE_COLLECTION}/documents/search?${params}`;
+  const res = await fetch(url, {
+    headers: {
+      "X-TYPESENSE-API-KEY": TYPESENSE_KEY,
+      "User-Agent": "PlayIRL.gg-events-probe/1.0 (+https://playirl.gg)",
+    },
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`Typesense HTTP ${res.status}: ${text.slice(0, 400)}`);
+  }
+  return res.json() as Promise<TypesenseSearchResponse>;
 }
 
-async function probeFormat(apiKey: string, format: string, start: number, end: number, verbose: boolean): Promise<ProbeResult> {
-  const result: ProbeResult = {
-    format, status: 0, bytes: 0, ms: 0, tournamentCount: 0, withCoordsCount: 0, withoutCoordsCount: 0,
-  };
-  if (verbose) console.log(`\n── format=${format} ────────────────────────────────`);
-  const startedAt = Date.now();
-  let res: Response;
-  try {
-    res = await makeRequest(apiKey, format, start, end);
-  } catch (err) {
-    result.error = err instanceof Error ? err.message : String(err);
-    if (verbose) console.log(`fetch threw: ${result.error}`);
-    return result;
-  }
-  let text = await res.text();
-  result.status = res.status;
-  result.bytes = text.length;
-  result.ms = Date.now() - startedAt;
-  if (verbose) console.log(`HTTP ${res.status} · ${text.length}B · ${result.ms}ms`);
+function buildFilter(days: number, format?: string): string {
+  const now = Math.floor(Date.now() / 1000);
+  const end = now + days * 24 * 60 * 60;
+  const parts = [
+    `publish:true`,
+    `startDate:>=${now}`,
+    `startDate:<=${end}`,
+    `game:\`Magic: The Gathering\``,
+    `(isConvention:false || totalEvents:>0)`,
+  ];
+  if (format) parts.push(`format:\`${format}\``);
+  return parts.join(" && ");
+}
 
-  // Mirror the scraper's 429 self-retry so the probe shows what a real
-  // scrape would actually ingest (not just whichever formats happened
-  // to fit in the rate-limit bucket on the first wave). One retry, with
-  // the wait from retryAfterSeconds (JSON body) or Retry-After header,
-  // capped at PROBE_MAX_RETRY_WAIT_S.
-  if (res.status === 429) {
-    let waitS = 0;
-    try {
-      const body = JSON.parse(text);
-      if (typeof body?.retryAfterSeconds === "number") waitS = body.retryAfterSeconds;
-    } catch { /* fall through to header */ }
-    if (!waitS) {
-      const headerVal = Number(res.headers.get("retry-after") ?? "");
-      if (Number.isFinite(headerVal) && headerVal > 0) waitS = headerVal;
-    }
-    if (waitS <= 0) waitS = 2;
-    waitS = Math.min(waitS, PROBE_MAX_RETRY_WAIT_S);
-    if (verbose) console.log(`429 — waiting ${waitS}s then retrying once`);
-    await new Promise((r) => setTimeout(r, waitS * 1000 + 250));
-    try {
-      res = await makeRequest(apiKey, format, start, end);
-    } catch (err) {
-      result.error = err instanceof Error ? err.message : String(err);
-      if (verbose) console.log(`retry fetch threw: ${result.error}`);
-      return result;
-    }
-    text = await res.text();
-    result.status = res.status;
-    result.bytes = text.length;
-    result.ms = Date.now() - startedAt;
-    if (verbose) console.log(`retry HTTP ${res.status} · ${text.length}B · ${result.ms}ms`);
-  }
-
-  if (!res.ok) {
-    result.error = `HTTP ${res.status}`;
-    if (verbose) console.log(`Response body (first 500B): ${text.slice(0, 500)}`);
-    return result;
-  }
-
-  let json: unknown;
-  try {
-    json = JSON.parse(text);
-  } catch {
-    result.error = "non-JSON response";
-    if (verbose) console.log(`Could not parse JSON. First 500B: ${text.slice(0, 500)}`);
-    return result;
-  }
-
-  if (!Array.isArray(json)) {
-    result.error = `non-array (${typeof json})`;
-    if (verbose) console.log(`Unexpected shape; first 500B: ${text.slice(0, 500)}`);
-    return result;
-  }
-
-  result.tournamentCount = json.length;
-  if (json.length === 0) {
-    if (verbose) console.log(`(empty)`);
-    return result;
-  }
-
-  // Count rows the scraper's coord filter would keep vs drop.
-  for (const t of json as Record<string, unknown>[]) {
-    const loc = (t.eventData as Record<string, unknown>) ?? (t.location as Record<string, unknown>) ?? {};
-    const lat = (loc as { lat?: unknown; latitude?: unknown }).lat ?? (loc as { lat?: unknown; latitude?: unknown }).latitude;
-    const lng = (loc as { lng?: unknown; longitude?: unknown }).lng ?? (loc as { lng?: unknown; longitude?: unknown }).longitude;
-    if (lat == null || lng == null) result.withoutCoordsCount++;
-    else result.withCoordsCount++;
-  }
-  if (verbose) {
-    console.log(`tournaments: ${json.length} (${result.withCoordsCount} with coords, ${result.withoutCoordsCount} without)`);
-    const first = json[0] as Record<string, unknown>;
-    console.log(`first tournament keys: ${Object.keys(first).join(", ")}`);
-    console.log(`\nFull first tournament JSON:`);
-    console.log(JSON.stringify(first, null, 2).split("\n").map((l) => "  " + l).join("\n"));
-  }
-  return result;
+function pct(num: number, denom: number): string {
+  if (denom <= 0) return "—";
+  return `${((num / denom) * 100).toFixed(1)}%`;
 }
 
 async function main() {
-  const apiKey = envRequired("TOPDECK_API_KEY");
-  // Args after the script path become explicit format names; everything
-  // else uses the full 21-format default. `--verbose` (anywhere) opts
-  // into the noisy per-format dump.
-  const rawArgs = process.argv.slice(2);
-  const verbose = rawArgs.includes("--verbose") || rawArgs.includes("-v");
-  const formats = rawArgs.filter((a) => !a.startsWith("-"));
-  const list = formats.length > 0 ? formats : DEFAULT_FORMATS;
-
-  // Same window the scraper uses: now → now + 60 days (default daysAhead).
+  const args = parseArgs();
   const now = Math.floor(Date.now() / 1000);
-  const end = now + 60 * 24 * 60 * 60;
-  // Match the scraper's concurrency default — full-parallel probes used
-  // to 429 half the formats and produce misleading "low volume" reads.
-  // Env override: TOPDECK_CONCURRENCY=<n>. Capped at 10 by the scraper;
-  // we accept the same cap here.
-  const rawCc = Number(process.env.TOPDECK_CONCURRENCY);
-  const concurrency = Number.isFinite(rawCc) && rawCc > 0 && rawCc <= 10 ? Math.floor(rawCc) : 2;
-  console.log(`\n🃏 Probing TopDeck across ${list.length} format(s)`);
-  console.log(`window:      ${new Date(now * 1000).toISOString()} → ${new Date(end * 1000).toISOString()}`);
-  console.log(`concurrency: ${concurrency} (set TOPDECK_CONCURRENCY to override)`);
-  console.log(`mode:        ${verbose ? "verbose (per-format dump)" : "summary only (pass -v for per-format detail)"}\n`);
+  const end = now + args.days * 24 * 60 * 60;
+  console.log(`\n🃏 Probing TopDeck Typesense events index`);
+  console.log(`window:  ${new Date(now * 1000).toISOString()} → ${new Date(end * 1000).toISOString()} (${args.days} days)`);
+  if (args.format) console.log(`format:  ${args.format}`);
+  console.log(`host:    ${TYPESENSE_HOST}`);
+  console.log(`collection: ${TYPESENSE_COLLECTION}\n`);
 
-  // Throttled fan-out — small worker pool to stay under TopDeck's bulk
-  // endpoint rate limit. Each worker pulls the next format off the
-  // queue as soon as it finishes the previous one, so wall-clock is
-  // ~ceil(list.length / concurrency) × per-format latency.
-  const queue = [...list];
-  const results: ProbeResult[] = [];
-  async function worker(): Promise<void> {
-    while (true) {
-      const fmt = queue.shift();
-      if (!fmt) return;
-      try {
-        const r = await probeFormat(apiKey, fmt, now, end, verbose);
-        results.push(r);
-      } catch (err) {
-        results.push({
-          format: fmt, status: 0, bytes: 0, ms: 0, tournamentCount: 0,
-          withCoordsCount: 0, withoutCoordsCount: 0,
-          error: err instanceof Error ? err.message : String(err),
-        });
-      }
+  // Single facet query gets us totals + per-format breakdown + per-country breakdown in two calls.
+  const filter = buildFilter(args.days, args.format);
+  const formatFacet = await search(filter, 0, 1, "format");
+  const countryFacet = await search(filter, 0, 1, "country");
+  console.log(`══ Volume ═══════════════════════════════════════════════════════════`);
+  console.log(`${formatFacet.found.toLocaleString()} matching events (of ${formatFacet.out_of.toLocaleString()} in collection)`);
+  console.log(`search time: ${formatFacet.search_time_ms ?? "?"}ms`);
+
+  const formatCounts = formatFacet.facet_counts?.find((f) => f.field_name === "format")?.counts ?? [];
+  const countryCounts = countryFacet.facet_counts?.find((f) => f.field_name === "country")?.counts ?? [];
+
+  console.log(`\n══ By format (top 20) ═══════════════════════════════════════════════`);
+  console.log(`format                                count    share`);
+  for (const c of formatCounts.slice(0, 20)) {
+    console.log(`  ${(c.value || "(blank)").padEnd(36)}${c.count.toString().padStart(6)}   ${pct(c.count, formatFacet.found)}`);
+  }
+
+  console.log(`\n══ By country (top 15) ══════════════════════════════════════════════`);
+  console.log(`country                               count    share`);
+  for (const c of countryCounts.slice(0, 15)) {
+    console.log(`  ${(c.value || "(blank)").padEnd(36)}${c.count.toString().padStart(6)}   ${pct(c.count, countryFacet.found)}`);
+  }
+
+  // Pull one page to count rows with coords (= scraper-eligible).
+  const sample = await search(filter, 250, 1);
+  let withCoords = 0;
+  let withoutCoords = 0;
+  let zeroCoords = 0;
+  for (const h of sample.hits) {
+    const c = h.document.coordinates;
+    if (!Array.isArray(c) || c.length !== 2 || c[0] == null || c[1] == null) {
+      withoutCoords++;
+    } else if (c[0] === 0 && c[1] === 0) {
+      zeroCoords++;
+    } else {
+      withCoords++;
     }
   }
-  await Promise.all(Array.from({ length: Math.min(concurrency, list.length) }, () => worker()));
+  const total = withCoords + withoutCoords + zeroCoords;
+  console.log(`\n══ Coord coverage (first ${total} rows) ═══════════════════════════════`);
+  console.log(`  ✓ with coords:       ${withCoords.toString().padStart(4)}  (${pct(withCoords, total)})`);
+  console.log(`  · missing coords:    ${withoutCoords.toString().padStart(4)}  (${pct(withoutCoords, total)})`);
+  console.log(`  · zero coords (0,0): ${zeroCoords.toString().padStart(4)}  (${pct(zeroCoords, total)})`);
+  // Extrapolate to the full result set.
+  const projectedIngest = total > 0 ? Math.round((withCoords / total) * formatFacet.found) : 0;
+  console.log(`  → scraper would ingest ~${projectedIngest.toLocaleString()} of ${formatFacet.found.toLocaleString()} events`);
 
-  // Summary table — sorted by tournament count desc so the heavy
-  // formats are at the top. Highlights mismatches between
-  // "tournaments returned" and "tournaments that would survive the
-  // scraper's coord filter" so we can tell whether the bottleneck is
-  // upstream volume or our local filtering.
-  console.log(`\n══ Summary ══════════════════════════════════════════`);
-  console.log(`format                       HTTP   total  w/coords  no-coords  status`);
-  const sorted = [...results].sort((a, b) => b.tournamentCount - a.tournamentCount);
-  let totalTournaments = 0;
-  let totalWithCoords = 0;
-  let totalWithoutCoords = 0;
-  for (const r of sorted) {
-    totalTournaments += r.tournamentCount;
-    totalWithCoords += r.withCoordsCount;
-    totalWithoutCoords += r.withoutCoordsCount;
-    const fmt = r.format.padEnd(28);
-    const status = r.status.toString().padStart(4);
-    const total = r.tournamentCount.toString().padStart(6);
-    const withC = r.withCoordsCount.toString().padStart(9);
-    const withoutC = r.withoutCoordsCount.toString().padStart(10);
-    const note = r.error ? `⚠ ${r.error}` : r.tournamentCount === 0 ? "(empty)" : "✓";
-    console.log(`${fmt}  ${status}  ${total}  ${withC}  ${withoutC}   ${note}`);
-  }
-  console.log(`─────────────────────────────────────────────────────`);
-  console.log(`TOTAL                              ${totalTournaments.toString().padStart(6)}  ${totalWithCoords.toString().padStart(9)}  ${totalWithoutCoords.toString().padStart(10)}`);
-
-  // Flag throttled formats prominently — a 429 means the format
-  // genuinely has unknown volume, not zero. Easy to miss in the table
-  // if you don't read the right column. Note: the scraper itself
-  // self-retries 429s once with the API's `Retry-After`, so prod runs
-  // won't show this gap as often as the probe does.
-  const throttled = results.filter((r) => r.status === 429);
-  if (throttled.length > 0) {
-    console.log(`\n⚠ ${throttled.length} format(s) hit HTTP 429: ${throttled.map((t) => t.format).join(", ")}`);
-    console.log(`  Re-run with TOPDECK_CONCURRENCY=2 if 429s persist; the scraper itself self-retries 429s once.`);
-  }
-
-  console.log(`\nThe scraper would ingest ~${totalWithCoords} of these ${totalTournaments} tournaments`);
-  console.log(`(rows in "no-coords" get silently dropped by the lat/lng filter at scrapers/topdeck.ts).`);
-  if (totalWithCoords > 0) {
-    console.log(`Anything below ~${totalWithCoords} active topdeck rows in /admin/health means cross-source dedup`);
-    console.log(`is folding TopDeck events into WotC duplicates — investigate lib/scraper.ts coordFingerprint.`);
+  if (args.showRaw && sample.hits.length > 0) {
+    console.log(`\n══ Sample event (raw) ═══════════════════════════════════════════════`);
+    console.log(JSON.stringify(sample.hits[0].document, null, 2));
+  } else if (sample.hits.length > 0) {
+    const first = sample.hits[0].document;
+    console.log(`\n══ Sample event ═════════════════════════════════════════════════════`);
+    console.log(`  id:           ${first.id}`);
+    console.log(`  name:         ${first.eventName ?? "(blank)"}`);
+    console.log(`  format:       ${first.format}`);
+    console.log(`  startDate:    ${first.startDate} (${first.startDate ? new Date(first.startDate * 1000).toISOString() : "?"})`);
+    console.log(`  location:     ${first.location ?? "(blank)"}`);
+    console.log(`  city/state:   ${[first.city, first.state].filter(Boolean).join(", ") || "(blank)"}`);
+    console.log(`  country:      ${first.country ?? "(blank)"}`);
+    console.log(`  coordinates:  ${JSON.stringify(first.coordinates)}`);
+    console.log(`  price:        ${first.eventPrice} ${first.eventCurrency ?? ""}`);
+    console.log(`  playersRegd:  ${first.playersRegd}`);
+    console.log(`  (pass --raw for the full document)`);
   }
 }
 
