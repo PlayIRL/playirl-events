@@ -15,6 +15,7 @@ const NAV: ({ href: string; label: string } | { divider: true })[] = [
   { href: "/admin/users", label: "Users" },
   { divider: true },
   { href: "/admin/scrapers", label: "Scrapers" },
+  { href: "/admin/health", label: "DB health" },
   { href: "/admin/config", label: "Site config" },
   { href: "/admin/discord-servers", label: "Discord servers" },
   { href: "/admin/flags", label: "Feature flags" },

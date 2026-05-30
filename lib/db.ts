@@ -4,6 +4,12 @@ import fs from "fs";
 
 const REPO_DB_PATH = path.join(process.cwd(), "data", "mtg-cal.db");
 const DB_PATH = process.env.DATABASE_PATH || REPO_DB_PATH;
+
+/** Exposed path for admin diagnostics (e.g. /admin/health renders the
+ *  file size on disk). Not a runtime concern; readers should never write. */
+export function getDbPath(): string {
+  return DB_PATH;
+}
 const VOLUME_MOUNT_TIMEOUT_MS = 30_000;
 
 let db: Database.Database | null = null;
