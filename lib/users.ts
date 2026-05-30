@@ -41,6 +41,92 @@ export function listUsers(filters?: { role?: string; q?: string }): UserWithCoun
   return db.prepare(sql).all(...params) as UserWithCounts[];
 }
 
+export interface PaginatedUsers {
+  users: UserWithCounts[];
+  total: number;
+}
+
+/** Paginated variant of listUsers for the admin /admin/users page. Same
+ *  filter surface; adds limit+offset and returns total for the
+ *  pagination footer. At current scale (~hundreds of users) the COUNT
+ *  is cheap; matters more as the user table grows. */
+export function listUsersPaginated(
+  filters: { role?: string; q?: string },
+  limit: number = 50,
+  offset: number = 0,
+): PaginatedUsers {
+  const db = getDb();
+  const wheres: string[] = [];
+  const params: string[] = [];
+  if (filters.role && VALID_ROLES.has(filters.role)) {
+    wheres.push("u.role = ?");
+    params.push(filters.role);
+  }
+  if (filters.q) {
+    wheres.push("(u.email LIKE ? OR u.name LIKE ?)");
+    const q = `%${filters.q}%`;
+    params.push(q, q);
+  }
+  const whereClause = wheres.length ? "WHERE " + wheres.join(" AND ") : "";
+
+  const totalRow = db.prepare(`SELECT COUNT(*) AS n FROM users u ${whereClause}`).get(...params) as { n: number };
+
+  const users = db
+    .prepare(`
+      SELECT u.*, (SELECT COUNT(*) FROM events WHERE owner_id = u.id) AS event_count
+      FROM users u
+      ${whereClause}
+      ORDER BY u.created_at DESC
+      LIMIT ? OFFSET ?
+    `)
+    .all(...params, limit, offset) as UserWithCounts[];
+
+  return { users, total: totalRow.n };
+}
+
+export interface UserStats {
+  total: number;
+  byRole: Record<string, number>;
+  suspended: number;
+  signups_7d: number;
+  signups_30d: number;
+  /** Users who have signed in at least once. Distinguishes
+   *  "completed-onboarding" from "magic-link-clicked-once-and-forgot". */
+  loggedInEver: number;
+}
+
+/** DB-wide aggregates for the /admin/users overview cards. Single
+ *  query per dimension; users table is small (~hundreds) so the cost
+ *  is negligible. */
+export function getUserStats(): UserStats {
+  const db = getDb();
+  const total = (db.prepare("SELECT COUNT(*) AS n FROM users").get() as { n: number }).n;
+
+  const roleRows = db
+    .prepare("SELECT role, COUNT(*) AS n FROM users GROUP BY role")
+    .all() as { role: string; n: number }[];
+  const byRole: Record<string, number> = { admin: 0, organizer: 0, user: 0 };
+  for (const r of roleRows) byRole[r.role] = r.n;
+
+  const suspended = (db
+    .prepare("SELECT COUNT(*) AS n FROM users WHERE suspended = 1")
+    .get() as { n: number }).n;
+
+  const signups_7d = (db
+    .prepare("SELECT COUNT(*) AS n FROM users WHERE created_at >= datetime('now', '-7 day')")
+    .get() as { n: number }).n;
+
+  const signups_30d = (db
+    .prepare("SELECT COUNT(*) AS n FROM users WHERE created_at >= datetime('now', '-30 day')")
+    .get() as { n: number }).n;
+
+  const loggedInEver = (db
+    .prepare("SELECT COUNT(*) AS n FROM users WHERE last_login_at IS NOT NULL")
+    .get() as { n: number }).n;
+
+  return { total, byRole, suspended, signups_7d, signups_30d, loggedInEver };
+}
+
 export function getUser(id: string): UserRecord | undefined {
   return getDb().prepare("SELECT * FROM users WHERE id = ?").get(id) as UserRecord | undefined;
 }

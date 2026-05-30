@@ -96,6 +96,157 @@ export function listKnownVenues(): VenueSuggestion[] {
     .sort((a, b) => b.usage_count - a.usage_count || a.name.localeCompare(b.name));
 }
 
+/** Paginated/filtered venue listing for the admin /admin/venues page.
+ *  Distinct from listKnownVenues (used by the autocomplete + slug
+ *  resolver) because admin needs server-side filtering and bounded row
+ *  counts — at 4k+ venues, in-memory aggregation + a full list ship to
+ *  the browser is too much.
+ *
+ *  Aggregates directly in SQL — one pass over the events table grouped
+ *  by lowercased location. The expression-index on
+ *  LOWER(TRIM(location)) (see lib/db.ts initSchema) makes this
+ *  ~100-200ms even at 120k events.
+ */
+export interface AdminVenueRow {
+  name: string;
+  slug: string;
+  address: string;
+  country: string;
+  usage_count: number;
+}
+
+export interface AdminVenueFilters {
+  search?: string;
+  country?: string;
+}
+
+export interface AdminVenuesPage {
+  venues: AdminVenueRow[];
+  total: number;
+}
+
+export function getAdminVenuesPaginated(
+  filters: AdminVenueFilters,
+  limit: number = 50,
+  offset: number = 0,
+): AdminVenuesPage {
+  const db = getDb();
+  const clauses: string[] = ["location != ''", "status != 'skip'"];
+  const params: (string | number)[] = [];
+
+  if (filters.search && filters.search.trim()) {
+    clauses.push("LOWER(location) LIKE ?");
+    params.push(`%${filters.search.trim().toLowerCase()}%`);
+  }
+  if (filters.country && filters.country !== "all") {
+    if (filters.country === "—") {
+      clauses.push("(country IS NULL OR country = '')");
+    } else {
+      clauses.push("country = ?");
+      params.push(filters.country);
+    }
+  }
+  const whereClause = "WHERE " + clauses.join(" AND ");
+
+  // Total distinct venues matching the filters — used by the admin
+  // pagination footer. Cheap thanks to the location_lower index.
+  const totalRow = db
+    .prepare(`SELECT COUNT(DISTINCT LOWER(TRIM(location))) AS n FROM events ${whereClause}`)
+    .get(...params) as { n: number };
+
+  // Group by normalized location, surface the canonical-casing name
+  // (MAX picks a deterministic representative — for venues that vary
+  // capitalization across rows that's fine), most common-ish country
+  // (MAX again — venues are almost always single-country), usage count.
+  const rows = db
+    .prepare(`
+      SELECT
+        MAX(location) AS name,
+        MAX(address) AS address,
+        MAX(COALESCE(country, '')) AS country,
+        COUNT(*) AS usage_count
+      FROM events
+      ${whereClause}
+      GROUP BY LOWER(TRIM(location))
+      ORDER BY usage_count DESC, name ASC
+      LIMIT ? OFFSET ?
+    `)
+    .all(...params, limit, offset) as {
+      name: string;
+      address: string;
+      country: string;
+      usage_count: number;
+    }[];
+
+  const venues: AdminVenueRow[] = rows.map((r) => ({
+    name: r.name,
+    slug: venueSlug(r.name),
+    address: r.address,
+    country: r.country,
+    usage_count: r.usage_count,
+  }));
+
+  return { venues, total: totalRow.n };
+}
+
+export interface AdminVenueStats {
+  totalVenues: number;
+  venuesWithoutCountry: number;
+  byCountry: { country: string; count: number }[];
+  topVenues: { name: string; usage_count: number }[];
+}
+
+/** DB-wide aggregates for the /admin/venues overview cards. Independent
+ *  of the current filter — admins always see the same context. */
+export function getAdminVenueStats(): AdminVenueStats {
+  const db = getDb();
+  const totalRow = db
+    .prepare(`
+      SELECT COUNT(DISTINCT LOWER(TRIM(location))) AS n
+      FROM events
+      WHERE location != '' AND status != 'skip'
+    `)
+    .get() as { n: number };
+
+  const missingRow = db
+    .prepare(`
+      SELECT COUNT(DISTINCT LOWER(TRIM(location))) AS n
+      FROM events
+      WHERE location != '' AND status != 'skip' AND (country IS NULL OR country = '')
+    `)
+    .get() as { n: number };
+
+  const byCountry = db
+    .prepare(`
+      SELECT
+        COALESCE(NULLIF(country, ''), '—') AS country,
+        COUNT(DISTINCT LOWER(TRIM(location))) AS count
+      FROM events
+      WHERE location != '' AND status != 'skip'
+      GROUP BY COALESCE(NULLIF(country, ''), '—')
+      ORDER BY count DESC
+    `)
+    .all() as { country: string; count: number }[];
+
+  const topVenues = db
+    .prepare(`
+      SELECT MAX(location) AS name, COUNT(*) AS usage_count
+      FROM events
+      WHERE location != '' AND status != 'skip'
+      GROUP BY LOWER(TRIM(location))
+      ORDER BY usage_count DESC
+      LIMIT 10
+    `)
+    .all() as { name: string; usage_count: number }[];
+
+  return {
+    totalVenues: totalRow.n,
+    venuesWithoutCountry: missingRow.n,
+    byCountry,
+    topVenues,
+  };
+}
+
 /** Normalised lookup key — must match the form used in event-image fallback. */
 export function venueKey(name: string): string {
   return (name ?? "").trim().toLowerCase();
