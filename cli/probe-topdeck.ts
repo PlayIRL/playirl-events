@@ -142,21 +142,40 @@ async function main() {
   // Same window the scraper uses: now → now + 60 days (default daysAhead).
   const now = Math.floor(Date.now() / 1000);
   const end = now + 60 * 24 * 60 * 60;
+  // Match the scraper's concurrency default — full-parallel probes used
+  // to 429 half the formats and produce misleading "low volume" reads.
+  // Env override: TOPDECK_CONCURRENCY=<n>. Capped at 10 by the scraper;
+  // we accept the same cap here.
+  const rawCc = Number(process.env.TOPDECK_CONCURRENCY);
+  const concurrency = Number.isFinite(rawCc) && rawCc > 0 && rawCc <= 10 ? Math.floor(rawCc) : 3;
   console.log(`\n🃏 Probing TopDeck across ${list.length} format(s)`);
-  console.log(`window: ${new Date(now * 1000).toISOString()} → ${new Date(end * 1000).toISOString()}`);
-  console.log(`mode:   ${verbose ? "verbose (per-format dump)" : "summary only (pass -v for per-format detail)"}\n`);
+  console.log(`window:      ${new Date(now * 1000).toISOString()} → ${new Date(end * 1000).toISOString()}`);
+  console.log(`concurrency: ${concurrency} (set TOPDECK_CONCURRENCY to override)`);
+  console.log(`mode:        ${verbose ? "verbose (per-format dump)" : "summary only (pass -v for per-format detail)"}\n`);
 
-  // Run all formats in parallel — same fan-out shape the scraper uses,
-  // so the wall-clock here is comparable to a real TopDeck phase.
-  const results = await Promise.all(
-    list.map((fmt) =>
-      probeFormat(apiKey, fmt, now, end, verbose).catch((err): ProbeResult => ({
-        format: fmt, status: 0, bytes: 0, ms: 0, tournamentCount: 0,
-        withCoordsCount: 0, withoutCoordsCount: 0,
-        error: err instanceof Error ? err.message : String(err),
-      })),
-    ),
-  );
+  // Throttled fan-out — small worker pool to stay under TopDeck's bulk
+  // endpoint rate limit. Each worker pulls the next format off the
+  // queue as soon as it finishes the previous one, so wall-clock is
+  // ~ceil(list.length / concurrency) × per-format latency.
+  const queue = [...list];
+  const results: ProbeResult[] = [];
+  async function worker(): Promise<void> {
+    while (true) {
+      const fmt = queue.shift();
+      if (!fmt) return;
+      try {
+        const r = await probeFormat(apiKey, fmt, now, end, verbose);
+        results.push(r);
+      } catch (err) {
+        results.push({
+          format: fmt, status: 0, bytes: 0, ms: 0, tournamentCount: 0,
+          withCoordsCount: 0, withoutCoordsCount: 0,
+          error: err instanceof Error ? err.message : String(err),
+        });
+      }
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(concurrency, list.length) }, () => worker()));
 
   // Summary table — sorted by tournament count desc so the heavy
   // formats are at the top. Highlights mismatches between
@@ -183,6 +202,18 @@ async function main() {
   }
   console.log(`─────────────────────────────────────────────────────`);
   console.log(`TOTAL                              ${totalTournaments.toString().padStart(6)}  ${totalWithCoords.toString().padStart(9)}  ${totalWithoutCoords.toString().padStart(10)}`);
+
+  // Flag throttled formats prominently — a 429 means the format
+  // genuinely has unknown volume, not zero. Easy to miss in the table
+  // if you don't read the right column. Note: the scraper itself
+  // self-retries 429s once with the API's `Retry-After`, so prod runs
+  // won't show this gap as often as the probe does.
+  const throttled = results.filter((r) => r.status === 429);
+  if (throttled.length > 0) {
+    console.log(`\n⚠ ${throttled.length} format(s) hit HTTP 429: ${throttled.map((t) => t.format).join(", ")}`);
+    console.log(`  Re-run with TOPDECK_CONCURRENCY=2 if 429s persist; the scraper itself self-retries 429s once.`);
+  }
+
   console.log(`\nThe scraper would ingest ~${totalWithCoords} of these ${totalTournaments} tournaments`);
   console.log(`(rows in "no-coords" get silently dropped by the lat/lng filter at scrapers/topdeck.ts).`);
   if (totalWithCoords > 0) {

@@ -1,8 +1,29 @@
 import { getConfig } from "@/lib/runtime-config";
 import { normalizeFormat } from "@/lib/formats";
 import { setScrapeProgress } from "@/lib/scraper-lock";
+import { pMapLimit } from "@/lib/p-limit";
 
 const API_URL = "https://topdeck.gg/api/v2/tournaments";
+
+/** How many TopDeck format queries to keep in flight at once. The
+ *  bulk-tournament endpoint has a "lower than the default 100/min"
+ *  rate limit (per https://topdeck.gg/docs/tournaments-v2), and a
+ *  21-format full-parallel fan-out reliably 429s ~half of them. 3 is
+ *  conservative enough that retries are rare but still fast enough
+ *  that the TopDeck phase finishes in seconds, not minutes. Override
+ *  via TOPDECK_CONCURRENCY env var if TopDeck dials the limit up. */
+const TOPDECK_CONCURRENCY = (() => {
+  const raw = Number(process.env.TOPDECK_CONCURRENCY);
+  if (Number.isFinite(raw) && raw > 0 && raw <= 10) return Math.floor(raw);
+  return 3;
+})();
+
+/** Cap on per-request retry waits — TopDeck's 429 body includes a
+ *  `retryAfterSeconds` field, but we don't want a single hostile reply
+ *  to stall the whole scrape. 30s is plenty for normal "I'm busy" and
+ *  if their bucket is in a deeper hole we'd rather skip the format
+ *  this run and pick it up next scrape than block. */
+const TOPDECK_MAX_RETRY_WAIT_S = 30;
 
 /** US state postal abbreviations + DC + the most common territories. Used
  *  as a cheap signal to stamp `country = "US"` on TopDeck rows that don't
@@ -267,6 +288,61 @@ async function fetchTopdeckForFormat(
       // events are a real problem, not a hypothetical one.
     }),
   });
+  if (res.status === 429) {
+    // TopDeck's 429 body is {"error":"Rate limit exceeded","retryAfterSeconds":<n>}.
+    // The `Retry-After` HTTP header carries the same value. Honor whichever we
+    // can parse, capped so a misbehaving response can't hang the scrape.
+    const text = await res.text().catch(() => "");
+    let waitS = 0;
+    try {
+      const body = JSON.parse(text);
+      if (typeof body?.retryAfterSeconds === "number") waitS = body.retryAfterSeconds;
+    } catch { /* fall through to header */ }
+    if (!waitS) {
+      const headerVal = Number(res.headers.get("retry-after") ?? "");
+      if (Number.isFinite(headerVal) && headerVal > 0) waitS = headerVal;
+    }
+    if (waitS <= 0) waitS = 2;
+    waitS = Math.min(waitS, TOPDECK_MAX_RETRY_WAIT_S);
+    console.warn(`[topdeck] format=${format} 429 — waiting ${waitS}s then retrying once`);
+    await new Promise((r) => setTimeout(r, waitS * 1000 + 250));
+    // One retry. If this also 429s we surface as an error and the caller's
+    // Promise.allSettled keeps the rest of the formats moving.
+    const retry = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Authorization": apiKey,
+        "Content-Type": "application/json",
+        "User-Agent": "PlayIRL.gg-events/1.0 (+https://playirl.gg)",
+      },
+      body: JSON.stringify({
+        game: "Magic: The Gathering",
+        format,
+        start,
+        end,
+        columns: [],
+      }),
+    });
+    if (!retry.ok) {
+      const retryText = await retry.text().catch(() => "");
+      throw new Error(`TopDeck API HTTP ${retry.status} (format=${format}, after 429 retry): ${retryText.slice(0, 200)}`);
+    }
+    const tournaments = await retry.json();
+    if (!Array.isArray(tournaments)) {
+      console.warn(`[topdeck] format=${format}: retry returned non-array (${typeof tournaments})`);
+      return [];
+    }
+    topdeckFormatsCompleted++;
+    topdeckEventsAccum += tournaments.length;
+    setScrapeProgress({
+      phase: "TopDeck",
+      message: `format=${format} · ${tournaments.length} tournaments (after 429 retry)`,
+      current: topdeckFormatsCompleted,
+      total: totalFormats,
+      events: topdeckEventsAccum,
+    });
+    return tournaments;
+  }
   if (!res.ok) {
     const text = await res.text().catch(() => "");
     throw new Error(`TopDeck API HTTP ${res.status} (format=${format}): ${text.slice(0, 200)}`);
@@ -307,26 +383,32 @@ export default async function fetchTopdeckEvents(sourceConfig: any = {}) {
   const now = Math.floor(Date.now() / 1000);
   const end = Math.floor((Date.now() + config.daysAhead * 24 * 60 * 60 * 1000) / 1000);
 
-  // Fan out one query per format, run in parallel since they're independent.
-  // Promise.allSettled so one format failing doesn't poison the others —
-  // we still surface the failure in logs but keep ingesting the rest.
-  // Dedupe on TID because a single tournament could theoretically be tagged
-  // with multiple formats; practical observation is that this almost never
-  // happens, but the dedupe is cheap insurance.
+  // Fan out one query per format. We used to send all 21 at once with
+  // Promise.allSettled, but TopDeck's bulk-tournament endpoint
+  // throttles aggressively — diagnostic probe showed 10/21 returning
+  // HTTP 429 with a single coord-bearing event surviving. pMapLimit
+  // with a small concurrency (TOPDECK_CONCURRENCY, default 3) keeps
+  // us under the bucket while still finishing in seconds. Per-format
+  // 429s now also self-retry once (see fetchTopdeckForFormat). Dedupe
+  // on TID downstream because a single tournament could theoretically
+  // be tagged with multiple formats; practical observation is that
+  // this almost never happens, but the dedupe is cheap insurance.
   // Reset module counters before the fan-out so progress reporting
   // starts from zero each scrape (lock prevents concurrent runs).
   topdeckFormatsCompleted = 0;
   topdeckEventsAccum = 0;
   setScrapeProgress({
     phase: "TopDeck",
-    message: `Querying ${TOPDECK_MTG_FORMATS.length} formats…`,
+    message: `Querying ${TOPDECK_MTG_FORMATS.length} formats (concurrency ${TOPDECK_CONCURRENCY})…`,
     current: 0,
     total: TOPDECK_MTG_FORMATS.length,
   });
-  const settled = await Promise.allSettled(
-    TOPDECK_MTG_FORMATS.map((fmt) => fetchTopdeckForFormat(apiKey, fmt, now, end, TOPDECK_MTG_FORMATS.length).then(
+  const settled = await pMapLimit(
+    TOPDECK_MTG_FORMATS,
+    TOPDECK_CONCURRENCY,
+    (fmt) => fetchTopdeckForFormat(apiKey, fmt, now, end, TOPDECK_MTG_FORMATS.length).then(
       (rows) => ({ fmt, rows }),
-    )),
+    ),
   );
   const failures: string[] = [];
   const byTid = new Map<string, any>();
