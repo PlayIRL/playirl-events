@@ -49,6 +49,66 @@ function haversineDistance(lat1: number, lng1: number, lat2: number, lng2: numbe
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+/** TopDeck's POST /v2/tournaments now requires BOTH `game` and `format`
+ *  (per their OpenAPI spec at https://topdeck.gg/openapi.json). There's no
+ *  wildcard or "all formats" value — to get the same coverage we used to
+ *  get from a single unfiltered call, we have to fan out one query per
+ *  format and merge.
+ *
+ *  Format names are TopDeck's exact strings (case-sensitive). Notably they
+ *  use "EDH" rather than "Commander" — the canonical normalizer downstream
+ *  rewrites both to "Commander" for display so the homepage filter chip
+ *  stays clean. Curated to cover the MTG formats that actually see
+ *  tournament organization on TopDeck (skipping micro-formats like Pauper
+ *  EDH that produce <5 events/year). Easy to extend later — each extra
+ *  format = +1 API call per scrape. */
+const TOPDECK_MTG_FORMATS = [
+  "Standard",
+  "Modern",
+  "Pioneer",
+  "Legacy",
+  "Vintage",
+  "Pauper",
+  "EDH",         // Commander
+  "Brawl",
+  "Historic",
+  "Booster Draft",
+  "Sealed",
+  "Prerelease",
+];
+
+async function fetchTopdeckForFormat(
+  apiKey: string,
+  format: string,
+  start: number,
+  end: number,
+): Promise<unknown[]> {
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Authorization": apiKey,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      game: "Magic: The Gathering",
+      format,
+      start,
+      end,
+      columns: [],
+    }),
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`TopDeck API HTTP ${res.status} (format=${format}): ${text.slice(0, 200)}`);
+  }
+  const tournaments = await res.json();
+  if (!Array.isArray(tournaments)) {
+    console.warn(`[topdeck] format=${format}: unexpected response shape ${typeof tournaments}`);
+    return [];
+  }
+  return tournaments;
+}
+
 export default async function fetchTopdeckEvents(sourceConfig: any = {}) {
   const apiKey = sourceConfig.apiKey || process.env.TOPDECK_API_KEY;
   if (!apiKey) {
@@ -60,32 +120,48 @@ export default async function fetchTopdeckEvents(sourceConfig: any = {}) {
   const now = Math.floor(Date.now() / 1000);
   const end = Math.floor((Date.now() + config.daysAhead * 24 * 60 * 60 * 1000) / 1000);
 
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Authorization": apiKey,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      game: "Magic: The Gathering",
-      start: now,
-      end,
-      columns: [],
-    }),
-  });
-
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`TopDeck API HTTP ${res.status}: ${text.slice(0, 200)}`);
+  // Fan out one query per format, run in parallel since they're independent.
+  // Promise.allSettled so one format failing doesn't poison the others —
+  // we still surface the failure in logs but keep ingesting the rest.
+  // Dedupe on TID because a single tournament could theoretically be tagged
+  // with multiple formats; practical observation is that this almost never
+  // happens, but the dedupe is cheap insurance.
+  const settled = await Promise.allSettled(
+    TOPDECK_MTG_FORMATS.map((fmt) => fetchTopdeckForFormat(apiKey, fmt, now, end).then(
+      (rows) => ({ fmt, rows }),
+    )),
+  );
+  const failures: string[] = [];
+  const byTid = new Map<string, any>();
+  for (let i = 0; i < settled.length; i++) {
+    const fmt = TOPDECK_MTG_FORMATS[i];
+    const res = settled[i];
+    if (res.status === "rejected") {
+      const msg = res.reason instanceof Error ? res.reason.message : String(res.reason);
+      console.warn(`[topdeck] format=${fmt} FAILED: ${msg}`);
+      failures.push(`${fmt}: ${msg}`);
+      continue;
+    }
+    for (const t of res.value.rows as Array<{ TID?: string; tid?: string }>) {
+      const tid = String(t.TID ?? t.tid ?? "");
+      if (!tid) continue;
+      if (!byTid.has(tid)) byTid.set(tid, t);
+    }
+    console.log(`[topdeck] format=${fmt}: ${res.value.rows.length} tournaments`);
   }
 
-  const tournaments = await res.json();
-  if (!Array.isArray(tournaments)) {
-    console.warn("[topdeck] Unexpected response shape:", typeof tournaments);
-    return [];
+  // If EVERY format query failed, surface that as a thrown error so
+  // scrape_history records the failure and the admin Sources column shows
+  // ✗ topdeck. Partial failures (1-2 formats down) are warnings, not errors.
+  if (failures.length === TOPDECK_MTG_FORMATS.length) {
+    throw new Error(`TopDeck all formats failed. First: ${failures[0]}`);
+  }
+  if (failures.length > 0) {
+    console.warn(`[topdeck] ${failures.length}/${TOPDECK_MTG_FORMATS.length} format queries failed (continuing with the rest)`);
   }
 
-  console.log(`[topdeck] ${tournaments.length} MTG tournaments fetched from API`);
+  const tournaments = [...byTid.values()];
+  console.log(`[topdeck] ${tournaments.length} unique MTG tournaments across ${TOPDECK_MTG_FORMATS.length - failures.length} formats`);
 
   // In "national" scope we ingest every event with valid coords and let the UI
   // (and ICS feed) filter by user-chosen lat/lng + radius. In "local" scope we
