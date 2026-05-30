@@ -13,7 +13,8 @@
     "test:dispatch-catchup": "tsx cli/smoke-test-dispatch-catchup.ts",
     "cron:dispatch": "tsx cli/dispatch-tick.ts",
     "scrape:trigger": "tsx cli/trigger-prod-scrape.ts",
-    "prod:diagnose": "tsx cli/diagnose-prod.ts"
+    "prod:diagnose": "tsx cli/diagnose-prod.ts",
+    "db:pull": "tsx cli/pull-prod-db.ts"
   },
   "dependencies": {
     "@vis.gl/react-google-maps": "^1.8.3",
