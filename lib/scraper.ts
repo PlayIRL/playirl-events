@@ -158,6 +158,38 @@ async function enqueueVenueImageFetches(events: ScrapedEvent[]): Promise<void> {
   }
 }
 
+/**
+ * Coord-based fingerprint. Two events that land in the same ~110m grid
+ * cell on the same date + same format + same hour are treated as the
+ * same physical event regardless of how each source spells the title or
+ * venue.
+ *
+ * Why these guards (not just lat/lng + date):
+ *  - Format prevents "Pauper Night" + "Commander Night" at the same
+ *    store on the same day from collapsing into one row.
+ *  - Hour bucket prevents a 1pm casual and a 7pm league at the same
+ *    venue from collapsing.
+ *  - 3 decimal places (~110m) is loose enough to absorb the small
+ *    coord drift between WotC's geocoder and TopDeck's, while still
+ *    being tight enough that two genuinely different venues in the
+ *    same strip mall stay separate.
+ *
+ * Returns null when there's not enough signal — date or coords missing.
+ * Callers fall through to the text-fingerprint pass for those.
+ */
+function coordFingerprint(
+  lat: number | null | undefined,
+  lng: number | null | undefined,
+  date: string,
+  format: string,
+  time: string,
+): string | null {
+  if (lat == null || lng == null || !Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  if (!date) return null;
+  const hour = time ? time.slice(0, 2) : "?";
+  return `${lat.toFixed(3)},${lng.toFixed(3)}|${date}|${(format || "").toLowerCase()}|${hour}`;
+}
+
 function dedupeAcrossSources(events: ScrapedEvent[]): ScrapedEvent[] {
   // Pass 1: dedupe by id
   const seenIds = new Set<string>();
@@ -167,18 +199,40 @@ function dedupeAcrossSources(events: ScrapedEvent[]): ScrapedEvent[] {
     return true;
   });
 
-  // Pass 2: dedupe by fingerprint (cross-source)
-  const seen = new Map<string, ScrapedEvent>();
-  const result: ScrapedEvent[] = [];
-
+  // Pass 2: text fingerprint — title + date + location (normalized).
+  // Catches the easy case where two sources spell things identically.
+  const seenText = new Map<string, ScrapedEvent>();
+  const afterText: ScrapedEvent[] = [];
   for (const e of byId) {
     const fp = normalize(e.title) + "|" + e.date + "|" + normalize(e.location);
-    if (seen.has(fp)) {
-      const existing = seen.get(fp)!;
-      console.log(`[dedupe] cross-source duplicate: "${e.title}" (${e.source}) matches "${existing.title}" (${existing.source}) — keeping ${existing.source}`);
+    if (seenText.has(fp)) {
+      const existing = seenText.get(fp)!;
+      console.log(`[dedupe] text duplicate: "${e.title}" (${e.source}) matches "${existing.title}" (${existing.source}) — keeping ${existing.source}`);
       continue;
     }
-    seen.set(fp, e);
+    seenText.set(fp, e);
+    afterText.push(e);
+  }
+
+  // Pass 3: coord fingerprint — same venue (within 110m) + same date +
+  // same format + same hour bucket. Catches title/venue-name variations
+  // the text pass missed (e.g. "FNM Commander" at "Top Deck Games" vs
+  // "Friday Night Magic" at "Top Deck Games - Cherry Hill"). Source
+  // priority is preserved: events are still ordered wizards-locator
+  // first → topdeck → discord, so a WotC row "wins" the dedup against
+  // a matching TopDeck row, with discord falling last.
+  const seenCoord = new Map<string, ScrapedEvent>();
+  const result: ScrapedEvent[] = [];
+  for (const e of afterText) {
+    const cfp = coordFingerprint(e.latitude, e.longitude, e.date, e.format, e.time);
+    if (cfp) {
+      const existing = seenCoord.get(cfp);
+      if (existing) {
+        console.log(`[dedupe] coord duplicate: "${e.title}" (${e.source}) matches "${existing.title}" (${existing.source}) at ${e.latitude?.toFixed(3)},${e.longitude?.toFixed(3)} — keeping ${existing.source}`);
+        continue;
+      }
+      seenCoord.set(cfp, e);
+    }
     result.push(e);
   }
 
