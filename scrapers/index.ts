@@ -52,10 +52,29 @@ export interface SourceStats {
   failed: Record<string, string>;
 }
 
-export async function fetchAllSources(): Promise<{ events: ScrapedEvent[]; stats: SourceStats }> {
+/** Known source IDs. Re-exported so the admin UI can render a picker
+ *  without inventing its own list and drifting from what the orchestrator
+ *  actually loads. */
+export const KNOWN_SOURCE_IDS = ["wizardsLocator", "topdeck", "discord"] as const;
+export type SourceId = (typeof KNOWN_SOURCE_IDS)[number];
+
+export interface FetchAllSourcesOpts {
+  /** When provided, only run these sources. Other sources are skipped
+   *  entirely (their bySource entry is omitted from stats so admin
+   *  Recent-runs rows show a per-source-refresh result accurately).
+   *  Sources still need to be enabled in /admin/config — passing
+   *  `["topdeck"]` for a config-disabled source is a no-op and will be
+   *  caught upstream at the API layer with a 400. */
+  only?: readonly string[];
+}
+
+export async function fetchAllSources(
+  opts: FetchAllSourcesOpts = {},
+): Promise<{ events: ScrapedEvent[]; stats: SourceStats }> {
   const all: ScrapedEvent[] = [];
   const stats: SourceStats = { bySource: {}, failed: {} };
   const cfg = getConfig();
+  const onlySet = opts.only && opts.only.length > 0 ? new Set(opts.only) : null;
 
   // Build the work list: one entry per enabled source, with its merged
   // options. Done synchronously so opts construction (which can hit the DB
@@ -63,6 +82,11 @@ export async function fetchAllSources(): Promise<{ events: ScrapedEvent[]; stats
   interface Job { name: string; loader: () => Promise<any>; opts: any }
   const jobs: Job[] = [];
   for (const [name, loader] of Object.entries(SOURCE_MODULES)) {
+    // Source-filter check: when caller asked for a subset, skip the
+    // rest. Done BEFORE the enabled check so a per-source refresh can't
+    // accidentally trigger an unrelated source.
+    if (onlySet && !onlySet.has(name)) continue;
+
     const sourceConfig = (cfg.sources as any)[name];
 
     // Skip disabled sources

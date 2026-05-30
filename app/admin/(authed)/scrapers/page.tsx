@@ -105,6 +105,11 @@ export default function ScrapersPage() {
   const [testSource, setTestSource] = useState<string>("topdeck");
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState<TestSourceResult | null>(null);
+  // Manual-refresh source filter. "all" runs every enabled source
+  // (legacy default); the per-source IDs match the scraper module
+  // names so POST /api/admin/refresh can pass them straight through
+  // without an alias table.
+  const [refreshScope, setRefreshScope] = useState<"all" | "wizardsLocator" | "topdeck" | "discord">("all");
 
   async function runTestSource() {
     setTesting(true);
@@ -171,11 +176,20 @@ export default function ScrapersPage() {
   async function runScrape() {
     setRefreshing(true);
     setResult("");
-    const res = await fetch("/api/admin/refresh", { method: "POST" });
+    // refreshScope === "all" → omit the only field so the API takes
+    // its legacy "run everything enabled" path. Any other value goes
+    // through as a one-element array.
+    const body = refreshScope === "all" ? {} : { only: refreshScope };
+    const res = await fetch("/api/admin/refresh", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
     const data = await res.json();
     if (res.status === 202) {
       // Fire-and-forget: scrape started, polling takes over from here.
-      setResult(`Scrape started at ${new Date(data.startedAt).toLocaleTimeString()} — this page will update when it completes.`);
+      const scopeLabel = refreshScope === "all" ? "" : ` (${refreshScope} only)`;
+      setResult(`Scrape started${scopeLabel} at ${new Date(data.startedAt).toLocaleTimeString()} — this page will update when it completes.`);
       setRunning({ runningSince: data.startedAt, runningSource: data.source });
     } else if (res.status === 409) {
       setResult(`Already running (started ${new Date(data.runningSince).toLocaleTimeString()} by ${data.runningSource}).`);
@@ -275,16 +289,57 @@ export default function ScrapersPage() {
       </h1>
 
       <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5 mb-4">
-        <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-3">Manual refresh</h2>
+        <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-1">Manual refresh</h2>
         <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
           Last run: <span>{last}</span>
         </p>
+        {/* Per-source scope picker. "All" maps to the legacy "run every
+            enabled source" path. The individual source IDs match the
+            scraper module names (wizardsLocator / topdeck / discord) so
+            POST /api/admin/refresh passes them straight through. Useful
+            for hitting one upstream API in isolation when iterating on
+            a fix — no need to wait through a full ~10min sweep just
+            to see Discord results, for instance. */}
+        <div className="mb-3">
+          <p className="text-[10px] uppercase tracking-wider text-neutral-400 dark:text-neutral-500 mb-1.5">Scope</p>
+          <div className="inline-flex flex-wrap gap-1 p-1 rounded-md bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700">
+            {([
+              { id: "all" as const, label: "All sources" },
+              { id: "wizardsLocator" as const, label: "WotC" },
+              { id: "topdeck" as const, label: "TopDeck" },
+              { id: "discord" as const, label: "Discord" },
+            ]).map((scope) => {
+              const active = refreshScope === scope.id;
+              return (
+                <button
+                  key={scope.id}
+                  onClick={() => setRefreshScope(scope.id)}
+                  disabled={refreshing || !!running}
+                  className={
+                    "px-3 py-1 text-xs font-medium rounded transition disabled:opacity-50 disabled:cursor-not-allowed " +
+                    (active
+                      ? "bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white shadow-sm"
+                      : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white")
+                  }
+                >
+                  {scope.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
         <button
           onClick={runScrape}
           disabled={refreshing || !!running}
           className="bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 disabled:opacity-50 transition"
         >
-          {running ? "Scraping…" : refreshing ? "Starting…" : "Refresh now"}
+          {running
+            ? "Scraping…"
+            : refreshing
+              ? "Starting…"
+              : refreshScope === "all"
+                ? "Refresh all sources"
+                : `Refresh ${refreshScope === "wizardsLocator" ? "WotC" : refreshScope === "topdeck" ? "TopDeck" : "Discord"} only`}
         </button>
         {running && (
           <div className="mt-3 space-y-2">

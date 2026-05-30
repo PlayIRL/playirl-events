@@ -269,6 +269,15 @@ export interface ScrapeResult {
   timestamp: string;
 }
 
+export interface RunScraperOpts {
+  /** When provided, run only this subset of sources. Used by the admin
+   *  per-source refresh button on /admin/scrapers. Sources still need
+   *  to be enabled in /admin/config — passing a disabled source ID is
+   *  a no-op and the caller (API route) is responsible for surfacing
+   *  that as a user-visible error. */
+  only?: readonly string[];
+}
+
 /**
  * Run the full scrape pipeline.
  *
@@ -278,16 +287,26 @@ export interface ScrapeResult {
  *   responsible for passing the right value; defaults to "unknown" so
  *   the function is still callable in tests + ad-hoc scripts without
  *   noise.
+ * @param opts.only — Optional source filter. When set, only these
+ *   sources fetch; everything else (dedup, upsert, image enqueue,
+ *   archive) still runs across whatever rows came back. This is
+ *   important — running a single-source refresh on a partial DB still
+ *   exercises the full pipeline so curation rules / coord reconciliation
+ *   stay consistent.
  */
-export async function runScraper(triggeredBy: string = "unknown"): Promise<ScrapeResult> {
+export async function runScraper(
+  triggeredBy: string = "unknown",
+  opts: RunScraperOpts = {},
+): Promise<ScrapeResult> {
   console.log("🃏 MTG Calendar — Scraper Run");
-  console.log(`   ${new Date().toISOString()} (triggered by: ${triggeredBy})`);
+  const onlyTag = opts.only && opts.only.length > 0 ? ` only=[${opts.only.join(",")}]` : "";
+  console.log(`   ${new Date().toISOString()} (triggered by: ${triggeredBy}${onlyTag})`);
   const startedAt = Date.now();
   const cfg = getConfig();
   setScrapeProgress({ phase: "Starting", message: "Loading sources…" });
 
-  // 1. Fetch from all sources
-  const { events: scraped, stats } = await fetchAllSources();
+  // 1. Fetch from all sources (or only the subset requested)
+  const { events: scraped, stats } = await fetchAllSources({ only: opts.only });
   console.log(`[sources] Total scraped: ${scraped.length}`);
 
   // 2. Dedupe
