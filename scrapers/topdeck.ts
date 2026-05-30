@@ -7,15 +7,15 @@ const API_URL = "https://topdeck.gg/api/v2/tournaments";
 
 /** How many TopDeck format queries to keep in flight at once. The
  *  bulk-tournament endpoint has a "lower than the default 100/min"
- *  rate limit (per https://topdeck.gg/docs/tournaments-v2), and a
- *  21-format full-parallel fan-out reliably 429s ~half of them. 3 is
- *  conservative enough that retries are rare but still fast enough
- *  that the TopDeck phase finishes in seconds, not minutes. Override
- *  via TOPDECK_CONCURRENCY env var if TopDeck dials the limit up. */
+ *  rate limit (per https://topdeck.gg/docs/tournaments-v2); empirically
+ *  the bucket appears to hold ~10 requests before refusing. Concurrency
+ *  2 spreads our 21 formats out enough that the 429 retry path is rare,
+ *  and even if it trips we have the in-line retry. Override via
+ *  TOPDECK_CONCURRENCY env var if TopDeck dials the limit up. */
 const TOPDECK_CONCURRENCY = (() => {
   const raw = Number(process.env.TOPDECK_CONCURRENCY);
   if (Number.isFinite(raw) && raw > 0 && raw <= 10) return Math.floor(raw);
-  return 3;
+  return 2;
 })();
 
 /** Cap on per-request retry waits — TopDeck's 429 body includes a

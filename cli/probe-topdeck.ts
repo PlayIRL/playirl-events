@@ -57,32 +57,70 @@ interface ProbeResult {
   error?: string;
 }
 
+/** Cap on per-request retry waits — mirrors the scraper. */
+const PROBE_MAX_RETRY_WAIT_S = 30;
+
+async function makeRequest(apiKey: string, format: string, start: number, end: number): Promise<Response> {
+  const body = { game: "Magic: The Gathering", format, start, end, columns: [] };
+  return fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: apiKey },
+    body: JSON.stringify(body),
+  });
+}
+
 async function probeFormat(apiKey: string, format: string, start: number, end: number, verbose: boolean): Promise<ProbeResult> {
   const result: ProbeResult = {
     format, status: 0, bytes: 0, ms: 0, tournamentCount: 0, withCoordsCount: 0, withoutCoordsCount: 0,
   };
   if (verbose) console.log(`\n── format=${format} ────────────────────────────────`);
-  // Match the scraper's request shape verbatim so the probe sees the same
-  // results the scraper would. No participantMin — we want the API ceiling.
-  const body = { game: "Magic: The Gathering", format, start, end, columns: [] };
   const startedAt = Date.now();
   let res: Response;
   try {
-    res = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: apiKey },
-      body: JSON.stringify(body),
-    });
+    res = await makeRequest(apiKey, format, start, end);
   } catch (err) {
     result.error = err instanceof Error ? err.message : String(err);
     if (verbose) console.log(`fetch threw: ${result.error}`);
     return result;
   }
-  const text = await res.text();
+  let text = await res.text();
   result.status = res.status;
   result.bytes = text.length;
   result.ms = Date.now() - startedAt;
   if (verbose) console.log(`HTTP ${res.status} · ${text.length}B · ${result.ms}ms`);
+
+  // Mirror the scraper's 429 self-retry so the probe shows what a real
+  // scrape would actually ingest (not just whichever formats happened
+  // to fit in the rate-limit bucket on the first wave). One retry, with
+  // the wait from retryAfterSeconds (JSON body) or Retry-After header,
+  // capped at PROBE_MAX_RETRY_WAIT_S.
+  if (res.status === 429) {
+    let waitS = 0;
+    try {
+      const body = JSON.parse(text);
+      if (typeof body?.retryAfterSeconds === "number") waitS = body.retryAfterSeconds;
+    } catch { /* fall through to header */ }
+    if (!waitS) {
+      const headerVal = Number(res.headers.get("retry-after") ?? "");
+      if (Number.isFinite(headerVal) && headerVal > 0) waitS = headerVal;
+    }
+    if (waitS <= 0) waitS = 2;
+    waitS = Math.min(waitS, PROBE_MAX_RETRY_WAIT_S);
+    if (verbose) console.log(`429 — waiting ${waitS}s then retrying once`);
+    await new Promise((r) => setTimeout(r, waitS * 1000 + 250));
+    try {
+      res = await makeRequest(apiKey, format, start, end);
+    } catch (err) {
+      result.error = err instanceof Error ? err.message : String(err);
+      if (verbose) console.log(`retry fetch threw: ${result.error}`);
+      return result;
+    }
+    text = await res.text();
+    result.status = res.status;
+    result.bytes = text.length;
+    result.ms = Date.now() - startedAt;
+    if (verbose) console.log(`retry HTTP ${res.status} · ${text.length}B · ${result.ms}ms`);
+  }
 
   if (!res.ok) {
     result.error = `HTTP ${res.status}`;
@@ -147,7 +185,7 @@ async function main() {
   // Env override: TOPDECK_CONCURRENCY=<n>. Capped at 10 by the scraper;
   // we accept the same cap here.
   const rawCc = Number(process.env.TOPDECK_CONCURRENCY);
-  const concurrency = Number.isFinite(rawCc) && rawCc > 0 && rawCc <= 10 ? Math.floor(rawCc) : 3;
+  const concurrency = Number.isFinite(rawCc) && rawCc > 0 && rawCc <= 10 ? Math.floor(rawCc) : 2;
   console.log(`\n🃏 Probing TopDeck across ${list.length} format(s)`);
   console.log(`window:      ${new Date(now * 1000).toISOString()} → ${new Date(end * 1000).toISOString()}`);
   console.log(`concurrency: ${concurrency} (set TOPDECK_CONCURRENCY to override)`);
