@@ -64,7 +64,15 @@ export async function POST(request: Request) {
     // "POST with no Content-Type" call shape.
   }
 
-  const lock = tryAcquireScrapeLock("admin-refresh");
+  // triggeredBy keeps "admin-refresh" as the prefix so the Recent-runs
+  // table's existing chip logic still recognizes admin runs; per-source
+  // filter is appended after a colon so the chip can show
+  // "admin-refresh:topdeck" when the admin scoped the run. Also passed
+  // to the lock so the live "Scrape in progress" UI banner can show
+  // which scope is active without having to read URL/component state.
+  const triggeredBy = only && only.length > 0 ? `admin-refresh:${only.join(",")}` : "admin-refresh";
+
+  const lock = tryAcquireScrapeLock(triggeredBy);
   if (lock.busy) {
     return NextResponse.json(
       {
@@ -75,12 +83,6 @@ export async function POST(request: Request) {
       { status: 409 },
     );
   }
-
-  // triggeredBy keeps "admin-refresh" as the prefix so the Recent-runs
-  // table's existing chip logic still recognizes admin runs; per-source
-  // filter is appended after a colon so the chip can show
-  // "admin-refresh:topdeck" when the admin scoped the run.
-  const triggeredBy = only && only.length > 0 ? `admin-refresh:${only.join(",")}` : "admin-refresh";
 
   const startedAt = new Date().toISOString();
   runScraper(triggeredBy, { only })

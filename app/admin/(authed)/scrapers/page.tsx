@@ -289,7 +289,7 @@ export default function ScrapersPage() {
       </h1>
 
       <section className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-md p-5 mb-4">
-        <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-1">Manual refresh</h2>
+        <h2 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-1">Run scrape</h2>
         <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
           Last run: <span>{last}</span>
         </p>
@@ -334,19 +334,35 @@ export default function ScrapersPage() {
           className="bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-neutral-200 dark:hover:bg-neutral-700 disabled:opacity-50 transition"
         >
           {running
-            ? "Scraping…"
+            ? `Scrape in progress${running.runningSource && running.runningSource.startsWith("admin-refresh:") ? ` (${running.runningSource.slice("admin-refresh:".length)} only)` : ""}…`
             : refreshing
-              ? "Starting…"
+              ? "Starting scrape…"
               : refreshScope === "all"
-                ? "Refresh all sources"
-                : `Refresh ${refreshScope === "wizardsLocator" ? "WotC" : refreshScope === "topdeck" ? "TopDeck" : "Discord"} only`}
+                ? "Pull from all sources"
+                : `Pull from ${refreshScope === "wizardsLocator" ? "WotC" : refreshScope === "topdeck" ? "TopDeck" : "Discord"} only`}
         </button>
-        {running && (
+        {running && (() => {
+          // Decode the runningSource into a friendly label. Format from
+          // the API is "admin-refresh", "admin-refresh:topdeck", or
+          // "cron". Map to: "All sources", "TopDeck only", "Cron".
+          const src = running.runningSource ?? "";
+          let scopeLabel: string;
+          if (src === "admin-refresh") scopeLabel = "all sources";
+          else if (src.startsWith("admin-refresh:")) {
+            const onlyIds = src.slice("admin-refresh:".length).split(",");
+            scopeLabel = onlyIds
+              .map((id) => id === "wizardsLocator" ? "WotC" : id === "topdeck" ? "TopDeck" : id === "discord" ? "Discord" : id)
+              .join(", ") + " only";
+          } else scopeLabel = src || "all sources";
+          // Cold-runs hint is only meaningful for a full-sweep run.
+          // Per-source runs are typically sub-minute, so suppress it.
+          const isScoped = src.startsWith("admin-refresh:");
+          return (
           <div className="mt-3 space-y-2">
             <p className="text-xs text-neutral-600 dark:text-neutral-300">
-              ⏳ {running.runningSource} scrape running since{" "}
+              ⏳ Scrape in progress — <span className="font-medium text-neutral-700 dark:text-neutral-200">{scopeLabel}</span>, started{" "}
               {new Date(running.runningSince).toLocaleTimeString()}
-              {" · cold runs take ~10–15 min"}
+              {!isScoped && " · cold runs take ~10–15 min"}
             </p>
 
             {/* Live phase + progress bar. Updated every 5s as the poller
@@ -393,7 +409,8 @@ export default function ScrapersPage() {
               </div>
             )}
           </div>
-        )}
+          );
+        })()}
         {result && (
           <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-3">{result}</p>
         )}
