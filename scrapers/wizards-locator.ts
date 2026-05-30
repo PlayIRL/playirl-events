@@ -5,6 +5,18 @@ import { normalizeFormat } from "@/lib/formats";
 import { formatCost } from "@/lib/format-cost";
 import { setSetting } from "@/lib/events";
 import { setScrapeProgress } from "@/lib/scraper-lock";
+import { pMapLimit } from "@/lib/p-limit";
+
+/** How many WotC region GraphQL calls to keep in flight concurrently.
+ *  At 197 anchors × ~5-10s per call, going serial gave ~50min wall-clock
+ *  scrapes; concurrency=5 cuts that to ~10min without observably tripping
+ *  rate limits in testing. Configurable via env so we can dial up/down
+ *  in production without a code change. */
+const WOTC_CONCURRENCY = (() => {
+  const raw = Number(process.env.WOTC_CONCURRENCY);
+  if (Number.isFinite(raw) && raw > 0 && raw <= 20) return Math.floor(raw);
+  return 5;
+})();
 
 /** Per-anchor stats captured during a scrape and persisted under the
  *  `last_scrape_regions_wotc` setting so /admin/scrapers can render a
@@ -191,34 +203,64 @@ export default async function fetchWizardsEvents(_sourceConfig = {}) {
   // Pre-stamp `country` from the grid anchor when the anchor carries one —
   // that's the cheap path for international grids that won't otherwise hit
   // Nominatim for every store.
+  //
+  // Fetches fan out via pMapLimit (N concurrent workers); the actual
+  // merge into `storesById` is serial after to avoid race conditions on
+  // the shared Map. Progress is updated as each worker completes, so the
+  // current/total counter advances out-of-order but accurately.
   const storesById = new Map<string, Store>();
-  for (let i = 0; i < regions.length; i++) {
-    const r = regions[i];
+  let storesCompleted = 0;
+  const storeResults = await pMapLimit(regions, WOTC_CONCURRENCY, async (r, i) => {
     const meters = Math.round(r.radiusMi * 1609.34);
     const startedAt = Date.now();
-    setScrapeProgress({
-      phase: "WotC stores",
-      message: `${r.label}${r.country ? ` (${r.country})` : ""} · ${storesById.size.toLocaleString()} unique stores so far`,
-      current: i + 1,
-      total: regions.length,
-    });
     try {
       const stores = await fetchStoresAt(r.lat, r.lng, meters);
-      let added = 0;
-      for (const s of stores) {
-        if (!storesById.has(s.id)) {
-          storesById.set(s.id, { ...s, country: r.country });
-          added++;
-        }
-      }
-      regionStats[i].storesFetched = stores.length;
-      regionStats[i].durationMs += Date.now() - startedAt;
-      console.log(`[wotc] region ${i + 1}/${regions.length} ${r.label}: ${stores.length} stores (+${added} new, ${storesById.size} total)`);
-    } catch (err: any) {
-      regionStats[i].storesError = err?.message ?? String(err);
-      regionStats[i].durationMs += Date.now() - startedAt;
-      console.warn(`[wotc] region ${r.label} stores fetch failed: ${err.message}`);
+      const durationMs = Date.now() - startedAt;
+      storesCompleted++;
+      setScrapeProgress({
+        phase: "WotC stores",
+        message: `${r.label}${r.country ? ` (${r.country})` : ""} · ${storesById.size.toLocaleString()} unique stores so far`,
+        current: storesCompleted,
+        total: regions.length,
+      });
+      return { idx: i, stores, durationMs };
+    } catch (err) {
+      const durationMs = Date.now() - startedAt;
+      storesCompleted++;
+      setScrapeProgress({
+        phase: "WotC stores",
+        message: `${r.label} failed · ${storesById.size.toLocaleString()} unique stores so far`,
+        current: storesCompleted,
+        total: regions.length,
+      });
+      throw Object.assign(err instanceof Error ? err : new Error(String(err)), { idx: i, durationMs });
     }
+  });
+
+  // Merge fetched stores into the shared Map in original-region order so
+  // logs read predictably + the "added" count is deterministic regardless
+  // of which worker happened to finish first.
+  for (let i = 0; i < regions.length; i++) {
+    const r = regions[i];
+    const res = storeResults[i];
+    if (res.status === "rejected") {
+      const reason = res.reason as { message?: string; durationMs?: number };
+      regionStats[i].storesError = reason?.message ?? String(res.reason);
+      regionStats[i].durationMs += reason?.durationMs ?? 0;
+      console.warn(`[wotc] region ${r.label} stores fetch failed: ${reason?.message ?? res.reason}`);
+      continue;
+    }
+    const { stores, durationMs } = res.value;
+    let added = 0;
+    for (const s of stores) {
+      if (!storesById.has(s.id)) {
+        storesById.set(s.id, { ...s, country: r.country });
+        added++;
+      }
+    }
+    regionStats[i].storesFetched = stores.length;
+    regionStats[i].durationMs += durationMs;
+    console.log(`[wotc] region ${i + 1}/${regions.length} ${r.label}: ${stores.length} stores (+${added} new, ${storesById.size} total)`);
   }
 
   console.log(`[wotc] ${storesById.size} unique stores across ${regions.length} regions`);
@@ -291,37 +333,61 @@ export default async function fetchWizardsEvents(_sourceConfig = {}) {
     `[wotc] geocode: ${cacheHits} cache hits, ${cacheMisses} fresh Nominatim lookups, ${intlSkips} intl skipped (grid-stamped country)`,
   );
 
-  // Step 3: fetch events for each region, dedup by event id, hydrate with
-  // store metadata.
+  // Step 3: fetch events for each region (parallel batches), dedup by
+  // event id, hydrate with store metadata. Same fan-out shape as the
+  // stores phase: workers in parallel, merge serially after.
   const eventsById = new Map<string, any>();
-  for (let i = 0; i < regions.length; i++) {
-    const r = regions[i];
+  let eventsCompleted = 0;
+  const eventResults = await pMapLimit(regions, WOTC_CONCURRENCY, async (r, i) => {
     const meters = Math.round(r.radiusMi * 1609.34);
     const startedAt = Date.now();
-    setScrapeProgress({
-      phase: "WotC events",
-      message: `${r.label}${r.country ? ` (${r.country})` : ""} · ${eventsById.size.toLocaleString()} unique events so far`,
-      current: i + 1,
-      total: regions.length,
-      events: eventsById.size,
-    });
     try {
       const events = await fetchEventsAt(r.lat, r.lng, meters, startDate, endDate);
-      let added = 0;
-      for (const ev of events) {
-        if (!eventsById.has(ev.id)) {
-          eventsById.set(ev.id, ev);
-          added++;
-        }
-      }
-      regionStats[i].eventsFetched = events.length;
-      regionStats[i].durationMs += Date.now() - startedAt;
-      console.log(`[wotc] region ${i + 1}/${regions.length} ${r.label}: ${events.length} events (+${added} new, ${eventsById.size} total)`);
-    } catch (err: any) {
-      regionStats[i].eventsError = err?.message ?? String(err);
-      regionStats[i].durationMs += Date.now() - startedAt;
-      console.warn(`[wotc] region ${r.label} events fetch failed: ${err.message}`);
+      const durationMs = Date.now() - startedAt;
+      eventsCompleted++;
+      setScrapeProgress({
+        phase: "WotC events",
+        message: `${r.label}${r.country ? ` (${r.country})` : ""} · ${eventsById.size.toLocaleString()} unique events so far`,
+        current: eventsCompleted,
+        total: regions.length,
+        events: eventsById.size,
+      });
+      return { idx: i, events, durationMs };
+    } catch (err) {
+      const durationMs = Date.now() - startedAt;
+      eventsCompleted++;
+      setScrapeProgress({
+        phase: "WotC events",
+        message: `${r.label} failed · ${eventsById.size.toLocaleString()} unique events so far`,
+        current: eventsCompleted,
+        total: regions.length,
+        events: eventsById.size,
+      });
+      throw Object.assign(err instanceof Error ? err : new Error(String(err)), { idx: i, durationMs });
     }
+  });
+
+  for (let i = 0; i < regions.length; i++) {
+    const r = regions[i];
+    const res = eventResults[i];
+    if (res.status === "rejected") {
+      const reason = res.reason as { message?: string; durationMs?: number };
+      regionStats[i].eventsError = reason?.message ?? String(res.reason);
+      regionStats[i].durationMs += reason?.durationMs ?? 0;
+      console.warn(`[wotc] region ${r.label} events fetch failed: ${reason?.message ?? res.reason}`);
+      continue;
+    }
+    const { events, durationMs } = res.value;
+    let added = 0;
+    for (const ev of events) {
+      if (!eventsById.has(ev.id)) {
+        eventsById.set(ev.id, ev);
+        added++;
+      }
+    }
+    regionStats[i].eventsFetched = events.length;
+    regionStats[i].durationMs += durationMs;
+    console.log(`[wotc] region ${i + 1}/${regions.length} ${r.label}: ${events.length} events (+${added} new, ${eventsById.size} total)`);
   }
 
   console.log(`[wotc] ${eventsById.size} unique events across ${regions.length} regions`);
