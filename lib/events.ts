@@ -209,13 +209,6 @@ export function getActiveEvents(filters?: {
    *  Orthogonal to format (an RCQ can be Modern, Sealed, Standard, etc.) so
    *  this combines with `format` rather than replacing it. */
   rcq?: boolean;
-  /** When true, restrict to competitive-Commander events. cEDH is a sub-format
-   *  of EDH — events use the "EDH" / "Commander" format string but flag the
-   *  competitive tier in the title ("cEDH", "CEDH", "Competitive EDH",
-   *  "Competitive Commander"). Pattern-matched at query time the same way
-   *  RCQ is. Combines with `format` (cedh=1 + format=Commander narrows to
-   *  cEDH explicitly). */
-  cedh?: boolean;
 }): EventRow[] {
   const db = getDb();
   // visibility/cancelled chokepoint: every public read path goes through
@@ -234,15 +227,10 @@ export function getActiveEvents(filters?: {
     // bbox, so the candidate set is small by the time we LIKE-scan titles.
     sql += " AND (title LIKE '%RCQ%' OR title LIKE '%Regional Championship Qualifier%')";
   }
-  if (filters?.cedh) {
-    // Same LIKE-scan trade-off as RCQ. The matcher mirrors isCedh() in
-    // lib/format-style.ts so the badge and the filter agree on which
-    // rows count. We don't AND format='Commander' here because the
-    // signal is the title, not the format string — sometimes events
-    // self-identify as "cEDH proxy event" while the scraper categorized
-    // them under a sibling format.
-    sql += " AND (title LIKE '%cEDH%' OR title LIKE '%CEDH%' OR title LIKE '%Competitive EDH%' OR title LIKE '%Competitive Commander%')";
-  }
+  // cEDH used to be a `cedh?: boolean` filter that did its own LIKE-scan.
+  // cEDH is now a first-class canonical format, so the natural query is
+  // `format=cEDH`. The callers (homepage + ICS feed route) translate any
+  // legacy `?cedh=1` URL into `format=cEDH` for back-compat.
   if (filters?.from) {
     sql += " AND date >= ?";
     params.push(filters.from);
@@ -515,10 +503,13 @@ export function getFormats(): string[] {
   const db = getDb();
   // Same visibility/cancelled chokepoint as getActiveEvents — no point
   // showing "Brawl" in the homepage filter dropdown if the only Brawl
-  // event is unlisted or cancelled.
+  // event is unlisted or cancelled. ORDER BY LOWER(format) so the sort
+  // is case-insensitive — without this, mixed-case canonical names
+  // like "cEDH" sort to the end (lowercase 'c' > uppercase 'V' in
+  // SQLite's binary collation), which is unintuitive in a dropdown.
   const rows = db
     .prepare(
-      "SELECT DISTINCT format FROM events WHERE status IN ('active','pinned') AND visibility = 'public' AND cancelled_at IS NULL AND format != '' ORDER BY format",
+      "SELECT DISTINCT format FROM events WHERE status IN ('active','pinned') AND visibility = 'public' AND cancelled_at IS NULL AND format != '' ORDER BY LOWER(format)",
     )
     .all() as { format: string }[];
   return rows.map(r => r.format);

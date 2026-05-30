@@ -9,6 +9,11 @@
 /** The canonical names we display and store. Order is roughly popularity. */
 export const CANONICAL_FORMATS = [
   "Commander",
+  // cEDH (competitive EDH) is its own format-chip rather than a sub-tag
+  // of Commander. Scrapers detect the title pattern (see scrapers/*.ts)
+  // and override format="Commander" → "cEDH" at ingest time. Treated as
+  // a sibling format in the dropdown, the homepage filter, and ICS feeds.
+  "cEDH",
   "Standard",
   "Modern",
   "Pioneer",
@@ -27,10 +32,15 @@ export type CanonicalFormat = (typeof CANONICAL_FORMATS)[number];
 
 /** Lookup table: lowercase alias → canonical name. */
 const ALIASES: Record<string, CanonicalFormat> = {
-  // Commander family
+  // Commander family. Note: we DON'T alias "cedh" → "Commander" anymore.
+  // cEDH is now its own canonical format; the scraper-time logic in
+  // wizards-locator.ts / topdeck.ts promotes format="Commander" → "cEDH"
+  // when the title matches the cEDH pattern (via lib/format-style.ts
+  // isCedh()). If a source ever emits the literal string "cEDH" as the
+  // format, the explicit alias below normalizes the casing.
+  "cedh": "cEDH",
   "edh": "Commander",
   "commander": "Commander",
-  "cedh": "Commander",
   "commander (edh)": "Commander",
   "edh / commander": "Commander",
   "pauper edh": "Pauper EDH",
@@ -75,6 +85,7 @@ export function normalizeFormat(raw: string | null | undefined): string {
  *  unknown formats fall through to a generic kebab-case. */
 const SLUG_OVERRIDES: Record<string, string> = {
   Commander: "commander",
+  cEDH: "cedh",
   Standard: "standard",
   Modern: "modern",
   Pioneer: "pioneer",

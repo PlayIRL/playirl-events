@@ -2,6 +2,7 @@ import { getConfig } from "@/lib/runtime-config";
 import { getCachedStoreGeocode, setCachedStoreAddress } from "@/lib/store-geocode-cache";
 import type { ScrapeRegion } from "@/lib/scrape-grid";
 import { normalizeFormat } from "@/lib/formats";
+import { isCedh } from "@/lib/format-style";
 import { formatCost } from "@/lib/format-cost";
 import { setSetting } from "@/lib/events";
 import { setScrapeProgress } from "@/lib/scraper-lock";
@@ -437,10 +438,17 @@ export default async function fetchWizardsEvents(_sourceConfig = {}) {
     const formattedCost = formatCost(entryFeeMinor, currency);
     const cost = formattedCost
       || (fee ? (fee.amount === 0 ? "Free" : "$" + Math.round(fee.amount / 100)) : "");
+    // Promote Commander → cEDH at ingest time when the title carries
+    // the competitive-EDH marker. cEDH is a sibling canonical format
+    // since it draws a meaningfully different audience and play style
+    // — see lib/formats.ts CANONICAL_FORMATS.
+    const evTitle = (ev.title || "").trim();
+    const rawFormat = normalizeFormat(ev.eventFormat?.name);
+    const finalFormat = rawFormat === "Commander" && isCedh(evTitle) ? "cEDH" : rawFormat;
     allEvents.push({
       id: "wotc-" + ev.id,
-      title: (ev.title || "").trim(),
-      format: normalizeFormat(ev.eventFormat?.name),
+      title: evTitle,
+      format: finalFormat,
       date: (ev.scheduledStartTime || "").slice(0, 10),
       time: (ev.scheduledStartTime || "").slice(11, 16),
       timezone: "America/New_York",

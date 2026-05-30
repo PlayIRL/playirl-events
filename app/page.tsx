@@ -81,9 +81,12 @@ export default async function HomePage({
   const currentDays = params.days
     ? parseInt(params.days, 10)
     : currentView === "map" ? 1 : defaultDays;
-  const currentFormat = params.format ?? defaultFormat;
+  // Legacy: ?cedh=1 used to be a separate sub-format filter. cEDH is now
+  // a first-class canonical format, so any incoming ?cedh=1 URL maps to
+  // ?format=cEDH for subscribers / shared links that pre-date the promotion.
+  const cedhLegacy = params.cedh === "1";
+  const currentFormat = cedhLegacy ? "cEDH" : (params.format ?? defaultFormat);
   const currentRcq = params.rcq === "1";
-  const currentCedh = params.cedh === "1";
   const currentOffset = params.offset ? Math.max(0, parseInt(params.offset, 10)) : 0;
 
   // Location resolution: URL > prefs > IP geolocation > Philly default.
@@ -188,7 +191,6 @@ export default async function HomePage({
     centerLat: currentLocationLat,
     centerLng: currentLocationLng,
     rcq: currentRcq || undefined,
-    cedh: currentCedh || undefined,
   });
 
   const enriched = events.map((ev) => {
@@ -251,7 +253,6 @@ export default async function HomePage({
           currentDays={currentDays}
           currentFormat={currentFormat}
           currentRcq={currentRcq}
-          currentCedh={currentCedh}
           currentView={currentView}
           formats={formats}
           eventCount={events.length}

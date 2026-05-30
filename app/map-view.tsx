@@ -9,7 +9,7 @@ import {
   InfoWindow,
   useMap,
 } from "@vis.gl/react-google-maps";
-import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, CEDH_BADGE, isRcq, isCedh } from "@/lib/format-style";
+import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq } from "@/lib/format-style";
 import { formatEventTime, pickEventTimezone } from "@/lib/format-time";
 import { DEFAULT_LOCALE } from "@/lib/locale";
 
@@ -225,7 +225,7 @@ function VenuePopup({ venue }: { venue: VenueGroup }) {
                 {formatShortDate(ev.date)} · {formatEventTime(ev.date, ev.time, pickEventTimezone(ev))}
               </div>
               <div className="text-neutral-900 font-medium">{ev.title}</div>
-              {(ev.format || isRcq(ev.title) || isCedh(ev.title)) && (
+              {(ev.format || isRcq(ev.title)) && (
                 <div className="inline-flex items-center gap-1 mt-0.5 flex-wrap">
                   {ev.format && (
                     <span className={`inline-block px-1.5 py-0.5 rounded-sm text-[9px] font-bold tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
@@ -235,11 +235,6 @@ function VenuePopup({ venue }: { venue: VenueGroup }) {
                   {isRcq(ev.title) && (
                     <span className={`${RCQ_BADGE} px-1 py-0.5 text-[9px]`} title="Regional Championship Qualifier">
                       RCQ
-                    </span>
-                  )}
-                  {isCedh(ev.title) && (
-                    <span className={`${CEDH_BADGE} px-1 py-0.5 text-[9px]`} title="Competitive EDH">
-                      cEDH
                     </span>
                   )}
                 </div>

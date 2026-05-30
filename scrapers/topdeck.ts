@@ -1,5 +1,6 @@
 import { getConfig } from "@/lib/runtime-config";
 import { normalizeFormat } from "@/lib/formats";
+import { isCedh } from "@/lib/format-style";
 import { setScrapeProgress } from "@/lib/scraper-lock";
 
 /**
@@ -332,7 +333,13 @@ export default async function fetchTopdeckEvents(_sourceConfig: unknown = {}) {
     const startDate = t.startDate ? new Date(t.startDate * 1000) : null;
     if (!startDate) continue;
 
-    const format = normalizeFormat(t.format);
+    // Promote Commander → cEDH when the title carries the marker
+    // (matches the equivalent override in scrapers/wizards-locator.ts).
+    // TopDeck is heavily Commander-weighted (~80%), so a substantial
+    // fraction of those flip to cEDH here.
+    const eventName = (t.eventName || "").trim();
+    const rawFormat = normalizeFormat(t.format);
+    const format = rawFormat === "Commander" && isCedh(eventName) ? "cEDH" : rawFormat;
     const country = isoCountry(t.country);
     const currency = isoCurrency(t.eventCurrency);
     // Typesense stores eventPrice as a number in major units (e.g. 50
@@ -355,7 +362,7 @@ export default async function fetchTopdeckEvents(_sourceConfig: unknown = {}) {
 
     events.push({
       id: "topdeck-" + t.id,
-      title: (t.eventName || "").trim(),
+      title: eventName,
       format,
       date: startDate.toISOString().slice(0, 10),
       time: startDate.toISOString().slice(11, 16),

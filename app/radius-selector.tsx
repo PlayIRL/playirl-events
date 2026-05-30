@@ -13,7 +13,7 @@ import type { DistanceUnit } from "@/lib/distance";
 // Build the canonical /calendar URL given the user's current filter state.
 // Empty/falsy filters are omitted so subscribers to the bare /calendar
 // keep getting the unfiltered global feed.
-function buildFeedPath({ format, radius, days, venue, rcq, cedh }: { format?: string; radius?: number; days?: number; venue?: string; rcq?: boolean; cedh?: boolean }): string {
+function buildFeedPath({ format, radius, days, venue, rcq }: { format?: string; radius?: number; days?: number; venue?: string; rcq?: boolean }): string {
   const sp = new URLSearchParams();
   if (format) sp.set("format", format);
   if (venue) {
@@ -25,7 +25,6 @@ function buildFeedPath({ format, radius, days, venue, rcq, cedh }: { format?: st
   }
   if (days) sp.set("days", String(days));
   if (rcq) sp.set("rcq", "1");
-  if (cedh) sp.set("cedh", "1");
   const qs = sp.toString();
   return qs ? `/calendar?${qs}` : `/calendar`;
 }
@@ -304,7 +303,6 @@ export function SubscribeDropdown({
   currentRadius,
   currentDays,
   currentRcq,
-  currentCedh,
   venueName,
   onToast,
 }: {
@@ -314,8 +312,6 @@ export function SubscribeDropdown({
   /** When set, the subscribed feed URL includes rcq=1 so the calendar app
    *  receives only RCQ events — same filter the user sees on the site. */
   currentRcq?: boolean;
-  /** Same as currentRcq, for the cEDH sub-format. */
-  currentCedh?: boolean;
   /** When set, the dropdown subscribes the user to ONE venue's events
    *  (skips radius). Triggered from the venue page's Subscribe button. */
   venueName?: string;
@@ -354,7 +350,6 @@ export function SubscribeDropdown({
     days: currentDays,
     venue: venueName,
     rcq: currentRcq,
-    cedh: currentCedh,
   });
   const webcalUrl = `webcal://${host}${path}`;
   const httpsUrl = `https://${host}${path}`;
@@ -601,7 +596,6 @@ export default function RadiusSelector({
   currentDays,
   currentFormat,
   currentRcq = false,
-  currentCedh = false,
   currentView,
   formats,
   eventCount,
@@ -618,9 +612,6 @@ export default function RadiusSelector({
    *  through to the Format chip's bottom toggle and the SubscribeDropdown's
    *  feed-URL builder. */
   currentRcq?: boolean;
-  /** True when the user has restricted to cEDH (competitive Commander).
-   *  Orthogonal to RCQ — independent sub-format filters. */
-  currentCedh?: boolean;
   /** Active view ("list" | "calendar" | "map"). The timeframe chip only
    *  renders for the map view since list has its own Load-more affordance
    *  and calendar has built-in week navigation. */
@@ -700,33 +691,19 @@ export default function RadiusSelector({
           React-19 hydration warning + DOM-nesting error in the console. */}
       <div className="text-neutral-500 dark:text-neutral-400 flex items-center justify-center flex-wrap gap-x-1.5 gap-y-1 text-lg sm:text-xl leading-relaxed font-[family-name:var(--font-ultra)] font-bold">
         <ChipSelect
-          label={
-            currentCedh
-              ? `${currentFormat || "All"} cEDH`
-              : currentRcq
-                ? `${currentFormat || "All"} RCQ`
-                : (currentFormat || tr("filters.all_mtg"))
-          }
+          label={currentRcq ? `${currentFormat || "All"} RCQ` : (currentFormat || tr("filters.all_mtg"))}
           heading="Format"
           options={formatOptions}
           value={currentFormat || ""}
           onChange={(v) => updateParam("format", v)}
           dot
           align="start"
-          toggles={[
-            {
-              label: tr("filters.rcq_only_label"),
-              description: tr("filters.rcq_only_help"),
-              checked: currentRcq,
-              onChange: (checked) => updateParam("rcq", checked ? "1" : ""),
-            },
-            {
-              label: tr("filters.cedh_only_label"),
-              description: tr("filters.cedh_only_help"),
-              checked: currentCedh,
-              onChange: (checked) => updateParam("cedh", checked ? "1" : ""),
-            },
-          ]}
+          toggle={{
+            label: tr("filters.rcq_only_label"),
+            description: tr("filters.rcq_only_help"),
+            checked: currentRcq,
+            onChange: (checked) => updateParam("rcq", checked ? "1" : ""),
+          }}
         />
 
         <span className={CONNECTOR}>{tr("filters.events_within")}</span>
@@ -787,7 +764,6 @@ export default function RadiusSelector({
             currentRadius={currentRadius}
             currentDays={currentDays}
             currentRcq={currentRcq}
-            currentCedh={currentCedh}
             onToast={showToast}
           />
         </div>

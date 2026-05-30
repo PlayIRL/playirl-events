@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, CEDH_BADGE, isRcq, isCedh, showFormatBadge } from "@/lib/format-style";
+import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq, showFormatBadge } from "@/lib/format-style";
 import { dateStrInTz, eventDisplayStatus, formatEventTime, formatEventTimeParts, pickEventTimezone } from "@/lib/format-time";
 import { formatDistance, haversineMiles, type DistanceUnit } from "@/lib/distance";
 import { DEFAULT_LOCALE } from "@/lib/locale";
@@ -256,7 +256,7 @@ export default function CalendarView({
                               </div>
                             );
                           })()}
-                          {(showFormatBadge(ev.format) || isRcq(ev.title) || isCedh(ev.title)) && (
+                          {(showFormatBadge(ev.format) || isRcq(ev.title)) && (
                             <div className="inline-flex items-center gap-1 flex-wrap">
                               {showFormatBadge(ev.format) && (
                                 <span className={`px-1.5 py-0.5 rounded-sm text-[11px] font-bold tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
@@ -266,11 +266,6 @@ export default function CalendarView({
                               {isRcq(ev.title) && (
                                 <span className={`${RCQ_BADGE} px-1 py-0.5 text-[9px]`} title="Regional Championship Qualifier">
                                   RCQ
-                                </span>
-                              )}
-                              {isCedh(ev.title) && (
-                                <span className={`${CEDH_BADGE} px-1 py-0.5 text-[9px]`} title="Competitive EDH">
-                                  cEDH
                                 </span>
                               )}
                             </div>

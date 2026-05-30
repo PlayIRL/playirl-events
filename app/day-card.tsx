@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, CEDH_BADGE, isRcq, isCedh, showFormatBadge } from "@/lib/format-style";
+import { FORMAT_BADGE, FORMAT_BADGE_DEFAULT, RCQ_BADGE, isRcq, showFormatBadge } from "@/lib/format-style";
 import { eventDisplayStatus, formatEventTime, formatEventTimeParts, pickEventTimezone } from "@/lib/format-time";
 import { formatDistance, haversineMiles, type DistanceUnit } from "@/lib/distance";
 import SaveEventButton from "./save-event-button";
@@ -297,7 +297,7 @@ export default function DayCard({
                     fastest way to scan "what kind of event is this".
                     Suppressed entirely for "Other" / empty formats so
                     the row doesn't carry a meaningless chip. */}
-                {status !== "completed" && (showFormatBadge(ev.format) || isRcq(ev.title) || isCedh(ev.title)) && (
+                {status !== "completed" && (showFormatBadge(ev.format) || isRcq(ev.title)) && (
                   <div className="inline-flex items-center gap-1 mb-1 flex-wrap">
                     {showFormatBadge(ev.format) && (
                       <span className={`inline-block px-2 py-0.5 rounded-sm text-[11px] font-bold tracking-wide font-[family-name:var(--font-card-title)] ${FORMAT_BADGE[ev.format] || FORMAT_BADGE_DEFAULT}`}>
@@ -307,11 +307,6 @@ export default function DayCard({
                     {isRcq(ev.title) && (
                       <span className={`${RCQ_BADGE} px-1.5 py-0.5 text-[10px]`} title="Regional Championship Qualifier">
                         RCQ
-                      </span>
-                    )}
-                    {isCedh(ev.title) && (
-                      <span className={`${CEDH_BADGE} px-1.5 py-0.5 text-[10px]`} title="Competitive EDH">
-                        cEDH
                       </span>
                     )}
                   </div>

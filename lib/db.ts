@@ -703,4 +703,37 @@ function initSchema(db: Database.Database) {
       console.log(`[db] backfill ${backfillKey}: demoted ${result.changes} non-MTG events from active → skip`);
     }
   }
+
+  // Second one-shot backfill: cEDH is now a sibling canonical format
+  // (was a sub-tag / badge on top of Commander). Existing rows where
+  // the title carries the cEDH marker but the format column still says
+  // "Commander" need to be flipped so they show under the right chip
+  // and appear in the dedicated `format=cEDH` slice of the dropdown.
+  // Mirrors scrapers/wizards-locator.ts + scrapers/topdeck.ts ingest-time
+  // promotion. Title pattern matches lib/format-style.ts isCedh().
+  const cedhBackfillKey = "backfill_cedh_format_v1";
+  const cedhSentinel = db.prepare("SELECT value FROM settings WHERE key = ?").get(cedhBackfillKey) as { value: string } | undefined;
+  if (!cedhSentinel) {
+    const result = db
+      .prepare(
+        `UPDATE events
+           SET format = 'cEDH', updated_date = date('now')
+         WHERE format = 'Commander'
+           AND status NOT IN ('pinned')
+           AND (
+             title LIKE '%cEDH%'
+             OR title LIKE '%CEDH%'
+             OR title LIKE '%Competitive EDH%'
+             OR title LIKE '%Competitive Commander%'
+           )`,
+      )
+      .run();
+    db.prepare("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)").run(
+      cedhBackfillKey,
+      JSON.stringify({ ranAt: new Date().toISOString(), promoted: result.changes }),
+    );
+    if (result.changes > 0) {
+      console.log(`[db] backfill ${cedhBackfillKey}: promoted ${result.changes} Commander rows → cEDH format`);
+    }
+  }
 }

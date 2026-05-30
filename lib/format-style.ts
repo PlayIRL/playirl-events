@@ -31,6 +31,11 @@ export const FORMAT_BADGE: Record<string, string> = {
   // Plum — legendary / mythic
   Commander:
     "bg-[#C9A2EE] text-[#2A1145] dark:bg-[#6B3FA0]/85 dark:text-[#F1E4F9]",
+  // cEDH — obsidian + crimson, with the periodic glint sweep. The same
+  // visual we built for the old standalone badge, repurposed as the
+  // primary format chip now that cEDH is a sibling format rather than
+  // a sub-tag of Commander. See .anim-cedh-glint in app/globals.css.
+  cEDH: "anim-cedh-glint",
   // U — Island
   Modern:
     "bg-[#8FC1E8] text-[#0A2D4D] dark:bg-[#0E68AB]/85 dark:text-[#D6ECF7]",
@@ -59,6 +64,9 @@ export const FORMAT_BADGE: Record<string, string> = {
 // 8-10px against a light background.
 export const FORMAT_DOT: Record<string, string> = {
   Commander: "bg-[#6B3FA0]",
+  // cEDH dot: the crimson glint color, slightly muted so it reads at
+  // 8-10px without screaming.
+  cEDH: "bg-[#7A0E22]",
   Modern: "bg-[#0E68AB]",
   Standard: "bg-[#00733E]",
   Pioneer: "bg-[#D3202A]",
@@ -108,37 +116,27 @@ export const RCQ_BADGE =
   "anim-rcq-glint inline-block rounded-sm font-bold uppercase tracking-wider";
 
 // Title-pattern match for cEDH (competitive EDH / competitive Commander)
-// events. Same shape as isRcq() — a sub-format signal that lives in the
-// event title rather than the `format` column. Scrapers (TopDeck mostly,
-// where ~80% of events are EDH) don't tag cEDH explicitly, so we detect
-// the marker at render + query time. Most community spellings appear:
-// "cEDH" (lowercase c, the convention), "CEDH" (all caps, also common),
-// "Competitive EDH", "Competitive Commander".
+// events. Used at scrape time by wizards-locator.ts and topdeck.ts to
+// promote format="Commander" → format="cEDH" when the title carries
+// the marker. No longer used as a render-time badge — cEDH is its own
+// canonical format now, and the FORMAT_BADGE.cEDH styling carries the
+// "competitive" visual signal.
 export function isCedh(title: string | null | undefined): boolean {
   if (!title) return false;
   // Substring match (case-insensitive) on "cedh" — explicitly accepts
   // prefixed regional community names like "NJcEDH", "PAcEDH", "LAcEDH",
   // "TXcEDH", "ATLcEDH" (each is a real cEDH community). No English word
   // contains "cedh" as a substring outside this context, so the false-
-  // positive risk is effectively zero. Matches SQL LIKE '%cEDH%' filter
-  // in lib/events.ts so the badge and the ?cedh=1 query agree on which
-  // rows count.
+  // positive risk is effectively zero.
   return /cedh|competitive\s+(edh|commander)/i.test(title);
 }
-
-// Obsidian-black "competitive stamp" with a crimson glint sweep — see
-// the `.anim-cedh-glint` rule in app/globals.css. Visually distinct from
-// RCQ_BADGE's silver/foil treatment so an event can carry both badges
-// without them blending. Crimson reads as "high-stakes / competitive"
-// and contrasts with RCQ's neutral "judge's seal."
-export const CEDH_BADGE =
-  "anim-cedh-glint inline-block rounded-sm font-bold uppercase tracking-wider";
 
 // Hex-int values for Discord embed `color` field. Mirrors FORMAT_DOT —
 // the deep ("ink") version of each mana color, so the embed accent matches
 // the dot color shown elsewhere.
 export const FORMAT_EMBED_COLOR: Record<string, number> = {
   Commander: 0x6b3fa0, // plum ink (mythic/legendary)
+  cEDH: 0x7a0e22,      // obsidian-crimson — competitive Commander
   Modern: 0x0e68ab, // U ink (Island deep blue)
   Standard: 0x00733e, // G ink (Forest deep green)
   Pioneer: 0xd3202a, // R ink (Mountain deep red)
@@ -162,6 +160,7 @@ export const FORMAT_EMBED_COLOR_DEFAULT = 0x6b7280;
 // ink color. Falls back to ⬜ for unknown formats.
 export const FORMAT_DISCORD_SQUARE: Record<string, string> = {
   Commander: "🟪", // 🟪 plum
+  cEDH: "⬛",        // ⬛ obsidian — competitive Commander (visually heavier than 🟪)
   Modern: "🟦",    // 🟦 Island blue
   Standard: "🟩",  // 🟩 Forest green
   Pioneer: "🟥",   // 🟥 Mountain red
@@ -203,6 +202,7 @@ export const SOURCE_LABELS: Record<string, string> = {
  */
 export const FORMAT_SUGGESTIONS = [
   "Commander",
+  "cEDH",
   "Modern",
   "Standard",
   "Pioneer",
@@ -210,6 +210,5 @@ export const FORMAT_SUGGESTIONS = [
   "Pauper",
   "Draft",
   "Sealed",
-  "Dungeons and Dragons Event",
   "New Player Event",
 ] as const;
