@@ -98,14 +98,18 @@ async function main() {
   }
   const infoRecord = info.body as Record<string, unknown>;
   const startDate = infoRecord.startDate as number | undefined;
+  const endDate = infoRecord.endDate as number | undefined;
   const eventGame = infoRecord.game as string | undefined;
   const eventFormat = infoRecord.format as string | undefined;
+  const eventStatus = infoRecord.status as string | undefined;
   const eventTier = (infoRecord.tier as unknown) ?? (infoRecord.tierName as unknown);
   console.log(`✓ event exists in API`);
-  console.log(`  name:       ${infoRecord.tournamentName ?? "(none)"}`);
+  console.log(`  name:       ${infoRecord.name ?? infoRecord.tournamentName ?? "(none)"}`);
   console.log(`  game:       ${eventGame}`);
   console.log(`  format:     ${eventFormat}`);
   console.log(`  startDate:  ${startDate} (${startDate ? new Date(startDate * 1000).toISOString() : "n/a"})`);
+  console.log(`  endDate:    ${endDate} (${endDate ? new Date(endDate * 1000).toISOString() : "n/a"})`);
+  console.log(`  status:     ${JSON.stringify(eventStatus)}   ← likely culprit if bulk excludes some statuses`);
   console.log(`  tier:       ${JSON.stringify(eventTier)}`);
   if (showRaw) {
     console.log(`\nFull /info response:`);
@@ -128,6 +132,21 @@ async function main() {
   console.log(`HTTP ${baseRes.status} · ${baseRes.tournaments.length} tournaments returned`);
   const baseHit = baseRes.tournaments.find((t) => tidOf(t) === targetTid);
   console.log(`Target TID ${targetTid} in bulk results? ${baseHit ? "✓ YES" : "✗ NO"}`);
+
+  // What `status` / shape do the bulk-returned events have, vs our missing
+  // target? If status differs, we've found a hidden filter.
+  if (baseRes.tournaments.length > 0) {
+    console.log(`\nStatus / key shape of bulk-returned events (compare against the target above):`);
+    for (let i = 0; i < Math.min(3, baseRes.tournaments.length); i++) {
+      const t = baseRes.tournaments[i];
+      const tStatus = (t as Record<string, unknown>).status as string | undefined;
+      const tStart = t.startDate;
+      const tKeys = Object.keys(t).slice(0, 10).join(", ");
+      console.log(`  · ${tidOf(t)}  status=${JSON.stringify(tStatus)}  startDate=${tStart} (${tStart ? new Date(tStart * 1000).toISOString().slice(0, 16) : "?"})`);
+      console.log(`    keys: ${tKeys}${Object.keys(t).length > 10 ? "…" : ""}`);
+    }
+  }
+
   if (baseHit) {
     console.log(`\n→ Bulk query already returns this event. The 72-vs-4 gap must be something else (window? region?).`);
     return;
@@ -143,12 +162,18 @@ async function main() {
   const variants: BulkVariant[] = [
     { label: "no `end` (only start = now)",                  body: { game: eventGame, format: eventFormat, start: now, columns: [] } },
     { label: "no `start` (only end = now+60d)",              body: { game: eventGame, format: eventFormat, end, columns: [] } },
-    { label: "no `start` and no `end` (game+format only)",   body: { game: eventGame, format: eventFormat, columns: [] } },
     { label: "tight window around event ±7d",                body: { game: eventGame, format: eventFormat, start: wideStart, end: wideEnd, columns: [] } },
+    { label: "tight window ±7d + status=scheduled",          body: { game: eventGame, format: eventFormat, start: wideStart, end: wideEnd, status: "scheduled", columns: [] } },
+    { label: "tight window ±7d + status=all",                body: { game: eventGame, format: eventFormat, start: wideStart, end: wideEnd, status: "all", columns: [] } },
+    { label: "tight window ±7d + includeScheduled:true",     body: { game: eventGame, format: eventFormat, start: wideStart, end: wideEnd, includeScheduled: true, columns: [] } },
+    { label: "tight window ±7d + scheduled:true",            body: { game: eventGame, format: eventFormat, start: wideStart, end: wideEnd, scheduled: true, columns: [] } },
+    { label: "tight window ±7d + completed:false",           body: { game: eventGame, format: eventFormat, start: wideStart, end: wideEnd, completed: false, columns: [] } },
+    { label: "tight window ±7d + tier=all",                  body: { game: eventGame, format: eventFormat, start: wideStart, end: wideEnd, tier: "all", columns: [] } },
     { label: "last: 14 (recent 14 days)",                    body: { game: eventGame, format: eventFormat, last: 14, columns: [] } },
-    { label: "no `format` (game only, full window)",         body: { game: eventGame, start: now, end, columns: [] } },
-    { label: "TID lookup mode",                              body: { TID: targetTid, columns: [] } },
+    { label: "TID lookup mode (uppercase)",                  body: { TID: targetTid, columns: [] } },
+    { label: "TID lookup mode (lowercase)",                  body: { tid: targetTid, columns: [] } },
     { label: "participantMin: 1",                            body: { game: eventGame, format: eventFormat, start: now, end, participantMin: 1, columns: [] } },
+    { label: "participantMin: 0",                            body: { game: eventGame, format: eventFormat, start: now, end, participantMin: 0, columns: [] } },
   ];
 
   for (const v of variants) {
