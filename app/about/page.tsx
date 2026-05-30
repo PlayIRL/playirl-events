@@ -70,7 +70,7 @@ export default function AboutPage() {
 
         <Reveal>
           <p>
-            We pull events from <strong>Wizards of the Coast</strong>, <strong>TopDeck.gg</strong>, and connected <strong>Discord servers</strong> — so you never miss a Commander night, prerelease, or draft at your local game store.
+            We pull events from <a href="https://locator.wizards.com" target="_blank" rel="noopener noreferrer" className="font-bold text-neutral-900 dark:text-white underline underline-offset-2 hover:no-underline">Wizards of the Coast</a>, <a href="https://topdeck.gg" target="_blank" rel="noopener noreferrer" className="font-bold text-neutral-900 dark:text-white underline underline-offset-2 hover:no-underline">TopDeck.gg</a>, and connected <strong>Discord servers</strong> — so you never miss a Commander night, prerelease, or draft at your local game store.
           </p>
         </Reveal>
 

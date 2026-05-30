@@ -359,6 +359,14 @@ export default async function HomePage({
         <p className="text-xs leading-relaxed mb-4 max-w-md mx-auto">
           An independent, community-run alternative to the official Wizards of the Coast event locator. Not affiliated with WotC.
         </p>
+        {/* Data attribution. TopDeck's API ToS requires a visible credit
+            and link back; surfacing both upstream event-data providers
+            here keeps the footer honest about where the data comes from. */}
+        <p className="text-xs leading-relaxed mb-4 max-w-md mx-auto">
+          Event data from{" "}
+          <a href="https://locator.wizards.com" target="_blank" rel="noopener noreferrer" className="text-neutral-900 dark:text-white underline underline-offset-2 hover:no-underline">Wizards of the Coast</a>,{" "}
+          <a href="https://topdeck.gg" target="_blank" rel="noopener noreferrer" className="text-neutral-900 dark:text-white underline underline-offset-2 hover:no-underline">TopDeck.gg</a>, and connected Discord communities.
+        </p>
         <p className="text-xs leading-relaxed mb-4 max-w-md mx-auto">
           Companion app:{" "}
           <Link href="/track" className="text-neutral-900 dark:text-white underline underline-offset-2 hover:no-underline">

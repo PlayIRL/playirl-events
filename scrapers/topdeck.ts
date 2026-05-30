@@ -19,23 +19,143 @@ const CA_PROVINCE_CODES = new Set([
   "AB","BC","MB","NB","NL","NS","NT","NU","ON","PE","QC","SK","YT",
 ]);
 
+/** Country-name → ISO-3166 alpha-2 lookup for the cases where
+ *  `loc.address` is just a country name (typical for non-US TopDeck rows
+ *  where city/state are blank). Lower-cased keys + common variants:
+ *  the WebFetch'd v2 docs don't enumerate what TopDeck actually writes
+ *  here, so we hedge by mapping multiple natural-language forms per
+ *  country. Coverage is biased toward countries with active MTG scenes;
+ *  the long tail returns "" and we leave the country column empty
+ *  rather than guess. Extending: just add a key/value. */
+const COUNTRY_NAME_TO_ISO: Record<string, string> = {
+  // North America
+  "united states": "US", "usa": "US", "u.s.a.": "US", "u.s.": "US", "us": "US",
+  "canada": "CA",
+  "mexico": "MX", "méxico": "MX",
+  // UK + Ireland
+  "united kingdom": "GB", "uk": "GB", "great britain": "GB",
+  "england": "GB", "scotland": "GB", "wales": "GB", "northern ireland": "GB",
+  "ireland": "IE", "republic of ireland": "IE", "éire": "IE", "eire": "IE",
+  // Western + Central Europe
+  "germany": "DE", "deutschland": "DE",
+  "france": "FR",
+  "italy": "IT", "italia": "IT",
+  "spain": "ES", "españa": "ES", "espana": "ES",
+  "portugal": "PT",
+  "netherlands": "NL", "holland": "NL", "the netherlands": "NL",
+  "belgium": "BE", "belgique": "BE", "belgië": "BE",
+  "austria": "AT", "österreich": "AT",
+  "switzerland": "CH", "schweiz": "CH", "suisse": "CH",
+  "luxembourg": "LU",
+  // Nordic
+  "sweden": "SE", "sverige": "SE",
+  "norway": "NO", "norge": "NO",
+  "denmark": "DK", "danmark": "DK",
+  "finland": "FI", "suomi": "FI",
+  "iceland": "IS",
+  // Eastern Europe
+  "poland": "PL", "polska": "PL",
+  "czech republic": "CZ", "czechia": "CZ", "česko": "CZ",
+  "slovakia": "SK",
+  "hungary": "HU", "magyarország": "HU",
+  "greece": "GR",
+  "romania": "RO",
+  "bulgaria": "BG",
+  "ukraine": "UA",
+  "lithuania": "LT", "latvia": "LV", "estonia": "EE",
+  "slovenia": "SI", "croatia": "HR", "serbia": "RS",
+  // Asia
+  "japan": "JP", "日本": "JP",
+  "china": "CN", "中国": "CN",
+  "south korea": "KR", "korea": "KR", "republic of korea": "KR",
+  "taiwan": "TW", "republic of china": "TW",
+  "hong kong": "HK",
+  "singapore": "SG",
+  "thailand": "TH",
+  "philippines": "PH",
+  "indonesia": "ID",
+  "malaysia": "MY",
+  "vietnam": "VN", "viet nam": "VN",
+  "india": "IN",
+  // Oceania
+  "australia": "AU",
+  "new zealand": "NZ",
+  // Latin America
+  "brazil": "BR", "brasil": "BR",
+  "argentina": "AR",
+  "chile": "CL",
+  "colombia": "CO",
+  "peru": "PE", "perú": "PE",
+  "venezuela": "VE",
+  "uruguay": "UY",
+  "ecuador": "EC",
+  "bolivia": "BO",
+  "paraguay": "PY",
+  "costa rica": "CR",
+  "guatemala": "GT",
+  "el salvador": "SV",
+  "honduras": "HN",
+  "nicaragua": "NI",
+  "panama": "PA", "panamá": "PA",
+  "dominican republic": "DO", "república dominicana": "DO",
+  "puerto rico": "PR",
+  "cuba": "CU",
+  // Middle East + Africa
+  "israel": "IL",
+  "united arab emirates": "AE", "uae": "AE",
+  "saudi arabia": "SA",
+  "turkey": "TR", "türkiye": "TR",
+  "iran": "IR",
+  "south africa": "ZA",
+  "egypt": "EG",
+  "nigeria": "NG",
+  "morocco": "MA",
+  "kenya": "KE",
+};
+
+/** Resolve an address-shaped string to an ISO-2 country code, or "". The
+ *  comparison is whitespace- and case-insensitive against the lookup
+ *  above. We also try the LAST comma-separated token — TopDeck addresses
+ *  sometimes look like "Calle 9, Maipú, Chile" where the country is the
+ *  last segment. Anything that doesn't match returns "" and the caller
+ *  falls back to the no-country path. */
+function inferCountryFromAddressName(addr: string | undefined): string {
+  if (!addr || typeof addr !== "string") return "";
+  const norm = addr.trim().toLowerCase();
+  if (!norm) return "";
+  if (COUNTRY_NAME_TO_ISO[norm]) return COUNTRY_NAME_TO_ISO[norm];
+  // Try the last comma segment for "City, Region, Country" shapes.
+  const segments = norm.split(",").map((s) => s.trim()).filter(Boolean);
+  for (let i = segments.length - 1; i >= 0; i--) {
+    const hit = COUNTRY_NAME_TO_ISO[segments[i]];
+    if (hit) return hit;
+  }
+  return "";
+}
+
 function inferCountryFromTopDeckLoc(
   raw: string | undefined,
   stateCode: string | undefined,
+  address: string | undefined,
 ): string {
-  // Explicit country wins — uppercase + ISO-2 validate.
+  // Explicit country wins — uppercase + ISO-2 validate. (Legacy field;
+  // TopDeck v2's eventData shape doesn't include this, but kept for
+  // safety against future re-additions or non-bulk endpoints.)
   if (raw && typeof raw === "string") {
     const cc = raw.trim().toUpperCase();
     if (/^[A-Z]{2}$/.test(cc)) return cc;
   }
-  // No explicit country: lean on the state field. US state codes and
-  // Canadian province codes are both two-letter and otherwise indistinguishable
-  // from random strings, but together they cover the bulk of TopDeck rows.
+  // State-code path covers the bulk of TopDeck rows (US events + Canada).
   if (stateCode && typeof stateCode === "string") {
     const sc = stateCode.trim().toUpperCase();
     if (US_STATE_CODES.has(sc)) return "US";
     if (CA_PROVINCE_CODES.has(sc)) return "CA";
   }
+  // Fall back to parsing the address string. International TopDeck rows
+  // routinely have empty city + state + an `address` field carrying just
+  // the country name ("Chile", "Germany"). Name lookup salvages those.
+  const fromAddress = inferCountryFromAddressName(address);
+  if (fromAddress) return fromAddress;
   return "";
 }
 
@@ -121,13 +241,27 @@ async function fetchTopdeckForFormat(
     headers: {
       "Authorization": apiKey,
       "Content-Type": "application/json",
+      // Identify ourselves so TopDeck can spot us in their telemetry —
+      // useful for them if they ever need to coordinate on rate-limit
+      // tuning, and the polite default for any API caller. Includes a
+      // contact-shaped URL per the conventional `User-Agent` form.
+      "User-Agent": "PlayIRL.gg-events/1.0 (+https://playirl.gg)",
     },
     body: JSON.stringify({
       game: "Magic: The Gathering",
       format,
       start,
       end,
+      // Skip the standings payload — we don't store per-player data and
+      // the empty `{}` placeholders that come back still bloat the
+      // response. `columns: []` is honored per the OpenAPI default
+      // override path.
       columns: [],
+      // Filter out single-player / two-player "tournaments" that show up
+      // as TO test data or cancelled events. 4 = minimum viable swiss
+      // (two pairings × one round) — still permissive enough that
+      // legitimate small LGS events stay in.
+      participantMin: 4,
     }),
   });
   if (!res.ok) {
@@ -256,16 +390,30 @@ export default async function fetchTopdeckEvents(sourceConfig: any = {}) {
     const startDate = new Date(t.startDate * 1000);
     const format = normalizeFormat(t.format);
 
-    // Country resolution: TopDeck's documented response shape doesn't
-    // include an ISO country code. We forward any country-shaped field they
-    // do surface (loc.country, loc.countryCode, loc.country_code) — if those
-    // turn up empty, fall back to inferring from the state code: US state
-    // codes map to "US"; Canadian province codes map to "CA"; anything else
-    // we leave blank rather than mis-stamping. The admin's by-country
-    // dashboard renders "—" for blanks so reality stays visible.
+    // Country resolution priority:
+    //   1. Explicit country code (legacy fields — v2 doesn't write these,
+    //      but cheap to forward in case TopDeck re-adds them).
+    //   2. State code → US state codes map to "US", CA province codes map
+    //      to "CA". Covers nearly all North American rows.
+    //   3. Address-name lookup. International TopDeck rows routinely have
+    //      empty city/state and a `loc.address` carrying the country
+    //      name as English/native ("Chile", "Deutschland"). Parses to
+    //      ISO-2 via the COUNTRY_NAME_TO_ISO map above.
+    //   4. Empty string. Surfaces as "—" in the admin by-country
+    //      dashboard rather than guessing.
     const rawCountry: string | undefined =
       loc.country || loc.countryCode || loc.country_code;
-    const country = inferCountryFromTopDeckLoc(rawCountry, loc.state);
+    const country = inferCountryFromTopDeckLoc(rawCountry, loc.state, loc.address);
+
+    // Header image — TopDeck v2 provides `eventData.headerImage` for
+    // events whose organizer uploaded a banner. Empty when none was
+    // set. Most fields TopDeck returns are absolute URLs; defend against
+    // a hypothetical relative path by prefixing the origin.
+    const rawHeaderImage: string = typeof loc.headerImage === "string" ? loc.headerImage.trim() : "";
+    const imageUrl = rawHeaderImage
+      ? (rawHeaderImage.startsWith("http") ? rawHeaderImage : `https://topdeck.gg${rawHeaderImage.startsWith("/") ? "" : "/"}${rawHeaderImage}`)
+      : "";
+
     nearby.push({
       id: "topdeck-" + (t.TID || t.tid),
       title: (t.tournamentName || t.name || "").trim(),
@@ -288,6 +436,11 @@ export default async function fetchTopdeckEvents(sourceConfig: any = {}) {
       detail_url: `https://topdeck.gg/event/${t.TID || t.tid}`,
       latitude: tLat,
       longitude: tLng,
+      // Optional: organizer-uploaded banner. Empty when TopDeck doesn't
+      // carry one — the UI falls back to format-tinted placeholder
+      // exactly like it does for source-less or image-less events from
+      // other scrapers.
+      image_url: imageUrl,
       // TopDeck's API returns per-tournament coords — trust them.
       coords_source: "source",
       source: "topdeck",
