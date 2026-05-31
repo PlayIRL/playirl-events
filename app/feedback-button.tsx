@@ -52,10 +52,10 @@ export default function FeedbackButton() {
       href={href}
       title="Send feedback"
       aria-label="Send feedback"
-      className="fixed right-4 z-40 flex items-center justify-center gap-1.5 w-11 h-11 sm:w-auto sm:h-10 sm:px-3 rounded-md bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-white/15 shadow-md shadow-black/15 dark:shadow-black/40 text-neutral-600 dark:text-neutral-300 text-xs font-medium hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/40 bottom-[calc(1.5rem+env(safe-area-inset-bottom)+8px+5rem)] sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom)+10px+5rem)]"
+      className="fixed right-4 z-40 flex items-center justify-center gap-1.5 w-11 h-11 sm:w-auto sm:h-[3.25rem] sm:px-4 rounded-md bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/25 dark:shadow-black/50 text-neutral-900 dark:text-white text-sm font-semibold hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/40 bottom-[calc(1.5rem+env(safe-area-inset-bottom)+8px+5rem)] sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom)+10px+5rem)]"
     >
       {/* Speech-bubble icon */}
-      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 sm:w-[18px] sm:h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-5l-5 5v-5z" />
       </svg>
       <span className="hidden sm:inline">Feedback</span>
