@@ -177,7 +177,7 @@ export default function CalendarView({
                     className={`flex items-center justify-center gap-1.5 py-1.5 ${
                       isToday
                         ? `bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white shadow-[inset_1px_1px_0_0_#737373,inset_-1px_0_0_0_#737373,inset_0_-1px_0_0_#d4d4d4] dark:shadow-[inset_1px_1px_0_0_#a3a3a3,inset_-1px_0_0_0_#a3a3a3,inset_0_-1px_0_0_#525252] relative z-[1] ${todayPull}`
-                        : "bg-white dark:bg-neutral-900"
+                        : "bg-white dark:bg-neutral-900 shadow-[inset_0_-1px_0_0_#d4d4d4] dark:shadow-[inset_0_-1px_0_0_#525252]"
                     }`}
                   >
                     <span className={`text-[10px] font-mono tabular-nums tracking-[0.01em] ${isToday ? "font-bold" : "font-medium text-neutral-500 dark:text-neutral-400"}`}>
