@@ -95,7 +95,7 @@ export default function DayCard({
               : "bg-white dark:bg-neutral-900"
           }`}
         >
-          <span className={`text-base font-mono font-bold tabular-nums tracking-[0.01em] ${isToday ? "" : "text-neutral-900 dark:text-neutral-100"}`}>
+          <span className={`text-base font-mono font-normal tabular-nums tracking-[0.01em] ${isToday ? "" : "text-neutral-900 dark:text-neutral-100"}`}>
             {headingLabel || weekday}
           </span>
           {events.length > 0 && (
