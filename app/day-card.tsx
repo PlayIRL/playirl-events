@@ -89,13 +89,13 @@ export default function DayCard({
           (overflow-hidden would break that). */}
       <div className={`overflow-clip rounded-lg divide-y divide-neutral-200 dark:divide-white/10 bg-white dark:bg-neutral-900 ${frameBorder}`}>
         <div
-          className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 py-4 ${
+          className={`sticky top-[var(--sticky-bar-h,0px)] z-[5] flex items-center gap-2.5 px-4 py-2.5 ${
             isToday
               ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white"
               : "bg-white dark:bg-neutral-900"
           }`}
         >
-          <span className={`text-base font-mono font-normal tabular-nums tracking-[0.01em] ${isToday ? "" : "text-neutral-900 dark:text-neutral-100"}`}>
+          <span className={`text-sm font-mono font-normal tabular-nums tracking-[0.01em] ${isToday ? "" : "text-neutral-900 dark:text-neutral-100"}`}>
             {headingLabel || weekday}
           </span>
           {events.length > 0 && (
