@@ -556,7 +556,7 @@ export function SubscribeDropdown({
 function CreateEventButton() {
   return (
     <div
-      className="fixed right-4 z-40 bg-white dark:bg-neutral-950 rounded-md p-1 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/25 dark:shadow-black/50 bottom-[calc(1.5rem+env(safe-area-inset-bottom)+8px)] sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom)+10px)]"
+      className="fixed right-4 z-40 bg-white dark:bg-neutral-950 rounded-md p-0.5 sm:p-1 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/25 dark:shadow-black/50 bottom-[calc(1.5rem+env(safe-area-inset-bottom)+8px)] sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom)+10px)]"
     >
       <Link
         href="/account/events/new"
