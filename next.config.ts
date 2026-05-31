@@ -39,6 +39,12 @@ const nextConfig: NextConfig = {
       // CDN (NextAuth Google OAuth). Without this entry, next/image refuses
       // to optimize the URL and the chip falls back to an unoptimized fetch.
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      // TopDeck organizer-uploaded event header images (scrapers/topdeck.ts
+      // → eventHeaderImage). They live on Cloudflare Images (imagedelivery.net)
+      // with a Firebase Storage long tail. Without these, next/image's
+      // optimizer 400s the URL and the thumbnail fails to render entirely.
+      { protocol: "https", hostname: "imagedelivery.net" },
+      { protocol: "https", hostname: "firebasestorage.googleapis.com" },
     ],
     // Our /uploads/* sources are content-addressed (UUID filenames) — the
     // optimizer's output for a given (src, width, quality) tuple never
