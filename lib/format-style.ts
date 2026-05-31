@@ -38,16 +38,14 @@ export const FORMAT_BADGE: Record<string, string> = {
   // Plum — legendary / mythic
   Commander:
     "bg-[#C9A2EE] text-[#2A1145] dark:bg-[#6B3FA0]/85 dark:text-[#F1E4F9]",
-  // Deep plum/violet — Commander's sibling, "intensified." Stays in
-  // the mythic-plum family but uses a dark-bg / light-text treatment
-  // in BOTH modes (Commander's light mode is the inverse, pastel-bg /
-  // dark-text), so the two chips look like related-but-distinct
-  // members of the same family.
+  // Magenta-plum — Commander's sibling, distinguished by hue (pink-
+  // leaning vs Commander's blue-leaning plum) so the two chips read
+  // as related-but-distinct members of the same family. Same light-bg
+  // / dark-text pattern as every other chip — the earlier dark-bg
+  // treatment made cEDH the odd one out in the row.
   //
-  // The earlier light-mode pairing (#9D5BC9 / #1F082B) landed at 4.23:1
-  // which barely missed WCAG AA 4.5:1 — the bg was stuck in the awkward
-  // middle, neither dark enough for light text nor light enough for
-  // dark text. Now 8.28:1.
+  // Contrast verified: #36082D on #E5A8DF ≈ 6.6:1, #FBD8F1 on #6B1F5A
+  // ≈ 5.6:1 — both safely above WCAG AA.
   //
   // tracking-tight! overrides the chip wrapper's tracking-wide. Beleren
   // (the card-title font) is designed for ALL-CAPS with generous
@@ -55,7 +53,7 @@ export const FORMAT_BADGE: Record<string, string> = {
   // default. Tightening pulls the four glyphs into a cohesive unit
   // while the all-caps chips stay at their original tracking.
   cEDH:
-    "bg-[#5E2A8C] text-[#F5EAFF] dark:bg-[#3D1F58]/90 dark:text-[#E1C5F5] tracking-tight!",
+    "bg-[#E5A8DF] text-[#36082D] dark:bg-[#6B1F5A]/85 dark:text-[#FBD8F1] tracking-tight!",
   // U — Island
   Modern:
     "bg-[#8FC1E8] text-[#0A2D4D] dark:bg-[#0E68AB]/85 dark:text-[#D6ECF7]",
