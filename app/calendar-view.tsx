@@ -116,12 +116,18 @@ export default function CalendarView({
 
       {/* Sticky: week nav + day headers together */}
       <div className="sticky top-[var(--sticky-bar-h,0px)] z-[5] -mx-4 px-4 bg-white dark:bg-neutral-900">
-        {/* Unified frame: rounded-md top corners only when not pinned */}
-        <div className={`border border-b-0 border-neutral-200 dark:border-neutral-700 overflow-hidden transition-all duration-150 ${isStuck ? "" : "rounded-t-lg"}`}>
+        {/* Unified frame: rounded-md top corners only when not pinned.
+            No `overflow-hidden` here — the today-column outline (drawn on the
+            header cell below) needs to paint 1px OVER this frame's side border
+            so it reaches the outer edge and stays aligned with the body
+            column's outline, which does the same. The nav row instead rounds
+            its own top corners (rounded-t-[7px], concentric inside this 1px
+            border) so it doesn't poke past the frame's rounded-t-lg. */}
+        <div className={`border border-b-0 border-neutral-200 dark:border-neutral-700 transition-all duration-150 ${isStuck ? "" : "rounded-t-lg"}`}>
 
           {/* Date-range navigation — advances by viewSize (3 on mobile, 7 on
               desktop) so each tap moves to the next chunk of visible days. */}
-          <div className="flex items-center justify-between py-1.5 px-2 border-b border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900">
+          <div className={`flex items-center justify-between py-1.5 px-2 border-b border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 ${isStuck ? "" : "rounded-t-[7px]"}`}>
             <button
               onClick={() => setViewStart(addDays(viewStart, -viewSize))}
               className="p-1.5 rounded-md hover:bg-neutral-100 dark:hover:bg-white/5 text-neutral-500 dark:text-neutral-400 transition cursor-pointer"
@@ -154,14 +160,23 @@ export default function CalendarView({
           {/* Day-header row */}
           <div>
             <div className={`grid gap-px bg-neutral-200 dark:bg-neutral-800 ${viewSize === 3 ? "grid-cols-3" : "grid-cols-7 sm:min-w-[560px]"}`}>
-              {visibleDays.map((day) => {
+              {visibleDays.map((day, idx) => {
                 const isToday = day.date === todayStr;
+                const isFirstCol = idx === 0;
+                const isLastCol = idx === visibleDays.length - 1;
+                // Pull the today header cell 1px over the frame's side border
+                // (matching the body cell's -ml/-mr) so its left/right stroke
+                // lands on the outer frame edge and stays vertically aligned
+                // with the body column's outline below.
+                const todayPull = isToday
+                  ? `${isFirstCol ? "-ml-px" : ""} ${isLastCol ? "-mr-px" : ""}`
+                  : "";
                 return (
                   <div
                     key={day.date}
                     className={`flex items-center justify-center gap-1.5 py-1.5 ${
                       isToday
-                        ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white shadow-[inset_1px_1px_0_0_#737373,inset_-1px_0_0_0_#737373] dark:shadow-[inset_1px_1px_0_0_#a3a3a3,inset_-1px_0_0_0_#a3a3a3] relative z-[1]"
+                        ? `bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white shadow-[inset_1px_1px_0_0_#737373,inset_-1px_0_0_0_#737373,inset_0_-1px_0_0_#d4d4d4] dark:shadow-[inset_1px_1px_0_0_#a3a3a3,inset_-1px_0_0_0_#a3a3a3,inset_0_-1px_0_0_#525252] relative z-[1] ${todayPull}`
                         : "bg-white dark:bg-neutral-900"
                     }`}
                   >
@@ -189,18 +204,38 @@ export default function CalendarView({
         className="anim-fade-in"
         style={{ "--delay": "100ms" } as React.CSSProperties}
       >
-        <div className={`grid gap-px bg-neutral-200 dark:bg-neutral-800 border-b border-x border-neutral-200 dark:border-neutral-700 rounded-b-lg overflow-hidden ${viewSize === 3 ? "grid-cols-3" : "grid-cols-7 sm:min-w-[560px]"}`}>
-          {visibleDays.map((day) => {
+        {/* No `overflow-hidden` here on purpose: the grid's 1px frame border
+            (border-b/border-x) sits OUTSIDE the clip, so a clipped today
+            outline can never cover it and a light frame "ghost" hairlines just
+            outside the dark today stroke at the rounded corner. Instead we let
+            cells paint freely, round the bottom corner cells so their square bg
+            doesn't poke past the rounded frame, and pull the today cell 1px
+            over the frame border so its dark stroke lands on the frame edge. */}
+        <div className={`grid gap-px bg-neutral-200 dark:bg-neutral-800 border-b border-x border-neutral-200 dark:border-neutral-700 rounded-b-lg ${viewSize === 3 ? "grid-cols-3" : "grid-cols-7 sm:min-w-[560px]"}`}>
+          {visibleDays.map((day, idx) => {
             const isToday = day.date === todayStr;
             const isPast = day.date < todayStr;
             const dayEvents = byDate[day.date] || [];
+            const isFirstCol = idx === 0;
+            const isLastCol = idx === visibleDays.length - 1;
+            // Non-today corner cells round to 7px (= 8px frame radius − 1px
+            // border) so they nest concentrically inside the frame.
+            const cornerRound = `${isFirstCol ? "rounded-bl-[7px]" : ""} ${isLastCol ? "rounded-br-[7px]" : ""}`;
+            // Today at a corner: pull the cell 1px over the frame border
+            // (-mb/-ml/-mr) and round to the frame's full 8px so the dark today
+            // stroke lands exactly on the frame edge, covering the light border
+            // that would otherwise ghost just outside the outline. Today in a
+            // middle column only needs -mb-px to cover the bottom border.
+            const todayCover = isToday
+              ? `-mb-px ${isFirstCol ? "-ml-px rounded-bl-[8px]" : ""} ${isLastCol ? "-mr-px rounded-br-[8px]" : ""}`
+              : "";
 
             return (
               <div
                 key={day.date}
                 className={`flex flex-col min-h-[320px] bg-white dark:bg-neutral-900 ${
                   isToday ? "shadow-[inset_1px_-1px_0_0_#737373,inset_-1px_0_0_0_#737373] dark:shadow-[inset_1px_-1px_0_0_#a3a3a3,inset_-1px_0_0_0_#a3a3a3] relative z-[1]" : ""
-                } ${isPast && !isToday ? "opacity-70" : ""}`}
+                } ${isToday ? todayCover : cornerRound} ${isPast && !isToday ? "opacity-70" : ""}`}
               >
                 <div className="flex-1 flex flex-col gap-1 p-1.5">
                   {dayEvents.length === 0 ? (
