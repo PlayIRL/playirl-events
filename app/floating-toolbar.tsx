@@ -95,7 +95,7 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
       // SSR fallback for the first frame before hydration runs.
       style={{ bottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
     >
-      <div className="relative flex flex-row bg-white dark:bg-neutral-950 rounded-md p-1 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/15 dark:shadow-black/50">
+      <div className="relative flex flex-row bg-white dark:bg-neutral-950 rounded-md p-1 border border-neutral-200 dark:border-white/15 shadow-[0_0_28px_-4px_rgb(0_0_0_/_0.12)] dark:shadow-[0_0_28px_-4px_rgb(0_0_0_/_0.5)]">
         {/* Sliding selection pill — width matches a single button, transform
             step = button width + 4px gap. Tailwind generates both mobile
             (60/120px) and sm: (84/168px) variants so the bar tracks the

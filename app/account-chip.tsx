@@ -11,7 +11,7 @@ import AccountMenu from "./account-menu";
 // order) would paint over the open AccountMenu, clipping it. z-[60] keeps
 // the chip and its dropdown above both the StickyBar (z-50) and the
 // FloatingToolbar (z-40).
-const PILL = "fixed top-[var(--chip-top,1rem)] right-4 transition-[top] duration-300 z-[60] flex bg-white dark:bg-neutral-950 rounded-full p-0.5 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/15 dark:shadow-black/50";
+const PILL = "fixed top-[var(--chip-top,1rem)] right-4 transition-[top] duration-300 z-[60] flex bg-white dark:bg-neutral-950 rounded-full p-0.5 border border-neutral-200 dark:border-white/15 shadow-[0_0_28px_-4px_rgb(0_0_0_/_0.12)] dark:shadow-[0_0_28px_-4px_rgb(0_0_0_/_0.5)]";
 
 export default async function AccountChip() {
   const user = await getCurrentUser();
