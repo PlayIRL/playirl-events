@@ -204,6 +204,11 @@ code, pre, kbd, samp, tt {
   );
   animation: liveShine 5s ease-in-out infinite;
   animation-delay: var(--live-delay, 0s);
+  /* `backwards` so that during the (optionally staggered) start delay the
+     sweep holds the 0% keyframe — translateX(-120%), fully off-screen left
+     — instead of its static default position (transform: none), which would
+     park the white gradient over the chip as a stationary stripe on load. */
+  animation-fill-mode: backwards;
 }
 
 /* One-direction slot-machine swap for the in-progress time chip —
@@ -254,18 +259,17 @@ code, pre, kbd, samp, tt {
      the glint sweep direction (which travels along a similar diagonal). */
   background: linear-gradient(
     135deg,
-    #4a5058 0%,
-    #8a9099 22%,
-    #e6e9ed 48%,
-    #9aa0a8 72%,
-    #3e444c 100%
+    #9aa0a8 0%,
+    #c4c9cf 22%,
+    #f4f6f8 48%,
+    #cdd2d8 72%,
+    #8f959d 100%
   );
-  /* White text + dark drop-shadow — engraved-silver effect. Dark text
-     fought the gunmetal edges of the brushed-steel gradient (contrast
-     dropped to ~2.5:1 over the darker stops); white-on-steel keeps the
-     letters legible across the full gradient range and reads as a
-     classic metallic-button engraving. */
-  color: #ffffff;
+  /* Black text + light top-highlight shadow — engraved-into-chrome effect.
+     The brushed-steel gradient now runs bright (chrome/silver rather than
+     gunmetal), so black letters clear contrast comfortably across the full
+     range and read as stamped into the metal. */
+  color: #000000;
   /* Inner top highlight + inner bottom shadow — emboss the chip
      edges via inset shadows rather than borders so the rounded
      corners stay clean. */
@@ -273,7 +277,7 @@ code, pre, kbd, samp, tt {
     inset 0 1px 0 rgb(255 255 255 / 0.55),
     inset 0 -1px 0 rgb(30 35 40 / 0.45),
     0 1px 1px rgb(0 0 0 / 0.12);
-  text-shadow: 0 1px 1px rgb(0 0 0 / 0.55);
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.4);
 }
 
 .anim-rcq-glint::before {

@@ -299,19 +299,34 @@ export default async function EventPage({
         </div>
       )}
 
-      {/* "Happening now" banner — same emerald + pulse-dot vocabulary as
-          the in-progress treatment on the list/calendar views, so an event
-          card and its detail page agree at a glance. Suppressed when the
-          event is cancelled because the cancel banner above takes
-          precedence. */}
+      {/* "LIVE NOW" chip — matches the bright-green live chip from the
+          list/calendar time column (anim-live-shine: neon-green shine + black
+          text + pulsing black dot) including the slot-machine flip
+          (anim-live-label-cycle), so an event card and its detail page agree at
+          a glance. There's no start-time to alternate with here, so all three
+          stacked rows read "LIVE NOW" — the flip still animates, it just lands
+          on the same label. Suppressed when the event is cancelled because the
+          cancel banner above takes precedence. */}
       {!cancelled && eventDisplayStatus(ev.date, ev.time) === "in_progress" && (
-        <div className="mb-6 rounded-md border border-emerald-300 dark:border-emerald-500/40 bg-emerald-50 dark:bg-emerald-500/10 px-4 py-2.5 anim-fade-in">
-          <div className="flex items-center gap-2.5">
-            <span aria-hidden="true" className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 anim-live-pulse shrink-0" />
-            <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-100">
-              Happening now
-            </p>
-          </div>
+        <div className="mb-6 anim-fade-in">
+          <span className="inline-flex flex-col items-start text-sm font-mono tabular-nums font-medium text-white anim-live-shine rounded-md px-2 py-1 whitespace-nowrap leading-tight">
+            <span className="overflow-hidden block" style={{ height: "1lh" }}>
+              <span className="anim-live-label-cycle">
+                <span className="inline-flex items-center gap-1.5">
+                  <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-black anim-live-pulse shrink-0" />
+                  <span><span className="sr-only">Happening now: </span>LIVE NOW</span>
+                </span>
+                <span aria-hidden="true" className="inline-flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-black anim-live-pulse shrink-0" />
+                  <span>LIVE NOW</span>
+                </span>
+                <span aria-hidden="true" className="inline-flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-black anim-live-pulse shrink-0" />
+                  <span>LIVE NOW</span>
+                </span>
+              </span>
+            </span>
+          </span>
         </div>
       )}
 

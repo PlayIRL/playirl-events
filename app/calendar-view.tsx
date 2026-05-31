@@ -132,7 +132,7 @@ export default function CalendarView({
               </svg>
             </button>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-[family-name:var(--font-ultra)] font-black text-neutral-900 dark:text-white tracking-tight">{viewLabel}</span>
+              <span className="text-sm font-mono font-normal tabular-nums tracking-[0.01em] text-neutral-900 dark:text-white">{viewLabel}</span>
               <button
                 onClick={() => setViewStart(viewSize === 3 ? startOfDay(today) : startOfWeek(today))}
                 className="text-xs font-medium px-2.5 py-1 rounded-md border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-white transition cursor-pointer"
@@ -161,11 +161,11 @@ export default function CalendarView({
                     key={day.date}
                     className={`flex items-center justify-center gap-1.5 py-1.5 ${
                       isToday
-                        ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white"
+                        ? "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white shadow-[inset_1px_1px_0_0_#737373,inset_-1px_0_0_0_#737373] dark:shadow-[inset_1px_1px_0_0_#a3a3a3,inset_-1px_0_0_0_#a3a3a3] relative z-[1]"
                         : "bg-white dark:bg-neutral-900"
                     }`}
                   >
-                    <span className={`text-[10px] ${isToday ? "font-bold" : "font-medium text-neutral-500 dark:text-neutral-400"}`}>
+                    <span className={`text-[10px] font-mono tabular-nums tracking-[0.01em] ${isToday ? "font-bold" : "font-medium text-neutral-500 dark:text-neutral-400"}`}>
                       {day.weekday}
                     </span>
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-mono tabular-nums font-bold shrink-0 ${
@@ -199,7 +199,7 @@ export default function CalendarView({
               <div
                 key={day.date}
                 className={`flex flex-col min-h-[320px] bg-white dark:bg-neutral-900 ${
-                  isToday ? "outline-2 outline-neutral-900 dark:outline-white -outline-offset-2 relative z-[1]" : ""
+                  isToday ? "shadow-[inset_1px_-1px_0_0_#737373,inset_-1px_0_0_0_#737373] dark:shadow-[inset_1px_-1px_0_0_#a3a3a3,inset_-1px_0_0_0_#a3a3a3] relative z-[1]" : ""
                 } ${isPast && !isToday ? "opacity-70" : ""}`}
               >
                 <div className="flex-1 flex flex-col gap-1 p-1.5">
@@ -237,12 +237,26 @@ export default function CalendarView({
                             if (status === "in_progress") {
                               return (
                                 <div className="inline-flex flex-col leading-tight text-[10px] font-mono tabular-nums font-medium text-white anim-live-shine rounded px-1 py-0.5 self-start whitespace-nowrap">
-                                  <span className="inline-flex items-center gap-1">
-                                    <span aria-hidden="true" className="w-1 h-1 rounded-full bg-white anim-live-pulse shrink-0" />
-                                    <span><span className="sr-only">Happening now: </span>{parts.time}</span>
+                                  {/* Slot-machine flip: time ↔ "LIVE" ↔ time.
+                                      Three stacked rows scroll through; rows 1
+                                      and 3 are identical (time) so the loop is
+                                      seamless. Labels are centered in the chip's
+                                      width (no dot). */}
+                                  <span className="overflow-hidden block" style={{ height: "1lh" }}>
+                                    <span className="anim-live-label-cycle">
+                                      <span className="flex items-center justify-center">
+                                        <span><span className="sr-only">Happening now: </span>{parts.time}</span>
+                                      </span>
+                                      <span aria-hidden="true" className="flex items-center justify-center">
+                                        <span>LIVE</span>
+                                      </span>
+                                      <span aria-hidden="true" className="flex items-center justify-center">
+                                        <span>{parts.time}</span>
+                                      </span>
+                                    </span>
                                   </span>
                                   {parts.zoneAbbr && (
-                                    <span className="text-[9px] opacity-90 pl-[10px]">{parts.zoneAbbr}</span>
+                                    <span className="text-[9px] opacity-90 text-center">{parts.zoneAbbr}</span>
                                   )}
                                 </div>
                               );

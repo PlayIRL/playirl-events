@@ -416,6 +416,7 @@ export default async function HomePage({
           </Link>
           {" "}— a simple, no-fuss MTG life tracker, currently in open beta.
         </p>
+        <hr className="border-neutral-100 dark:border-neutral-800 my-6" />
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-xs">
           <a href="/about" className="hover:text-neutral-900 dark:hover:text-white">About</a>
           <a href="/track" className="hover:text-neutral-900 dark:hover:text-white">Life Tracking App</a>
@@ -424,7 +425,7 @@ export default async function HomePage({
           <a href="/account/events/new" className="hover:text-neutral-900 dark:hover:text-white">Create event</a>
           <a href="/account" className="hover:text-neutral-900 dark:hover:text-white">Sign in</a>
         </div>
-        <div className="mt-8 pt-6 border-t border-neutral-100 dark:border-neutral-800">
+        <div className="mt-6 pt-6 border-t border-neutral-100 dark:border-neutral-800">
           <p className="text-[10px] uppercase tracking-widest text-neutral-400 dark:text-neutral-600 mb-1">Made by</p>
           <a href="https://cardslinger.shop" target="_blank" rel="noopener noreferrer" className="inline-block text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors">
             <span style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", fontWeight: 700, letterSpacing: "-0.05em", fontSize: "1.5rem", lineHeight: 1 }}>

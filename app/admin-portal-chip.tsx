@@ -9,11 +9,11 @@ import { getCurrentUser } from "@/lib/session";
 // Desktop (sm:↑): shield + "Admin" label, matching the account chip's
 // expand-on-desktop rhythm.
 //
-// Top offset = chip-top + 44px (AccountChip pill height = p-0.5 + w-10
-// + p-0.5) + 8px gap = chip-top + 52px (3.25rem). transition-[top]
-// matches AccountChip so they slide together as the sticky filter bar
-// publishes --chip-top.
-const PILL = "fixed top-[calc(var(--chip-top,1rem)+3.25rem)] right-4 transition-[top] duration-300 z-[60] flex bg-white dark:bg-neutral-950 rounded-full p-0.5 border border-neutral-200 dark:border-white/15 shadow-[0_0_28px_-4px_rgb(0_0_0_/_0.12)] dark:shadow-[0_0_28px_-4px_rgb(0_0_0_/_0.5)]";
+// Top offset = chip-top + 42px (AccountChip pill height = w-10 + 1px
+// border top/bottom) + 8px gap = chip-top + 50px (3.125rem).
+// transition-[top] matches AccountChip so they slide together as the
+// sticky filter bar publishes --chip-top.
+const PILL = "fixed top-[calc(var(--chip-top,1rem)+3.125rem)] right-4 transition-[top] duration-300 z-[60] flex bg-white dark:bg-neutral-950 rounded-full border border-neutral-200 dark:border-white/15 shadow-[0_0_28px_-4px_rgb(0_0_0_/_0.12)] dark:shadow-[0_0_28px_-4px_rgb(0_0_0_/_0.5)]";
 
 export default async function AdminPortalChip() {
   const user = await getCurrentUser();

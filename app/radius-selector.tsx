@@ -66,8 +66,8 @@ function ChevronDown() {
     </svg>
   );
 }
-// Connector words ("events within", "miles of", "in") — Inter, body-text size, neutral weight, normal tracking. Matches the tagline rather than the slab madlib elements.
-const CONNECTOR = "font-[family-name:var(--font-inter)] font-normal text-base tracking-normal";
+// Connector words ("events within", "miles of", "in") — Inter, tagline size, neutral weight, normal tracking. Matches the tagline rather than the slab madlib elements.
+const CONNECTOR = "font-[family-name:var(--font-inter)] font-normal text-sm tracking-normal";
 // width: fixed minimum (16rem ≈ 256px — enough for the longest format name
 // "Dungeons and Dragons Event") and capped at viewport so long lines like
 // the Format chip's "RCQs only" description wrap instead of forcing the
@@ -752,7 +752,7 @@ export default function RadiusSelector({
           ChipSelect dropdowns and SubscribeDropdown render `<div>`s), and
           a `<p>` containing `<div>` is invalid HTML, which surfaces as a
           React-19 hydration warning + DOM-nesting error in the console. */}
-      <div className="text-neutral-500 dark:text-neutral-400 flex items-center justify-center flex-wrap gap-x-1.5 gap-y-1 text-lg sm:text-xl leading-relaxed font-[family-name:var(--font-ultra)] font-bold">
+      <div className="text-neutral-500 dark:text-neutral-400 flex items-center justify-center flex-wrap gap-x-1.5 gap-y-1 text-sm sm:text-base leading-relaxed font-[family-name:var(--font-ultra)] font-bold">
         <ChipSelect
           label={currentRcq ? `${currentFormat || "All"} RCQ` : (currentFormat || tr("filters.all_mtg"))}
           heading="Format"
