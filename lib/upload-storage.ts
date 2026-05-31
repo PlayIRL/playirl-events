@@ -2,7 +2,6 @@ import { randomUUID } from "crypto";
 import fs from "fs/promises";
 import { existsSync, readdirSync, statSync } from "fs";
 import path from "path";
-import { cache } from "react";
 
 /**
  * On-disk storage for user-uploaded images. Files live alongside the SQLite
@@ -114,14 +113,26 @@ export async function deleteUpload(url: string): Promise<void> {
 }
 
 /**
- * Per-request snapshot of every filename under /uploads/{events,venues}/.
- * Wrapped in React.cache so a homepage render with 200+ events triggers ONE
- * readdir per bucket instead of 200+ existsSync/statSync calls. Cache lives
- * for the request only — admins uploading mid-session see fresh state on the
- * very next render. Failures (missing dir, EACCES) return empty sets so
- * lookups gracefully fail closed.
+ * Process-level snapshot of every filename under /uploads/{events,venues}/
+ * with a 60s TTL. Earlier this was per-request via React.cache, which
+ * triggered one readdirSync per HTTP request — fine on a normal disk, but
+ * deadly on Dropbox-FUSE-backed filesystems where readdir round-trips through
+ * the Dropbox daemon and can take seconds per bucket. A process-level cache
+ * collapses ALL traffic to one readdir per 60s window, so dev/staging hosted
+ * on cloud-synced disks don't get crushed.
+ *
+ * Admins uploading new files see fresh state within 60s. The saveUpload path
+ * could invalidate this immediately on write, but the TTL is short enough
+ * that the moment-of-upload race isn't worth the complexity.
+ *
+ * Failures (missing dir, EACCES) cache an empty set for the TTL so we don't
+ * thrash on broken state either.
  */
-const uploadsSnapshot = cache((): { events: Set<string>; venues: Set<string> } => {
+const SNAPSHOT_TTL_MS = 60_000;
+let snapshotCache: { events: Set<string>; venues: Set<string>; expiresAt: number } | null = null;
+function uploadsSnapshot(): { events: Set<string>; venues: Set<string> } {
+  const now = Date.now();
+  if (snapshotCache && snapshotCache.expiresAt > now) return snapshotCache;
   const root = uploadsRoot();
   const readBucket = (bucket: UploadBucket): Set<string> => {
     try {
@@ -130,8 +141,13 @@ const uploadsSnapshot = cache((): { events: Set<string>; venues: Set<string> } =
       return new Set();
     }
   };
-  return { events: readBucket("events"), venues: readBucket("venues") };
-});
+  snapshotCache = {
+    events: readBucket("events"),
+    venues: readBucket("venues"),
+    expiresAt: now + SNAPSHOT_TTL_MS,
+  };
+  return snapshotCache;
+}
 
 /**
  * Sync check that a `/uploads/<bucket>/<file>` URL still resolves to a real
