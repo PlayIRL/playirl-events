@@ -67,7 +67,13 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
         0,
         window.innerHeight - vv.height - vv.offsetTop,
       );
-      ref.current.style.transform = `translate(-50%, -${layoutBottomGap}px)`;
+      // Use the modern `translate` property (NOT `transform`) so this
+      // composes correctly with Tailwind 4's `-translate-x-1/2` — which
+      // in v4 compiles to the `translate` property, not `transform`.
+      // Setting `style.transform` would stack on top of Tailwind's
+      // translate and shift the toolbar a full element-width too far
+      // left (the toolbar gets `-50%` twice, ending up off-screen).
+      ref.current.style.translate = `-50% -${layoutBottomGap}px`;
     };
     update();
     vv.addEventListener("resize", update);
