@@ -25,7 +25,7 @@ export default async function AdminPortalChip() {
         href="/admin"
         title="Admin portal"
         aria-label="Admin portal"
-        className="inline-flex items-center justify-center gap-2 w-10 h-10 p-1 sm:w-auto sm:pr-4 sm:pl-2 rounded-full cursor-pointer transition-colors text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20"
+        className="inline-flex items-center justify-center gap-2 w-10 h-10 p-1 sm:w-auto sm:pr-4 sm:pl-2 rounded-full cursor-pointer transition-colors text-neutral-700 dark:text-neutral-200 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-white/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
