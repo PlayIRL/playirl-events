@@ -52,7 +52,7 @@ export default function FeedbackButton() {
       href={href}
       title="Send feedback"
       aria-label="Send feedback"
-      className="fixed right-4 z-40 flex items-center justify-center gap-1.5 w-11 h-11 sm:w-auto sm:h-[3.25rem] sm:px-4 rounded-md bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-white/15 shadow-[0_0_28px_-4px_rgb(0_0_0_/_0.12)] dark:shadow-[0_0_28px_-4px_rgb(0_0_0_/_0.5)] text-neutral-900 dark:text-white text-sm font-semibold hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/40 bottom-[calc(1.5rem+env(safe-area-inset-bottom)+8px+5rem)] sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom)+10px+5rem)]"
+      className="fixed right-4 z-40 flex items-center justify-center gap-1.5 w-11 h-11 sm:w-auto sm:h-[3.25rem] sm:px-4 rounded-md bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-white/15 shadow-[0_0_28px_-4px_rgb(0_0_0_/_0.12)] dark:shadow-[0_0_28px_-4px_rgb(0_0_0_/_0.5)] text-neutral-900 dark:text-white text-sm font-semibold hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/40 bottom-[calc(1.5rem+env(safe-area-inset-bottom)+8px+3.625rem)] sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom)+10px+3.625rem)]"
     >
       {/* Speech-bubble icon */}
       <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 sm:w-[18px] sm:h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
