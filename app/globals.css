@@ -232,22 +232,11 @@ code, pre, kbd, samp, tt {
   overflow: hidden;
 }
 
-/* Static emerald wash — keeps the row visually distinct from neighbors
-   without competing with the chip's slot-machine label for attention.
-   The animated throb that used to live here turned the whole list into
-   a kinetic surface; one moving element (the chip) reads cleaner. */
-.anim-live-row::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: hsl(120 100% 50% / 0.07);
-}
-
-.dark .anim-live-row::before {
-  background: hsl(120 100% 50% / 0.07);
-}
+/* Background tint removed. Earlier iterations layered a green wash
+   here to mark live rows, but the slot-machine chip + neon stroke
+   already carry the "live" signal — the bg added visual noise without
+   adding information. Stroke + chip kept; row interior reads as a
+   normal list row. */
 
 /* Static neon-green outline around every live row — same hue as the
    time chip's fill so the chip and its row read as one continuous
@@ -388,15 +377,6 @@ code, pre, kbd, samp, tt {
   .anim-live-ring {
     animation: none;
     box-shadow: inset 0 0 0 1px hsl(120 100% 50% / 0.6);
-  }
-  .anim-live-row::before {
-    animation: none;
-    left: 0;
-    width: 100%;
-    background: hsl(120 100% 50% / 0.08);
-  }
-  .dark .anim-live-row::before {
-    background: hsl(120 100% 50% / 0.08);
   }
   /* RCQ badge: keep the brushed-steel base (static visual treatment is
      the core signal), but drop the sweep. */
