@@ -49,7 +49,13 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
   return (
     <div
       className="fixed left-1/2 -translate-x-1/2 z-40 flex"
-      style={{ bottom: "calc(1.5rem + env(safe-area-inset-bottom))" }}
+      // max() instead of `+` so the safe-area-inset (home indicator,
+      // ~34px on notched iPhones) doesn't stack ON TOP OF the 1.5rem
+      // padding — we want whichever is larger, not both summed. Paired
+      // with `interactiveWidget: "resizes-content"` in layout.tsx,
+      // which keeps `bottom` aligned to a layout viewport that already
+      // accounts for the iOS Safari bottom URL bar.
+      style={{ bottom: "max(1.5rem, env(safe-area-inset-bottom))" }}
     >
       <div className="relative flex flex-row bg-white dark:bg-neutral-950 rounded-md p-1 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/15 dark:shadow-black/50">
         {/* Sliding selection pill — width matches a single button, transform

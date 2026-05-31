@@ -242,22 +242,25 @@ code, pre, kbd, samp, tt {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: hsl(120 100% 50% / 0.04);
+  background: hsl(120 100% 50% / 0.07);
 }
 
 .dark .anim-live-row::before {
-  background: hsl(120 100% 50% / 0.04);
+  background: hsl(120 100% 50% / 0.07);
 }
 
-/* Static thin emerald outline around every live row — matches the time
-   chip's fill color so the chip and its row read as one continuous
-   "this is live" element. */
+/* Static neon-green outline around every live row — same hue as the
+   time chip's fill so the chip and its row read as one continuous
+   "this is live" element. Alpha is bumped enough (0.55) that the
+   stroke still reads as the same neon green the chip uses — at very
+   low alphas the perceived hue drifts pale and stops feeling brand-
+   consistent. */
 .anim-live-row::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  border: 1px solid hsl(120 100% 50% / 0.35);
+  border: 1px solid hsl(120 100% 50% / 0.55);
 }
 /* When two live rows are adjacent siblings, drop the second row's top
    border so the shared boundary is rendered once (the first row's
@@ -265,6 +268,31 @@ code, pre, kbd, samp, tt {
    double to 2px. */
 .anim-live-row + .anim-live-row::after {
   border-top: none;
+}
+/* Round the stroke's corners to match the day-card frame's
+   `overflow-clip rounded-lg` so the border doesn't draw a sharp
+   90° corner that gets sliced where the parent's radius curves.
+   Only the first/last live rows actually sit on a rounded edge —
+   middle rows have row neighbors above and below so the corner
+   radius would never be visible there. */
+.anim-live-row:first-of-type::after {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.anim-live-row:last-of-type::after {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+
+/* Override the default neutral hover. Tailwind paints `bg-neutral-100`
+   on top of the green `::before` wash, which mixes to a muddy olive on
+   live rows. Use a more-saturated brand-green tint instead so hover
+   amplifies the live treatment instead of muddying it. */
+.anim-live-row:hover {
+  background-color: hsl(120 100% 50% / 0.16);
+}
+.dark .anim-live-row:hover {
+  background-color: hsl(120 100% 50% / 0.16);
 }
 
 /* RCQ badge — brushed-steel / silver foil with a periodic glint sweep.

@@ -20,6 +20,16 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  // `interactive-widget=resizes-content` makes the LAYOUT viewport shrink
+  // when the iOS Safari bottom URL bar (or keyboard) appears, instead of
+  // the default `resizes-visual` which keeps the layout viewport static
+  // and only shrinks the *visual* viewport. The default behavior makes
+  // `position: fixed; bottom: …` elements snap upward as the visual
+  // viewport bottom moves — visible to users as the floating toolbar
+  // "jumping" when scrolling to the top of a long page. With this
+  // setting, fixed-bottom elements anchor to a layout viewport that
+  // already accounts for the widget, so they stay smooth.
+  interactiveWidget: "resizes-content",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
     { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
