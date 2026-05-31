@@ -112,7 +112,7 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
         <button
           onClick={() => setView("list")}
           title="List view"
-          className={`relative z-10 flex flex-col items-center justify-center gap-1 w-14 h-14 sm:w-20 sm:h-16 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ${activeView === "list" ? "text-neutral-900 dark:text-white" : "text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white"}`}
+          className={`relative z-10 flex flex-col items-center justify-center gap-1 w-14 h-14 sm:w-20 sm:h-16 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ${activeView === "list" ? "text-neutral-900 dark:text-white" : "text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100/70 dark:hover:bg-white/[0.06]"}`}
         >
           <ListIcon />
           <span className="text-[11px] sm:text-xs font-semibold leading-none">List</span>
@@ -120,7 +120,7 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
         <button
           onClick={() => setView("calendar")}
           title="Calendar view"
-          className={`relative z-10 flex flex-col items-center justify-center gap-1 w-14 h-14 sm:w-20 sm:h-16 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ml-1 ${activeView === "calendar" ? "text-neutral-900 dark:text-white" : "text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white"}`}
+          className={`relative z-10 flex flex-col items-center justify-center gap-1 w-14 h-14 sm:w-20 sm:h-16 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ml-1 ${activeView === "calendar" ? "text-neutral-900 dark:text-white" : "text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100/70 dark:hover:bg-white/[0.06]"}`}
         >
           <CalendarIcon />
           <span className="text-[11px] sm:text-xs font-semibold leading-none">Calendar</span>
@@ -128,7 +128,7 @@ export default function FloatingToolbar({ currentView }: { currentView: string }
         <button
           onClick={() => setView("map")}
           title="Map view"
-          className={`relative z-10 flex flex-col items-center justify-center gap-1 w-14 h-14 sm:w-20 sm:h-16 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ml-1 ${activeView === "map" ? "text-neutral-900 dark:text-white" : "text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white"}`}
+          className={`relative z-10 flex flex-col items-center justify-center gap-1 w-14 h-14 sm:w-20 sm:h-16 rounded-md transition-colors duration-150 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 ml-1 ${activeView === "map" ? "text-neutral-900 dark:text-white" : "text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100/70 dark:hover:bg-white/[0.06]"}`}
         >
           <MapIcon />
           <span className="text-[11px] sm:text-xs font-semibold leading-none">Map</span>
