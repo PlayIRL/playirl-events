@@ -135,9 +135,9 @@ export default function AccountMenu({
               <MenuLink href="/account" icon={<OverviewIcon />} onSelect={() => setOpen(false)}>Overview</MenuLink>
               <MenuLink href="/account?tab=events" icon={<EventsIcon />} onSelect={() => setOpen(false)}>Events</MenuLink>
               <MenuLink href="/account?tab=discord" icon={<DiscordIcon />} onSelect={() => setOpen(false)}>Discord</MenuLink>
-              {user.role === "admin" && (
-                <MenuLink href="/admin" icon={<ShieldIcon />} onSelect={() => setOpen(false)}>Admin portal</MenuLink>
-              )}
+              {/* Admin portal lives in its own floating <AdminPortalChip />
+                  just below this chip — surfaced as a one-tap action
+                  rather than buried two clicks deep in this menu. */}
             </>
           ) : (
             // Signed-out CTA gets a filled-button treatment instead of the
@@ -345,10 +345,3 @@ function DiscordIcon() {
   );
 }
 
-function ShieldIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 2L4 5v6.5C4 16.5 7.5 20.5 12 22c4.5-1.5 8-5.5 8-10.5V5l-8-3z" />
-    </svg>
-  );
-}

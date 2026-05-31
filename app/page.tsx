@@ -24,6 +24,7 @@ import LocationBanner from "./location-banner";
 import DayCard from "./day-card";
 import Link from "next/link";
 import AccountChip from "./account-chip";
+import AdminPortalChip from "./admin-portal-chip";
 import { PlayIrlLogo } from "./playirl-logo";
 
 function dayHeadingLabel(
@@ -263,6 +264,7 @@ export default async function HomePage({
   return (
     <main className="w-full max-w-5xl mx-auto px-4 pt-8 pb-32">
       <AccountChip />
+      <AdminPortalChip />
       <FloatingToolbar currentView={currentView} />
 
       {/* Hero header */}
