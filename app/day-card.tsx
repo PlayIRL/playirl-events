@@ -192,7 +192,7 @@ export default function DayCard({
                   natural wrapping; the live variant uses whitespace-nowrap
                   to prevent the pill's pulse dot from drifting onto its
                   own line, so we have to stack explicitly. */}
-              <div className="hidden sm:block shrink-0 w-24">
+              <div className="hidden sm:block shrink-0 w-20">
                 {(() => {
                   const parts = formatEventTimeParts(ev.date, ev.time, pickEventTimezone(ev));
                   if (status === "in_progress") {
