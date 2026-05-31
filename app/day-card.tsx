@@ -174,7 +174,7 @@ export default function DayCard({
               // --live-delay (when set) staggers the three live animations
               // so simultaneous live rows don't strobe in lockstep.
               style={rowStyle}
-              className={`anim-row-in ${status === "in_progress" ? "anim-live-row" : ""} group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 ${status === "completed" ? "py-2 sm:py-2.5 saturate-50" : "py-4 sm:py-5"} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
+              className={`anim-row-in group flex items-center gap-3 sm:gap-4 px-3 sm:px-4 ${status === "completed" ? "py-2 sm:py-2.5 saturate-50" : "py-4 sm:py-5"} ${isToday ? "hover:bg-neutral-100 dark:hover:bg-white/[0.04]" : "hover:bg-neutral-50 dark:hover:bg-white/5"}`}
             >
               {/* Desktop: time as a fixed left column. When the event is
                   in progress the time itself shifts to a high-energy sky
