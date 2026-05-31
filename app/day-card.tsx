@@ -192,7 +192,13 @@ export default function DayCard({
                   natural wrapping; the live variant uses whitespace-nowrap
                   to prevent the pill's pulse dot from drifting onto its
                   own line, so we have to stack explicitly. */}
-              <div className="hidden sm:block shrink-0 w-20">
+              {/* Right-aligned so the time/chip always abuts the gap-4 to
+                  the image — left-aligned with a fixed column gave a big
+                  phantom gap on short times like "1:00 PM" and a tight
+                  squeeze on the wider live chip ("● LIVE NOW"). w-24 fits
+                  the widest variant; justify-end pushes whatever's inside
+                  to the right edge. */}
+              <div className="hidden sm:flex shrink-0 w-24 justify-end">
                 {(() => {
                   const parts = formatEventTimeParts(ev.date, ev.time, pickEventTimezone(ev));
                   if (status === "in_progress") {
