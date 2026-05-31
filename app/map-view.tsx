@@ -153,16 +153,17 @@ export default function MapView({
         </APIProvider>
 
         {pendingSearch && (
-          // Compact icon-only circle on mobile (where Google's top-left
-          // Map/Satellite chip and the bottom Zoom/Street-View controls
-          // crowd anything wider), full labeled pill on sm: and up. Same
-          // top-center placement so the affordance is consistent across
-          // breakpoints — only the chrome shrinks.
+          // Mobile: compact 36×36 icon-only circle pinned top-right,
+          // out of the way of Google's top-left Map/Satellite chip
+          // (the only mobile control at the top).
+          // Desktop (sm:↑): full labeled pill at top-center — the
+          // affordance reads as a banner when there's room, while
+          // mobile keeps it as a discreet floating action button.
           <button
             onClick={applyPendingSearch}
             title="Recenter map to current view"
             aria-label="Recenter map to current view"
-            className="absolute top-3 left-1/2 -translate-x-1/2 z-[1] inline-flex items-center justify-center sm:gap-1.5 w-9 h-9 sm:w-auto sm:px-4 rounded-full sm:rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-sm font-medium shadow-lg hover:bg-neutral-200 dark:hover:bg-neutral-700 transition cursor-pointer"
+            className="absolute top-3 right-3 sm:right-auto sm:left-1/2 sm:-translate-x-1/2 z-[1] inline-flex items-center justify-center sm:gap-1.5 w-9 h-9 sm:w-auto sm:px-4 rounded-full sm:rounded-md bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-white text-sm font-medium shadow-lg hover:bg-neutral-200 dark:hover:bg-neutral-700 transition cursor-pointer"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v8m-4-4h8m6 0a10 10 0 11-20 0 10 10 0 0120 0z" />
