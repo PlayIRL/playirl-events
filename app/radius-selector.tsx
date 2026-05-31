@@ -554,22 +554,22 @@ export function SubscribeDropdown({
 }
 
 function CreateEventButton() {
+  // Single-element button — see FeedbackButton for why we flattened the
+  // wrapper/anchor split. Bigger shadow + heavier font-weight + primary
+  // text color keeps the "primary CTA" weight against FeedbackButton's
+  // lighter chrome stacked above it.
   return (
-    <div
-      className="fixed right-4 z-40 bg-white dark:bg-neutral-950 rounded-md p-0.5 sm:p-1 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/25 dark:shadow-black/50 bottom-[calc(1.5rem+env(safe-area-inset-bottom)+8px)] sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom)+10px)]"
+    <Link
+      href="/account/events/new"
+      title="Create a new event"
+      aria-label="Create a new event"
+      className="fixed right-4 z-40 flex items-center justify-center gap-1.5 w-11 h-11 sm:w-auto sm:h-[3.25rem] sm:px-4 rounded-md bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-white/15 shadow-xl shadow-black/25 dark:shadow-black/50 text-neutral-900 dark:text-white text-sm font-semibold hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/40 bottom-[calc(1.5rem+env(safe-area-inset-bottom)+8px)] sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom)+10px)]"
     >
-      <Link
-        href="/account/events/new"
-        title="Create a new event"
-        aria-label="Create a new event"
-        className="flex items-center justify-center gap-1.5 w-10 h-10 sm:w-auto sm:h-11 sm:px-4 rounded-md text-neutral-900 dark:text-white text-sm font-semibold hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/40"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 sm:w-[18px] sm:h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-        </svg>
-        <span className="hidden sm:inline">Create event</span>
-      </Link>
-    </div>
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 sm:w-[18px] sm:h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+      </svg>
+      <span className="hidden sm:inline">Create event</span>
+    </Link>
   );
 }
 

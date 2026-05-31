@@ -42,23 +42,24 @@ export default function FeedbackButton() {
   // +3.5rem at parity) which leaves ~24px clear air between the two
   // pills, and the button itself drops from h-10/h-11 to h-8/h-9 with a
   // lighter shadow.
+  // Single-element button (the chrome IS the link). Previously the bg/
+  // border/shadow lived on an outer wrapper <div> and the hover-bg lived
+  // on an inner <a>, which made the hover state highlight only the inner
+  // rectangle and leave a visible gap of the wrapper's static bg around
+  // it — read as "container-in-container" rather than a normal button.
   return (
-    <div
-      className="fixed right-4 z-40 bg-white dark:bg-neutral-950 rounded-md p-0.5 border border-neutral-200 dark:border-white/15 shadow-md shadow-black/15 dark:shadow-black/40 bottom-[calc(1.5rem+env(safe-area-inset-bottom)+8px+5rem)] sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom)+10px+5rem)]"
+    <a
+      href={href}
+      title="Send feedback"
+      aria-label="Send feedback"
+      className="fixed right-4 z-40 flex items-center justify-center gap-1.5 w-11 h-11 sm:w-auto sm:h-10 sm:px-3 rounded-md bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-white/15 shadow-md shadow-black/15 dark:shadow-black/40 text-neutral-600 dark:text-neutral-300 text-xs font-medium hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/40 bottom-[calc(1.5rem+env(safe-area-inset-bottom)+8px+5rem)] sm:bottom-[calc(1.5rem+env(safe-area-inset-bottom)+10px+5rem)]"
     >
-      <a
-        href={href}
-        title="Send feedback"
-        aria-label="Send feedback"
-        className="flex items-center justify-center gap-1 w-10 h-10 sm:w-auto sm:h-9 sm:px-2.5 rounded-md text-neutral-600 dark:text-neutral-300 text-xs font-medium hover:text-neutral-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/40"
-      >
-        {/* Speech-bubble icon */}
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-5l-5 5v-5z" />
-        </svg>
-        <span className="hidden sm:inline">Feedback</span>
-      </a>
-    </div>
+      {/* Speech-bubble icon */}
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-5l-5 5v-5z" />
+      </svg>
+      <span className="hidden sm:inline">Feedback</span>
+    </a>
   );
 }
 
