@@ -78,9 +78,15 @@ export default function BotPage() {
           <h2 className="text-xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white mb-3">How it works</h2>
           <ol className="list-decimal list-inside space-y-2 text-sm text-neutral-700 dark:text-neutral-300">
             <li>Click <strong>Add to your Discord server</strong> above and pick a server.</li>
-            <li>Open <Link href="/account?tab=discord" className="underline hover:text-neutral-900 dark:hover:text-white">Account → Discord</Link> on PlayIRL.GG and click <strong>+ New auto-post</strong>.</li>
-            <li>Pick the channel, a <strong>mode</strong> — weekly digest, daily digest, or per-event reminder — and any filters (format, venue, location, radius).</li>
-            <li>That&apos;s it. The bot posts on the schedule you set. Anyone in the server can run <code className="px-1 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800">/playirl today</code> or <code className="px-1 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800">/playirl week</code> to look up events on demand.</li>
+            <li>
+              Set up a recurring post one of two ways:
+              <ul className="mt-1.5 ml-5 space-y-1 list-disc">
+                <li><strong>Right in Discord</strong> — run <code className="px-1 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800">/playirl today</code> or <code className="px-1 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800">/playirl week</code>, then click <strong>🔁 Subscribe</strong> under the results and pick a channel, day, and time. Fastest way to a weekly or daily digest.</li>
+                <li><strong>On the web</strong> — open <Link href="/account?tab=discord" className="underline hover:text-neutral-900 dark:hover:text-white">Account → Discord</Link> and click <strong>+ New auto-post</strong> for the full set of options: per-event reminders, venue scope, naming, source filters, and editing.</li>
+              </ul>
+            </li>
+            <li>The bot posts on the schedule you set. Manage any post later with the <strong>⚙️ Manage</strong> button on it, <code className="px-1 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800">/playirl manage</code>, or the Discord tab on the web.</li>
+            <li>Anyone in the server can run <code className="px-1 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800">/playirl today</code> or <code className="px-1 py-0.5 rounded-md bg-neutral-100 dark:bg-neutral-800">/playirl week</code> to look up events on demand.</li>
           </ol>
         </section>
       </Reveal>
@@ -89,12 +95,12 @@ export default function BotPage() {
         <section className="mb-10">
           <h2 className="text-xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white mb-3">Commands</h2>
           <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
-            <code>/playirl today</code>, <code>/playirl week</code>, and <code>/playirl help</code> work for anyone in the channel. <code>/playirl manage</code> requires the <strong>Manage Server</strong> permission. To create or edit recurring posts, use the <Link href="/account?tab=discord" className="underline hover:text-neutral-900 dark:hover:text-white">website</Link>.
+            <code>/playirl today</code>, <code>/playirl week</code>, and <code>/playirl help</code> work for anyone in the channel. <code>/playirl manage</code> requires the <strong>Manage Server</strong> permission. The <strong>🔁 Subscribe</strong> button under a <code>today</code>/<code>week</code> result sets up a recurring post without leaving Discord; for reminders and full editing, use the <Link href="/account?tab=discord" className="underline hover:text-neutral-900 dark:hover:text-white">website</Link>.
           </p>
           <div className="space-y-3">
             <CommandCard
               name="/playirl today"
-              summary="Show MTG events happening today near you. Requires location + radius; format is optional."
+              summary="Show MTG events happening today near you. Location, radius, and format are all required — pick All formats to include everything."
               example="/playirl today location:19103 radius_miles:25 format:Commander"
             />
             <CommandCard
@@ -139,7 +145,7 @@ export default function BotPage() {
 
       <Reveal delay={300}>
         <section className="text-xs text-neutral-500 dark:text-neutral-400 border-t border-neutral-100 dark:border-neutral-800 pt-4">
-          Your channel data stays inside the bot&apos;s own SQLite database — we don&apos;t share subscription configs with third parties. The bot only needs <strong>View Channel</strong>, <strong>Send Messages</strong>, <strong>Embed Links</strong>, and <strong>Read Message History</strong> to function.
+          Your channel data stays inside the bot&apos;s own SQLite database — we don&apos;t share subscription configs with third parties. The bot only needs <strong>View Channel</strong>, <strong>Send Messages</strong>, <strong>Embed Links</strong>, and <strong>Read Message History</strong> for channel posts, plus <strong>Manage Events</strong> to add events to a server&apos;s Events tab.
         </section>
       </Reveal>
     </main>

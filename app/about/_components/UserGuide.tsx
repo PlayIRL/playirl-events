@@ -147,7 +147,7 @@ export default function UserGuide() {
           id="subscribe"
           title="Subscribe to your calendar"
           audience="Players"
-          intro="The Subscribe button under the filter bar turns any view into a live calendar feed. Filters carry through — subscribe to &ldquo;Commander, within 25 mi of Philly&rdquo; and your calendar app updates automatically as new matching events get added."
+          intro="The Subscribe button under the filter bar turns any view into a live calendar feed. Filters carry through — subscribe to &ldquo;Commander, within 25 mi of Philadelphia, PA&rdquo; and your calendar app updates automatically as new matching events get added."
         >
           <SubscribeDropdownMockup />
           <Steps>
@@ -229,8 +229,9 @@ export default function UserGuide() {
               Pick a server from the dropdown (you must have <strong>Manage Server</strong> in the target server).
             </Step>
             <Step>
-              Approve the requested permissions: <Pill mono>SEND_MESSAGES</Pill>,
-              <Pill mono>EMBED_LINKS</Pill>, <Pill mono>MANAGE_EVENTS</Pill>.
+              Approve the requested permissions: <Pill mono>VIEW_CHANNEL</Pill>,
+              <Pill mono>SEND_MESSAGES</Pill>, <Pill mono>EMBED_LINKS</Pill>,
+              <Pill mono>READ_MESSAGE_HISTORY</Pill>, and <Pill mono>MANAGE_EVENTS</Pill>.
               The last one is what lets the bot create scheduled events; if you
               installed before May 2026, re-invite to grant it.
             </Step>
@@ -272,6 +273,14 @@ export default function UserGuide() {
             <Step>
               Use the per-card <Pill>Send now</Pill> button to fire one post
               right now without waiting for the next scheduled tick.
+            </Step>
+            <Step>
+              Prefer to stay in Discord? Run <Pill mono>/playirl today</Pill> or{" "}
+              <Pill mono>/playirl week</Pill>, then click <Pill>🔁 Subscribe</Pill>{" "}
+              under the results to spin up a weekly or daily digest without the
+              web form. Manage any post later with the <Pill>⚙️ Manage</Pill>{" "}
+              button on it or <Pill mono>/playirl manage</Pill> (pause, re-enable,
+              or jump to the web editor).
             </Step>
           </Steps>
           <TryLink href="/account?tab=discord" label="Open the Discord tab" />
@@ -524,7 +533,7 @@ function FilterBarMockup() {
           <span className="text-neutral-500 dark:text-neutral-400">events within</span>
           <UnderlinedWord>10</UnderlinedWord>
           <span className="text-neutral-500 dark:text-neutral-400">miles of</span>
-          <UnderlinedWord>Philly</UnderlinedWord>
+          <UnderlinedWord>Philadelphia, PA</UnderlinedWord>
           <span
             aria-label="Subscribe to calendar"
             className="inline-flex items-center justify-center w-7 h-7 rounded-md border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white ml-0.5"
