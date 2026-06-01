@@ -7,11 +7,11 @@
  *   1. URL params  (?lat=…&lng=…&loc=…)         — most recent explicit signal
  *   2. User prefs   (signed-in users only)       — persisted last choice
  *   3. IP geolocation (best-effort, capped 1.5s) — implicit hint for new users
- *   4. Hardcoded default (Philly)                — last resort
+ *   4. Hardcoded default (Philadelphia, PA)      — last resort
  *
  * `isFromUser` is true for tiers 1–3 (anything traceable to the actual viewer).
- * Distance display gates on this — we don't render "X mi from Philly" to a
- * user who hasn't given us any location signal, since the number would be
+ * Distance display gates on this — we don't render "X mi from Philadelphia, PA"
+ * to a user who hasn't given us any location signal, since the number would be
  * meaningless.
  */
 
@@ -32,7 +32,10 @@ const cachedLabelForCoords = cache(
   async (lat: number, lng: number) => getLabelForCoords(lat, lng),
 );
 
-export const DEFAULT_LOCATION_LABEL = "Philly";
+// Derived from the config address in the same "City, ST" format the
+// reverse-geocoder emits for any other location — no special-cased nickname.
+// For the default coords this resolves to "Philadelphia, PA".
+export const DEFAULT_LOCATION_LABEL = `${config.location.city}, ${config.location.state}`;
 
 export interface ResolvedLocation {
   lat: number;
@@ -122,7 +125,7 @@ export async function resolveUserLocation(opts: {
   if (requestHeaders) {
     const viewerCountry = getServerCountry(requestHeaders);
     const def = getCountryDefaultLocation(viewerCountry);
-    // Skip the override for US — US viewers expect the existing Philly
+    // Skip the override for US — US viewers expect the existing Philadelphia
     // default (the original audience). Only fire the override for countries
     // we explicitly cover and that AREN'T the historical default.
     if (def && viewerCountry !== "US") {
@@ -139,7 +142,7 @@ export async function resolveUserLocation(opts: {
     }
   }
 
-  // 5. Final hardcoded default (Philly).
+  // 5. Final hardcoded default (Philadelphia, PA).
   return {
     lat: config.location.lat,
     lng: config.location.lng,
