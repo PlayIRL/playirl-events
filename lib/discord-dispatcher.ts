@@ -55,6 +55,7 @@ import {
 import { getDb } from "@/lib/db";
 import type { DiscordEventsTabSub } from "@/lib/discord-events-tab-subs";
 import { drainAdminNotifications } from "@/lib/discord-admin-push";
+import { buildManageButtonRow } from "@/lib/discord-interactions";
 
 const REMINDER_WINDOW_MINUTES = 5;
 // How late a missed per-event reminder can fire and still be useful. The
@@ -246,6 +247,13 @@ async function fireDigest(
   // (cancellations are best-effort) and avoids a schema migration.
   const payloads = renderDigestByDay(events);
   if (payloads.length === 0) return;
+
+  // Hang the "⚙️ Manage this auto-post" button off the LAST day's message so it
+  // reads as a footer CTA after the reader has scrolled past every day — same
+  // placement rationale as the subscribe button on /today and /week. The
+  // button is visible to everyone; the interaction handler gates pause/edit on
+  // Manage Server.
+  payloads[payloads.length - 1].components = [buildManageButtonRow(sub.id)];
 
   const headEvent = events[0];
   if (!claimPost(sub.id, headEvent.id, "digest", bucket)) return;

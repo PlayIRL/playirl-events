@@ -10,6 +10,7 @@ import { createPublicKey, verify as verifySignatureRaw } from "node:crypto";
 import { getActiveEvents } from "./events";
 import { geocodeAddress } from "./geocode";
 import {
+  type DiscordSubscription,
   getSubscription,
   listSubscriptionsForGuild,
   setSubscriptionEnabled,
@@ -180,6 +181,8 @@ const COMPONENT_CHANNEL_SELECT = 8;
 const BUTTON_STYLE_PRIMARY = 1;
 const BUTTON_STYLE_SECONDARY = 2;
 const BUTTON_STYLE_SUCCESS = 3;
+const BUTTON_STYLE_DANGER = 4;
+const BUTTON_STYLE_LINK = 5;
 
 // Channel type 0 = GUILD_TEXT. The subscribe panel's channel select filters
 // to text channels only — announcements and threads would technically accept
@@ -323,15 +326,21 @@ function immediateText(content: string): InteractionHandlerResult {
 
 // --- Command handlers -------------------------------------------------------
 
-function handleUnsubscribe(interaction: DiscordInteraction, sub: InteractionOption): InteractionHandlerResult {
+function handleManage(interaction: DiscordInteraction, sub: InteractionOption): InteractionHandlerResult {
   const id = optString(sub.options, "id");
   if (!id) return immediateText("Missing `id` argument.");
   const existing = getSubscription(id);
   if (!existing || existing.guild_id !== interaction.guild_id) {
     return immediateText(`No subscription \`${id}\` in this server.`);
   }
-  setSubscriptionEnabled(id, false);
-  return immediateText(`Unsubscribed \`${id}\`. (Subscription disabled — re-enable it from the database if needed.)`);
+  const panel = renderManagePanel(existing);
+  return {
+    kind: "immediate",
+    response: {
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: { content: panel.content, components: panel.components, flags: FLAGS_EPHEMERAL },
+    },
+  };
 }
 
 /**
@@ -533,7 +542,7 @@ function renderSubscribePanel(draft: DiscordSubscriptionDraft): {
     `Filters: ${filterLine}`,
     `Posts to: ${channelLine}`,
     "",
-    "Only members with **Manage Server** can subscribe. Pick a channel and confirm — you can edit or unsubscribe later at <https://playirl.gg/account/discord> or with `/playirl unsubscribe`.",
+    "Only members with **Manage Server** can subscribe. Pick a channel and confirm — you can edit or unsubscribe later at <https://playirl.gg/account/discord>, with `/playirl manage`, or via the **Manage** button on each post.",
   ].join("\n");
 
   const components: unknown[] = [];
@@ -837,7 +846,7 @@ function handleSubscribeDraft(
         const lines = [
           `✅ **Subscribed.** I'll post to <#${draft.channel_id}> ${cadenceLabel}.`,
           `Filters: ${draft.format ? `${draft.format} · ` : ""}within ${draft.radius_miles}mi of ${draft.near_label}`,
-          `Manage at <https://playirl.gg/account/discord> or run \`/playirl unsubscribe\` (id \`${created.id.slice(0, 8)}\`).`,
+          `Manage at <https://playirl.gg/account/discord>, run \`/playirl manage\` (id \`${created.id.slice(0, 8)}\`), or use the **Manage** button on each post.`,
         ];
         return clearPanelResponse(lines.join("\n"));
       } catch (err) {
@@ -861,6 +870,213 @@ function hourUtcToUnix(hourUtc: number): number {
   return Math.floor(next.getTime() / 1000);
 }
 
+// --- Manage panel (scheduled-post button + /playirl manage) ----------------
+//
+// Every scheduled digest carries a "⚙️ Manage this auto-post" button whose
+// custom_id encodes the subscription id. The button is visible to everyone in
+// the channel (Discord can't hide a component per-viewer), but the click
+// handler gates on Manage Server and politely refuses non-admins — mirroring
+// the subscribe-button model. Clicking opens an ephemeral panel with the
+// subscription's details and Unsubscribe / Re-enable actions plus a link to
+// the web dashboard for full editing. The same panel backs `/playirl manage`.
+//
+// custom_id grammar (subscription ids are UUIDs — colon-free, so a plain
+// `split(":")` is unambiguous):
+//   mng:v1:{subId}            → open the panel (button on the public post)
+//   mng:v1:{subId}:disable    → unsubscribe (pause) — only from inside a panel
+//   mng:v1:{subId}:enable     → re-enable — only from inside a panel
+
+const MANAGE_PREFIX = "mng:v1:";
+
+interface ManageAction {
+  subId: string;
+  action: "open" | "disable" | "enable";
+}
+
+function parseManageCustomId(customId: string): ManageAction | null {
+  if (!customId.startsWith(MANAGE_PREFIX)) return null;
+  const parts = customId.slice(MANAGE_PREFIX.length).split(":");
+  const subId = parts[0];
+  if (!subId) return null;
+  const action = parts[1] ?? "open";
+  if (action !== "open" && action !== "disable" && action !== "enable") return null;
+  return { subId, action };
+}
+
+/** The action-row that hangs off a scheduled digest post. Exported so the
+ *  dispatcher can attach it to the last day's message without duplicating the
+ *  custom_id codec. */
+export function buildManageButtonRow(subId: string): unknown {
+  return {
+    type: COMPONENT_ACTION_ROW,
+    components: [
+      {
+        type: COMPONENT_BUTTON,
+        style: BUTTON_STYLE_SECONDARY,
+        label: "⚙️ Manage this auto-post",
+        custom_id: `${MANAGE_PREFIX}${subId}`,
+      },
+    ],
+  };
+}
+
+/** Human-readable cadence line for a subscription (weekly/daily/reminder). */
+function describeCadence(sub: DiscordSubscription): string {
+  if (sub.mode === "weekly") {
+    const day = DOW_CHOICES.find(d => d.value === String(sub.dow))?.label ?? "week";
+    return `Weekly · every ${day} at <t:${hourUtcToUnix(sub.hour_utc)}:t>`;
+  }
+  if (sub.mode === "daily") {
+    return `Daily · every day at <t:${hourUtcToUnix(sub.hour_utc)}:t>`;
+  }
+  return `Reminder · ${sub.lead_minutes} min before each matching event`;
+}
+
+/**
+ * Render the ephemeral management panel for a subscription. Used by both the
+ * scheduled-post Manage button and the `/playirl manage` command. The action
+ * buttons re-encode the subscription id so a follow-up disable/enable click
+ * re-renders this same panel via UPDATE_MESSAGE.
+ *
+ * `notice` is an optional confirmation banner pinned to the top after an
+ * action (e.g. "✅ Unsubscribed.") so the user gets explicit feedback that
+ * their click took effect — the panel otherwise looks similar before/after.
+ *
+ * The copy is deliberately verbose: this menu is the only in-Discord surface
+ * for managing an auto-post, so it spells out what each button does and that
+ * pausing is reversible, rather than assuming the reader knows.
+ */
+function renderManagePanel(
+  sub: DiscordSubscription,
+  notice?: string,
+): { content: string; components: unknown[] } {
+  const id8 = sub.id.slice(0, 8);
+  const status = sub.enabled
+    ? "🟢 **Active** — posting on the schedule below."
+    : `🔴 **Paused** — no posts are going out right now.${sub.disabled_reason ? ` (${sub.disabled_reason.slice(0, 150)})` : ""}`;
+
+  const filterBits: string[] = [];
+  if (sub.venue_name?.trim()) {
+    filterBits.push(`at ${sub.venue_name.trim()}`);
+  } else {
+    filterBits.push(`within ${sub.radius_miles ?? "?"}mi of ${sub.near_label}`);
+  }
+  if (sub.format) filterBits.unshift(sub.format);
+
+  const lines: string[] = [
+    `## ⚙️ Manage auto-post \`${id8}\``,
+    "_Only you can see this menu — nothing here posts to the channel._",
+  ];
+  if (notice) {
+    lines.push("", notice);
+  }
+  lines.push(
+    "",
+    "**Here's what this auto-post does:**",
+    `${status}`,
+    `📢 **Posts to:** <#${sub.channel_id}>`,
+    `🗓️ **When:** ${describeCadence(sub)}`,
+    `🔎 **What it includes:** ${filterBits.join(" · ")}`,
+  );
+  if (sub.created_by) lines.push(`👤 **Set up by:** <@${sub.created_by}>`);
+
+  // Spell out each button so the action row isn't a guessing game. The primary
+  // action flips with the enabled state, so the guide flips with it too.
+  lines.push("", "**What you can do from here:**");
+  if (sub.enabled) {
+    lines.push(
+      "• 🛑 **Unsubscribe** — stop these posts. They'll pause immediately, and you can turn them back on here anytime.",
+    );
+  } else {
+    lines.push(
+      "• ▶️ **Re-enable** — resume posting on the schedule above. Nothing changes about the filters or timing.",
+    );
+  }
+  lines.push(
+    "• ✏️ **Edit on the web** — rename it, or change the channel, filters, day, or time (Discord opens the dashboard in your browser).",
+  );
+
+  const actionRow = {
+    type: COMPONENT_ACTION_ROW,
+    components: [
+      sub.enabled
+        ? {
+            type: COMPONENT_BUTTON,
+            style: BUTTON_STYLE_DANGER,
+            label: "Unsubscribe",
+            custom_id: `${MANAGE_PREFIX}${sub.id}:disable`,
+          }
+        : {
+            type: COMPONENT_BUTTON,
+            style: BUTTON_STYLE_SUCCESS,
+            label: "Re-enable",
+            custom_id: `${MANAGE_PREFIX}${sub.id}:enable`,
+          },
+      {
+        type: COMPONENT_BUTTON,
+        style: BUTTON_STYLE_LINK,
+        label: "Edit on the web",
+        url: `${SITE_URL}/account/discord`,
+      },
+    ],
+  };
+
+  return { content: lines.join("\n"), components: [actionRow] };
+}
+
+function handleManageComponent(
+  interaction: DiscordInteraction,
+  customId: string,
+): InteractionHandlerResult {
+  const parsed = parseManageCustomId(customId);
+  if (!parsed) return ephemeralImmediate("Unknown manage action.");
+  if (!interaction.guild_id) {
+    return ephemeralImmediate("This button only works inside a server.");
+  }
+  // Gate on Manage Server, same as the subscribe flow and the slash commands.
+  // The button is visible to everyone in the channel; the gate is here.
+  if (!memberHasManageGuild(interaction.member)) {
+    return ephemeralImmediate(
+      "You need the **Manage Server** permission to manage an auto-post. Ask a server admin to use this button instead.",
+    );
+  }
+  const sub = getSubscription(parsed.subId);
+  if (!sub || sub.guild_id !== interaction.guild_id) {
+    return ephemeralImmediate("That subscription no longer exists in this server.");
+  }
+
+  switch (parsed.action) {
+    case "open": {
+      // Opened from the public post — reply with a fresh ephemeral panel that
+      // only the clicker sees.
+      const panel = renderManagePanel(sub);
+      return {
+        kind: "immediate",
+        response: {
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: { content: panel.content, components: panel.components, flags: FLAGS_EPHEMERAL },
+        },
+      };
+    }
+    case "disable": {
+      setSubscriptionEnabled(parsed.subId, false);
+      const panel = renderManagePanel(
+        getSubscription(parsed.subId) ?? sub,
+        "✅ **Unsubscribed.** This auto-post is paused — no more messages will go out. Changed your mind? Tap **Re-enable** below.",
+      );
+      return updateMessageResponse(panel.content, panel.components);
+    }
+    case "enable": {
+      setSubscriptionEnabled(parsed.subId, true);
+      const panel = renderManagePanel(
+        getSubscription(parsed.subId) ?? sub,
+        "✅ **Re-enabled.** Posts will resume on the schedule shown below.",
+      );
+      return updateMessageResponse(panel.content, panel.components);
+    }
+  }
+}
+
 function handleComponent(interaction: DiscordInteraction): InteractionHandlerResult {
   const customId = interaction.data?.custom_id ?? "";
   if (customId.startsWith(SUBSCRIBE_INIT_PREFIX)) {
@@ -868,6 +1084,9 @@ function handleComponent(interaction: DiscordInteraction): InteractionHandlerRes
   }
   if (customId.startsWith(SUBSCRIBE_DRAFT_PREFIX)) {
     return handleSubscribeDraft(interaction, customId);
+  }
+  if (customId.startsWith(MANAGE_PREFIX)) {
+    return handleManageComponent(interaction, customId);
   }
   return ephemeralImmediate("Unknown component action.");
 }
@@ -890,7 +1109,7 @@ function handleHelp(): InteractionHandlerResult {
     "",
     "_Server admin (needs Manage Server):_",
     "**Subscribe** — click the **🔁 Subscribe** button under any `/playirl today` or `/playirl week` result to turn that lookup into a recurring auto-post. Pick channel, day, and time in the follow-up panel.",
-    "**`/playirl unsubscribe <id>`** — disable a recurring event post. Start typing in the `id` field — Discord will autocomplete from this server's subscriptions.",
+    "**`/playirl manage <id>`** — view a recurring post's details and unsubscribe or re-enable it. Start typing in the `id` field — Discord will autocomplete from this server's subscriptions. You can also click the **⚙️ Manage** button under any auto-post.",
     "Full management UI (rename, edit filters, reminder-mode subs) lives on the website → <https://playirl.gg/account/discord>",
     "",
     "_Other:_",
@@ -1019,11 +1238,14 @@ function handleAutocomplete(interaction: DiscordInteraction): InteractionHandler
         || s.near_label.toLowerCase().includes(query);
     });
     const choices = matches.map(s => {
+      // Lead with a status dot so active vs. paused reads at a glance in the
+      // picker, then the cadence/format/location, then the short id the panel
+      // header echoes back so the user can confirm they opened the right one.
       const tags: string[] = [s.mode];
       if (s.format) tags.push(s.format);
       if (s.near_label) tags.push(`near ${s.near_label}`);
-      if (!s.enabled) tags.push("disabled");
-      const label = `${tags.join(" · ")} — ${s.id.slice(0, 8)}`;
+      const dot = s.enabled ? "🟢" : "🔴 (paused)";
+      const label = `${dot} ${tags.join(" · ")} — ${s.id.slice(0, 8)}`;
       return { name: label.slice(0, 100), value: s.id };
     });
     return autocompleteResponse(choices);
@@ -1080,7 +1302,7 @@ export function handleInteraction(interaction: DiscordInteraction): InteractionH
   }
 
   switch (sub.name) {
-    case "unsubscribe": return handleUnsubscribe(interaction, sub);
+    case "manage": return handleManage(interaction, sub);
     default: return immediateText(`Unknown subcommand: ${sub.name}`);
   }
 }

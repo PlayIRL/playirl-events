@@ -31,6 +31,10 @@ export interface DiscordEmbed {
 export interface DiscordMessagePayload {
   content?: string;
   embeds?: DiscordEmbed[];
+  /** Discord message components (action rows + buttons). Used by the scheduled
+   *  dispatcher to attach the "⚙️ Manage this auto-post" button under a
+   *  digest's last day so server admins can pause/edit it inline. */
+  components?: unknown[];
   /** Allow no @-pings; digest content is informational. */
   allowed_mentions?: { parse: [] };
 }

@@ -89,7 +89,7 @@ export default function BotPage() {
         <section className="mb-10">
           <h2 className="text-xl font-[family-name:var(--font-ultra)] font-bold text-neutral-900 dark:text-white mb-3">Commands</h2>
           <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
-            <code>/playirl today</code>, <code>/playirl week</code>, and <code>/playirl help</code> work for anyone in the channel. <code>/playirl unsubscribe</code> requires the <strong>Manage Server</strong> permission. To create or edit recurring posts, use the <Link href="/account?tab=discord" className="underline hover:text-neutral-900 dark:hover:text-white">website</Link>.
+            <code>/playirl today</code>, <code>/playirl week</code>, and <code>/playirl help</code> work for anyone in the channel. <code>/playirl manage</code> requires the <strong>Manage Server</strong> permission. To create or edit recurring posts, use the <Link href="/account?tab=discord" className="underline hover:text-neutral-900 dark:hover:text-white">website</Link>.
           </p>
           <div className="space-y-3">
             <CommandCard
@@ -103,8 +103,8 @@ export default function BotPage() {
               example="/playirl week location:Philadelphia, PA radius_miles:50"
             />
             <CommandCard
-              name="/playirl unsubscribe <id>"
-              summary="Disable a recurring auto-post in this server (Manage Server). Start typing in the id field — Discord autocompletes from your server's subscriptions."
+              name="/playirl manage <id>"
+              summary="View a recurring auto-post's details and unsubscribe, re-enable, or edit it (Manage Server). Start typing in the id field — Discord autocompletes from your server's subscriptions. You can also use the ⚙️ Manage button under any auto-post."
             />
             <CommandCard
               name="/playirl help"

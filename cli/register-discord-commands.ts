@@ -91,7 +91,7 @@ const playirlCommand = {
   description: "PlayIRL.GG event lookups and subscriptions.",
   // No default_member_permissions: today/week/help are public, and Discord
   // doesn't support per-subcommand permission gates. The handler enforces
-  // Manage Server on list/preview/unsubscribe and politely refuses non-admins.
+  // Manage Server on the manage command and politely refuses non-admins.
   // Visibility-as-discoverability is the trade.
   options: [
     // -- Public lookup commands (no Manage Server needed) --
@@ -115,13 +115,13 @@ const playirlCommand = {
     // -- Admin (Manage Server) commands --
     {
       type: OPT_SUB_COMMAND,
-      name: "unsubscribe",
-      description: "Stop a recurring event post in this server.",
+      name: "manage",
+      description: "View a recurring event post's details and unsubscribe, re-enable, or edit it.",
       options: [
         {
           type: OPT_STRING,
           name: "id",
-          description: "Pick the subscription to disable (start typing — Discord will autocomplete).",
+          description: "Pick the subscription to manage (start typing — Discord will autocomplete).",
           required: true,
           autocomplete: true,
         },
