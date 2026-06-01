@@ -21,3 +21,5 @@ data/uploads/
 data/*.db.local-backup-*
 data/*.db.bak
 data/*.db.backup-*
+# Prod DB snapshots pulled locally (db:pull). Large; never commit.
+data/*.db.prod-*
