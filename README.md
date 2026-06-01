@@ -154,7 +154,7 @@ Net effect: address-text and lat/lng always agree, regardless of which the rende
 
 ## Discord subscription bot
 
-Server admins can add the PlayIRL.GG bot to their Discord, then configure channel auto-posts (weekly/daily digests or per-event reminders) from the website at `/account?tab=discord`. Slash commands (`/playirl today`, `/playirl week`, `/playirl unsubscribe`, `/playirl help`) handle in-channel lookups and disabling subs. The user-facing landing page is at `/bot`.
+Server admins can add the PlayIRL.GG bot to their Discord, then configure channel auto-posts (weekly/daily digests or per-event reminders) from the website at `/account?tab=discord` — or spin up a basic digest right in Discord via the 🔁 Subscribe button under a `today`/`week` result. Slash commands (`/playirl today`, `/playirl week`, `/playirl manage`, `/playirl help`) handle in-channel lookups and managing subs; `/playirl manage` (and the ⚙️ Manage button on each post) opens a panel to pause, re-enable, or jump to the web editor. The user-facing landing page is at `/bot`.
 
 ### One-time setup (deployer)
 
