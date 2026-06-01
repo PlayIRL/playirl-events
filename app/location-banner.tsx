@@ -97,7 +97,7 @@ export default function LocationBanner({ isDefault, defaultLabel, locale = DEFAU
       </p>
       <button
         onClick={openPicker}
-        className="shrink-0 px-2.5 py-1 rounded-md border border-blue-300 dark:border-blue-500 text-blue-700 dark:text-blue-400 text-xs font-medium hover:bg-blue-50 dark:hover:bg-blue-500/15 transition cursor-pointer"
+        className="shrink-0 px-2.5 py-1 rounded-md border border-blue-300 dark:border-blue-500 text-blue-700 dark:text-blue-400 text-xs font-semibold hover:bg-blue-50 dark:hover:bg-blue-500/15 transition cursor-pointer"
       >
         {tr("homepage.change")}
       </button>

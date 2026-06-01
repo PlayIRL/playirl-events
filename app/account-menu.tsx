@@ -264,7 +264,7 @@ function SignedInTrigger({ user }: { user: User }) {
           </span>
         )}
       </span>
-      <span className="hidden sm:inline text-sm font-medium max-w-[8rem] truncate">{displayName}</span>
+      <span className="hidden sm:inline text-sm font-semibold max-w-[8rem] truncate">{displayName}</span>
     </>
   );
 }
@@ -273,7 +273,7 @@ function SignedOutTrigger() {
   return (
     <>
       <UserIcon />
-      <span className="hidden sm:inline text-sm font-medium">Sign in</span>
+      <span className="hidden sm:inline text-sm font-semibold">Sign in</span>
     </>
   );
 }

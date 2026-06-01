@@ -409,12 +409,15 @@ export function SubscribeDropdown({
         onClick={() => status === "open" ? close() : open()}
         title="Subscribe to calendar"
         aria-label="Subscribe to calendar"
-        className="inline-flex items-center justify-center h-[1.925em] w-[1.925em] rounded-md border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white bg-transparent hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-500 active:opacity-80 transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 cursor-pointer"
+        className="inline-flex items-center justify-center gap-1.5 h-[1.925em] w-[1.925em] sm:w-auto sm:px-2.5 rounded-md border border-neutral-300 dark:border-neutral-600 text-neutral-900 dark:text-white bg-transparent hover:bg-neutral-50 dark:hover:bg-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-500 active:opacity-80 transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400/40 dark:focus-visible:ring-white/20 cursor-pointer"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M8 3v3m8-3v3M4 9h16M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z" />
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 13v5m2.5-2.5h-5" />
         </svg>
+        {/* Label appears once the filter sentence has room (sm+); stays
+            icon-only on narrow screens where the madlib already wraps. */}
+        <span className="hidden sm:inline text-sm font-semibold leading-none whitespace-nowrap">Subscribe</span>
       </button>
       {status !== "closed" && typeof document !== "undefined" && createPortal(
         <div
